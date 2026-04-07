@@ -156,30 +156,40 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       SCREEN 2 – MAP
+       SCREEN 2 – BROWSE (Airbnb-style split: list + map)
     ══════════════════════════════════════════════════════════════ */
     #screen-map {
       display: flex;
       flex-direction: column;
+      background: #f7f7f7;
     }
 
-    /* MAP HEADER */
-    .map-header {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      z-index: 500;
+    .browse-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      height: 100%;
+    }
+
+    .browse-header {
+      flex-shrink: 0;
+      z-index: 520;
+      background: var(--white);
+      border-bottom: 1px solid #ebebeb;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    }
+
+    .browse-header-inner {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--green-border);
-      box-shadow: var(--shadow);
+      gap: 12px;
+      padding: 10px 16px;
+      max-width: 1760px;
+      margin: 0 auto;
     }
 
-    .map-logo-box {
+    .browse-brand {
       width: 40px;
       height: 40px;
       background: var(--green-dark);
@@ -191,44 +201,339 @@
       flex-shrink: 0;
     }
 
-    .map-header-text { flex: 1; }
-    .map-header-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--green-dark);
-      line-height: 1.2;
-    }
-    .map-header-sub {
-      font-size: 12px;
-      color: #777;
+    .browse-search-pill {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      min-width: 0;
+      background: var(--white);
+      border: 1px solid #ddd;
+      border-radius: 40px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      overflow: hidden;
     }
 
-    .map-filter-btn {
-      background: var(--green-light);
-      border: 1px solid var(--green-border);
-      color: var(--green-dark);
+    .search-seg {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 8px 14px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .search-seg:hover { background: #f7f7f7; }
+    .search-seg + .search-seg {
+      border-left: 1px solid #ebebeb;
+    }
+    .search-seg-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #222;
+    }
+    .search-seg-value {
+      font-size: 13px;
+      color: #717171;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .search-submit {
+      width: 44px;
+      flex-shrink: 0;
+      margin: 4px 6px 4px 0;
+      border: none;
+      border-radius: 50%;
+      background: var(--green-btn);
+      color: var(--white);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(92,184,92,0.35);
+      transition: transform 0.15s, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .search-submit:active {
+      transform: scale(0.95);
+      background: var(--green-dark);
+    }
+
+    .browse-filters {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      background: var(--white);
+      border: 1px solid #b0b0b0;
+      border-radius: 10px;
       font-size: 13px;
       font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 50px;
+      color: #222;
       cursor: pointer;
-      white-space: nowrap;
+      font-family: inherit;
       -webkit-tap-highlight-color: transparent;
-      transition: background 0.15s;
     }
-    .map-filter-btn:active { background: var(--green-border); }
+    .browse-filters:active { background: #f5f5f5; }
+
+    .browse-header-actions {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #222;
+    }
+    .browse-header-actions a {
+      color: inherit;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+    .browse-header-actions a:hover { background: #f7f7f7; }
+
+    @media (min-width: 900px) {
+      .browse-header-actions { display: flex; }
+    }
+
+    @media (max-width: 720px) {
+      .browse-search-pill .search-seg:nth-child(2) { display: none; }
+      .browse-header-inner { padding: 8px 10px; gap: 8px; }
+      .browse-filters .browse-filters-text { display: none; }
+    }
+
+    .browse-layout {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(0, 1.15fr);
+      grid-template-rows: 1fr;
+    }
+
+    @media (max-width: 899px) {
+      .browse-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(220px, 38vh) 1fr;
+      }
+    }
+
+    .browse-list {
+      background: var(--white);
+      border-right: 1px solid #ebebeb;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px 20px 28px;
+    }
+
+    @media (max-width: 899px) {
+      .browse-list {
+        border-right: none;
+        border-top: 1px solid #ebebeb;
+        order: 2;
+      }
+    }
+
+    .browse-count {
+      font-size: 22px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .job-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 520px) and (max-width: 899px) {
+      .job-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .job-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .job-card {
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .job-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .job-card:active { transform: scale(0.99); }
+    .job-card.job-card-nearest {
+      box-shadow: 0 0 0 2px var(--orange);
+    }
+    .job-card:focus-visible {
+      outline: 2px solid var(--green-btn);
+      outline-offset: 2px;
+    }
+
+    .job-card-img {
+      position: relative;
+      aspect-ratio: 20 / 13;
+      background-size: cover;
+      background-position: center;
+    }
+    .job-card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.94);
+      color: #222;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .job-card-heart {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .job-card-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+    }
+    .job-card-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.85);
+    }
+
+    .job-card-body {
+      padding: 12px 2px 4px;
+    }
+    .job-card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+    .job-card-type {
+      font-size: 14px;
+      font-weight: 600;
+      color: #222;
+    }
+    .job-card-rating {
+      font-size: 13px;
+      color: #222;
+      flex-shrink: 0;
+    }
+    .job-card-name {
+      font-size: 14px;
+      color: #717171;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+    .job-card-meta {
+      font-size: 12px;
+      color: #717171;
+      margin-bottom: 8px;
+    }
+    .job-card-price strong {
+      font-size: 15px;
+      font-weight: 700;
+      color: #222;
+    }
+    .job-card-price span {
+      font-size: 13px;
+      color: #717171;
+    }
+
+    .browse-map-wrap {
+      position: relative;
+      min-height: 0;
+      background: #e8e8e8;
+    }
+
+    @media (max-width: 899px) {
+      .browse-map-wrap { order: 1; }
+    }
 
     /* MAP CONTAINER */
     #map {
-      flex: 1;
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
+    }
+
+    /* Price chips (Airbnb-style map labels) */
+    .leaflet-price-marker {
+      background: transparent !important;
+      border: none !important;
+    }
+    .map-price-chip {
+      position: relative;
+      padding: 7px 11px;
+      background: var(--white);
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #222;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    }
+    .map-price-chip:hover {
+      transform: scale(1.06);
+      z-index: 1000 !important;
+      box-shadow: var(--shadow-md);
+    }
+    .map-price-chip.nearest {
+      border-color: var(--orange);
+      background: #fffaf5;
+      box-shadow: 0 2px 14px rgba(230,126,34,0.35);
     }
 
     /* MAP LEGEND */
     .map-legend {
       position: absolute;
-      bottom: 28px;
+      bottom: 20px;
       left: 14px;
       z-index: 500;
       background: var(--white);
@@ -255,14 +560,6 @@
     }
     .legend-dot.green  { background: var(--green-dark); }
     .legend-dot.orange { background: var(--orange); }
-
-    /* CUSTOM LEAFLET PINS */
-    .custom-pin {
-      position: relative;
-      width: 36px;
-      height: 44px;
-    }
-    .custom-pin svg { width: 36px; height: 44px; }
 
     /* CLUSTER */
     .cluster-marker {
@@ -605,27 +902,48 @@
 </div>
 
 <!-- ═══════════════════════════════════════════
-     SCREEN 2 – MAP
+     SCREEN 2 – BROWSE (list + map)
 ═══════════════════════════════════════════ -->
 <div id="screen-map" class="screen hidden">
+  <div class="browse-shell">
+    <header class="browse-header">
+      <div class="browse-header-inner">
+        <div class="browse-brand" aria-hidden="true">🏠</div>
+        <div class="browse-search-pill" role="search">
+          <button type="button" class="search-seg">
+            <span class="search-seg-label">Where</span>
+            <span class="search-seg-value" id="search-where">Jobs in map area</span>
+          </button>
+          <button type="button" class="search-seg">
+            <span class="search-seg-label">When</span>
+            <span class="search-seg-value">Any completed date</span>
+          </button>
+          <button type="button" class="search-seg">
+            <span class="search-seg-label">Type</span>
+            <span class="search-seg-value">All home types</span>
+          </button>
+          <button type="button" class="search-submit" aria-label="Search">🔍</button>
+        </div>
+        <button type="button" class="browse-filters" aria-label="Filters">⚙ <span class="browse-filters-text">Filters</span></button>
+        <div class="browse-header-actions">
+          <a href="#">Get a quote</a>
+        </div>
+      </div>
+    </header>
 
-  <!-- Header -->
-  <div class="map-header">
-    <div class="map-logo-box">🏠</div>
-    <div class="map-header-text">
-      <div class="map-header-title">Absolute Acrylics</div>
-      <div class="map-header-sub">340 completed jobs in Dublin</div>
+    <div class="browse-layout">
+      <aside class="browse-list" aria-label="Completed jobs">
+        <h1 class="browse-count" id="browse-count">— jobs</h1>
+        <div class="job-cards-grid" id="job-cards-root"></div>
+      </aside>
+      <div class="browse-map-wrap">
+        <div id="map"></div>
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot green"></div>Completed job</div>
+          <div class="legend-item"><div class="legend-dot orange"></div>Nearest to you</div>
+        </div>
+      </div>
     </div>
-    <button class="map-filter-btn">⚙ Filter</button>
-  </div>
-
-  <!-- Map -->
-  <div id="map"></div>
-
-  <!-- Legend -->
-  <div class="map-legend">
-    <div class="legend-item"><div class="legend-dot green"></div>Completed job</div>
-    <div class="legend-item"><div class="legend-dot orange"></div>Nearest to you</div>
   </div>
 </div>
 
@@ -778,6 +1096,7 @@ function showMapScreen() {
       initMap();
       mapInitialised = true;
     }
+    scheduleMapResize();
   }, 380);
 }
 
@@ -789,6 +1108,99 @@ document.getElementById('btn-skip').addEventListener('click', showMapScreen);
 // ─────────────────────────────────────────────
 let map, nearestJobId = null;
 const markers = {};
+
+const CARD_GRADS = [
+  'linear-gradient(145deg, #3d6b4a 0%, #6a9e78 55%, #a8c9a8 100%)',
+  'linear-gradient(145deg, #2d4a3e 0%, #4a7c6a 50%, #7daf9a 100%)',
+  'linear-gradient(145deg, #3a5c40 0%, #5c8f5c 55%, #9bc49b 100%)',
+  'linear-gradient(145deg, #355242 0%, #5a8060 50%, #8fb88a 100%)',
+  'linear-gradient(145deg, #2e4d38 0%, #4d7a55 55%, #86b890 100%)'
+];
+
+function scheduleMapResize() {
+  if (!map) return;
+  requestAnimationFrame(() => { map.invalidateSize(true); });
+  setTimeout(() => map.invalidateSize(true), 120);
+  setTimeout(() => map.invalidateSize(true), 450);
+}
+
+window.addEventListener('resize', () => {
+  if (map) map.invalidateSize(true);
+});
+
+function formatSavingShort(n) {
+  if (n >= 1000) {
+    const k = n / 1000;
+    const rounded = Math.round(k * 10) / 10;
+    const s = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+    return '€' + s + 'k';
+  }
+  return '€' + n;
+}
+
+function jobRating(job) {
+  return (4.72 + (job.id % 7) * 0.04).toFixed(2);
+}
+
+function jobCardPhotoLine(job) {
+  const parts = job.address.split(',');
+  return parts.length > 1 ? parts.slice(0, -1).join(',').trim() : job.address;
+}
+
+function renderJobCards(nearestId) {
+  const root = document.getElementById('job-cards-root');
+  const countEl = document.getElementById('browse-count');
+  if (!root || !countEl) return;
+
+  countEl.textContent = jobs.length + (jobs.length === 1 ? ' job' : ' jobs');
+
+  root.innerHTML = jobs.map(job => {
+    const grad = CARD_GRADS[job.id % CARD_GRADS.length];
+    const near = job.id === nearestId;
+    return `
+    <article class="job-card${near ? ' job-card-nearest' : ''}" data-job-id="${job.id}" tabindex="0" role="button">
+      <div class="job-card-img" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 100%), ${grad}">
+        ${near ? '<span class="job-card-badge" style="background:#fff5eb;border:1px solid #f0c090;color:#b35c00">Near you</span>' : '<span class="job-card-badge">Completed</span>'}
+        <button type="button" class="job-card-heart" aria-label="Save job">♡</button>
+        <div class="job-card-dots"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="job-card-body">
+        <div class="job-card-title-row">
+          <span class="job-card-type">${job.type}</span>
+          <span class="job-card-rating">★ ${jobRating(job)}</span>
+        </div>
+        <div class="job-card-name">${jobCardPhotoLine(job)}</div>
+        <div class="job-card-meta">${job.completedDate} · BER ${job.berBefore} → ${job.berAfter}</div>
+        <div class="job-card-price"><strong>€${job.annualSaving.toLocaleString()}</strong> <span>est. annual saving</span></div>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function initJobCardClicks() {
+  const root = document.getElementById('job-cards-root');
+  if (!root || root.dataset.delegationBound) return;
+  root.dataset.delegationBound = '1';
+
+  root.addEventListener('click', e => {
+    if (e.target.closest('.job-card-heart')) return;
+    const card = e.target.closest('.job-card');
+    if (!card) return;
+    const id = parseInt(card.dataset.jobId, 10);
+    const job = jobs.find(j => j.id === id);
+    if (!job || !map) return;
+    map.flyTo([job.lat, job.lng], Math.max(map.getZoom(), 14), { duration: 0.55 });
+    openPanel(job);
+  });
+
+  root.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = e.target.closest('.job-card');
+    if (!card) return;
+    e.preventDefault();
+    card.click();
+  });
+}
 
 function initMap() {
   map = L.map('map', {
@@ -802,13 +1214,11 @@ function initMap() {
     maxZoom: 19
   }).addTo(map);
 
-  // Zoom control below header
   L.control.zoom({ position: 'topright' }).addTo(map);
 
-  // Add pins (without geolocation first)
+  initJobCardClicks();
   renderPins(null);
 
-  // Request geolocation
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       pos => {
@@ -820,6 +1230,8 @@ function initMap() {
       () => { /* permission denied — no nearest highlight */ }
     );
   }
+
+  scheduleMapResize();
 }
 
 function findNearest(lat, lng) {
@@ -831,28 +1243,19 @@ function findNearest(lat, lng) {
   return nearest;
 }
 
-function makePinSVG(isNearest) {
-  const fill = isNearest ? '#e67e22' : '#2d5a2d';
-  return `<svg viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 0C8.06 0 0 8.06 0 18c0 13.5 18 26 18 26S36 31.5 36 18C36 8.06 27.94 0 18 0z"
-      fill="${fill}" stroke="white" stroke-width="2"/>
-    <text x="18" y="24" text-anchor="middle" font-size="14" fill="white">🏠</text>
-  </svg>`;
-}
-
 function renderPins(nearestId) {
-  // Clear existing markers
   Object.values(markers).forEach(m => map.removeLayer(m));
 
   jobs.forEach(job => {
     const isNearest = job.id === nearestId;
-    const iconHtml = `<div class="custom-pin">${makePinSVG(isNearest)}</div>`;
+    const label = formatSavingShort(job.annualSaving);
+    const iconHtml = `<div class="map-price-chip${isNearest ? ' nearest' : ''}">${label}</div>`;
     const icon = L.divIcon({
       html: iconHtml,
-      className: '',
-      iconSize: [36, 44],
-      iconAnchor: [18, 44],
-      popupAnchor: [0, -44]
+      className: 'leaflet-price-marker',
+      iconSize: [72, 40],
+      iconAnchor: [36, 40],
+      popupAnchor: [0, -40]
     });
 
     const marker = L.marker([job.lat, job.lng], { icon })
@@ -861,6 +1264,13 @@ function renderPins(nearestId) {
 
     markers[job.id] = marker;
   });
+
+  renderJobCards(nearestId);
+
+  const whereEl = document.getElementById('search-where');
+  if (whereEl) {
+    whereEl.textContent = nearestId != null ? 'Jobs near you' : 'Jobs in map area';
+  }
 }
 
 // ─────────────────────────────────────────────
