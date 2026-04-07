@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Absolute Acrylics – Dublin Wall Insulation</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:   #2d5a2d;
+      --green-splash: #1a3a1a;
+      --green-mid:    #3d7a3d;
+      --green-light:  #edf7ed;
+      --green-border: #c8e0c8;
+      --green-btn:    #5cb85c;
+      --orange:       #e67e22;
+      --white:        #ffffff;
+      --shadow:       0 2px 12px rgba(0,0,0,0.08);
+      --shadow-md:    0 4px 24px rgba(0,0,0,0.14);
+      --radius-card:  14px;
+      --radius-panel: 20px;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--green-splash);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SCREEN MANAGEMENT ─────────────────────────────────────── */
+    .screen {
+      position: fixed;
+      inset: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #screen-splash { z-index: 30; }
+    #screen-map    { z-index: 10; }
+
+    /* ══════════════════════════════════════════════════════════════
+       SCREEN 1 – SPLASH
+    ══════════════════════════════════════════════════════════════ */
+    #screen-splash {
+      background: linear-gradient(160deg, var(--green-splash) 0%, #2d5a2d 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px 40px;
+      gap: 0;
+      overflow-y: auto;
+    }
+    #screen-splash.hidden {
+      transform: scale(0.96);
+    }
+
+    .splash-logo {
+      width: 80px;
+      height: 80px;
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      margin-bottom: 22px;
+      flex-shrink: 0;
+    }
+
+    .splash-name {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .splash-tagline {
+      font-size: 15px;
+      color: rgba(255,255,255,0.72);
+      text-align: center;
+      line-height: 1.55;
+      max-width: 310px;
+      margin-bottom: 32px;
+    }
+
+    .splash-stats {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 36px;
+    }
+
+    .stat-card {
+      flex: 1;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-card);
+      padding: 14px 8px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 22px;
+      font-weight: 800;
+      color: #7ed87e;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.3;
+    }
+
+    .btn-cta {
+      width: 100%;
+      max-width: 360px;
+      padding: 18px 24px;
+      background: var(--green-btn);
+      color: var(--white);
+      font-size: 17px;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      letter-spacing: 0.1px;
+      box-shadow: 0 4px 20px rgba(92,184,92,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-cta:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 10px rgba(92,184,92,0.3);
+    }
+
+    .splash-skip {
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SCREEN 2 – MAP
+    ══════════════════════════════════════════════════════════════ */
+    #screen-map {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* MAP HEADER */
+    .map-header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--green-border);
+      box-shadow: var(--shadow);
+    }
+
+    .map-logo-box {
+      width: 40px;
+      height: 40px;
+      background: var(--green-dark);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .map-header-text { flex: 1; }
+    .map-header-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--green-dark);
+      line-height: 1.2;
+    }
+    .map-header-sub {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .map-filter-btn {
+      background: var(--green-light);
+      border: 1px solid var(--green-border);
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 50px;
+      cursor: pointer;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    .map-filter-btn:active { background: var(--green-border); }
+
+    /* MAP CONTAINER */
+    #map {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* MAP LEGEND */
+    .map-legend {
+      position: absolute;
+      bottom: 28px;
+      left: 14px;
+      z-index: 500;
+      background: var(--white);
+      border: 1px solid var(--green-border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+      pointer-events: none;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #444;
+      line-height: 1;
+    }
+    .legend-item + .legend-item { margin-top: 7px; }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .legend-dot.green  { background: var(--green-dark); }
+    .legend-dot.orange { background: var(--orange); }
+
+    /* CUSTOM LEAFLET PINS */
+    .custom-pin {
+      position: relative;
+      width: 36px;
+      height: 44px;
+    }
+    .custom-pin svg { width: 36px; height: 44px; }
+
+    /* CLUSTER */
+    .cluster-marker {
+      background: var(--green-dark);
+      border: 3px solid var(--white);
+      border-radius: 50%;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SCREEN 3 – JOB DETAIL PANEL
+    ══════════════════════════════════════════════════════════════ */
+    #job-panel {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 600;
+      height: 76vh;
+      background: var(--white);
+      border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.18);
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.32,0.72,0,1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #job-panel.open {
+      transform: translateY(0);
+    }
+
+    .panel-handle-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px 0;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .panel-handle {
+      width: 40px;
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+    }
+    .panel-close {
+      position: absolute;
+      right: 16px;
+      top: 8px;
+      width: 30px;
+      height: 30px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 50%;
+      font-size: 15px;
+      color: #555;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    .panel-close:active { background: #ddd; }
+
+    .panel-scroll {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 14px 18px 32px;
+    }
+
+    /* Badge */
+    .job-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--green-light);
+      border: 1px solid var(--green-border);
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 50px;
+      margin-bottom: 10px;
+    }
+
+    .job-address {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1a1a1a;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .job-subtitle {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 18px;
+    }
+
+    /* BEFORE / AFTER SLIDER */
+    .before-after-container {
+      position: relative;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      height: 160px;
+      margin-bottom: 18px;
+      cursor: ew-resize;
+      user-select: none;
+      touch-action: none;
+    }
+    .ba-before, .ba-after {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .ba-before {
+      background: linear-gradient(135deg, #b0a898 0%, #ccc6bb 100%);
+      z-index: 1;
+    }
+    .ba-after {
+      background: linear-gradient(135deg, #3d7a3d 0%, #5cb85c 100%);
+      z-index: 2;
+      clip-path: inset(0 50% 0 0);
+      transition: clip-path 0.05s linear;
+    }
+    .ba-emoji {
+      font-size: 42px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+    .ba-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.85);
+      background: rgba(0,0,0,0.2);
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+    .ba-divider {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 3px;
+      background: var(--white);
+      z-index: 10;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .ba-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+      height: 32px;
+      background: var(--white);
+      border-radius: 50%;
+      z-index: 11;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 14px;
+      pointer-events: none;
+      color: #555;
+    }
+
+    /* BER ROW */
+    .ber-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8f8f8;
+      border: 1px solid #eee;
+      border-radius: var(--radius-card);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+    }
+    .ber-label {
+      font-size: 13px;
+      color: #666;
+      margin-right: auto;
+    }
+    .ber-pill {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+    .ber-pill.old { background: #fdecea; color: #c0392b; border: 1px solid #f5c6c0; }
+    .ber-pill.new { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green-border); }
+    .ber-arrow { font-size: 16px; color: #aaa; }
+
+    /* BENEFIT CARDS GRID */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .benefit-card {
+      background: #f8faf8;
+      border: 1px solid var(--green-border);
+      border-radius: var(--radius-card);
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .benefit-card.highlight {
+      background: var(--green-light);
+      border-color: #a8d5a8;
+    }
+    .benefit-icon { font-size: 20px; }
+    .benefit-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--green-dark);
+      line-height: 1;
+    }
+    .benefit-desc {
+      font-size: 11px;
+      color: #777;
+      line-height: 1.3;
+    }
+
+    /* SEAI BOX */
+    .seai-box {
+      background: #fffbea;
+      border: 1px solid #f0e190;
+      border-radius: var(--radius-card);
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .seai-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .seai-text { font-size: 13px; color: #5a4a00; line-height: 1.5; }
+    .seai-text strong { color: #3d3000; }
+
+    /* PANEL CTA */
+    .panel-cta {
+      width: 100%;
+      padding: 16px;
+      background: var(--green-dark);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      letter-spacing: 0.1px;
+      transition: transform 0.15s, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .panel-cta:active {
+      transform: scale(0.98);
+      background: #1e3e1e;
+    }
+
+    /* OVERLAY for closing panel by tapping outside */
+    #panel-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 590;
+      background: rgba(0,0,0,0);
+      pointer-events: none;
+      transition: background 0.3s;
+    }
+    #panel-overlay.active {
+      pointer-events: all;
+      background: rgba(0,0,0,0.2);
+    }
+
+    /* Leaflet overrides */
+    .leaflet-control-zoom {
+      border: 1px solid var(--green-border) !important;
+      border-radius: 12px !important;
+      overflow: hidden;
+      box-shadow: var(--shadow) !important;
+    }
+    .leaflet-control-zoom a {
+      color: var(--green-dark) !important;
+      font-size: 18px !important;
+      line-height: 30px !important;
+      width: 34px !important;
+      height: 34px !important;
+    }
+    .leaflet-control-attribution {
+      font-size: 9px !important;
+    }
+
+    /* Splash transition override */
+    #screen-splash.out {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 1 – SPLASH
+═══════════════════════════════════════════ -->
+<div id="screen-splash" class="screen">
+  <div class="splash-logo">🏠</div>
+  <div class="splash-name">Absolute Acrylics</div>
+  <p class="splash-tagline">Dublin's leading external wall insulation specialists. See how we've transformed homes near you.</p>
+
+  <div class="splash-stats">
+    <div class="stat-card">
+      <div class="stat-number">340+</div>
+      <div class="stat-label">Dublin homes insulated</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">€2,000</div>
+      <div class="stat-label">avg. annual saving</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">A3</div>
+      <div class="stat-label">avg. BER rating achieved</div>
+    </div>
+  </div>
+
+  <button class="btn-cta" id="btn-explore">Explore jobs near me →</button>
+  <span class="splash-skip" id="btn-skip">or browse all Dublin</span>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 2 – MAP
+═══════════════════════════════════════════ -->
+<div id="screen-map" class="screen hidden">
+
+  <!-- Header -->
+  <div class="map-header">
+    <div class="map-logo-box">🏠</div>
+    <div class="map-header-text">
+      <div class="map-header-title">Absolute Acrylics</div>
+      <div class="map-header-sub">340 completed jobs in Dublin</div>
+    </div>
+    <button class="map-filter-btn">⚙ Filter</button>
+  </div>
+
+  <!-- Map -->
+  <div id="map"></div>
+
+  <!-- Legend -->
+  <div class="map-legend">
+    <div class="legend-item"><div class="legend-dot green"></div>Completed job</div>
+    <div class="legend-item"><div class="legend-dot orange"></div>Nearest to you</div>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div id="panel-overlay"></div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 3 – JOB DETAIL PANEL
+═══════════════════════════════════════════ -->
+<div id="job-panel">
+  <div class="panel-handle-row">
+    <div class="panel-handle"></div>
+    <button class="panel-close" id="panel-close-btn">✕</button>
+  </div>
+  <div class="panel-scroll" id="panel-content">
+    <!-- Populated dynamically -->
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const jobs = [
+  {
+    id: 1,
+    lat: 53.3241, lng: -6.2856,
+    address: "14 Rathgar Avenue, Dublin 6",
+    type: "3-bed semi-detached",
+    completedDate: "May 2024",
+    berBefore: "F", berAfter: "B2",
+    annualSaving: 2100, valueIncrease: 22000, co2Reduction: 3.2, warmthGain: 4
+  },
+  {
+    id: 2,
+    lat: 53.3798, lng: -6.2520,
+    address: "7 Collins Avenue, Dublin 9",
+    type: "4-bed detached",
+    completedDate: "March 2024",
+    berBefore: "E1", berAfter: "B3",
+    annualSaving: 2450, valueIncrease: 26000, co2Reduction: 3.8, warmthGain: 5
+  },
+  {
+    id: 3,
+    lat: 53.3153, lng: -6.3512,
+    address: "32 Kimmage Road West, Dublin 12",
+    type: "3-bed terraced",
+    completedDate: "January 2024",
+    berBefore: "G", berAfter: "C1",
+    annualSaving: 1950, valueIncrease: 18500, co2Reduction: 2.9, warmthGain: 4
+  },
+  {
+    id: 4,
+    lat: 53.3944, lng: -6.3880,
+    address: "21 Hartstown Road, Clonsilla, Dublin 15",
+    type: "4-bed semi-detached",
+    completedDate: "July 2024",
+    berBefore: "E2", berAfter: "B2",
+    annualSaving: 2300, valueIncrease: 24500, co2Reduction: 3.5, warmthGain: 5
+  },
+  {
+    id: 5,
+    lat: 53.4597, lng: -6.2192,
+    address: "9 Malahide Marina Village, Malahide",
+    type: "3-bed end-of-terrace",
+    completedDate: "September 2024",
+    berBefore: "D1", berAfter: "B3",
+    annualSaving: 1800, valueIncrease: 20000, co2Reduction: 2.7, warmthGain: 3
+  },
+  {
+    id: 6,
+    lat: 53.3055, lng: -6.4192,
+    address: "45 Monastery Road, Clondalkin",
+    type: "3-bed semi-detached",
+    completedDate: "April 2024",
+    berBefore: "F", berAfter: "C2",
+    annualSaving: 2050, valueIncrease: 19000, co2Reduction: 3.1, warmthGain: 4
+  },
+  {
+    id: 7,
+    lat: 53.2936, lng: -6.1358,
+    address: "18 Glenageary Road, Dún Laoghaire",
+    type: "5-bed detached",
+    completedDate: "February 2024",
+    berBefore: "E1", berAfter: "B1",
+    annualSaving: 3100, valueIncrease: 38000, co2Reduction: 4.6, warmthGain: 6
+  },
+  {
+    id: 8,
+    lat: 53.4573, lng: -6.2658,
+    address: "3 Seatown Road, Swords",
+    type: "4-bed semi-detached",
+    completedDate: "June 2024",
+    berBefore: "D2", berAfter: "B2",
+    annualSaving: 2200, valueIncrease: 23000, co2Reduction: 3.3, warmthGain: 4
+  },
+  {
+    id: 9,
+    lat: 53.3531, lng: -6.4474,
+    address: "62 Esker Lawns, Lucan",
+    type: "3-bed semi-detached",
+    completedDate: "August 2024",
+    berBefore: "E2", berAfter: "B3",
+    annualSaving: 1980, valueIncrease: 21000, co2Reduction: 3.0, warmthGain: 4
+  },
+  {
+    id: 10,
+    lat: 53.2871, lng: -6.3745,
+    address: "27 Orlagh Crescent, Tallaght",
+    type: "3-bed terraced",
+    completedDate: "October 2024",
+    berBefore: "F", berAfter: "C1",
+    annualSaving: 2250, valueIncrease: 17500, co2Reduction: 3.4, warmthGain: 5
+  },
+  {
+    id: 11,
+    lat: 53.3936, lng: -6.3747,
+    address: "14 Coolmine Meadows, Blanchardstown",
+    type: "4-bed detached",
+    completedDate: "November 2024",
+    berBefore: "E1", berAfter: "B2",
+    annualSaving: 2680, valueIncrease: 29000, co2Reduction: 4.0, warmthGain: 5
+  },
+  {
+    id: 12,
+    lat: 53.2736, lng: -6.2152,
+    address: "5 Beechwood Park, Sandyford",
+    type: "4-bed semi-detached",
+    completedDate: "December 2024",
+    berBefore: "D1", berAfter: "A3",
+    annualSaving: 2780, valueIncrease: 35000, co2Reduction: 4.2, warmthGain: 5
+  }
+];
+
+// ─────────────────────────────────────────────
+// SPLASH → MAP TRANSITION
+// ─────────────────────────────────────────────
+let mapInitialised = false;
+
+function showMapScreen() {
+  const splash = document.getElementById('screen-splash');
+  const mapScreen = document.getElementById('screen-map');
+
+  splash.classList.add('out');
+  setTimeout(() => {
+    splash.classList.add('hidden');
+    mapScreen.classList.remove('hidden');
+    if (!mapInitialised) {
+      initMap();
+      mapInitialised = true;
+    }
+  }, 380);
+}
+
+document.getElementById('btn-explore').addEventListener('click', showMapScreen);
+document.getElementById('btn-skip').addEventListener('click', showMapScreen);
+
+// ─────────────────────────────────────────────
+// MAP INIT
+// ─────────────────────────────────────────────
+let map, nearestJobId = null;
+const markers = {};
+
+function initMap() {
+  map = L.map('map', {
+    center: [53.3498, -6.2603],
+    zoom: 12,
+    zoomControl: false
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+    maxZoom: 19
+  }).addTo(map);
+
+  // Zoom control below header
+  L.control.zoom({ position: 'topright' }).addTo(map);
+
+  // Add pins (without geolocation first)
+  renderPins(null);
+
+  // Request geolocation
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const userLat = pos.coords.latitude;
+        const userLng = pos.coords.longitude;
+        nearestJobId = findNearest(userLat, userLng);
+        renderPins(nearestJobId);
+      },
+      () => { /* permission denied — no nearest highlight */ }
+    );
+  }
+}
+
+function findNearest(lat, lng) {
+  let minDist = Infinity, nearest = null;
+  jobs.forEach(j => {
+    const d = Math.hypot(j.lat - lat, j.lng - lng);
+    if (d < minDist) { minDist = d; nearest = j.id; }
+  });
+  return nearest;
+}
+
+function makePinSVG(isNearest) {
+  const fill = isNearest ? '#e67e22' : '#2d5a2d';
+  return `<svg viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 0C8.06 0 0 8.06 0 18c0 13.5 18 26 18 26S36 31.5 36 18C36 8.06 27.94 0 18 0z"
+      fill="${fill}" stroke="white" stroke-width="2"/>
+    <text x="18" y="24" text-anchor="middle" font-size="14" fill="white">🏠</text>
+  </svg>`;
+}
+
+function renderPins(nearestId) {
+  // Clear existing markers
+  Object.values(markers).forEach(m => map.removeLayer(m));
+
+  jobs.forEach(job => {
+    const isNearest = job.id === nearestId;
+    const iconHtml = `<div class="custom-pin">${makePinSVG(isNearest)}</div>`;
+    const icon = L.divIcon({
+      html: iconHtml,
+      className: '',
+      iconSize: [36, 44],
+      iconAnchor: [18, 44],
+      popupAnchor: [0, -44]
+    });
+
+    const marker = L.marker([job.lat, job.lng], { icon })
+      .addTo(map)
+      .on('click', () => openPanel(job));
+
+    markers[job.id] = marker;
+  });
+}
+
+// ─────────────────────────────────────────────
+// PANEL
+// ─────────────────────────────────────────────
+const jobPanel    = document.getElementById('job-panel');
+const overlay     = document.getElementById('panel-overlay');
+const panelContent = document.getElementById('panel-content');
+
+function openPanel(job) {
+  panelContent.innerHTML = buildPanelHTML(job);
+  jobPanel.classList.add('open');
+  overlay.classList.add('active');
+
+  // Init before/after slider
+  initBASlider();
+}
+
+function closePanel() {
+  jobPanel.classList.remove('open');
+  overlay.classList.remove('active');
+}
+
+document.getElementById('panel-close-btn').addEventListener('click', closePanel);
+overlay.addEventListener('click', closePanel);
+
+function buildPanelHTML(job) {
+  return `
+    <div class="job-badge">✓ Completed ${job.completedDate}</div>
+    <div class="job-address">${job.address}</div>
+    <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
+
+    <div class="before-after-container" id="ba-container">
+      <div class="ba-before">
+        <div class="ba-emoji">🏚️</div>
+        <div class="ba-label">BEFORE</div>
+      </div>
+      <div class="ba-after" id="ba-after">
+        <div class="ba-emoji">🏠</div>
+        <div class="ba-label">AFTER</div>
+      </div>
+      <div class="ba-divider" id="ba-divider"></div>
+      <div class="ba-handle" id="ba-handle">⇔</div>
+    </div>
+
+    <div class="ber-row">
+      <span class="ber-label">BER Rating:</span>
+      <span class="ber-pill old">${job.berBefore}</span>
+      <span class="ber-arrow">→</span>
+      <span class="ber-pill new">${job.berAfter}</span>
+    </div>
+
+    <div class="benefits-grid">
+      <div class="benefit-card highlight">
+        <div class="benefit-icon">💶</div>
+        <div class="benefit-value">€${job.annualSaving.toLocaleString()}</div>
+        <div class="benefit-desc">Annual energy saving</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">📈</div>
+        <div class="benefit-value">+€${job.valueIncrease.toLocaleString()}</div>
+        <div class="benefit-desc">Increase in property value</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🌡️</div>
+        <div class="benefit-value">+${job.warmthGain}°C</div>
+        <div class="benefit-desc">Warmer in winter</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🌱</div>
+        <div class="benefit-value">-${job.co2Reduction}t</div>
+        <div class="benefit-desc">CO₂ reduction per year</div>
+      </div>
+    </div>
+
+    <div class="seai-box">
+      <div class="seai-icon">⚡</div>
+      <div class="seai-text">
+        <strong>SEAI grants of up to €25,000</strong> available for this type of work. Ask us how to claim yours.
+      </div>
+    </div>
+
+    <button class="panel-cta" onclick="handleQuoteClick()">Get a free quote for your home</button>
+  `;
+}
+
+function handleQuoteClick() {
+  alert('Thank you for your interest!\n\nCall us: 01 234 5678\nEmail: info@absoluteacrylics.ie');
+}
+
+// ─────────────────────────────────────────────
+// BEFORE / AFTER SLIDER
+// ─────────────────────────────────────────────
+function initBASlider() {
+  const container = document.getElementById('ba-container');
+  const after     = document.getElementById('ba-after');
+  const divider   = document.getElementById('ba-divider');
+  const handle    = document.getElementById('ba-handle');
+  if (!container) return;
+
+  let dragging = false;
+
+  function setPosition(pct) {
+    pct = Math.max(5, Math.min(95, pct));
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    divider.style.left   = pct + '%';
+    handle.style.left    = pct + '%';
+  }
+
+  function getPercent(clientX) {
+    const rect = container.getBoundingClientRect();
+    return ((clientX - rect.left) / rect.width) * 100;
+  }
+
+  // Touch
+  container.addEventListener('touchstart', e => {
+    dragging = true;
+    setPosition(getPercent(e.touches[0].clientX));
+  }, { passive: true });
+
+  container.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    e.stopPropagation();
+    setPosition(getPercent(e.touches[0].clientX));
+  }, { passive: true });
+
+  container.addEventListener('touchend', () => { dragging = false; });
+
+  // Mouse (for testing on desktop)
+  container.addEventListener('mousedown', e => {
+    dragging = true;
+    setPosition(getPercent(e.clientX));
+  });
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    setPosition(getPercent(e.clientX));
+  });
+  window.addEventListener('mouseup', () => { dragging = false; });
+}
+
+// ─────────────────────────────────────────────
+// PREVENT MAP SCROLL BLEED WHEN PANEL IS OPEN
+// ─────────────────────────────────────────────
+document.getElementById('job-panel').addEventListener('touchmove', e => {
+  e.stopPropagation();
+}, { passive: true });
+
+</script>
+</body>
+</html>
