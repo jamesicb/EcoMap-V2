@@ -65,15 +65,15 @@
     }
 
     .splash-logo {
-      width: 80px;
-      height: 80px;
+      width: 96px;
+      height: 96px;
       background: rgba(255,255,255,0.12);
       border: 2px solid rgba(255,255,255,0.25);
-      border-radius: 20px;
+      border-radius: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 38px;
+      font-size: 52px;
       margin-bottom: 22px;
       flex-shrink: 0;
     }
@@ -107,11 +107,37 @@
 
     .stat-card {
       flex: 1;
+      position: relative;
       background: rgba(0,0,0,0.22);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: var(--radius-card);
-      padding: 14px 8px;
+      padding: 14px 8px 12px;
       text-align: center;
+    }
+    .stat-info-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      padding: 0;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.85);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: help;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .stat-info-btn:focus-visible {
+      outline: 2px solid #7ed87e;
+      outline-offset: 2px;
     }
     .stat-number {
       font-size: 22px;
@@ -119,6 +145,7 @@
       color: #7ed87e;
       line-height: 1;
       margin-bottom: 5px;
+      padding-right: 14px;
     }
     .stat-label {
       font-size: 11px;
@@ -147,14 +174,85 @@
       box-shadow: 0 2px 10px rgba(92,184,92,0.3);
     }
 
+    .splash-trust {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      max-width: 360px;
+      width: 100%;
+    }
+    .splash-trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px 14px;
+    }
+    .splash-seai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 50px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+    }
+    .splash-rating {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f0d060;
+      letter-spacing: 0.02em;
+    }
+    .splash-rating span {
+      color: rgba(255,255,255,0.55);
+      font-weight: 600;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+    .splash-quotes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+    .splash-quote {
+      margin: 0;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.18);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 12px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.78);
+      font-style: italic;
+    }
+    .splash-quote cite {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      font-style: normal;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+    }
     .splash-skip {
-      margin-top: 16px;
+      margin-top: 6px;
       font-size: 13px;
       color: rgba(255,255,255,0.45);
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 3px;
       -webkit-tap-highlight-color: transparent;
+      background: none;
+      border: none;
+      font: inherit;
+      padding: 4px 8px;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -189,6 +287,72 @@
       padding: 10px 20px;
       max-width: 1760px;
       margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .browse-inline-filters {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 100%;
+      order: 10;
+      padding-top: 2px;
+    }
+    .browse-inline-filters-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #717171;
+      margin-right: 4px;
+    }
+    .browse-chip {
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid #d0d0d0;
+      background: #fafafa;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .browse-chip:hover { background: #f0f0f0; }
+    .browse-chip.is-active {
+      background: var(--green-light);
+      border-color: var(--green-border);
+      color: var(--green-dark);
+    }
+
+    .quote-sticky-bar {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 540;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: rgba(255,255,255,0.97);
+      border-top: 1px solid #ebebeb;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
+    }
+    .quote-sticky-bar .browse-quote-pill {
+      width: 100%;
+      max-width: none;
+    }
+    .quote-sticky-bar .quote-pill-field {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .quote-sticky-bar .browse-quote-pill .quote-pill-field:nth-child(1),
+    .quote-sticky-bar .browse-quote-pill .quote-pill-field:nth-child(2),
+    .quote-sticky-bar .browse-quote-pill .quote-pill-field:nth-child(3) {
+      width: auto;
+      flex: 1 1 30%;
+      min-width: 5.5rem;
     }
 
     .browse-quote-wrap {
@@ -404,6 +568,14 @@
       font-weight: 600;
       color: #222;
     }
+    .browse-header-rating {
+      font-size: 13px;
+      font-weight: 800;
+      color: #c9a227;
+      letter-spacing: 0.02em;
+      padding: 8px 4px 8px 8px;
+      white-space: nowrap;
+    }
     .browse-header-actions a {
       color: inherit;
       text-decoration: none;
@@ -485,8 +657,31 @@
         flex-wrap: wrap;
         row-gap: 10px;
       }
-      .browse-quote-wrap {
+      .browse-header .browse-quote-wrap {
+        display: none;
+      }
+      .quote-sticky-bar {
+        display: block;
+      }
+      .browse-list {
+        padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+      }
+      .browse-inline-filters {
+        order: 0;
         flex: 1 1 100%;
+      }
+    }
+
+    @media (min-width: 601px) {
+      .browse-inline-filters {
+        flex: 1 1 280px;
+        order: 0;
+        flex-wrap: wrap;
+        padding-top: 0;
+        max-width: 100%;
+      }
+      .browse-inline-filters-label {
+        display: none;
       }
     }
 
@@ -631,10 +826,63 @@
       background-size: cover;
       background-position: center;
     }
+
+    /* Card before/after preview (static split — visual proof) */
+    .job-card-ba {
+      position: relative;
+      aspect-ratio: 20 / 13;
+      border-radius: 14px 14px 0 0;
+      overflow: hidden;
+      background: #2a3d2a;
+    }
+    .job-card-ba-before,
+    .job-card-ba-after {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .job-card-ba-before {
+      background: linear-gradient(145deg, #8a8278 0%, #b5aea2 100%);
+      z-index: 1;
+    }
+    .job-card-ba-after {
+      background: linear-gradient(145deg, #2d5a2d 0%, #5cb85c 100%);
+      z-index: 2;
+      clip-path: inset(0 50% 0 0);
+    }
+    .job-card-ba-ico {
+      font-size: 28px;
+      line-height: 1;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.25));
+    }
+    .job-card-ba-cap {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+    }
+    .job-card-ba-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      transform: translateX(-50%);
+      background: #fff;
+      z-index: 3;
+      pointer-events: none;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+    }
     .job-card-badge {
       position: absolute;
       top: 10px;
       left: 10px;
+      z-index: 5;
       background: rgba(255,255,255,0.94);
       color: #222;
       font-size: 11px;
@@ -647,6 +895,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
+      z-index: 5;
       width: 32px;
       height: 32px;
       border: none;
@@ -665,6 +914,7 @@
       bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 5;
       display: flex;
       gap: 5px;
     }
@@ -750,7 +1000,9 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     }
     .job-marker-dot.nearest {
-      background: var(--orange);
+      background: transparent;
+      border: 3px solid var(--orange);
+      box-shadow: 0 0 0 1px #fff, 0 2px 8px rgba(0,0,0,0.25);
     }
 
     /* MAP LEGEND */
@@ -782,7 +1034,11 @@
       flex-shrink: 0;
     }
     .legend-dot.green  { background: var(--green-dark); }
-    .legend-dot.orange { background: var(--orange); }
+    .legend-dot.orange {
+      background: transparent;
+      border: 3px solid var(--orange);
+      box-sizing: border-box;
+    }
 
     /* CLUSTER */
     .cluster-marker {
@@ -820,7 +1076,8 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       z-index: 600;
-      height: 76vh;
+      height: min(76vh, calc(100dvh - 12px));
+      max-height: calc(100dvh - env(safe-area-inset-bottom, 0px) - 8px);
       background: var(--white);
       border-radius: var(--radius-panel) var(--radius-panel) 0 0;
       box-shadow: 0 -4px 30px rgba(0,0,0,0.18);
@@ -876,6 +1133,52 @@
     }
 
     /* Badge */
+    .panel-ber-hero {
+      text-align: center;
+      padding: 18px 16px 20px;
+      margin: -4px -18px 16px;
+      background: linear-gradient(165deg, #e8f4e8 0%, #f4faf4 45%, #fff 100%);
+      border-bottom: 1px solid var(--green-border);
+    }
+    .panel-ber-hero-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6a7a6a;
+      margin-bottom: 10px;
+    }
+    .panel-ber-hero-grades {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .panel-ber-hero-grade {
+      font-size: clamp(2.5rem, 10vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1;
+      padding: 12px 20px;
+      border-radius: 16px;
+      min-width: 4.5rem;
+    }
+    .panel-ber-hero-grade.old {
+      color: #fff;
+      background: linear-gradient(145deg, #c0392b 0%, #922b21 100%);
+      box-shadow: 0 4px 14px rgba(192,57,43,0.35);
+    }
+    .panel-ber-hero-grade.new {
+      color: #fff;
+      background: linear-gradient(145deg, #2d5a2d 0%, #5cb85c 100%);
+      box-shadow: 0 4px 14px rgba(45,90,45,0.35);
+    }
+    .panel-ber-hero-arrow {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      opacity: 0.85;
+    }
+
     .job-badge {
       display: inline-flex;
       align-items: center;
@@ -930,6 +1233,20 @@
       user-select: none;
       touch-action: none;
     }
+    .ba-rail-label {
+      position: absolute;
+      bottom: 10px;
+      z-index: 12;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+      pointer-events: none;
+    }
+    .ba-rail-label.before { left: 12px; }
+    .ba-rail-label.after  { right: 12px; }
     .ba-before, .ba-after {
       position: absolute;
       inset: 0;
@@ -963,6 +1280,9 @@
       padding: 3px 10px;
       border-radius: 50px;
     }
+    .ba-label.dupe-hide {
+      display: none;
+    }
     .ba-divider {
       position: absolute;
       top: 0; bottom: 0;
@@ -978,8 +1298,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       background: var(--white);
       border-radius: 50%;
       z-index: 11;
@@ -987,17 +1307,18 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      font-size: 14px;
       pointer-events: none;
-      color: #555;
+      color: var(--green-dark);
+    }
+    .ba-handle svg {
+      width: 22px;
+      height: 22px;
+      display: block;
     }
 
     /* BER ROW */
     .ber-row {
-      display: block;
-      margin-top: 10px;
-      margin-bottom: 0;
-      width: 100%;
+      display: none;
     }
     .ber-card {
       justify-content: center;
@@ -1058,7 +1379,17 @@
       background: var(--green-light);
       border-color: #a8d5a8;
     }
-    .benefit-icon { font-size: 20px; }
+    .benefit-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      color: var(--green-dark);
+    }
+    .benefit-icon svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
     .benefit-value {
       font-size: 20px;
       font-weight: 800;
@@ -1085,10 +1416,17 @@
       border-radius: var(--radius-card);
       padding: 14px 12px;
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+      min-height: var(--panel-card-height);
+      height: auto;
+      overflow: visible;
+    }
+    .seai-box-row {
+      display: flex;
       gap: 10px;
       align-items: flex-start;
-      height: var(--panel-card-height);
-      overflow: hidden;
     }
     .seai-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
     .seai-text {
@@ -1110,6 +1448,32 @@
     .seai-text span {
       font-size: 12px;
       line-height: 1.3;
+    }
+    .seai-eligibility-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      margin-top: 2px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--green-btn);
+      color: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .seai-eligibility-btn:hover {
+      background: var(--green-dark);
+    }
+    .seai-eligibility-btn:active {
+      transform: scale(0.98);
     }
 
     /* PANEL CTA */
@@ -1213,21 +1577,34 @@
 
   <div class="splash-stats">
     <div class="stat-card">
+      <button type="button" class="stat-info-btn" title="Count of external wall insulation projects we have completed across Dublin and surrounding areas since we began tracking on-site completions." aria-label="Methodology: Dublin homes insulated">?</button>
       <div class="stat-number">340+</div>
       <div class="stat-label">Dublin homes insulated</div>
     </div>
     <div class="stat-card">
+      <button type="button" class="stat-info-btn" title="Typical annual energy bill savings reported by homeowners after install, based on pre- and post-BER assessments and actual usage patterns. Your saving depends on home size, fuel type, and previous BER band." aria-label="Methodology: average annual saving">?</button>
       <div class="stat-number">€2,000</div>
       <div class="stat-label">avg. annual saving</div>
     </div>
     <div class="stat-card">
+      <button type="button" class="stat-info-btn" title="Mean post-works BER certificate rating across completed projects in our portfolio (not a guarantee for your property)." aria-label="Methodology: average BER achieved">?</button>
       <div class="stat-number">A3</div>
       <div class="stat-label">avg. BER rating achieved</div>
     </div>
   </div>
 
   <button class="btn-cta" id="btn-explore">Explore jobs near me →</button>
-  <span class="splash-skip" id="btn-skip">or browse all Dublin</span>
+  <div class="splash-trust">
+    <div class="splash-trust-row">
+      <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland">SEAI-registered contractor</span>
+      <span class="splash-rating" aria-label="Customer rating 4.76 out of 5">★ 4.76<span>Google reviews</span></span>
+    </div>
+    <div class="splash-quotes">
+      <blockquote class="splash-quote">“Warmer rooms within days — wish we’d done it sooner.”<cite>— Sarah, Dublin 15</cite></blockquote>
+      <blockquote class="splash-quote">“Clear on grants and the finish looks brilliant.”<cite>— Mark, Clontarf</cite></blockquote>
+    </div>
+  </div>
+  <button type="button" class="splash-skip" id="btn-skip">View all Dublin jobs on the map</button>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -1237,8 +1614,18 @@
   <div class="browse-shell">
     <header class="browse-header">
       <div class="browse-header-inner">
+        <div class="browse-inline-filters" id="browse-inline-filters" aria-label="Quick filters">
+          <span class="browse-inline-filters-label">Quick filters</span>
+          <button type="button" class="browse-chip" data-ber-chip="all" aria-pressed="true">Any BER</button>
+          <button type="button" class="browse-chip" data-ber-chip="A" aria-pressed="false">A-rated</button>
+          <button type="button" class="browse-chip" data-ber-chip="B" aria-pressed="false">B-rated</button>
+          <button type="button" class="browse-chip" data-ber-chip="C" aria-pressed="false">C-rated</button>
+          <button type="button" class="browse-chip" data-house-chip="all" aria-pressed="true">All types</button>
+          <button type="button" class="browse-chip" data-house-chip="semi-detached" aria-pressed="false">Semi-D</button>
+          <button type="button" class="browse-chip" data-house-chip="mid-terrace" aria-pressed="false">Terraced</button>
+        </div>
         <div class="browse-filters-wrap" id="browse-filters-wrap">
-          <button type="button" class="browse-filters" id="browse-filters-btn" aria-label="House type filters" aria-expanded="false" aria-haspopup="true" aria-controls="house-type-menu">⚙ <span class="browse-filters-text">Filters</span></button>
+          <button type="button" class="browse-filters" id="browse-filters-btn" aria-label="More house type filters" aria-expanded="false" aria-haspopup="true" aria-controls="house-type-menu">⚙ <span class="browse-filters-text">More</span></button>
           <div class="browse-filters-dropdown" id="house-type-menu" role="menu" aria-label="House type">
             <button type="button" role="menuitem" data-house-filter="all">All house types</button>
             <button type="button" role="menuitem" data-house-filter="detached">Detached</button>
@@ -1251,6 +1638,7 @@
           <span class="browse-faq-toggle-arrow" aria-hidden="true">▾</span>
         </button>
         <div class="browse-header-actions">
+          <span class="browse-header-rating" title="Google reviews">★ 4.76</span>
           <a href="#quote-name" class="browse-get-quote" aria-label="Get a free quote">
             <span class="browse-get-quote-line">Get a</span>
             <span class="browse-get-quote-free">FREE</span>
@@ -1258,7 +1646,7 @@
           </a>
         </div>
         <div class="browse-quote-wrap">
-          <form class="browse-quote-pill" id="quote-request-form" aria-label="Request a free quote">
+          <form class="browse-quote-pill js-quote-form" id="quote-request-form" aria-label="Request a free quote">
             <div class="quote-pill-field">
               <label class="quote-pill-label" for="quote-name">Name</label>
               <input class="quote-pill-input" type="text" id="quote-name" name="name" placeholder="Your name" autocomplete="name" required>
@@ -1277,6 +1665,25 @@
         </div>
       </div>
     </header>
+
+    <div class="quote-sticky-bar" id="quote-sticky-bar" aria-hidden="false">
+      <form class="browse-quote-pill js-quote-form" id="quote-request-form-sticky" aria-label="Request a free quote">
+        <div class="quote-pill-field">
+          <label class="quote-pill-label" for="quote-name-sticky">Name</label>
+          <input class="quote-pill-input" type="text" id="quote-name-sticky" name="name" placeholder="Your name" autocomplete="name" required>
+        </div>
+        <div class="quote-pill-field">
+          <label class="quote-pill-label" for="quote-email-sticky">Email</label>
+          <input class="quote-pill-input" type="email" id="quote-email-sticky" name="email" placeholder="your@email.com" autocomplete="email" inputmode="email" required>
+        </div>
+        <div class="quote-pill-field">
+          <label class="quote-pill-label" for="quote-phone-sticky">Phone</label>
+          <input class="quote-pill-input" type="tel" id="quote-phone-sticky" name="phone" placeholder="Your phone number" autocomplete="tel" inputmode="tel" required>
+        </div>
+        <button type="submit" class="search-submit" aria-label="Request free quote">✉</button>
+      </form>
+      <p class="quote-feedback" id="quote-feedback-sticky" hidden role="status" aria-live="polite"></p>
+    </div>
 
     <div class="browse-layout">
       <aside class="browse-list" aria-label="Completed jobs">
@@ -1506,16 +1913,10 @@ let map;
 let lastUserLat = null, lastUserLng = null;
 /** @type {null | 'detached' | 'semi-detached' | 'mid-terrace'} */
 let houseTypeFilter = null;
+/** @type {null | 'A' | 'B' | 'C'} */
+let berGradeFilter = null;
 let markerClusterLayer = null;
 const markers = {};
-
-const CARD_GRADS = [
-  'linear-gradient(145deg, #3d6b4a 0%, #6a9e78 55%, #a8c9a8 100%)',
-  'linear-gradient(145deg, #2d4a3e 0%, #4a7c6a 50%, #7daf9a 100%)',
-  'linear-gradient(145deg, #3a5c40 0%, #5c8f5c 55%, #9bc49b 100%)',
-  'linear-gradient(145deg, #355242 0%, #5a8060 50%, #8fb88a 100%)',
-  'linear-gradient(145deg, #2e4d38 0%, #4d7a55 55%, #86b890 100%)'
-];
 
 function scheduleMapResize() {
   if (!map) return;
@@ -1560,8 +1961,14 @@ function jobMatchesHouseTypeFilter(job) {
   return true;
 }
 
+function jobMatchesBerFilter(job) {
+  if (!berGradeFilter) return true;
+  const c = job.berAfter.trim().charAt(0).toUpperCase();
+  return c === berGradeFilter;
+}
+
 function getVisibleJobs() {
-  return jobs.filter(jobMatchesHouseTypeFilter);
+  return jobs.filter(j => jobMatchesHouseTypeFilter(j) && jobMatchesBerFilter(j));
 }
 
 function findNearestJobIdInList(lat, lng, list) {
@@ -1584,6 +1991,49 @@ function syncHouseFilterMenuActive() {
     const active = houseTypeFilter === null ? v === 'all' : houseTypeFilter === v;
     el.classList.toggle('is-active', active);
   });
+}
+
+function syncBerChips() {
+  document.querySelectorAll('[data-ber-chip]').forEach(btn => {
+    const v = btn.dataset.berChip;
+    const on = berGradeFilter === null ? v === 'all' : berGradeFilter === v;
+    btn.classList.toggle('is-active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+
+function syncHouseChips() {
+  document.querySelectorAll('[data-house-chip]').forEach(btn => {
+    const v = btn.dataset.houseChip;
+    const on = v === 'all'
+      ? houseTypeFilter === null
+      : houseTypeFilter === v;
+    btn.classList.toggle('is-active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+
+function initInlineQuickFilters() {
+  const row = document.getElementById('browse-inline-filters');
+  if (!row || row.dataset.bound) return;
+  row.dataset.bound = '1';
+  row.addEventListener('click', e => {
+    const ber = e.target.closest('[data-ber-chip]');
+    const house = e.target.closest('[data-house-chip]');
+    if (ber) {
+      berGradeFilter = ber.dataset.berChip === 'all' ? null : /** @type {'A'|'B'|'C'} */ (ber.dataset.berChip);
+      syncBerChips();
+      if (map) renderPins();
+    }
+    if (house) {
+      houseTypeFilter = house.dataset.houseChip === 'all' ? null : /** @type {'semi-detached'|'mid-terrace'} */ (house.dataset.houseChip);
+      syncHouseChips();
+      syncHouseFilterMenuActive();
+      if (map) renderPins();
+    }
+  });
+  syncBerChips();
+  syncHouseChips();
 }
 
 function initHouseTypeFilters() {
@@ -1616,6 +2066,7 @@ function initHouseTypeFilters() {
     const v = item.dataset.houseFilter;
     houseTypeFilter = v === 'all' ? null : v;
     syncHouseFilterMenuActive();
+    syncHouseChips();
     closeDropdown();
     if (map) renderPins();
   });
@@ -1654,11 +2105,19 @@ function renderJobCards(nearestId) {
   countEl.textContent = visible.length + (visible.length === 1 ? ' job' : ' jobs');
 
   root.innerHTML = visible.map(job => {
-    const grad = CARD_GRADS[job.id % CARD_GRADS.length];
     const near = job.id === nearestId;
     return `
     <article class="job-card${near ? ' job-card-nearest' : ''}" data-job-id="${job.id}" tabindex="0" role="button">
-      <div class="job-card-img" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 100%), ${grad}">
+      <div class="job-card-ba" aria-hidden="true">
+        <div class="job-card-ba-before">
+          <span class="job-card-ba-ico">🏚️</span>
+          <span class="job-card-ba-cap">Before</span>
+        </div>
+        <div class="job-card-ba-after">
+          <span class="job-card-ba-ico">🏠</span>
+          <span class="job-card-ba-cap">After</span>
+        </div>
+        <div class="job-card-ba-line"></div>
         ${near ? '<span class="job-card-badge" style="background:#fff5eb;border:1px solid #f0c090;color:#b35c00">Near you</span>' : '<span class="job-card-badge">Completed</span>'}
         <button type="button" class="job-card-heart" aria-label="Save job">♡</button>
         <div class="job-card-dots"><span></span><span></span><span></span><span></span></div>
@@ -1735,6 +2194,7 @@ function initMap() {
 
   initJobCardClicks();
   initHouseTypeFilters();
+  initInlineQuickFilters();
   initFaqToggle();
   renderPins();
 
@@ -1817,8 +2277,27 @@ function closePanel() {
 document.getElementById('panel-close-btn').addEventListener('click', closePanel);
 overlay.addEventListener('click', closePanel);
 
+function panelBenefitIcons() {
+  return {
+    euro: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12.5A3.5 3.5 0 0 0 16 4H4M4 14h12.5A3.5 3.5 0 0 1 16 20H4"/><path d="M6 4 4 12m0 0 2 8M18 4l2 8m0 0-2 8"/></svg></span>`,
+    chart: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12l4-4 4 10 4-6"/></svg></span>`,
+    temp: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/><path d="M12 9v1"/></svg></span>`,
+    leaf: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 6.49 4 8.5A7 7 0 1 1 11 20Z"/><path d="M2 22c.5-3 2.5-5 6-5"/></svg></span>`
+  };
+}
+
 function buildPanelHTML(job) {
+  const ic = panelBenefitIcons();
+  const baHandleSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7 5 12l4 5M15 7l4 5-4 5"/></svg>`;
   return `
+    <div class="panel-ber-hero" aria-label="BER improvement for this project">
+      <div class="panel-ber-hero-label">Energy rating upgrade</div>
+      <div class="panel-ber-hero-grades">
+        <div class="panel-ber-hero-grade old">${job.berBefore}</div>
+        <span class="panel-ber-hero-arrow" aria-hidden="true">→</span>
+        <div class="panel-ber-hero-grade new">${job.berAfter}</div>
+      </div>
+    </div>
     <div class="job-badge">✓ Completed ${job.completedDate}</div>
     <div class="job-header">
       <div class="job-info">
@@ -1826,57 +2305,52 @@ function buildPanelHTML(job) {
         <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
         <div class="benefits-grid">
           <div class="benefit-card highlight">
-            <div class="benefit-icon">💶</div>
+            ${ic.euro}
             <div class="benefit-value">€${job.annualSaving.toLocaleString()}</div>
             <div class="benefit-desc">Annual energy saving</div>
           </div>
           <div class="benefit-card">
-            <div class="benefit-icon">📈</div>
+            ${ic.chart}
             <div class="benefit-value">+€${job.valueIncrease.toLocaleString()}</div>
             <div class="benefit-desc">Increase in property value</div>
           </div>
           <div class="benefit-card">
-            <div class="benefit-icon">🌡️</div>
+            ${ic.temp}
             <div class="benefit-value">+${job.warmthGain}°C</div>
             <div class="benefit-desc">Warmer in winter</div>
           </div>
           <div class="benefit-card">
-            <div class="benefit-icon">🌱</div>
+            ${ic.leaf}
             <div class="benefit-value">-${job.co2Reduction}t</div>
             <div class="benefit-desc">CO₂ reduction per year</div>
           </div>
         </div>
-        <div class="ber-row">
-          <div class="benefit-card highlight ber-card">
-            <div class="ber-label">BER Rating</div>
-            <div class="ber-grade-pair">
-              <div class="ber-grade old">${job.berBefore}</div>
-              <span class="ber-arrow">→</span>
-              <div class="ber-grade">${job.berAfter}</div>
-            </div>
-          </div>
-        </div>
         <div class="panel-action-grid">
           <div class="seai-box">
-            <div class="seai-icon">⚡</div>
-            <div class="seai-text">
-              <strong>SEAI grants of up to €25,000</strong>
-              <span>Available for this type of work. Ask us how to claim yours.</span>
+            <div class="seai-box-row">
+              <div class="seai-icon" aria-hidden="true">⚡</div>
+              <div class="seai-text">
+                <strong>SEAI grants of up to €25,000</strong>
+                <span>Available for this type of work. Ask us how to claim yours.</span>
+              </div>
             </div>
+            <a class="seai-eligibility-btn" href="https://www.seai.ie/grants/" target="_blank" rel="noopener noreferrer">Check my eligibility →</a>
           </div>
         </div>
       </div>
       <div class="before-after-container" id="ba-container">
+        <span class="ba-rail-label before">Before</span>
+        <span class="ba-rail-label after">After</span>
         <div class="ba-before">
           <div class="ba-emoji">🏚️</div>
-          <div class="ba-label">BEFORE</div>
+          <div class="ba-label dupe-hide">BEFORE</div>
         </div>
         <div class="ba-after" id="ba-after">
           <div class="ba-emoji">🏠</div>
-          <div class="ba-label">AFTER</div>
+          <div class="ba-label dupe-hide">AFTER</div>
         </div>
         <div class="ba-divider" id="ba-divider"></div>
-        <div class="ba-handle" id="ba-handle">⇔</div>
+        <div class="ba-handle" id="ba-handle" title="Drag to compare">${baHandleSvg}</div>
       </div>
     </div>
   `;
@@ -1944,23 +2418,29 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 }, { passive: true });
 
 (function initQuoteRequestForm() {
-  const form = document.getElementById('quote-request-form');
-  const feedback = document.getElementById('quote-feedback');
-  const emailInput = document.getElementById('quote-email');
-  if (!form || !feedback) return;
+  function focusQuoteNameField() {
+    const useSticky = window.matchMedia('(max-width: 600px)').matches;
+    const el = document.getElementById(useSticky ? 'quote-name-sticky' : 'quote-name');
+    el?.focus({ preventScroll: true });
+  }
 
-  const nameInput = document.getElementById('quote-name');
-  document.querySelector('.browse-header-actions a[href="#quote-name"]')?.addEventListener('click', e => {
+  document.querySelector('.browse-get-quote')?.addEventListener('click', e => {
     e.preventDefault();
-    nameInput?.focus({ preventScroll: true });
+    focusQuoteNameField();
   });
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    feedback.hidden = false;
-    feedback.textContent = 'Thanks — we\'ll contact you shortly to arrange your free quote.';
-    form.reset();
-    setTimeout(() => { feedback.hidden = true; }, 8000);
+  document.querySelectorAll('.js-quote-form').forEach(form => {
+    const isSticky = form.id === 'quote-request-form-sticky';
+    const feedback = document.getElementById(isSticky ? 'quote-feedback-sticky' : 'quote-feedback');
+    if (!feedback) return;
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      feedback.hidden = false;
+      feedback.textContent = 'Thanks — we\'ll contact you shortly to arrange your free quote.';
+      form.reset();
+      setTimeout(() => { feedback.hidden = true; }, 8000);
+    });
   });
 })();
 
