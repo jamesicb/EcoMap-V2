@@ -186,7 +186,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 16px;
+      padding: 10px 20px;
       max-width: 1760px;
       margin: 0 auto;
     }
@@ -328,6 +328,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      transform: translateX(60px);
       padding: 9px 14px;
       background: var(--white);
       border: 1px solid #b0b0b0;
@@ -896,10 +897,22 @@
       line-height: 1.2;
       margin-bottom: 4px;
     }
+    .job-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 22px;
+      margin-bottom: 18px;
+    }
+    .job-info {
+      flex: 0 1 360px;
+      min-width: 0;
+      max-width: 360px;
+    }
     .job-subtitle {
       font-size: 13px;
       color: #888;
-      margin-bottom: 18px;
+      margin-bottom: 0;
     }
 
     /* BEFORE / AFTER SLIDER */
@@ -907,8 +920,12 @@
       position: relative;
       border-radius: var(--radius-card);
       overflow: hidden;
-      height: 160px;
-      margin-bottom: 18px;
+      width: 500px;
+      max-width: 500px;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      margin-bottom: 0;
+      flex-shrink: 0;
       cursor: ew-resize;
       user-select: none;
       touch-action: none;
@@ -977,29 +994,42 @@
 
     /* BER ROW */
     .ber-row {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 0;
+      width: 100%;
+    }
+    .ber-card {
+      justify-content: center;
+      min-height: 78px;
+    }
+    .ber-grade-pair {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: #f8f8f8;
-      border: 1px solid #eee;
-      border-radius: var(--radius-card);
-      padding: 12px 16px;
-      margin-bottom: 18px;
     }
     .ber-label {
-      font-size: 13px;
-      color: #666;
-      margin-right: auto;
+      font-size: 11px;
+      color: #777;
+      line-height: 1.3;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
-    .ber-pill {
-      font-size: 13px;
+    .ber-grade {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--green-dark);
+    }
+    .ber-grade.old {
+      color: #c0392b;
+    }
+    .ber-arrow {
+      font-size: 18px;
+      color: #9aa59a;
       font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 50px;
+      line-height: 1;
     }
-    .ber-pill.old { background: #fdecea; color: #c0392b; border: 1px solid #f5c6c0; }
-    .ber-pill.new { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green-border); }
-    .ber-arrow { font-size: 16px; color: #aaa; }
 
     /* BENEFIT CARDS GRID */
     .benefits-grid {
@@ -1007,6 +1037,10 @@
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-bottom: 18px;
+    }
+    .job-info .benefits-grid {
+      margin-top: 14px;
+      margin-bottom: 0;
     }
     .benefit-card {
       background: #f8faf8;
@@ -1016,6 +1050,9 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
+    }
+    .job-info {
+      --panel-card-height: 94px;
     }
     .benefit-card.highlight {
       background: var(--green-light);
@@ -1034,39 +1071,94 @@
       line-height: 1.3;
     }
 
+    .panel-action-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      width: 100%;
+    }
     /* SEAI BOX */
     .seai-box {
-      background: #fffbea;
-      border: 1px solid #f0e190;
+      background: #f8faf8;
+      border: 1px solid var(--green-border);
       border-radius: var(--radius-card);
-      padding: 14px 16px;
+      padding: 14px 12px;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: flex-start;
-      margin-bottom: 20px;
+      height: var(--panel-card-height);
+      overflow: hidden;
     }
     .seai-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
-    .seai-text { font-size: 13px; color: #5a4a00; line-height: 1.5; }
-    .seai-text strong { color: #3d3000; }
+    .seai-text {
+      font-size: 11px;
+      color: #777;
+      line-height: 1.3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+    }
+    .seai-text strong {
+      color: var(--green-dark);
+      font-size: 15px;
+      line-height: 1.2;
+      display: inline;
+      margin-bottom: 0;
+    }
+    .seai-text span {
+      font-size: 12px;
+      line-height: 1.3;
+    }
 
     /* PANEL CTA */
     .panel-cta {
       width: 100%;
-      padding: 16px;
-      background: var(--green-dark);
-      color: var(--white);
-      font-size: 16px;
+      height: var(--panel-card-height);
+      padding: 14px 12px;
+      background: #f8faf8;
+      color: var(--green-dark);
+      font-size: 15px;
       font-weight: 700;
-      border: none;
-      border-radius: 50px;
+      border: 1px solid var(--green-border);
+      border-radius: var(--radius-card);
       cursor: pointer;
-      letter-spacing: 0.1px;
+      letter-spacing: 0.05px;
+      line-height: 1.35;
+      text-align: left;
       transition: transform 0.15s, background 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
     .panel-cta:active {
       transform: scale(0.98);
-      background: #1e3e1e;
+      background: #eef4ee;
+    }
+
+    @media (max-width: 1100px) {
+      .job-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+      }
+      .job-info {
+        flex: 1 1 auto;
+        max-width: none;
+      }
+      .before-after-container {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+      .panel-action-grid {
+        width: 100%;
+      }
     }
 
     /* OVERLAY for closing panel by tapping outside */
@@ -1728,60 +1820,65 @@ overlay.addEventListener('click', closePanel);
 function buildPanelHTML(job) {
   return `
     <div class="job-badge">✓ Completed ${job.completedDate}</div>
-    <div class="job-address">${job.address}</div>
-    <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
-
-    <div class="before-after-container" id="ba-container">
-      <div class="ba-before">
-        <div class="ba-emoji">🏚️</div>
-        <div class="ba-label">BEFORE</div>
+    <div class="job-header">
+      <div class="job-info">
+        <div class="job-address">${job.address}</div>
+        <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
+        <div class="benefits-grid">
+          <div class="benefit-card highlight">
+            <div class="benefit-icon">💶</div>
+            <div class="benefit-value">€${job.annualSaving.toLocaleString()}</div>
+            <div class="benefit-desc">Annual energy saving</div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">📈</div>
+            <div class="benefit-value">+€${job.valueIncrease.toLocaleString()}</div>
+            <div class="benefit-desc">Increase in property value</div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🌡️</div>
+            <div class="benefit-value">+${job.warmthGain}°C</div>
+            <div class="benefit-desc">Warmer in winter</div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🌱</div>
+            <div class="benefit-value">-${job.co2Reduction}t</div>
+            <div class="benefit-desc">CO₂ reduction per year</div>
+          </div>
+        </div>
+        <div class="ber-row">
+          <div class="benefit-card highlight ber-card">
+            <div class="ber-label">BER Rating</div>
+            <div class="ber-grade-pair">
+              <div class="ber-grade old">${job.berBefore}</div>
+              <span class="ber-arrow">→</span>
+              <div class="ber-grade">${job.berAfter}</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-action-grid">
+          <div class="seai-box">
+            <div class="seai-icon">⚡</div>
+            <div class="seai-text">
+              <strong>SEAI grants of up to €25,000</strong>
+              <span>Available for this type of work. Ask us how to claim yours.</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="ba-after" id="ba-after">
-        <div class="ba-emoji">🏠</div>
-        <div class="ba-label">AFTER</div>
+      <div class="before-after-container" id="ba-container">
+        <div class="ba-before">
+          <div class="ba-emoji">🏚️</div>
+          <div class="ba-label">BEFORE</div>
+        </div>
+        <div class="ba-after" id="ba-after">
+          <div class="ba-emoji">🏠</div>
+          <div class="ba-label">AFTER</div>
+        </div>
+        <div class="ba-divider" id="ba-divider"></div>
+        <div class="ba-handle" id="ba-handle">⇔</div>
       </div>
-      <div class="ba-divider" id="ba-divider"></div>
-      <div class="ba-handle" id="ba-handle">⇔</div>
     </div>
-
-    <div class="ber-row">
-      <span class="ber-label">BER Rating:</span>
-      <span class="ber-pill old">${job.berBefore}</span>
-      <span class="ber-arrow">→</span>
-      <span class="ber-pill new">${job.berAfter}</span>
-    </div>
-
-    <div class="benefits-grid">
-      <div class="benefit-card highlight">
-        <div class="benefit-icon">💶</div>
-        <div class="benefit-value">€${job.annualSaving.toLocaleString()}</div>
-        <div class="benefit-desc">Annual energy saving</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">📈</div>
-        <div class="benefit-value">+€${job.valueIncrease.toLocaleString()}</div>
-        <div class="benefit-desc">Increase in property value</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🌡️</div>
-        <div class="benefit-value">+${job.warmthGain}°C</div>
-        <div class="benefit-desc">Warmer in winter</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🌱</div>
-        <div class="benefit-value">-${job.co2Reduction}t</div>
-        <div class="benefit-desc">CO₂ reduction per year</div>
-      </div>
-    </div>
-
-    <div class="seai-box">
-      <div class="seai-icon">⚡</div>
-      <div class="seai-text">
-        <strong>SEAI grants of up to €25,000</strong> available for this type of work. Ask us how to claim yours.
-      </div>
-    </div>
-
-    <button class="panel-cta" onclick="handleQuoteClick()">Get a free quote for your home</button>
   `;
 }
 
