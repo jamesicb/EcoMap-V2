@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Absolute Acrylics – Dublin Wall Insulation</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -189,23 +191,24 @@
       margin: 0 auto;
     }
 
-    .browse-brand {
-      width: 40px;
-      height: 40px;
-      background: var(--green-dark);
-      border-radius: 10px;
+    .browse-quote-wrap {
+      min-width: 0;
+      max-width: min(100%, 820px);
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .browse-header .browse-quote-wrap {
+      flex: 0 1 auto;
+      margin-left: 0;
+      align-items: flex-start;
     }
 
-    .browse-search-pill {
-      flex: 1;
+    .browse-quote-pill {
       display: flex;
       align-items: stretch;
-      min-width: 0;
+      width: fit-content;
+      max-width: 100%;
       background: var(--white);
       border: 1px solid #ddd;
       border-radius: 40px;
@@ -213,40 +216,63 @@
       overflow: hidden;
     }
 
-    .search-seg {
-      flex: 1;
-      min-width: 0;
+    .quote-pill-field {
+      flex: 0 0 auto;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
       padding: 8px 14px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      text-align: left;
-      font-family: inherit;
-      transition: background 0.15s;
-      -webkit-tap-highlight-color: transparent;
     }
-    .search-seg:hover { background: #f7f7f7; }
-    .search-seg + .search-seg {
+    /* ~typical name + email + phone, without stretching full header */
+    .browse-quote-pill .quote-pill-field:nth-child(1) {
+      width: clamp(9rem, 26vw, 12rem);
+    }
+    .browse-quote-pill .quote-pill-field:nth-child(2) {
+      width: clamp(11.5rem, 42vw, 17rem);
+    }
+    .browse-quote-pill .quote-pill-field:nth-child(3) {
+      width: clamp(9rem, 30vw, 11.25rem);
+    }
+    .quote-pill-field + .quote-pill-field {
       border-left: 1px solid #ebebeb;
     }
-    .search-seg-label {
+    .quote-pill-label {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: #222;
     }
-    .search-seg-value {
+    .quote-pill-input {
+      border: none;
+      background: transparent;
+      font-family: inherit;
       font-size: 13px;
+      color: #222;
+      width: 100%;
+      min-width: 0;
+      padding: 2px 0 0;
+      outline: none;
+    }
+    .quote-pill-input::placeholder {
       color: #717171;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
+    }
+    .quote-pill-input:focus::placeholder {
+      color: #b0b0b0;
+    }
+
+    .quote-feedback {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green-dark);
+      padding: 0 6px;
+      line-height: 1.35;
+    }
+    .quote-feedback[hidden] {
+      display: none !important;
     }
 
     .search-submit {
@@ -271,8 +297,12 @@
       background: var(--green-dark);
     }
 
-    .browse-filters {
+    .browse-filters-wrap {
+      position: relative;
       flex-shrink: 0;
+    }
+
+    .browse-filters {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -287,10 +317,86 @@
       font-family: inherit;
       -webkit-tap-highlight-color: transparent;
     }
+    .browse-filters:hover { background: #fafafa; }
     .browse-filters:active { background: #f5f5f5; }
+    .browse-filters-wrap.is-open .browse-filters {
+      border-color: var(--green-dark);
+      box-shadow: 0 0 0 1px var(--green-border);
+    }
+    .browse-faq-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 14px;
+      background: var(--white);
+      border: 1px solid #b0b0b0;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #222;
+      cursor: pointer;
+      font-family: inherit;
+      width: clamp(220px, 28vw, 360px);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .browse-faq-toggle-label {
+      display: inline-block;
+    }
+    .browse-faq-toggle-arrow {
+      margin-left: auto;
+      line-height: 1;
+      color: #557455;
+      font-size: 14px;
+    }
+    .browse-faq-toggle:hover { background: #fafafa; }
+    .browse-faq-toggle:active { background: #f5f5f5; }
+
+    .browse-filters-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 220px;
+      padding: 6px;
+      background: var(--white);
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+      z-index: 600;
+    }
+    .browse-filters-wrap.is-open .browse-filters-dropdown {
+      display: block;
+    }
+    .browse-filters-dropdown button {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: #222;
+      text-align: left;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .browse-filters-dropdown button:hover {
+      background: #f5f5f5;
+    }
+    .browse-filters-dropdown button.is-active {
+      background: var(--green-light);
+      color: var(--green-dark);
+    }
 
     .browse-header-actions {
-      display: none;
+      display: flex;
+      flex-shrink: 0;
+      margin-left: auto;
       align-items: center;
       gap: 10px;
       font-size: 13px;
@@ -300,19 +406,87 @@
     .browse-header-actions a {
       color: inherit;
       text-decoration: none;
-      padding: 8px 10px;
+      padding: 8px 12px;
       border-radius: 8px;
+      white-space: normal;
     }
     .browse-header-actions a:hover { background: #f7f7f7; }
 
-    @media (min-width: 900px) {
-      .browse-header-actions { display: flex; }
+    .browse-get-quote {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.08;
+      min-width: 5.75rem;
+      transform-origin: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      will-change: transform;
+    }
+    .browse-get-quote:hover {
+      animation: quote-pop-vibrate 320ms linear infinite;
+      transform: scale(1.5);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    .browse-get-quote:active {
+      transform: scale(1.2);
+    }
+    @keyframes quote-pop-vibrate {
+      0%   { transform: scale(1.5) translate(0, 0) rotate(0deg); }
+      20%  { transform: scale(1.5) translate(-0.35px, 0.35px) rotate(-0.2deg); }
+      40%  { transform: scale(1.5) translate(0.35px, -0.35px) rotate(0.2deg); }
+      60%  { transform: scale(1.5) translate(-0.35px, 0) rotate(-0.2deg); }
+      80%  { transform: scale(1.5) translate(0.35px, 0.35px) rotate(0.2deg); }
+      100% { transform: scale(1.5) translate(0, 0) rotate(0deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .browse-get-quote,
+      .browse-get-quote:hover {
+        animation: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+    }
+    .browse-get-quote-line {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .browse-get-quote-free {
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      color: var(--green-dark);
+      margin: 3px 0;
     }
 
     @media (max-width: 720px) {
-      .browse-search-pill .search-seg:nth-child(2) { display: none; }
       .browse-header-inner { padding: 8px 10px; gap: 8px; }
       .browse-filters .browse-filters-text { display: none; }
+      .quote-pill-field { padding: 6px 10px; }
+      .quote-pill-input { font-size: 12px; }
+      .browse-quote-pill .quote-pill-field:nth-child(1) {
+        width: clamp(7.25rem, 34vw, 11rem);
+      }
+      .browse-quote-pill .quote-pill-field:nth-child(2) {
+        width: clamp(8.75rem, 40vw, 16rem);
+      }
+      .browse-quote-pill .quote-pill-field:nth-child(3) {
+        width: clamp(6.75rem, 32vw, 11.25rem);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .browse-header-inner {
+        flex-wrap: wrap;
+        row-gap: 10px;
+      }
+      .browse-quote-wrap {
+        flex: 1 1 100%;
+      }
     }
 
     .browse-layout {
@@ -360,16 +534,75 @@
       gap: 20px;
     }
 
-    @media (min-width: 520px) and (max-width: 899px) {
-      .job-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .browse-list-content {
+      display: block;
     }
 
-    @media (min-width: 1100px) {
-      .job-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .browse-faq {
+      background: #f8faf8;
+      border: 1px solid var(--green-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+    .browse-faq-collapsible {
+      display: none;
+      width: 100%;
+    }
+    .browse-faq-collapsible.is-open {
+      display: block;
+    }
+    .browse-faq h2 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1f1f1f;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .faq-item {
+      border: 1px solid #dde8dd;
+      border-radius: 10px;
+      background: var(--white);
+      overflow: hidden;
+    }
+    .faq-item + .faq-item {
+      margin-top: 8px;
+    }
+    .faq-question {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2b2b2b;
+      line-height: 1.35;
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 38px 12px 11px;
+      position: relative;
+    }
+    .faq-question::-webkit-details-marker {
+      display: none;
+    }
+    .faq-question::after {
+      content: "▾";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #557455;
+      transition: transform 0.15s ease;
+    }
+    .faq-item[open] .faq-question::after {
+      transform: translateY(-50%) rotate(180deg);
+    }
+    .faq-answer {
+      font-size: 12px;
+      color: #5f5f5f;
+      line-height: 1.45;
+      padding: 0 11px 12px;
+    }
+    .job-cards-grid {
+      margin-top: 0;
     }
 
     .job-card {
@@ -482,14 +715,21 @@
       color: #717171;
     }
 
+    .browse-map-column {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: #f7f7f7;
+    }
     .browse-map-wrap {
       position: relative;
+      flex: 1;
       min-height: 0;
       background: #e8e8e8;
     }
 
     @media (max-width: 899px) {
-      .browse-map-wrap { order: 1; }
+      .browse-map-column { order: 1; }
     }
 
     /* MAP CONTAINER */
@@ -500,34 +740,16 @@
       height: 100%;
     }
 
-    /* Price chips (Airbnb-style map labels) */
-    .leaflet-price-marker {
-      background: transparent !important;
-      border: none !important;
+    .job-marker-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      background: var(--green-dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     }
-    .map-price-chip {
-      position: relative;
-      padding: 7px 11px;
-      background: var(--white);
-      border: 1px solid #ddd;
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #222;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-      white-space: nowrap;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
-    }
-    .map-price-chip:hover {
-      transform: scale(1.06);
-      z-index: 1000 !important;
-      box-shadow: var(--shadow-md);
-    }
-    .map-price-chip.nearest {
-      border-color: var(--orange);
-      background: #fffaf5;
-      box-shadow: 0 2px 14px rgba(230,126,34,0.35);
+    .job-marker-dot.nearest {
+      background: var(--orange);
     }
 
     /* MAP LEGEND */
@@ -573,6 +795,21 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .cluster-marker.cluster-large {
+      width: 52px !important;
+      height: 52px !important;
+      font-size: 15px;
+    }
+    .cluster-marker.cluster-medium {
+      width: 44px !important;
+      height: 44px !important;
+      font-size: 14px;
+    }
+    .cluster-marker.cluster-small {
+      width: 38px !important;
+      height: 38px !important;
+      font-size: 13px;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -908,39 +1145,105 @@
   <div class="browse-shell">
     <header class="browse-header">
       <div class="browse-header-inner">
-        <div class="browse-brand" aria-hidden="true">🏠</div>
-        <div class="browse-search-pill" role="search">
-          <button type="button" class="search-seg">
-            <span class="search-seg-label">Where</span>
-            <span class="search-seg-value" id="search-where">Jobs in map area</span>
-          </button>
-          <button type="button" class="search-seg">
-            <span class="search-seg-label">When</span>
-            <span class="search-seg-value">Any completed date</span>
-          </button>
-          <button type="button" class="search-seg">
-            <span class="search-seg-label">Type</span>
-            <span class="search-seg-value">All home types</span>
-          </button>
-          <button type="button" class="search-submit" aria-label="Search">🔍</button>
+        <div class="browse-filters-wrap" id="browse-filters-wrap">
+          <button type="button" class="browse-filters" id="browse-filters-btn" aria-label="House type filters" aria-expanded="false" aria-haspopup="true" aria-controls="house-type-menu">⚙ <span class="browse-filters-text">Filters</span></button>
+          <div class="browse-filters-dropdown" id="house-type-menu" role="menu" aria-label="House type">
+            <button type="button" role="menuitem" data-house-filter="all">All house types</button>
+            <button type="button" role="menuitem" data-house-filter="detached">Detached</button>
+            <button type="button" role="menuitem" data-house-filter="semi-detached">Semi-detached</button>
+            <button type="button" role="menuitem" data-house-filter="mid-terrace">Mid terrace</button>
+          </div>
         </div>
-        <button type="button" class="browse-filters" aria-label="Filters">⚙ <span class="browse-filters-text">Filters</span></button>
+        <button type="button" class="browse-faq-toggle" id="browse-faq-toggle" aria-expanded="false" aria-controls="browse-faq-panel">
+          <span class="browse-faq-toggle-label">FAQs</span>
+          <span class="browse-faq-toggle-arrow" aria-hidden="true">▾</span>
+        </button>
         <div class="browse-header-actions">
-          <a href="#">Get a quote</a>
+          <a href="#quote-name" class="browse-get-quote" aria-label="Get a free quote">
+            <span class="browse-get-quote-line">Get a</span>
+            <span class="browse-get-quote-free">FREE</span>
+            <span class="browse-get-quote-line">Quote</span>
+          </a>
+        </div>
+        <div class="browse-quote-wrap">
+          <form class="browse-quote-pill" id="quote-request-form" aria-label="Request a free quote">
+            <div class="quote-pill-field">
+              <label class="quote-pill-label" for="quote-name">Name</label>
+              <input class="quote-pill-input" type="text" id="quote-name" name="name" placeholder="Your name" autocomplete="name" required>
+            </div>
+            <div class="quote-pill-field">
+              <label class="quote-pill-label" for="quote-email">Email</label>
+              <input class="quote-pill-input" type="email" id="quote-email" name="email" placeholder="your@email.com" autocomplete="email" inputmode="email" required>
+            </div>
+            <div class="quote-pill-field">
+              <label class="quote-pill-label" for="quote-phone">Phone</label>
+              <input class="quote-pill-input" type="tel" id="quote-phone" name="phone" placeholder="Your phone number" autocomplete="tel" inputmode="tel" required>
+            </div>
+            <button type="submit" class="search-submit" aria-label="Request free quote">✉</button>
+          </form>
+          <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
         </div>
       </div>
     </header>
 
     <div class="browse-layout">
       <aside class="browse-list" aria-label="Completed jobs">
-        <h1 class="browse-count" id="browse-count">— jobs</h1>
-        <div class="job-cards-grid" id="job-cards-root"></div>
+        <div class="browse-list-content">
+          <div class="browse-faq-collapsible" id="browse-faq-panel">
+            <section class="browse-faq" aria-label="Frequently asked questions">
+              <details class="faq-item">
+                <summary class="faq-question">How much can I save each year?</summary>
+                <p class="faq-answer">Most homes save around <strong>€1,800</strong> to <strong>€3,100</strong> per year, depending on size and BER improvement.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">Are grants available?</summary>
+                <p class="faq-answer">Yes. SEAI grants are available for external insulation, and we help guide you through the claim process.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">How long does installation take?</summary>
+                <p class="faq-answer">Typical projects are completed in around <strong>7</strong> to <strong>12</strong> working days, depending on property size and weather.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">Will it change the look of my home?</summary>
+                <p class="faq-answer">Yes, in a good way. Finishes and colours are chosen to suit your home while improving insulation performance.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">Do I need planning permission?</summary>
+                <p class="faq-answer">In many cases no, but this depends on your property type and location. We can advise you before work starts.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">Can the work be done in winter?</summary>
+                <p class="faq-answer">Yes, weather permitting. We schedule around conditions to ensure proper application and finish quality.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">How disruptive is the process?</summary>
+                <p class="faq-answer">Most of the work is external, so disruption inside your home is minimal throughout the project.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">What warranty do you provide?</summary>
+                <p class="faq-answer">We provide a workmanship warranty, plus product warranties in line with system manufacturer terms.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">Will insulation help with damp and mould?</summary>
+                <p class="faq-answer">Improved insulation can reduce cold spots and condensation risk, which often helps prevent mould growth.</p>
+              </details>
+              <details class="faq-item">
+                <summary class="faq-question">How do I get an exact quote?</summary>
+                <p class="faq-answer">Send your details in the quote form and we will arrange a site assessment to provide a tailored fixed quote.</p>
+              </details>
+            </section>
+          </div>
+          <h1 class="browse-count" id="browse-count">— jobs</h1>
+          <div class="job-cards-grid" id="job-cards-root"></div>
+        </div>
       </aside>
-      <div class="browse-map-wrap">
-        <div id="map"></div>
-        <div class="map-legend">
-          <div class="legend-item"><div class="legend-dot green"></div>Completed job</div>
-          <div class="legend-item"><div class="legend-dot orange"></div>Nearest to you</div>
+      <div class="browse-map-column">
+        <div class="browse-map-wrap">
+          <div id="map"></div>
+          <div class="map-legend">
+            <div class="legend-item"><div class="legend-dot green"></div>Completed job</div>
+            <div class="legend-item"><div class="legend-dot orange"></div>Nearest to you</div>
+          </div>
         </div>
       </div>
     </div>
@@ -964,6 +1267,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
 // ─────────────────────────────────────────────
 // DATA
@@ -1106,7 +1410,11 @@ document.getElementById('btn-skip').addEventListener('click', showMapScreen);
 // ─────────────────────────────────────────────
 // MAP INIT
 // ─────────────────────────────────────────────
-let map, nearestJobId = null;
+let map;
+let lastUserLat = null, lastUserLng = null;
+/** @type {null | 'detached' | 'semi-detached' | 'mid-terrace'} */
+let houseTypeFilter = null;
+let markerClusterLayer = null;
 const markers = {};
 
 const CARD_GRADS = [
@@ -1128,14 +1436,12 @@ window.addEventListener('resize', () => {
   if (map) map.invalidateSize(true);
 });
 
-function formatSavingShort(n) {
-  if (n >= 1000) {
-    const k = n / 1000;
-    const rounded = Math.round(k * 10) / 10;
-    const s = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
-    return '€' + s + 'k';
-  }
-  return '€' + n;
+function seaiGrantByType(type) {
+  const t = type.toLowerCase();
+  if (t.includes('mid terrace') || t.includes('mid-terrace')) return 3500;
+  if (t.includes('semi-detached')) return 6000;
+  if (t.includes('detached')) return 8000;
+  return 0;
 }
 
 function jobRating(job) {
@@ -1147,14 +1453,115 @@ function jobCardPhotoLine(job) {
   return parts.length > 1 ? parts.slice(0, -1).join(',').trim() : job.address;
 }
 
+function jobMatchesHouseTypeFilter(job) {
+  if (!houseTypeFilter) return true;
+  const t = job.type.toLowerCase();
+  if (houseTypeFilter === 'detached') {
+    return t.includes('detached') && !t.includes('semi-detached');
+  }
+  if (houseTypeFilter === 'semi-detached') {
+    return t.includes('semi-detached');
+  }
+  if (houseTypeFilter === 'mid-terrace') {
+    return t.includes('terraced') || t.includes('end-of-terrace');
+  }
+  return true;
+}
+
+function getVisibleJobs() {
+  return jobs.filter(jobMatchesHouseTypeFilter);
+}
+
+function findNearestJobIdInList(lat, lng, list) {
+  let minDist = Infinity, nearest = null;
+  list.forEach(j => {
+    const d = Math.hypot(j.lat - lat, j.lng - lng);
+    if (d < minDist) { minDist = d; nearest = j.id; }
+  });
+  return nearest;
+}
+
+function resolveNearestForDisplay() {
+  if (lastUserLat == null || lastUserLng == null) return null;
+  return findNearestJobIdInList(lastUserLat, lastUserLng, getVisibleJobs());
+}
+
+function syncHouseFilterMenuActive() {
+  document.querySelectorAll('#house-type-menu [data-house-filter]').forEach(el => {
+    const v = el.dataset.houseFilter;
+    const active = houseTypeFilter === null ? v === 'all' : houseTypeFilter === v;
+    el.classList.toggle('is-active', active);
+  });
+}
+
+function initHouseTypeFilters() {
+  const wrap = document.getElementById('browse-filters-wrap');
+  const btn = document.getElementById('browse-filters-btn');
+  const menu = document.getElementById('house-type-menu');
+  if (!wrap || !btn || !menu || wrap.dataset.bound) return;
+  wrap.dataset.bound = '1';
+
+  function closeDropdown() {
+    wrap.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function openDropdown() {
+    wrap.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (wrap.classList.contains('is-open')) closeDropdown();
+    else openDropdown();
+  });
+
+  menu.addEventListener('click', e => {
+    const item = e.target.closest('[data-house-filter]');
+    if (!item) return;
+    e.stopPropagation();
+    const v = item.dataset.houseFilter;
+    houseTypeFilter = v === 'all' ? null : v;
+    syncHouseFilterMenuActive();
+    closeDropdown();
+    if (map) renderPins();
+  });
+
+  document.addEventListener('click', () => {
+    if (wrap.classList.contains('is-open')) closeDropdown();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && wrap.classList.contains('is-open')) closeDropdown();
+  });
+
+  syncHouseFilterMenuActive();
+}
+
+function initFaqToggle() {
+  const btn = document.getElementById('browse-faq-toggle');
+  const panel = document.getElementById('browse-faq-panel');
+  const arrow = btn?.querySelector('.browse-faq-toggle-arrow');
+  if (!btn || !panel || btn.dataset.bound) return;
+  btn.dataset.bound = '1';
+
+  btn.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (arrow) arrow.textContent = isOpen ? '▴' : '▾';
+  });
+}
+
 function renderJobCards(nearestId) {
   const root = document.getElementById('job-cards-root');
   const countEl = document.getElementById('browse-count');
   if (!root || !countEl) return;
 
-  countEl.textContent = jobs.length + (jobs.length === 1 ? ' job' : ' jobs');
+  const visible = getVisibleJobs();
+  countEl.textContent = visible.length + (visible.length === 1 ? ' job' : ' jobs');
 
-  root.innerHTML = jobs.map(job => {
+  root.innerHTML = visible.map(job => {
     const grad = CARD_GRADS[job.id % CARD_GRADS.length];
     const near = job.id === nearestId;
     return `
@@ -1216,16 +1623,35 @@ function initMap() {
 
   L.control.zoom({ position: 'topright' }).addTo(map);
 
+  markerClusterLayer = L.markerClusterGroup({
+    disableClusteringAtZoom: 15,
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    iconCreateFunction(cluster) {
+      const count = cluster.getChildCount();
+      const sizeClass = count >= 10 ? 'cluster-large' : (count >= 5 ? 'cluster-medium' : 'cluster-small');
+      const size = count >= 10 ? 52 : (count >= 5 ? 44 : 38);
+      return L.divIcon({
+        html: `<div class="cluster-marker ${sizeClass}">${count}</div>`,
+        className: 'leaflet-marker-cluster',
+        iconSize: L.point(size, size)
+      });
+    }
+  });
+  map.addLayer(markerClusterLayer);
+
   initJobCardClicks();
-  renderPins(null);
+  initHouseTypeFilters();
+  initFaqToggle();
+  renderPins();
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       pos => {
-        const userLat = pos.coords.latitude;
-        const userLng = pos.coords.longitude;
-        nearestJobId = findNearest(userLat, userLng);
-        renderPins(nearestJobId);
+        lastUserLat = pos.coords.latitude;
+        lastUserLng = pos.coords.longitude;
+        renderPins();
       },
       () => { /* permission denied — no nearest highlight */ }
     );
@@ -1234,43 +1660,45 @@ function initMap() {
   scheduleMapResize();
 }
 
-function findNearest(lat, lng) {
-  let minDist = Infinity, nearest = null;
-  jobs.forEach(j => {
-    const d = Math.hypot(j.lat - lat, j.lng - lng);
-    if (d < minDist) { minDist = d; nearest = j.id; }
-  });
-  return nearest;
-}
+function renderPins() {
+  if (!map || !markerClusterLayer) return;
+  const nearestId = resolveNearestForDisplay();
 
-function renderPins(nearestId) {
-  Object.values(markers).forEach(m => map.removeLayer(m));
+  markerClusterLayer.clearLayers();
+  Object.keys(markers).forEach(k => { delete markers[k]; });
 
-  jobs.forEach(job => {
+  getVisibleJobs().forEach(job => {
     const isNearest = job.id === nearestId;
-    const label = formatSavingShort(job.annualSaving);
-    const iconHtml = `<div class="map-price-chip${isNearest ? ' nearest' : ''}">${label}</div>`;
+    const grant = seaiGrantByType(job.type);
     const icon = L.divIcon({
-      html: iconHtml,
-      className: 'leaflet-price-marker',
-      iconSize: [72, 40],
-      iconAnchor: [36, 40],
-      popupAnchor: [0, -40]
+      html: `<div class="job-marker-dot${isNearest ? ' nearest' : ''}"></div>`,
+      className: '',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+      popupAnchor: [0, -10]
     });
 
-    const marker = L.marker([job.lat, job.lng], { icon })
-      .addTo(map)
-      .on('click', () => openPanel(job));
+    const popupHtml = `
+      <div style="min-width:230px;line-height:1.35;">
+        <strong>${job.address}</strong><br>
+        ${job.type} · Completed ${job.completedDate}<br>
+        BER ${job.berBefore} → ${job.berAfter}<br>
+        Annual saving: €${job.annualSaving.toLocaleString()}<br>
+        SEAI grant: €${grant.toLocaleString()}
+      </div>
+    `;
+
+    const marker = L.marker([job.lat, job.lng], { icon });
+    marker.bindPopup(popupHtml, { autoClose: true, closeButton: true });
+    marker.on('mouseover', () => marker.openPopup());
+    marker.on('mouseout', () => marker.closePopup());
+    marker.on('click', () => openPanel(job));
+    markerClusterLayer.addLayer(marker);
 
     markers[job.id] = marker;
   });
 
   renderJobCards(nearestId);
-
-  const whereEl = document.getElementById('search-where');
-  if (whereEl) {
-    whereEl.textContent = nearestId != null ? 'Jobs near you' : 'Jobs in map area';
-  }
 }
 
 // ─────────────────────────────────────────────
@@ -1417,6 +1845,43 @@ function initBASlider() {
 document.getElementById('job-panel').addEventListener('touchmove', e => {
   e.stopPropagation();
 }, { passive: true });
+
+(function initQuoteRequestForm() {
+  const form = document.getElementById('quote-request-form');
+  const feedback = document.getElementById('quote-feedback');
+  const emailInput = document.getElementById('quote-email');
+  if (!form || !feedback) return;
+
+  const nameInput = document.getElementById('quote-name');
+  document.querySelector('.browse-header-actions a[href="#quote-name"]')?.addEventListener('click', e => {
+    e.preventDefault();
+    nameInput?.focus({ preventScroll: true });
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    feedback.hidden = false;
+    feedback.textContent = 'Thanks — we\'ll contact you shortly to arrange your free quote.';
+    form.reset();
+    setTimeout(() => { feedback.hidden = true; }, 8000);
+  });
+})();
+
+(function initFaqAccordion() {
+  const faqSection = document.querySelector('.browse-faq');
+  if (!faqSection) return;
+  const items = Array.from(faqSection.querySelectorAll('.faq-item'));
+  if (!items.length) return;
+
+  items.forEach(item => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      items.forEach(other => {
+        if (other !== item) other.open = false;
+      });
+    });
+  });
+})();
 
 </script>
 </body>
