@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -98,15 +99,12 @@
     }
 
     .splash-stats {
-      display: flex;
-      gap: 10px;
       width: 100%;
       max-width: 360px;
       margin-bottom: 36px;
     }
 
     .stat-card {
-      flex: 1;
       position: relative;
       background: rgba(0,0,0,0.22);
       border: 1px solid rgba(255,255,255,0.1);
@@ -216,45 +214,6 @@
       font-size: 12px;
       margin-left: 4px;
     }
-    .splash-quotes {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: 100%;
-    }
-    .splash-quote {
-      margin: 0;
-      padding: 10px 12px;
-      background: rgba(0,0,0,0.18);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 12px;
-      line-height: 1.45;
-      color: rgba(255,255,255,0.78);
-      font-style: italic;
-    }
-    .splash-quote cite {
-      display: block;
-      margin-top: 6px;
-      font-size: 11px;
-      font-style: normal;
-      font-weight: 600;
-      color: rgba(255,255,255,0.5);
-    }
-    .splash-skip {
-      margin-top: 6px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.45);
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      -webkit-tap-highlight-color: transparent;
-      background: none;
-      border: none;
-      font: inherit;
-      padding: 4px 8px;
-    }
-
     /* ══════════════════════════════════════════════════════════════
        SCREEN 2 – BROWSE (Airbnb-style split: list + map)
     ══════════════════════════════════════════════════════════════ */
@@ -280,51 +239,40 @@
       box-shadow: 0 1px 0 rgba(0,0,0,0.04);
     }
 
-    .browse-header-inner {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 20px;
-      max-width: 1760px;
-      margin: 0 auto;
-      flex-wrap: wrap;
+    .browse-header-cell--filters {
+      min-width: 0;
+      padding: 0 20px;
     }
 
-    .browse-inline-filters {
+    .browse-header-map-pad {
+      min-width: 0;
+      padding: 0 20px 0 0;
+      pointer-events: none;
+    }
+
+    .browse-header-slot--quote {
+      min-width: 0;
+    }
+
+    .browse-header-slot--faq {
+      min-width: 0;
+    }
+
+    .browse-faq-wrap {
+      position: relative;
+      width: min(100%, 420px);
+      max-width: 100%;
+    }
+
+    .browse-header-slot--faq .browse-faq-toggle {
+      width: 100%;
+    }
+
+    .browse-filters-toolbar {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
-      flex: 1 1 100%;
-      order: 10;
-      padding-top: 2px;
-    }
-    .browse-inline-filters-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #717171;
-      margin-right: 4px;
-    }
-    .browse-chip {
-      padding: 6px 11px;
-      border-radius: 999px;
-      border: 1px solid #d0d0d0;
-      background: #fafafa;
-      font: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      color: #333;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .browse-chip:hover { background: #f0f0f0; }
-    .browse-chip.is-active {
-      background: var(--green-light);
-      border-color: var(--green-border);
-      color: var(--green-dark);
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .quote-sticky-bar {
@@ -357,21 +305,20 @@
 
     .browse-quote-wrap {
       min-width: 0;
-      max-width: min(100%, 820px);
+      width: 100%;
+      max-width: none;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
     .browse-header .browse-quote-wrap {
-      flex: 0 1 auto;
-      margin-left: 0;
-      align-items: flex-start;
+      align-items: stretch;
     }
 
     .browse-quote-pill {
       display: flex;
       align-items: stretch;
-      width: fit-content;
+      width: 100%;
       max-width: 100%;
       background: var(--white);
       border: 1px solid #ddd;
@@ -381,7 +328,8 @@
     }
 
     .quote-pill-field {
-      flex: 0 0 auto;
+      flex: 1 1 0;
+      min-width: 0;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
@@ -389,15 +337,10 @@
       justify-content: center;
       padding: 8px 14px;
     }
-    /* ~typical name + email + phone, without stretching full header */
-    .browse-quote-pill .quote-pill-field:nth-child(1) {
-      width: clamp(9rem, 26vw, 12rem);
-    }
-    .browse-quote-pill .quote-pill-field:nth-child(2) {
-      width: clamp(11.5rem, 42vw, 17rem);
-    }
+    .browse-quote-pill .quote-pill-field:nth-child(1),
+    .browse-quote-pill .quote-pill-field:nth-child(2),
     .browse-quote-pill .quote-pill-field:nth-child(3) {
-      width: clamp(9rem, 30vw, 11.25rem);
+      width: auto;
     }
     .quote-pill-field + .quote-pill-field {
       border-left: 1px solid #ebebeb;
@@ -492,8 +435,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      transform: translateX(60px);
-      padding: 9px 14px;
+      padding: 18px 14px;
+      min-height: 76px;
       background: var(--white);
       border: 1px solid #b0b0b0;
       border-radius: 10px;
@@ -502,7 +445,6 @@
       color: #222;
       cursor: pointer;
       font-family: inherit;
-      width: clamp(220px, 28vw, 360px);
       -webkit-tap-highlight-color: transparent;
     }
     .browse-faq-toggle-label {
@@ -558,107 +500,31 @@
       color: var(--green-dark);
     }
 
-    .browse-header-actions {
-      display: flex;
-      flex-shrink: 0;
-      margin-left: auto;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #222;
-    }
-    .browse-header-rating {
-      font-size: 13px;
-      font-weight: 800;
-      color: #c9a227;
-      letter-spacing: 0.02em;
-      padding: 8px 4px 8px 8px;
-      white-space: nowrap;
-    }
-    .browse-header-actions a {
-      color: inherit;
-      text-decoration: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      white-space: normal;
-    }
-    .browse-header-actions a:hover { background: #f7f7f7; }
-
-    .browse-get-quote {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      line-height: 1.08;
-      min-width: 5.75rem;
-      transform-origin: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      will-change: transform;
-    }
-    .browse-get-quote:hover {
-      animation: quote-pop-vibrate 320ms linear infinite;
-      transform: scale(1.5);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    }
-    .browse-get-quote:active {
-      transform: scale(1.2);
-    }
-    @keyframes quote-pop-vibrate {
-      0%   { transform: scale(1.5) translate(0, 0) rotate(0deg); }
-      20%  { transform: scale(1.5) translate(-0.35px, 0.35px) rotate(-0.2deg); }
-      40%  { transform: scale(1.5) translate(0.35px, -0.35px) rotate(0.2deg); }
-      60%  { transform: scale(1.5) translate(-0.35px, 0) rotate(-0.2deg); }
-      80%  { transform: scale(1.5) translate(0.35px, 0.35px) rotate(0.2deg); }
-      100% { transform: scale(1.5) translate(0, 0) rotate(0deg); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .browse-get-quote,
-      .browse-get-quote:hover {
-        animation: none !important;
-        transform: none !important;
-        box-shadow: none !important;
-      }
-    }
-    .browse-get-quote-line {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-    .browse-get-quote-free {
-      display: block;
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.07em;
-      color: var(--green-dark);
-      margin: 3px 0;
-    }
-
     @media (max-width: 720px) {
-      .browse-header-inner { padding: 8px 10px; gap: 8px; }
       .browse-filters .browse-filters-text { display: none; }
       .quote-pill-field { padding: 6px 10px; }
       .quote-pill-input { font-size: 12px; }
-      .browse-quote-pill .quote-pill-field:nth-child(1) {
-        width: clamp(7.25rem, 34vw, 11rem);
-      }
-      .browse-quote-pill .quote-pill-field:nth-child(2) {
-        width: clamp(8.75rem, 40vw, 16rem);
-      }
-      .browse-quote-pill .quote-pill-field:nth-child(3) {
-        width: clamp(6.75rem, 32vw, 11.25rem);
-      }
     }
 
     @media (max-width: 600px) {
-      .browse-header-inner {
-        flex-wrap: wrap;
-        row-gap: 10px;
-      }
-      .browse-header .browse-quote-wrap {
+      .browse-header .browse-header-slot--quote {
         display: none;
+      }
+      .browse-header-quote-faq-row {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .browse-header-slot--faq {
+        padding: 0 20px;
+        justify-content: stretch;
+      }
+      .browse-header-slot--faq .browse-faq-wrap {
+        width: 100%;
+        max-width: none;
+      }
+      .browse-header-slot--faq .browse-faq-toggle {
+        width: 100%;
+        max-width: none;
       }
       .quote-sticky-bar {
         display: block;
@@ -666,54 +532,13 @@
       .browse-list {
         padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
       }
-      .browse-inline-filters {
-        order: 0;
-        flex: 1 1 100%;
-      }
-    }
-
-    @media (min-width: 601px) {
-      .browse-inline-filters {
-        flex: 1 1 280px;
-        order: 0;
-        flex-wrap: wrap;
-        padding-top: 0;
-        max-width: 100%;
-      }
-      .browse-inline-filters-label {
-        display: none;
-      }
-    }
-
-    .browse-layout {
-      flex: 1;
-      min-height: 0;
-      display: grid;
-      grid-template-columns: minmax(300px, 1fr) minmax(0, 1.15fr);
-      grid-template-rows: 1fr;
-    }
-
-    @media (max-width: 899px) {
-      .browse-layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: minmax(220px, 38vh) 1fr;
-      }
     }
 
     .browse-list {
       background: var(--white);
-      border-right: 1px solid #ebebeb;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       padding: 20px 20px 28px;
-    }
-
-    @media (max-width: 899px) {
-      .browse-list {
-        border-right: none;
-        border-top: 1px solid #ebebeb;
-        order: 2;
-      }
     }
 
     .browse-count {
@@ -744,10 +569,27 @@
     }
     .browse-faq-collapsible {
       display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
       width: 100%;
+      min-width: 0;
+      max-height: min(70vh, 520px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      z-index: 600;
+      box-sizing: border-box;
+      background: var(--white);
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+      padding: 6px;
     }
     .browse-faq-collapsible.is-open {
       display: block;
+    }
+    .browse-faq-collapsible .browse-faq {
+      margin-bottom: 0;
     }
     .browse-faq h2 {
       font-size: 17px;
@@ -977,10 +819,6 @@
       flex: 1;
       min-height: 0;
       background: #e8e8e8;
-    }
-
-    @media (max-width: 899px) {
-      .browse-map-column { order: 1; }
     }
 
     /* MAP CONTAINER */
@@ -1575,18 +1413,18 @@
   <div class="splash-name">Absolute Acrylics</div>
   <p class="splash-tagline">Dublin's leading external wall insulation specialists. See how we've transformed homes near you.</p>
 
-  <div class="splash-stats">
-    <div class="stat-card">
+  <div class="splash-stats flex flex-col gap-2.5 sm:flex-row sm:gap-2.5">
+    <div class="stat-card w-full min-w-0 sm:flex-1">
       <button type="button" class="stat-info-btn" title="Count of external wall insulation projects we have completed across Dublin and surrounding areas since we began tracking on-site completions." aria-label="Methodology: Dublin homes insulated">?</button>
       <div class="stat-number">340+</div>
       <div class="stat-label">Dublin homes insulated</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card w-full min-w-0 sm:flex-1">
       <button type="button" class="stat-info-btn" title="Typical annual energy bill savings reported by homeowners after install, based on pre- and post-BER assessments and actual usage patterns. Your saving depends on home size, fuel type, and previous BER band." aria-label="Methodology: average annual saving">?</button>
       <div class="stat-number">€2,000</div>
       <div class="stat-label">avg. annual saving</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card w-full min-w-0 sm:flex-1">
       <button type="button" class="stat-info-btn" title="Mean post-works BER certificate rating across completed projects in our portfolio (not a guarantee for your property)." aria-label="Methodology: average BER achieved">?</button>
       <div class="stat-number">A3</div>
       <div class="stat-label">avg. BER rating achieved</div>
@@ -1599,12 +1437,7 @@
       <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland">SEAI-registered contractor</span>
       <span class="splash-rating" aria-label="Customer rating 4.76 out of 5">★ 4.76<span>Google reviews</span></span>
     </div>
-    <div class="splash-quotes">
-      <blockquote class="splash-quote">“Warmer rooms within days — wish we’d done it sooner.”<cite>— Sarah, Dublin 15</cite></blockquote>
-      <blockquote class="splash-quote">“Clear on grants and the finish looks brilliant.”<cite>— Mark, Clontarf</cite></blockquote>
-    </div>
   </div>
-  <button type="button" class="splash-skip" id="btn-skip">View all Dublin jobs on the map</button>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -1613,55 +1446,92 @@
 <div id="screen-map" class="screen hidden">
   <div class="browse-shell">
     <header class="browse-header">
-      <div class="browse-header-inner">
-        <div class="browse-inline-filters" id="browse-inline-filters" aria-label="Quick filters">
-          <span class="browse-inline-filters-label">Quick filters</span>
-          <button type="button" class="browse-chip" data-ber-chip="all" aria-pressed="true">Any BER</button>
-          <button type="button" class="browse-chip" data-ber-chip="A" aria-pressed="false">A-rated</button>
-          <button type="button" class="browse-chip" data-ber-chip="B" aria-pressed="false">B-rated</button>
-          <button type="button" class="browse-chip" data-ber-chip="C" aria-pressed="false">C-rated</button>
-          <button type="button" class="browse-chip" data-house-chip="all" aria-pressed="true">All types</button>
-          <button type="button" class="browse-chip" data-house-chip="semi-detached" aria-pressed="false">Semi-D</button>
-          <button type="button" class="browse-chip" data-house-chip="mid-terrace" aria-pressed="false">Terraced</button>
-        </div>
-        <div class="browse-filters-wrap" id="browse-filters-wrap">
-          <button type="button" class="browse-filters" id="browse-filters-btn" aria-label="More house type filters" aria-expanded="false" aria-haspopup="true" aria-controls="house-type-menu">⚙ <span class="browse-filters-text">More</span></button>
-          <div class="browse-filters-dropdown" id="house-type-menu" role="menu" aria-label="House type">
-            <button type="button" role="menuitem" data-house-filter="all">All house types</button>
-            <button type="button" role="menuitem" data-house-filter="detached">Detached</button>
-            <button type="button" role="menuitem" data-house-filter="semi-detached">Semi-detached</button>
-            <button type="button" role="menuitem" data-house-filter="mid-terrace">Mid terrace</button>
+      <div class="browse-header-inner mx-auto grid w-full max-w-[1760px] grid-cols-1 grid-rows-[auto_auto] gap-y-2.5 py-2.5 items-stretch md:gap-y-3 lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.15fr)] lg:gap-x-0 lg:gap-y-2.5">
+        <div class="browse-filters-toolbar browse-header-cell browse-header-cell--filters lg:col-start-1 lg:row-start-1">
+          <div class="browse-filters-wrap" id="browse-filters-wrap">
+            <button type="button" class="browse-filters" id="browse-filters-btn" aria-label="House type filters" aria-expanded="false" aria-haspopup="true" aria-controls="house-type-menu">⚙ <span class="browse-filters-text">Filters</span></button>
+            <div class="browse-filters-dropdown" id="house-type-menu" role="menu" aria-label="House type">
+              <button type="button" role="menuitem" data-house-filter="all">All house types</button>
+              <button type="button" role="menuitem" data-house-filter="detached">Detached</button>
+              <button type="button" role="menuitem" data-house-filter="semi-detached">Semi-detached</button>
+              <button type="button" role="menuitem" data-house-filter="mid-terrace">Mid terrace</button>
+            </div>
           </div>
         </div>
-        <button type="button" class="browse-faq-toggle" id="browse-faq-toggle" aria-expanded="false" aria-controls="browse-faq-panel">
-          <span class="browse-faq-toggle-label">FAQs</span>
-          <span class="browse-faq-toggle-arrow" aria-hidden="true">▾</span>
-        </button>
-        <div class="browse-header-actions">
-          <span class="browse-header-rating" title="Google reviews">★ 4.76</span>
-          <a href="#quote-name" class="browse-get-quote" aria-label="Get a free quote">
-            <span class="browse-get-quote-line">Get a</span>
-            <span class="browse-get-quote-free">FREE</span>
-            <span class="browse-get-quote-line">Quote</span>
-          </a>
-        </div>
-        <div class="browse-quote-wrap">
-          <form class="browse-quote-pill js-quote-form" id="quote-request-form" aria-label="Request a free quote">
-            <div class="quote-pill-field">
-              <label class="quote-pill-label" for="quote-name">Name</label>
-              <input class="quote-pill-input" type="text" id="quote-name" name="name" placeholder="Your name" autocomplete="name" required>
+        <div class="browse-header-map-pad browse-header-map-pad--r1 hidden min-w-0 pr-5 lg:col-start-2 lg:row-start-1 lg:block" aria-hidden="true"></div>
+        <div class="browse-header-quote-faq-row grid min-w-0 w-full grid-cols-1 gap-y-2.5 lg:col-span-2 lg:row-start-2 lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.15fr)] lg:items-center lg:gap-x-0">
+          <div class="browse-header-slot browse-header-slot--faq min-w-0 px-5">
+          <div class="browse-faq-wrap w-full max-w-none" id="browse-faq-wrap">
+            <button type="button" class="browse-faq-toggle" id="browse-faq-toggle" aria-expanded="false" aria-controls="browse-faq-panel" aria-haspopup="true">
+              <span class="browse-faq-toggle-label">FAQs</span>
+              <span class="browse-faq-toggle-arrow" aria-hidden="true">▾</span>
+            </button>
+            <div class="browse-faq-collapsible" id="browse-faq-panel" role="region" aria-label="Frequently asked questions">
+              <section class="browse-faq">
+                <details class="faq-item">
+                  <summary class="faq-question">How much can I save each year?</summary>
+                  <p class="faq-answer">Most homes save around <strong>€1,800</strong> to <strong>€3,100</strong> per year, depending on size and BER improvement.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">Are grants available?</summary>
+                  <p class="faq-answer">Yes. SEAI grants are available for external insulation, and we help guide you through the claim process.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">How long does installation take?</summary>
+                  <p class="faq-answer">Typical projects are completed in around <strong>7</strong> to <strong>12</strong> working days, depending on property size and weather.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">Will it change the look of my home?</summary>
+                  <p class="faq-answer">Yes, in a good way. Finishes and colours are chosen to suit your home while improving insulation performance.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">Do I need planning permission?</summary>
+                  <p class="faq-answer">In many cases no, but this depends on your property type and location. We can advise you before work starts.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">Can the work be done in winter?</summary>
+                  <p class="faq-answer">Yes, weather permitting. We schedule around conditions to ensure proper application and finish quality.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">How disruptive is the process?</summary>
+                  <p class="faq-answer">Most of the work is external, so disruption inside your home is minimal throughout the project.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">What warranty do you provide?</summary>
+                  <p class="faq-answer">We provide a workmanship warranty, plus product warranties in line with system manufacturer terms.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">Will insulation help with damp and mould?</summary>
+                  <p class="faq-answer">Improved insulation can reduce cold spots and condensation risk, which often helps prevent mould growth.</p>
+                </details>
+                <details class="faq-item">
+                  <summary class="faq-question">How do I get an exact quote?</summary>
+                  <p class="faq-answer">Send your details in the quote form and we will arrange a site assessment to provide a tailored fixed quote.</p>
+                </details>
+              </section>
             </div>
-            <div class="quote-pill-field">
-              <label class="quote-pill-label" for="quote-email">Email</label>
-              <input class="quote-pill-input" type="email" id="quote-email" name="email" placeholder="your@email.com" autocomplete="email" inputmode="email" required>
+          </div>
+          </div>
+          <div class="browse-header-slot browse-header-slot--quote flex min-w-0 w-full items-stretch pl-5 pr-0 max-lg:px-5">
+            <div class="browse-quote-wrap w-full min-w-0">
+              <form class="browse-quote-pill js-quote-form" id="quote-request-form" aria-label="Request a free quote">
+                <div class="quote-pill-field">
+                  <label class="quote-pill-label" for="quote-name">Name</label>
+                  <input class="quote-pill-input" type="text" id="quote-name" name="name" placeholder="Your name" autocomplete="name" required>
+                </div>
+                <div class="quote-pill-field">
+                  <label class="quote-pill-label" for="quote-email">Email</label>
+                  <input class="quote-pill-input" type="email" id="quote-email" name="email" placeholder="your@email.com" autocomplete="email" inputmode="email" required>
+                </div>
+                <div class="quote-pill-field">
+                  <label class="quote-pill-label" for="quote-phone">Phone</label>
+                  <input class="quote-pill-input" type="tel" id="quote-phone" name="phone" placeholder="Your phone number" autocomplete="tel" inputmode="tel" required>
+                </div>
+                <button type="submit" class="search-submit" aria-label="Request free quote">✉</button>
+              </form>
+              <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
             </div>
-            <div class="quote-pill-field">
-              <label class="quote-pill-label" for="quote-phone">Phone</label>
-              <input class="quote-pill-input" type="tel" id="quote-phone" name="phone" placeholder="Your phone number" autocomplete="tel" inputmode="tel" required>
-            </div>
-            <button type="submit" class="search-submit" aria-label="Request free quote">✉</button>
-          </form>
-          <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
+          </div>
         </div>
       </div>
     </header>
@@ -1685,58 +1555,14 @@
       <p class="quote-feedback" id="quote-feedback-sticky" hidden role="status" aria-live="polite"></p>
     </div>
 
-    <div class="browse-layout">
-      <aside class="browse-list" aria-label="Completed jobs">
+    <div class="browse-layout mx-auto grid min-h-0 w-full max-w-[1760px] flex-1 grid-cols-1 grid-rows-[minmax(220px,38vh)_1fr] lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.15fr)] lg:grid-rows-1">
+      <aside class="browse-list order-2 border-t border-[#ebebeb] lg:order-none lg:border-t-0 lg:border-r lg:border-[#ebebeb]" aria-label="Completed jobs">
         <div class="browse-list-content">
-          <div class="browse-faq-collapsible" id="browse-faq-panel">
-            <section class="browse-faq" aria-label="Frequently asked questions">
-              <details class="faq-item">
-                <summary class="faq-question">How much can I save each year?</summary>
-                <p class="faq-answer">Most homes save around <strong>€1,800</strong> to <strong>€3,100</strong> per year, depending on size and BER improvement.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">Are grants available?</summary>
-                <p class="faq-answer">Yes. SEAI grants are available for external insulation, and we help guide you through the claim process.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">How long does installation take?</summary>
-                <p class="faq-answer">Typical projects are completed in around <strong>7</strong> to <strong>12</strong> working days, depending on property size and weather.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">Will it change the look of my home?</summary>
-                <p class="faq-answer">Yes, in a good way. Finishes and colours are chosen to suit your home while improving insulation performance.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">Do I need planning permission?</summary>
-                <p class="faq-answer">In many cases no, but this depends on your property type and location. We can advise you before work starts.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">Can the work be done in winter?</summary>
-                <p class="faq-answer">Yes, weather permitting. We schedule around conditions to ensure proper application and finish quality.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">How disruptive is the process?</summary>
-                <p class="faq-answer">Most of the work is external, so disruption inside your home is minimal throughout the project.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">What warranty do you provide?</summary>
-                <p class="faq-answer">We provide a workmanship warranty, plus product warranties in line with system manufacturer terms.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">Will insulation help with damp and mould?</summary>
-                <p class="faq-answer">Improved insulation can reduce cold spots and condensation risk, which often helps prevent mould growth.</p>
-              </details>
-              <details class="faq-item">
-                <summary class="faq-question">How do I get an exact quote?</summary>
-                <p class="faq-answer">Send your details in the quote form and we will arrange a site assessment to provide a tailored fixed quote.</p>
-              </details>
-            </section>
-          </div>
           <h1 class="browse-count" id="browse-count">— jobs</h1>
-          <div class="job-cards-grid" id="job-cards-root"></div>
+          <div class="job-cards-grid md:gap-7" id="job-cards-root"></div>
         </div>
       </aside>
-      <div class="browse-map-column">
+      <div class="browse-map-column order-1 min-h-0 lg:order-none">
         <div class="browse-map-wrap">
           <div id="map"></div>
           <div class="map-legend">
@@ -1904,7 +1730,6 @@ function showMapScreen() {
 }
 
 document.getElementById('btn-explore').addEventListener('click', showMapScreen);
-document.getElementById('btn-skip').addEventListener('click', showMapScreen);
 
 // ─────────────────────────────────────────────
 // MAP INIT
@@ -1913,8 +1738,6 @@ let map;
 let lastUserLat = null, lastUserLng = null;
 /** @type {null | 'detached' | 'semi-detached' | 'mid-terrace'} */
 let houseTypeFilter = null;
-/** @type {null | 'A' | 'B' | 'C'} */
-let berGradeFilter = null;
 let markerClusterLayer = null;
 const markers = {};
 
@@ -1961,14 +1784,8 @@ function jobMatchesHouseTypeFilter(job) {
   return true;
 }
 
-function jobMatchesBerFilter(job) {
-  if (!berGradeFilter) return true;
-  const c = job.berAfter.trim().charAt(0).toUpperCase();
-  return c === berGradeFilter;
-}
-
 function getVisibleJobs() {
-  return jobs.filter(j => jobMatchesHouseTypeFilter(j) && jobMatchesBerFilter(j));
+  return jobs.filter(j => jobMatchesHouseTypeFilter(j));
 }
 
 function findNearestJobIdInList(lat, lng, list) {
@@ -1991,49 +1808,6 @@ function syncHouseFilterMenuActive() {
     const active = houseTypeFilter === null ? v === 'all' : houseTypeFilter === v;
     el.classList.toggle('is-active', active);
   });
-}
-
-function syncBerChips() {
-  document.querySelectorAll('[data-ber-chip]').forEach(btn => {
-    const v = btn.dataset.berChip;
-    const on = berGradeFilter === null ? v === 'all' : berGradeFilter === v;
-    btn.classList.toggle('is-active', on);
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  });
-}
-
-function syncHouseChips() {
-  document.querySelectorAll('[data-house-chip]').forEach(btn => {
-    const v = btn.dataset.houseChip;
-    const on = v === 'all'
-      ? houseTypeFilter === null
-      : houseTypeFilter === v;
-    btn.classList.toggle('is-active', on);
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  });
-}
-
-function initInlineQuickFilters() {
-  const row = document.getElementById('browse-inline-filters');
-  if (!row || row.dataset.bound) return;
-  row.dataset.bound = '1';
-  row.addEventListener('click', e => {
-    const ber = e.target.closest('[data-ber-chip]');
-    const house = e.target.closest('[data-house-chip]');
-    if (ber) {
-      berGradeFilter = ber.dataset.berChip === 'all' ? null : /** @type {'A'|'B'|'C'} */ (ber.dataset.berChip);
-      syncBerChips();
-      if (map) renderPins();
-    }
-    if (house) {
-      houseTypeFilter = house.dataset.houseChip === 'all' ? null : /** @type {'semi-detached'|'mid-terrace'} */ (house.dataset.houseChip);
-      syncHouseChips();
-      syncHouseFilterMenuActive();
-      if (map) renderPins();
-    }
-  });
-  syncBerChips();
-  syncHouseChips();
 }
 
 function initHouseTypeFilters() {
@@ -2066,7 +1840,6 @@ function initHouseTypeFilters() {
     const v = item.dataset.houseFilter;
     houseTypeFilter = v === 'all' ? null : v;
     syncHouseFilterMenuActive();
-    syncHouseChips();
     closeDropdown();
     if (map) renderPins();
   });
@@ -2083,16 +1856,39 @@ function initHouseTypeFilters() {
 }
 
 function initFaqToggle() {
+  const wrap = document.getElementById('browse-faq-wrap');
   const btn = document.getElementById('browse-faq-toggle');
   const panel = document.getElementById('browse-faq-panel');
   const arrow = btn?.querySelector('.browse-faq-toggle-arrow');
-  if (!btn || !panel || btn.dataset.bound) return;
-  btn.dataset.bound = '1';
+  if (!wrap || !btn || !panel || wrap.dataset.bound) return;
+  wrap.dataset.bound = '1';
 
-  btn.addEventListener('click', () => {
-    const isOpen = panel.classList.toggle('is-open');
-    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    if (arrow) arrow.textContent = isOpen ? '▴' : '▾';
+  function closeFaqPanel() {
+    panel.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+    if (arrow) arrow.textContent = '▾';
+  }
+
+  function openFaqPanel() {
+    panel.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+    if (arrow) arrow.textContent = '▴';
+  }
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (panel.classList.contains('is-open')) closeFaqPanel();
+    else openFaqPanel();
+  });
+
+  panel.addEventListener('click', e => e.stopPropagation());
+
+  document.addEventListener('click', () => {
+    if (panel.classList.contains('is-open')) closeFaqPanel();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) closeFaqPanel();
   });
 }
 
@@ -2194,7 +1990,6 @@ function initMap() {
 
   initJobCardClicks();
   initHouseTypeFilters();
-  initInlineQuickFilters();
   initFaqToggle();
   renderPins();
 
@@ -2418,17 +2213,6 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 }, { passive: true });
 
 (function initQuoteRequestForm() {
-  function focusQuoteNameField() {
-    const useSticky = window.matchMedia('(max-width: 600px)').matches;
-    const el = document.getElementById(useSticky ? 'quote-name-sticky' : 'quote-name');
-    el?.focus({ preventScroll: true });
-  }
-
-  document.querySelector('.browse-get-quote')?.addEventListener('click', e => {
-    e.preventDefault();
-    focusQuoteNameField();
-  });
-
   document.querySelectorAll('.js-quote-form').forEach(form => {
     const isSticky = form.id === 'quote-request-form-sticky';
     const feedback = document.getElementById(isSticky ? 'quote-feedback-sticky' : 'quote-feedback');
