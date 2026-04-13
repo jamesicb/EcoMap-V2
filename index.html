@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -394,6 +395,41 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
+    }
+    .lux-topbar-nav {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    @media (min-width: 901px) {
+      .lux-topbar-nav {
+        display: flex;
+      }
+    }
+    .lux-topbar-nav button {
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      border: 1px solid var(--border-gold);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .lux-topbar-nav button:hover {
+      color: var(--gold-light);
+      background: rgba(201, 168, 76, 0.08);
+    }
+    .lux-topbar-nav button.is-active {
+      color: var(--gold);
+      border-color: rgba(201, 168, 76, 0.55);
+      background: rgba(201, 168, 76, 0.1);
     }
     .lux-logo {
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -881,7 +917,7 @@
 
     .app-tab-btn {
       flex: 1;
-      max-width: 120px;
+      max-width: 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1689,6 +1725,50 @@
       transform: scale(0.95);
       pointer-events: none;
     }
+
+    /* CRM subviews (Jobs gallery, Customers) */
+    .crm-subview {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      background: var(--charcoal);
+      color: var(--text-light);
+    }
+    .crm-subview[hidden] {
+      display: none !important;
+    }
+    @media (min-width: 901px) {
+      .crm-subview:not([hidden]) {
+        grid-row: 2 / 6;
+        grid-column: 1;
+      }
+    }
+
+    .crm-modal::backdrop {
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .crm-modal {
+      margin: auto;
+      max-width: calc(100vw - 24px);
+      width: 520px;
+      max-height: calc(100vh - 24px);
+      padding: 0;
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-panel);
+      background: var(--charcoal-mid);
+      color: var(--text-light);
+      box-shadow: var(--shadow-md);
+    }
+    .crm-modal:focus {
+      outline: none;
+    }
+    .crm-modal-inner {
+      max-height: calc(100vh - 24px);
+      overflow: auto;
+      padding: 20px 18px 18px;
+      -webkit-overflow-scrolling: touch;
+    }
   </style>
 </head>
 <body>
@@ -1759,10 +1839,15 @@
     <div class="map-screen-layout">
       <header class="lux-topbar" aria-label="App header">
         <div class="lux-logo">Absolute Acrylic<span class="name-sparkle">s</span></div>
+        <div class="lux-topbar-nav" aria-label="Section">
+          <button type="button" id="nav-desk-home" class="is-active">Map</button>
+          <button type="button" id="nav-desk-jobs">Jobs</button>
+          <button type="button" id="nav-desk-customers">Customers</button>
+        </div>
         <div class="lux-region">Dublin</div>
       </header>
 
-      <div class="quote-bottom-sheet">
+      <div class="quote-bottom-sheet" data-hide-on-subview>
         <div class="quote-sheet-handle-row" aria-hidden="true">
           <div class="quote-sheet-handle"></div>
         </div>
@@ -1777,7 +1862,7 @@
         </div>
       </div>
 
-      <div class="lux-toolbar-row map-filters-toolbar">
+      <div class="lux-toolbar-row map-filters-toolbar" data-hide-on-subview>
         <div class="lux-toolbar-inner">
           <div class="browse-filters-toolbar">
             <div class="browse-filters-wrap" id="browse-filters-wrap">
@@ -1796,7 +1881,7 @@
         </div>
       </div>
 
-      <div class="map-map-section">
+      <div class="map-map-section" data-hide-on-subview>
         <div class="map-frame">
           <div class="map-frame-inner">
             <div id="map"></div>
@@ -1812,7 +1897,37 @@
         </div>
       </div>
 
-      <div class="job-strip" id="job-strip" aria-label="Projects in the area"></div>
+      <div class="job-strip" id="job-strip" aria-label="Projects in the area" data-hide-on-subview></div>
+
+      <div id="crm-view-jobs" class="crm-subview" hidden>
+        <div class="max-w-6xl mx-auto px-4 py-4 pb-6">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold text-[var(--gold-light)] tracking-wide uppercase text-xs">Jobs gallery</h2>
+              <p class="text-sm text-[var(--text-muted)] mt-1">Before / after installs linked to customers.</p>
+            </div>
+            <button type="button" id="btn-add-gallery-job" class="contact-above-map-submit w-full sm:w-auto shrink-0">Add job</button>
+          </div>
+          <p id="crm-jobs-error" class="text-sm text-red-400 mb-3 hidden" role="alert"></p>
+          <div id="crm-jobs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          <p id="crm-jobs-empty" class="text-center text-[var(--text-muted)] text-sm py-12 hidden">No saved jobs yet. Tap Add job to create one.</p>
+        </div>
+      </div>
+
+      <div id="crm-view-customers" class="crm-subview" hidden>
+        <div class="max-w-4xl mx-auto px-4 py-4 pb-6">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold text-[var(--gold-light)] tracking-wide uppercase text-xs">Customers</h2>
+              <p class="text-sm text-[var(--text-muted)] mt-1">Contacts stored in Supabase.</p>
+            </div>
+            <button type="button" id="btn-add-customer" class="contact-above-map-submit w-full sm:w-auto shrink-0">Add customer</button>
+          </div>
+          <p id="crm-customers-error" class="text-sm text-red-400 mb-3 hidden" role="alert"></p>
+          <div id="crm-customers-list" class="flex flex-col gap-3"></div>
+          <p id="crm-customers-empty" class="text-center text-[var(--text-muted)] text-sm py-12 hidden">No customers yet.</p>
+        </div>
+      </div>
 
       <nav class="app-tab-bar" aria-label="Main">
         <button type="button" class="app-tab-btn" id="tab-home" aria-current="page">
@@ -1822,6 +1937,10 @@
         <button type="button" class="app-tab-btn" id="tab-jobs">
           <span class="app-tab-icon" aria-hidden="true">📋</span>
           Jobs
+        </button>
+        <button type="button" class="app-tab-btn" id="tab-customers">
+          <span class="app-tab-icon" aria-hidden="true">👥</span>
+          Clients
         </button>
         <button type="button" class="app-tab-btn" id="tab-account">
           <span class="app-tab-icon" aria-hidden="true">👤</span>
@@ -1848,13 +1967,119 @@
   </div>
 </div>
 
+<dialog id="dialog-gallery-job" class="crm-modal" aria-labelledby="dialog-gallery-job-title">
+  <div class="crm-modal-inner">
+    <h3 id="dialog-gallery-job-title" class="text-base font-semibold text-[var(--gold-light)] mb-4">Add job</h3>
+    <form id="form-gallery-job" class="flex flex-col gap-3">
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-customer">Customer</label>
+        <select id="gj-customer" name="customerId" class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" required></select>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-title">Job title</label>
+        <input id="gj-title" name="title" type="text" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" placeholder="Reference name" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-location">Location</label>
+        <input id="gj-location" name="location" type="text" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" placeholder="Address or area" />
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-completion">Completion date</label>
+          <input id="gj-completion" name="completionDate" type="date" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-notes">Notes</label>
+          <input id="gj-notes" name="notes" type="text" class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" placeholder="Optional" />
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-savings">Annual savings</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-sm pointer-events-none">€</span>
+            <input id="gj-savings" name="annualSavings" type="number" min="0" step="1" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] pl-8 pr-3 py-2 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-value">Property value increase</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-sm pointer-events-none">€</span>
+            <input id="gj-value" name="propertyValueIncrease" type="number" min="0" step="1" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] pl-8 pr-3 py-2 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-grant">SEAI grant</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-sm pointer-events-none">€</span>
+            <input id="gj-grant" name="seaiGrant" type="number" min="0" step="1" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] pl-8 pr-3 py-2 text-sm" />
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-old-ber">Old BER</label>
+          <select id="gj-old-ber" name="oldBER" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-new-ber">New BER</label>
+          <select id="gj-new-ber" name="newBER" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm"></select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1">Before photos</label>
+        <input type="file" id="gj-files-before" accept="image/*" multiple class="block w-full text-xs text-[var(--text-muted)] file:mr-2 file:rounded file:border-0 file:bg-[var(--gold)] file:text-[var(--charcoal)] file:px-2 file:py-1 file:text-xs file:font-semibold" />
+        <div id="gj-preview-before" class="flex flex-wrap gap-2 mt-2"></div>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1">After photos</label>
+        <input type="file" id="gj-files-after" accept="image/*" multiple class="block w-full text-xs text-[var(--text-muted)] file:mr-2 file:rounded file:border-0 file:bg-[var(--gold)] file:text-[var(--charcoal)] file:px-2 file:py-1 file:text-xs file:font-semibold" />
+        <div id="gj-preview-after" class="flex flex-wrap gap-2 mt-2"></div>
+      </div>
+      <p id="gj-form-error" class="text-sm text-red-400 hidden" role="alert"></p>
+      <div class="flex flex-col-reverse sm:flex-row gap-2 sm:justify-end pt-2">
+        <button type="button" id="gj-cancel" class="w-full sm:w-auto px-4 py-2.5 rounded-md border border-[var(--border-gold)] text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold-light)]">Cancel</button>
+        <button type="submit" id="gj-save" class="contact-above-map-submit w-full sm:w-auto">Save</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="dialog-customer" class="crm-modal" aria-labelledby="dialog-customer-title">
+  <div class="crm-modal-inner">
+    <h3 id="dialog-customer-title" class="text-base font-semibold text-[var(--gold-light)] mb-4">Add customer</h3>
+    <form id="form-customer" class="flex flex-col gap-3">
+      <input type="hidden" id="cust-id" name="id" value="" />
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="cust-name">Full name</label>
+        <input id="cust-name" name="name" type="text" required autocomplete="name" class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="cust-email">Email</label>
+        <input id="cust-email" name="email" type="email" autocomplete="email" class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="cust-phone">Phone</label>
+        <input id="cust-phone" name="phone" type="tel" autocomplete="tel" class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] px-3 py-2 text-sm" />
+      </div>
+      <p id="cust-form-error" class="text-sm text-red-400 hidden" role="alert"></p>
+      <div class="flex flex-col-reverse sm:flex-row gap-2 sm:justify-end pt-2">
+        <button type="button" id="cust-cancel" class="w-full sm:w-auto px-4 py-2.5 rounded-md border border-[var(--border-gold)] text-sm font-medium text-[var(--text-muted)] hover:text-[var(--gold-light)]">Cancel</button>
+        <button type="submit" id="cust-save" class="contact-above-map-submit w-full sm:w-auto">Save</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<p id="supabase-banner-error" class="fixed left-1/2 -translate-x-1/2 top-[env(safe-area-inset-top,12px)] z-[100] max-w-[min(92vw,420px)] px-3 py-2 rounded-md border border-red-500/50 bg-[var(--charcoal-mid)] text-red-300 text-sm text-center hidden shadow-lg" role="alert"></p>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
 // ─────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────
-const jobs = [
+const portfolioJobs = [
   {
     id: 1,
     lat: 53.3241, lng: -6.2856,
@@ -1965,6 +2190,521 @@ const jobs = [
   }
 ];
 
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE — customers (run SQL in Supabase SQL editor if needed)
+// ═══════════════════════════════════════════════════════════════
+// -- CREATE TABLE customers (
+// --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+// --   name text NOT NULL,
+// --   email text,
+// --   phone text,
+// --   created_at timestamptz DEFAULT now()
+// -- );
+
+const supabaseClient = (typeof supabase !== 'undefined' && supabase.createClient)
+  ? supabase.createClient(
+      'https://tfnjbqnagdfrexoegbdi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmbmpicW5hZ2RmcmV4b2VnYmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMTc1MjgsImV4cCI6MjA5MTY5MzUyOH0.IyCy9aoa2mxO7MS5pcHPOeHvUcDpWV5WKfOWIBFdRvM'
+    )
+  : null;
+
+const BER_SCALE = ['G', 'F1', 'F2', 'E1', 'E2', 'D1', 'D2', 'C1', 'C2', 'B3', 'B2', 'B1', 'A3', 'A2', 'A1'];
+const GALLERY_JOBS_STORAGE_KEY = 'ecomap_gallery_jobs_v1';
+
+/** @type {Array<{id:string,name:string,email?:string|null,phone?:string|null,created_at?:string}>} */
+let customers = [];
+
+/**
+ * Gallery jobs (localStorage). Map portfolio pins use `portfolioJobs` above.
+ * @type {Array<{id:number,customerId:string,title:string,location:string,beforePhotos:string[],afterPhotos:string[],annualSavings:number,propertyValueIncrease:number,seaiGrant:number,oldBER:string,newBER:string,completionDate:string,notes?:string}>}
+ */
+let galleryJobs = [];
+
+function loadGalleryJobsFromStorage() {
+  try {
+    const raw = localStorage.getItem(GALLERY_JOBS_STORAGE_KEY);
+    if (!raw) {
+      galleryJobs = [];
+      return;
+    }
+    const parsed = JSON.parse(raw);
+    galleryJobs = Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    galleryJobs = [];
+  }
+}
+
+function persistGalleryJobs() {
+  try {
+    localStorage.setItem(GALLERY_JOBS_STORAGE_KEY, JSON.stringify(galleryJobs));
+  } catch (e) {
+    const el = document.getElementById('crm-jobs-error');
+    if (el) {
+      el.textContent = 'Could not save jobs (storage may be full). Try removing photos.';
+      el.classList.remove('hidden');
+    }
+  }
+}
+
+function showSupabaseBanner(msg) {
+  const el = document.getElementById('supabase-banner-error');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  clearTimeout(showSupabaseBanner._t);
+  showSupabaseBanner._t = setTimeout(() => { el.classList.add('hidden'); }, 12000);
+}
+
+function getCustomerName(customerId) {
+  const c = customers.find(x => x.id === customerId);
+  return c ? c.name : 'Unknown customer';
+}
+
+function countGalleryJobsForCustomer(customerId) {
+  return galleryJobs.filter(j => j.customerId === customerId).length;
+}
+
+function populateBerSelects() {
+  const o = document.getElementById('gj-old-ber');
+  const n = document.getElementById('gj-new-ber');
+  if (!o || !n) return;
+  const opts = BER_SCALE.map(b => `<option value="${b}">${b}</option>`).join('');
+  o.innerHTML = opts;
+  n.innerHTML = opts;
+}
+
+function refillCustomerSelect(selectedId) {
+  const sel = document.getElementById('gj-customer');
+  if (!sel) return;
+  const cur = selectedId || sel.value || '';
+  sel.innerHTML = customers.length
+    ? customers.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('')
+    : '<option value="">No customers — add one first</option>';
+  if (cur && customers.some(c => c.id === cur)) sel.value = cur;
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+async function fetchCustomers() {
+  const listErr = document.getElementById('crm-customers-error');
+  if (listErr) listErr.classList.add('hidden');
+  if (!supabaseClient) {
+    showSupabaseBanner('Supabase client failed to load. Check your network.');
+    if (listErr) {
+      listErr.textContent = 'Supabase client failed to load.';
+      listErr.classList.remove('hidden');
+    }
+    customers = [];
+    refillCustomerSelect();
+    renderCustomersList();
+    renderGalleryGrid();
+    return;
+  }
+  const { data, error } = await supabaseClient.from('customers').select('*').order('name', { ascending: true });
+  if (error) {
+    showSupabaseBanner(error.message || 'Could not load customers.');
+    if (listErr) {
+      listErr.textContent = error.message || 'Could not load customers.';
+      listErr.classList.remove('hidden');
+    }
+    customers = [];
+  } else {
+    customers = data || [];
+  }
+  refillCustomerSelect();
+  renderCustomersList();
+  renderGalleryGrid();
+}
+
+function renderGalleryGrid() {
+  const grid = document.getElementById('crm-jobs-grid');
+  const empty = document.getElementById('crm-jobs-empty');
+  const err = document.getElementById('crm-jobs-error');
+  if (err) err.classList.add('hidden');
+  if (!grid || !empty) return;
+  if (!galleryJobs.length) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  grid.innerHTML = galleryJobs.map(job => {
+    const beforeSrc = job.beforePhotos && job.beforePhotos[0] ? job.beforePhotos[0] : '';
+    const afterSrc = job.afterPhotos && job.afterPhotos[0] ? job.afterPhotos[0] : '';
+    const beforePh = beforeSrc
+      ? `<img src="${beforeSrc}" alt="" class="w-full h-full object-cover" />`
+      : '<div class="flex items-center justify-center text-[10px] text-[var(--text-muted)] bg-black/25 w-full h-full">Before</div>';
+    const afterPh = afterSrc
+      ? `<img src="${afterSrc}" alt="" class="w-full h-full object-cover" />`
+      : '<div class="flex items-center justify-center text-[10px] text-[var(--text-muted)] bg-black/25 w-full h-full">After</div>';
+    return `
+      <article class="rounded-lg border border-[var(--border-gold)] bg-[var(--charcoal-mid)] overflow-hidden flex flex-col shadow-md">
+        <div class="grid grid-cols-2 gap-0 h-32 sm:h-36">
+          <div class="relative border-r border-[var(--border-gold)] overflow-hidden">${beforePh}</div>
+          <div class="relative overflow-hidden">${afterPh}</div>
+        </div>
+        <div class="p-3 flex flex-col gap-2 flex-1">
+          <div>
+            <h3 class="text-sm font-semibold text-[var(--gold-light)] leading-snug">${escapeHtml(job.title)}</h3>
+            <p class="text-xs text-[var(--text-muted)] mt-0.5">${escapeHtml(job.location)}</p>
+            <p class="text-xs text-[var(--text-light)] mt-1">${escapeHtml(getCustomerName(job.customerId))}</p>
+          </div>
+          <div class="inline-flex items-center gap-1 self-start px-2 py-0.5 rounded border border-[var(--border-gold)] text-[11px] font-semibold text-[var(--gold)]">
+            <span>${escapeHtml(job.oldBER)}</span><span class="text-[var(--text-muted)]">→</span><span>${escapeHtml(job.newBER)}</span>
+          </div>
+          <p class="text-sm text-[var(--text-light)]">€${Number(job.annualSavings || 0).toLocaleString()}<span class="text-[var(--text-muted)] text-xs">/yr</span></p>
+          <div class="flex gap-2 mt-auto pt-1">
+            <button type="button" class="flex-1 text-xs font-semibold uppercase tracking-wide py-2 rounded border border-[var(--border-gold)] text-[var(--gold-light)] hover:bg-white/5 gallery-job-edit" data-id="${job.id}">Edit</button>
+            <button type="button" class="flex-1 text-xs font-semibold uppercase tracking-wide py-2 rounded border border-red-500/40 text-red-300 hover:bg-red-500/10 gallery-job-del" data-id="${job.id}">Delete</button>
+          </div>
+        </div>
+      </article>`;
+  }).join('');
+
+  grid.querySelectorAll('.gallery-job-edit').forEach(btn => {
+    btn.addEventListener('click', () => openGalleryJobModal(Number(btn.dataset.id)));
+  });
+  grid.querySelectorAll('.gallery-job-del').forEach(btn => {
+    btn.addEventListener('click', () => deleteGalleryJob(Number(btn.dataset.id)));
+  });
+}
+
+function renderCustomersList() {
+  const list = document.getElementById('crm-customers-list');
+  const empty = document.getElementById('crm-customers-empty');
+  const err = document.getElementById('crm-customers-error');
+  if (err) err.classList.add('hidden');
+  if (!list || !empty) return;
+  if (!customers.length) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  list.innerHTML = customers.map(c => {
+    const n = countGalleryJobsForCustomer(c.id);
+    const mailHref = c.email ? `mailto:${encodeURIComponent(c.email)}` : '';
+    const em = c.email
+      ? `<a href="${mailHref}" class="text-[var(--gold)] underline-offset-2 hover:underline text-sm">${escapeHtml(c.email)}</a>`
+      : '<span class="text-[var(--text-muted)] text-sm">—</span>';
+    const telDigits = c.phone ? String(c.phone).replace(/[^\d+]/g, '') : '';
+    const ph = c.phone && telDigits
+      ? `<a href="tel:${escapeHtml(telDigits)}" class="text-[var(--gold-light)] text-sm">${escapeHtml(c.phone)}</a>`
+      : '<span class="text-[var(--text-muted)] text-sm">—</span>';
+    return `
+      <article class="rounded-lg border border-[var(--border-gold)] bg-[var(--charcoal-mid)] p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+        <div class="min-w-0">
+          <h3 class="text-sm font-semibold text-[var(--gold-light)]">${escapeHtml(c.name)}</h3>
+          <div class="mt-1 flex flex-col gap-0.5">${em}</div>
+          <div class="mt-0.5">${ph}</div>
+          <p class="text-xs text-[var(--text-muted)] mt-2">${n} linked job${n === 1 ? '' : 's'}</p>
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button type="button" class="px-3 py-2 text-xs font-semibold uppercase tracking-wide rounded border border-[var(--border-gold)] text-[var(--gold-light)] cust-edit" data-id="${c.id}">Edit</button>
+          <button type="button" class="px-3 py-2 text-xs font-semibold uppercase tracking-wide rounded border border-red-500/40 text-red-300 cust-del" data-id="${c.id}">Delete</button>
+        </div>
+      </article>`;
+  }).join('');
+
+  list.querySelectorAll('.cust-edit').forEach(btn => {
+    btn.addEventListener('click', () => openCustomerModal(btn.dataset.id));
+  });
+  list.querySelectorAll('.cust-del').forEach(btn => {
+    btn.addEventListener('click', () => deleteCustomer(btn.dataset.id));
+  });
+}
+
+function deleteGalleryJob(id) {
+  if (!confirm('Delete this job from the gallery?')) return;
+  galleryJobs = galleryJobs.filter(j => j.id !== id);
+  persistGalleryJobs();
+  renderGalleryGrid();
+}
+
+let galleryJobModalState = { editingId: null, beforePhotos: [], afterPhotos: [] };
+
+function readFilesAsBase64(fileList) {
+  return Promise.all(
+    Array.from(fileList || []).map(
+      file => new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(String(fr.result));
+        fr.onerror = () => reject(new Error('read'));
+        fr.readAsDataURL(file);
+      })
+    )
+  );
+}
+
+function renderPhotoPreviews(container, photos, which) {
+  if (!container) return;
+  container.innerHTML = photos.map((src, idx) => `
+    <div class="relative w-16 h-16 rounded border border-[var(--border-gold)] overflow-hidden shrink-0">
+      <img src="${src}" alt="" class="w-full h-full object-cover" />
+      <button type="button" class="absolute top-0 right-0 w-5 h-5 flex items-center justify-center bg-black/70 text-white text-xs leading-none gj-rm-ph" data-which="${which}" data-i="${idx}" aria-label="Remove photo">×</button>
+    </div>
+  `).join('');
+  container.querySelectorAll('.gj-rm-ph').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const w = btn.dataset.which;
+      const i = Number(btn.dataset.i);
+      if (w === 'before') galleryJobModalState.beforePhotos.splice(i, 1);
+      else galleryJobModalState.afterPhotos.splice(i, 1);
+      renderPhotoPreviews(document.getElementById('gj-preview-before'), galleryJobModalState.beforePhotos, 'before');
+      renderPhotoPreviews(document.getElementById('gj-preview-after'), galleryJobModalState.afterPhotos, 'after');
+    });
+  });
+}
+
+function openGalleryJobModal(editId) {
+  const dlg = document.getElementById('dialog-gallery-job');
+  const title = document.getElementById('dialog-gallery-job-title');
+  const form = document.getElementById('form-gallery-job');
+  const fe = document.getElementById('gj-form-error');
+  if (!dlg || !form) return;
+  if (fe) fe.classList.add('hidden');
+  const parsedId = editId == null || editId === '' ? null : Number(editId);
+  galleryJobModalState.editingId = parsedId != null && Number.isFinite(parsedId) ? parsedId : null;
+  refillCustomerSelect();
+  document.getElementById('gj-files-before').value = '';
+  document.getElementById('gj-files-after').value = '';
+
+  if (galleryJobModalState.editingId != null) {
+    const job = galleryJobs.find(j => j.id === galleryJobModalState.editingId);
+    if (!job) return;
+    if (title) title.textContent = 'Edit job';
+    document.getElementById('gj-customer').value = job.customerId || '';
+    document.getElementById('gj-title').value = job.title || '';
+    document.getElementById('gj-location').value = job.location || '';
+    document.getElementById('gj-notes').value = job.notes || '';
+    document.getElementById('gj-completion').value = job.completionDate || '';
+    document.getElementById('gj-savings').value = job.annualSavings ?? '';
+    document.getElementById('gj-value').value = job.propertyValueIncrease ?? '';
+    document.getElementById('gj-grant').value = job.seaiGrant ?? '';
+    document.getElementById('gj-old-ber').value = job.oldBER || 'G';
+    document.getElementById('gj-new-ber').value = job.newBER || 'A1';
+    galleryJobModalState.beforePhotos = [...(job.beforePhotos || [])];
+    galleryJobModalState.afterPhotos = [...(job.afterPhotos || [])];
+  } else {
+    if (title) title.textContent = 'Add job';
+    form.reset();
+    document.getElementById('gj-old-ber').value = 'G';
+    document.getElementById('gj-new-ber').value = 'A1';
+    galleryJobModalState.beforePhotos = [];
+    galleryJobModalState.afterPhotos = [];
+  }
+  renderPhotoPreviews(document.getElementById('gj-preview-before'), galleryJobModalState.beforePhotos, 'before');
+  renderPhotoPreviews(document.getElementById('gj-preview-after'), galleryJobModalState.afterPhotos, 'after');
+  dlg.showModal();
+}
+
+function closeGalleryJobModal() {
+  const dlg = document.getElementById('dialog-gallery-job');
+  if (dlg) dlg.close();
+}
+
+document.getElementById('gj-files-before')?.addEventListener('change', async e => {
+  const add = await readFilesAsBase64(e.target.files);
+  galleryJobModalState.beforePhotos = galleryJobModalState.beforePhotos.concat(add);
+  renderPhotoPreviews(document.getElementById('gj-preview-before'), galleryJobModalState.beforePhotos, 'before');
+  e.target.value = '';
+});
+
+document.getElementById('gj-files-after')?.addEventListener('change', async e => {
+  const add = await readFilesAsBase64(e.target.files);
+  galleryJobModalState.afterPhotos = galleryJobModalState.afterPhotos.concat(add);
+  renderPhotoPreviews(document.getElementById('gj-preview-after'), galleryJobModalState.afterPhotos, 'after');
+  e.target.value = '';
+});
+
+document.getElementById('gj-cancel')?.addEventListener('click', closeGalleryJobModal);
+
+document.getElementById('form-gallery-job')?.addEventListener('submit', e => {
+  e.preventDefault();
+  const fe = document.getElementById('gj-form-error');
+  if (fe) fe.classList.add('hidden');
+  const customerId = document.getElementById('gj-customer').value;
+  if (!customerId) {
+    if (fe) {
+      fe.textContent = 'Select a customer (add one under Customers if the list is empty).';
+      fe.classList.remove('hidden');
+    }
+    return;
+  }
+  const row = {
+    id: galleryJobModalState.editingId != null ? galleryJobModalState.editingId : Date.now(),
+    customerId,
+    title: document.getElementById('gj-title').value.trim(),
+    location: document.getElementById('gj-location').value.trim(),
+    notes: document.getElementById('gj-notes').value.trim(),
+    completionDate: document.getElementById('gj-completion').value,
+    annualSavings: Number(document.getElementById('gj-savings').value) || 0,
+    propertyValueIncrease: Number(document.getElementById('gj-value').value) || 0,
+    seaiGrant: Number(document.getElementById('gj-grant').value) || 0,
+    oldBER: document.getElementById('gj-old-ber').value,
+    newBER: document.getElementById('gj-new-ber').value,
+    beforePhotos: [...galleryJobModalState.beforePhotos],
+    afterPhotos: [...galleryJobModalState.afterPhotos]
+  };
+  if (galleryJobModalState.editingId != null) {
+    const ix = galleryJobs.findIndex(j => j.id === galleryJobModalState.editingId);
+    if (ix >= 0) galleryJobs[ix] = row;
+  } else {
+    galleryJobs.push(row);
+  }
+  persistGalleryJobs();
+  renderGalleryGrid();
+  renderCustomersList();
+  closeGalleryJobModal();
+});
+
+async function openCustomerModal(id) {
+  const dlg = document.getElementById('dialog-customer');
+  const title = document.getElementById('dialog-customer-title');
+  const err = document.getElementById('cust-form-error');
+  if (!dlg) return;
+  if (err) err.classList.add('hidden');
+  if (id) {
+    const c = customers.find(x => x.id === id);
+    if (!c) return;
+    if (title) title.textContent = 'Edit customer';
+    document.getElementById('cust-id').value = c.id;
+    document.getElementById('cust-name').value = c.name || '';
+    document.getElementById('cust-email').value = c.email || '';
+    document.getElementById('cust-phone').value = c.phone || '';
+  } else {
+    if (title) title.textContent = 'Add customer';
+    document.getElementById('cust-id').value = '';
+    document.getElementById('form-customer').reset();
+  }
+  dlg.showModal();
+}
+
+function closeCustomerModal() {
+  document.getElementById('dialog-customer')?.close();
+}
+
+document.getElementById('cust-cancel')?.addEventListener('click', closeCustomerModal);
+
+document.getElementById('form-customer')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const errEl = document.getElementById('cust-form-error');
+  const saveBtn = document.getElementById('cust-save');
+  if (errEl) errEl.classList.add('hidden');
+  if (!supabaseClient) {
+    if (errEl) {
+      errEl.textContent = 'Supabase is not available.';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
+  const id = document.getElementById('cust-id').value.trim();
+  const name = document.getElementById('cust-name').value.trim();
+  const email = document.getElementById('cust-email').value.trim() || null;
+  const phone = document.getElementById('cust-phone').value.trim() || null;
+  const payload = id ? { id, name, email, phone } : { name, email, phone };
+  saveBtn.disabled = true;
+  const prev = saveBtn.textContent;
+  saveBtn.textContent = 'Saving…';
+  const { error } = await supabaseClient.from('customers').upsert(payload, { onConflict: 'id' });
+  saveBtn.disabled = false;
+  saveBtn.textContent = prev;
+  if (error) {
+    if (errEl) {
+      errEl.textContent = error.message || 'Save failed.';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
+  closeCustomerModal();
+  await fetchCustomers();
+});
+
+async function deleteCustomer(id) {
+  if (!confirm('Delete this customer from Supabase?')) return;
+  if (!supabaseClient) {
+    showSupabaseBanner('Supabase is not available.');
+    return;
+  }
+  const { error } = await supabaseClient.from('customers').delete().eq('id', id);
+  if (error) {
+    const err = document.getElementById('crm-customers-error');
+    if (err) {
+      err.textContent = error.message || 'Delete failed.';
+      err.classList.remove('hidden');
+    }
+    return;
+  }
+  await fetchCustomers();
+}
+
+/** @type {'home'|'jobs'|'customers'} */
+let appView = 'home';
+
+function setAppView(view) {
+  appView = view;
+  const hideEls = document.querySelectorAll('[data-hide-on-subview]');
+  const vJobs = document.getElementById('crm-view-jobs');
+  const vCust = document.getElementById('crm-view-customers');
+  hideEls.forEach(el => {
+    el.hidden = view !== 'home';
+  });
+  if (vJobs) {
+    vJobs.hidden = view !== 'jobs';
+  }
+  if (vCust) {
+    vCust.hidden = view !== 'customers';
+  }
+
+  document.getElementById('nav-desk-home')?.classList.toggle('is-active', view === 'home');
+  document.getElementById('nav-desk-jobs')?.classList.toggle('is-active', view === 'jobs');
+  document.getElementById('nav-desk-customers')?.classList.toggle('is-active', view === 'customers');
+
+  if (view === 'home') {
+    scheduleMapResize();
+  }
+}
+
+document.getElementById('nav-desk-home')?.addEventListener('click', () => {
+  setAppView('home');
+  const tabHome = document.getElementById('tab-home');
+  if (tabHome) {
+    document.querySelectorAll('.app-tab-btn').forEach(t => t.removeAttribute('aria-current'));
+    tabHome.setAttribute('aria-current', 'page');
+  }
+});
+
+document.getElementById('nav-desk-jobs')?.addEventListener('click', () => {
+  setAppView('jobs');
+  const t = document.getElementById('tab-jobs');
+  if (t) {
+    document.querySelectorAll('.app-tab-btn').forEach(x => x.removeAttribute('aria-current'));
+    t.setAttribute('aria-current', 'page');
+  }
+});
+
+document.getElementById('nav-desk-customers')?.addEventListener('click', () => {
+  setAppView('customers');
+  const t = document.getElementById('tab-customers');
+  if (t) {
+    document.querySelectorAll('.app-tab-btn').forEach(x => x.removeAttribute('aria-current'));
+    t.setAttribute('aria-current', 'page');
+  }
+});
+
+document.getElementById('btn-add-gallery-job')?.addEventListener('click', () => openGalleryJobModal(null));
+document.getElementById('btn-add-customer')?.addEventListener('click', () => openCustomerModal(null));
+
+loadGalleryJobsFromStorage();
+populateBerSelects();
+fetchCustomers();
+
 // ─────────────────────────────────────────────
 // SPLASH → MAP TRANSITION
 // ─────────────────────────────────────────────
@@ -2033,7 +2773,7 @@ function jobMatchesHouseTypeFilter(job) {
 }
 
 function getVisibleJobs() {
-  return jobs.filter(j => jobMatchesHouseTypeFilter(j));
+  return portfolioJobs.filter(j => jobMatchesHouseTypeFilter(j));
 }
 
 function getJobsInMapBounds() {
@@ -2070,7 +2810,7 @@ function renderJobStrip() {
   strip.querySelectorAll('.listing-card[data-job-id]').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = Number(btn.dataset.jobId);
-      const job = jobs.find(j => j.id === id);
+      const job = portfolioJobs.find(j => j.id === id);
       if (job) openPanel(job);
     });
   });
@@ -2448,18 +3188,22 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 (function initAppTabBar() {
   const tabHome = document.getElementById('tab-home');
   const tabJobs = document.getElementById('tab-jobs');
+  const tabCustomers = document.getElementById('tab-customers');
   const tabAccount = document.getElementById('tab-account');
   const sheetScroll = document.getElementById('quote-sheet-scroll');
   const mapScrollAnchor = document.querySelector('.map-frame');
-  if (!tabHome || !tabJobs || !tabAccount) return;
+  if (!tabHome || !tabJobs || !tabCustomers || !tabAccount) return;
+
+  const tabs = [tabHome, tabJobs, tabCustomers, tabAccount];
 
   function setTab(active) {
-    [tabHome, tabJobs, tabAccount].forEach(t => t.removeAttribute('aria-current'));
+    tabs.forEach(t => t.removeAttribute('aria-current'));
     active.setAttribute('aria-current', 'page');
   }
 
   tabHome.addEventListener('click', () => {
     setTab(tabHome);
+    setAppView('home');
     closePanel();
     sheetScroll?.scrollTo({ top: 0, behavior: 'smooth' });
     mapScrollAnchor?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -2467,13 +3211,21 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 
   tabJobs.addEventListener('click', () => {
     setTab(tabJobs);
+    setAppView('jobs');
     closePanel();
-    sheetScroll?.scrollTo({ top: 0, behavior: 'smooth' });
-    document.getElementById('quote-name')?.focus({ preventScroll: true });
+  });
+
+  tabCustomers.addEventListener('click', () => {
+    setTab(tabCustomers);
+    setAppView('customers');
+    closePanel();
   });
 
   tabAccount.addEventListener('click', () => {
     setTab(tabAccount);
+    setAppView('home');
+    closePanel();
+    sheetScroll?.scrollTo({ top: 0, behavior: 'smooth' });
     handleQuoteClick();
   });
 })();
