@@ -487,6 +487,8 @@
 
     .map-filters-toolbar {
       flex-shrink: 0;
+      padding-top: 5px;
+      padding-bottom: 5px;
     }
 
     @media (min-width: 901px) {
@@ -502,7 +504,7 @@
 
     .map-frame {
       width: 100%;
-      border: 1px solid var(--border-gold);
+      border: 3px solid #6B1E3D;
       border-radius: 0;
       overflow: hidden;
       box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.06);
@@ -518,7 +520,7 @@
         box-shadow: none;
         max-width: none;
         margin: 0;
-        border-top: 1px solid var(--border-light);
+        border-top: 3px solid #6B1E3D;
       }
     }
 
@@ -619,6 +621,13 @@
         max-width: 612px;
         margin: 0 auto;
         width: 100%;
+      }
+      #quote-request-form .contact-above-map-submit {
+        margin-right: -10px;
+        padding-left: 12px;
+        padding-right: 12px;
+        font-size: 11px;
+        letter-spacing: 0.06em;
       }
     }
 
@@ -848,12 +857,12 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 4px 10px;
       min-width: unset;
       background: transparent;
       border: 1px solid var(--border-gold);
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -865,8 +874,8 @@
     }
     .browse-filters::before {
       content: '';
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       background: var(--gold);
       border-radius: 50%;
       flex-shrink: 0;
@@ -931,7 +940,7 @@
     @media (max-width: 900px) {
       .browse-filters {
         min-width: unset;
-        padding: 7px 14px;
+        padding: 5px 10px;
         border-radius: 6px;
         box-shadow: none;
       }
@@ -1043,7 +1052,7 @@
 
     /* CLUSTER */
     .cluster-marker {
-      background: var(--gold);
+      background: #E8EAEF;
       border: none;
       border-radius: 8px;
       color: var(--text-light);
@@ -1052,7 +1061,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 0 4px rgba(114, 14, 50, 0.2);
+      box-shadow: 0 0 0 4px rgba(207, 212, 222, 0.9);
     }
     .cluster-marker.cluster-large {
       width: 52px !important;
@@ -1077,8 +1086,9 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       z-index: 600;
-      height: min(76vh, calc(100dvh - 12px));
-      max-height: calc(100dvh - env(safe-area-inset-bottom, 0px) - 8px);
+      height: 100dvh;
+      max-height: 100dvh;
+      width: 100%;
       background: var(--charcoal);
       border: 1px solid var(--border-gold);
       border-bottom: none;
@@ -1092,6 +1102,28 @@
     }
     #job-panel.open {
       transform: translateY(0);
+    }
+
+    @media (min-width: 1101px) {
+      #job-panel {
+        max-width: 430px;
+        margin: 0 auto;
+        border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+      }
+      #job-panel .job-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+      }
+      #job-panel .job-info {
+        flex: 1 1 auto;
+        max-width: none;
+      }
+      #job-panel .before-after-container {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+      }
     }
 
     .panel-handle-row {
@@ -1174,8 +1206,8 @@
     }
     .panel-ber-hero-grade.new {
       color: var(--text-dark);
-      background: linear-gradient(145deg, #f1e4ea 0%, #e8d0dc 100%);
-      box-shadow: 0 4px 14px rgba(114, 14, 50, 0.12);
+      background: linear-gradient(145deg, #dcf7e4 0%, #a8e6bb 100%);
+      box-shadow: 0 4px 14px rgba(34, 139, 34, 0.16);
     }
     .panel-ber-hero-arrow {
       font-size: 2rem;
@@ -1188,7 +1220,7 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background: rgba(114, 14, 50, 0.12);
+      background: var(--charcoal-mid);
       border: 1px solid var(--border-gold);
       color: var(--text-dark);
       font-size: 11px;
@@ -1249,8 +1281,8 @@
       font-weight: 800;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(0,0,0,0.88);
-      text-shadow: 0 1px 2px rgba(255,255,255,0.9);
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
       pointer-events: none;
     }
     .ba-rail-label.before { left: 12px; }
@@ -1541,12 +1573,16 @@
       inset: 0;
       z-index: 590;
       background: rgba(0,0,0,0);
+      -webkit-backdrop-filter: blur(0);
+      backdrop-filter: blur(0);
       pointer-events: none;
-      transition: background 0.3s;
+      transition: background 0.3s, backdrop-filter 0.3s, -webkit-backdrop-filter 0.3s;
     }
     #panel-overlay.active {
       pointer-events: all;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, 0.4);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
     }
 
     /* Leaflet overrides */
@@ -1695,11 +1731,11 @@
     </div>
     <div class="stat-card w-full min-w-0 sm:flex-1">
       <div class="stat-number">+€2,000</div>
-      <div class="stat-label">Annual savings increase</div>
+      <div class="stat-label">Avg. Annual Savings Increase</div>
     </div>
     <div class="stat-card w-full min-w-0 sm:flex-1">
       <div class="stat-number">+€22,000</div>
-      <div class="stat-label">Avg. property value uplift</div>
+      <div class="stat-label">Avg. Property Value Increase</div>
     </div>
   </div>
 
@@ -1732,7 +1768,7 @@
             <input class="contact-above-map-input" type="text" id="quote-name" name="name" placeholder="Name" autocomplete="name" required aria-label="Name">
             <input class="contact-above-map-input" type="email" id="quote-email" name="email" placeholder="Email address" autocomplete="email" inputmode="email" required aria-label="Email">
             <input class="contact-above-map-input" type="tel" id="quote-phone" name="phone" placeholder="Phone number" autocomplete="tel" inputmode="tel" required aria-label="Phone">
-            <button type="submit" class="contact-above-map-submit">Enquire</button>
+            <button type="submit" class="contact-above-map-submit">Enquire for FREE QUOTE</button>
           </form>
           <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
         </div>
@@ -2088,6 +2124,7 @@ const supabaseClient = (typeof supabase !== 'undefined' && supabase.createClient
 
 const BER_SCALE = ['G', 'F1', 'F2', 'E1', 'E2', 'D1', 'D2', 'C1', 'C2', 'B3', 'B2', 'B1', 'A3', 'A2', 'A1'];
 const GALLERY_JOBS_STORAGE_KEY = 'ecomap_gallery_jobs_v1';
+const PENDING_QUOTES_STORAGE_KEY = 'ecomap_pending_quotes_v1';
 const DEFAULT_BEFORE_PHOTO = './assets/job-photos/before-default.png';
 const DEFAULT_AFTER_PHOTO = './assets/job-photos/after-default.png';
 
@@ -2099,6 +2136,8 @@ let customers = [];
  * @type {Array<{id:number,customerId:string,title:string,location:string,beforePhotos:string[],afterPhotos:string[],annualSavings:number,propertyValueIncrease:number,seaiGrant:number,oldBER:string,newBER:string,completionDate:string,notes?:string}>}
  */
 let galleryJobs = [];
+/** @type {Array<{name:string,email?:string|null,phone?:string|null,queuedAt:string}>} */
+let pendingQuotes = [];
 
 function loadGalleryJobsFromStorage() {
   try {
@@ -2124,6 +2163,57 @@ function persistGalleryJobs() {
       el.classList.remove('hidden');
     }
   }
+}
+
+function loadPendingQuotesFromStorage() {
+  try {
+    const raw = localStorage.getItem(PENDING_QUOTES_STORAGE_KEY);
+    if (!raw) {
+      pendingQuotes = [];
+      return;
+    }
+    const parsed = JSON.parse(raw);
+    pendingQuotes = Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    pendingQuotes = [];
+  }
+}
+
+function persistPendingQuotes() {
+  try {
+    localStorage.setItem(PENDING_QUOTES_STORAGE_KEY, JSON.stringify(pendingQuotes));
+  } catch (e) {
+    // Best effort only; avoid blocking user flow if storage is full.
+  }
+}
+
+function queuePendingQuote(payload) {
+  pendingQuotes.push({
+    name: payload.name,
+    email: payload.email || null,
+    phone: payload.phone || null,
+    queuedAt: new Date().toISOString()
+  });
+  persistPendingQuotes();
+}
+
+function isRlsPolicyError(error) {
+  const msg = String(error?.message || '').toLowerCase();
+  return msg.includes('row-level security') || msg.includes('violates row-level security policy');
+}
+
+async function flushPendingQuotes() {
+  if (!supabaseClient || !pendingQuotes.length) return true;
+  const payload = pendingQuotes.map(q => ({
+    name: q.name,
+    email: q.email || null,
+    phone: q.phone || null
+  }));
+  const { error } = await supabaseClient.from('customers').insert(payload);
+  if (error) return false;
+  pendingQuotes = [];
+  persistPendingQuotes();
+  return true;
 }
 
 function showSupabaseBanner(msg) {
@@ -2851,7 +2941,6 @@ function renderPins() {
 
   getVisibleJobs().forEach(job => {
     const isNearest = job.id === nearestId;
-    const grant = seaiGrantByType(job.type);
     const a11yLabel = isNearest ? 'Nearest completed job' : 'Completed job';
     const icon = L.divIcon({
       html: `<div class="job-marker-dot${isNearest ? ' nearest' : ''}" role="img" aria-label="${a11yLabel}">🏠</div>`,
@@ -2864,10 +2953,7 @@ function renderPins() {
     const popupHtml = `
       <div style="min-width:230px;line-height:1.35;">
         <strong>${job.address}</strong><br>
-        ${job.type} · Completed ${job.completedDate}<br>
-        BER ${job.berBefore} → ${job.berAfter}<br>
-        Annual saving: €${job.annualSaving.toLocaleString()}<br>
-        SEAI grant: €${grant.toLocaleString()}
+        <span style="font-weight:700;color:#720e32;">Click Icon for more job details →</span>
       </div>
     `;
 
@@ -2911,10 +2997,10 @@ overlay.addEventListener('click', closePanel);
 
 function panelBenefitIcons() {
   return {
-    euro: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12.5A3.5 3.5 0 0 0 16 4H4M4 14h12.5A3.5 3.5 0 0 1 16 20H4"/><path d="M6 4 4 12m0 0 2 8M18 4l2 8m0 0-2 8"/></svg></span>`,
-    chart: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12l4-4 4 10 4-6"/></svg></span>`,
-    temp: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/><path d="M12 9v1"/></svg></span>`,
-    leaf: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 6.49 4 8.5A7 7 0 1 1 11 20Z"/><path d="M2 22c.5-3 2.5-5 6-5"/></svg></span>`
+    euro: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1F9D45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.3"/><path d="M7 9h.01M17 15h.01"/><path d="M13.8 10.4h-2a1.6 1.6 0 1 0 0 3.2h2"/><path d="M10.9 12h2.7"/></svg></span>`,
+    chart: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 15l4-4 3 2 5-6" stroke="#1F9D45"/><path d="M18 7h-4" stroke="#1F9D45"/><path d="m18 7-2-2" stroke="#1F9D45"/><path d="m18 7-2 2" stroke="#1F9D45"/></svg></span>`,
+    temp: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="tempGradient" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#7FD8FF"/><stop offset="100%" stop-color="#FF2A2A"/></linearGradient></defs><path d="M10 5a2 2 0 1 1 4 0v8.3a4.4 4.4 0 1 1-4 0Z" stroke="url(#tempGradient)"/><path d="M12 10v5" stroke="url(#tempGradient)"/><path d="M12 17.6v.01" stroke="url(#tempGradient)"/><path d="M8 7h1.5M8 10h1.5M8 13h1.5" stroke="url(#tempGradient)"/></svg></span>`,
+    leaf: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><defs><linearGradient id="leafTopGrad" x1="22" y1="22" x2="52" y2="8" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1F9D45"/><stop offset="100%" stop-color="#A7E96E"/></linearGradient><linearGradient id="leafBottomGrad" x1="6" y1="42" x2="26" y2="30" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#168A3A"/><stop offset="100%" stop-color="#84D95A"/></linearGradient><linearGradient id="stemGrad" x1="28" y1="52" x2="32" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#137A33"/><stop offset="100%" stop-color="#45B14F"/></linearGradient></defs><path d="M31 52C30 42 31 33 34 26" stroke="url(#stemGrad)" stroke-width="4" stroke-linecap="round"/><path d="M34 26C42 15 54 12 60 10C54 18 48 24 40 28C37 29 35 29 34 26Z" fill="url(#leafTopGrad)"/><path d="M30 40C22 35 14 36 6 40C13 42 19 45 26 47C29 48 31 46 30 40Z" fill="url(#leafBottomGrad)"/><path d="M35 25C43 20 51 16 58 12" stroke="#0F6C2F" stroke-width="1.5" stroke-linecap="round" opacity=".45"/><path d="M29 41C21 40 14 40 8 40" stroke="#0F6C2F" stroke-width="1.5" stroke-linecap="round" opacity=".4"/></svg></span>`
   };
 }
 
@@ -2936,10 +3022,10 @@ function buildPanelHTML(job) {
         <div class="job-address">${job.address}</div>
         <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
         <div class="benefits-grid">
-          <div class="benefit-card highlight">
+          <div class="benefit-card">
             ${ic.euro}
-            <div class="benefit-value">€${job.annualSaving.toLocaleString()}</div>
-            <div class="benefit-desc">Annual energy saving</div>
+            <div class="benefit-value">+€${job.annualSaving.toLocaleString()}</div>
+            <div class="benefit-desc">Annual energy savings</div>
           </div>
           <div class="benefit-card">
             ${ic.chart}
@@ -2957,18 +3043,6 @@ function buildPanelHTML(job) {
             <div class="benefit-desc">CO₂ reduction per year</div>
           </div>
         </div>
-        <div class="panel-action-grid">
-          <div class="seai-box">
-            <div class="seai-box-row">
-              <div class="seai-icon" aria-hidden="true">⚡</div>
-              <div class="seai-text">
-                <strong>SEAI grants of up to €25,000</strong>
-                <span>Available for this type of work. Ask us how to claim yours.</span>
-              </div>
-            </div>
-            <a class="seai-eligibility-btn" href="https://www.seai.ie/grants/" target="_blank" rel="noopener noreferrer">Check my eligibility →</a>
-          </div>
-        </div>
       </div>
       <div class="before-after-container" id="ba-container">
         <span class="ba-rail-label before">Before</span>
@@ -2981,6 +3055,18 @@ function buildPanelHTML(job) {
         </div>
         <div class="ba-divider" id="ba-divider"></div>
         <div class="ba-handle" id="ba-handle" title="Drag to compare">${baHandleSvg}</div>
+      </div>
+      <div class="panel-action-grid">
+        <div class="seai-box">
+          <div class="seai-box-row">
+            <div class="seai-icon" aria-hidden="true">⚡</div>
+            <div class="seai-text">
+              <strong>SEAI grants of up to €25,000</strong>
+              <span>Available for this type of work. Ask us how to claim yours.</span>
+            </div>
+          </div>
+          <a class="seai-eligibility-btn" href="https://www.seai.ie/grants/" target="_blank" rel="noopener noreferrer">Check my eligibility →</a>
+        </div>
       </div>
     </div>
   `;
@@ -3051,6 +3137,9 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
   const form = document.getElementById('quote-request-form');
   const feedback = document.getElementById('quote-feedback');
   if (!form || !feedback) return;
+  loadPendingQuotesFromStorage();
+  const successMsg = 'Our secretary will be in contact,in due course, to schedule an appointment';
+  const queuedMsg = 'We saved your enquiry locally, but could not sync it to our server yet. Please try again shortly.';
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -3061,9 +3150,13 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     feedback.hidden = false;
 
     if (!supabaseClient) {
-      feedback.textContent = 'Could not save your details right now. Please try again shortly.';
+      queuePendingQuote({ name, email: email || null, phone: phone || null });
+      showSupabaseBanner('Supabase is not connected. Submission queued locally.');
+      feedback.textContent = queuedMsg;
       return;
     }
+
+    await flushPendingQuotes();
 
     const { error } = await supabaseClient.from('customers').insert({
       name,
@@ -3072,12 +3165,20 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     });
 
     if (error) {
-      feedback.textContent = error.message || 'Could not save your details. Please try again.';
+      console.error('Quote insert failed:', error);
+      queuePendingQuote({ name, email: email || null, phone: phone || null });
+      if (isRlsPolicyError(error)) {
+        showSupabaseBanner('Insert blocked by Supabase RLS policy for table "customers".');
+        feedback.textContent = 'Submission was blocked by server policy (RLS). Ask your admin to allow anon inserts on "customers".';
+      } else {
+        showSupabaseBanner(error.message || 'Could not save enquiry to Supabase.');
+        feedback.textContent = queuedMsg;
+      }
       return;
     }
 
     await fetchCustomers();
-    feedback.textContent = 'Saved to database. Thanks — we\'ll contact you shortly.';
+    feedback.textContent = successMsg;
     form.reset();
     setTimeout(() => { feedback.hidden = true; }, 8000);
   });
