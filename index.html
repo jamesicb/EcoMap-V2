@@ -188,6 +188,39 @@
       outline-offset: 3px;
     }
 
+    .btn-cta--letterpop {
+      perspective: 420px;
+      transform-style: preserve-3d;
+    }
+    .btn-cta--letterpop .cta-letter {
+      display: inline-block;
+      transform-origin: center center;
+      transform-style: preserve-3d;
+      animation: cta-letter-pop 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(var(--i) * 42ms);
+    }
+    @keyframes cta-letter-pop {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 0.12em, -0.55em) scale(0.72);
+      }
+      58% {
+        opacity: 1;
+        transform: translate3d(0, -0.02em, 0.42em) scale(1.14);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .btn-cta--letterpop .cta-letter {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+
     .splash-trust {
       margin-top: 16px;
       display: flex;
@@ -256,7 +289,7 @@
 
     .map-screen-layout {
       display: grid;
-      grid-template-rows: auto auto auto 1fr auto auto auto;
+      grid-template-rows: auto auto auto 1fr auto auto;
       min-height: 0;
       flex: 1;
       height: 100%;
@@ -288,14 +321,11 @@
       .map-frame {
         grid-row: 4;
       }
-      .job-strip-title {
+      .job-strip-panel {
         grid-row: 5;
       }
-      .job-strip {
-        grid-row: 6;
-      }
       .app-tab-bar {
-        grid-row: 7;
+        grid-row: 6;
       }
     }
 
@@ -357,19 +387,70 @@
     .lux-filter-pill--muted {
       color: var(--text-muted);
     }
+    .job-strip-panel {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      background: var(--charcoal-mid);
+      border-top: 1px solid var(--border-gold);
+    }
+    .job-strip-scroll-wrap {
+      flex-shrink: 0;
+      padding: 0 20px 4px;
+      box-sizing: border-box;
+    }
+    /* Always occupies the same vertical space as the active scrollbar so the map 1fr row does not resize when overflow toggles. */
+    .job-strip-scroll-wrap--dormant .job-strip-scroll-track {
+      opacity: 0.32;
+      pointer-events: none;
+    }
+    .job-strip-scroll-wrap--dormant .job-strip-scroll-thumb {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .job-strip-scroll-track {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--charcoal-light);
+      box-shadow: inset 0 0 0 1px var(--border-light);
+      outline: none;
+    }
+    .job-strip-scroll-track:focus-visible {
+      box-shadow: inset 0 0 0 1px var(--border-light), 0 0 0 2px rgba(114, 14, 50, 0.35);
+    }
+    .job-strip-scroll-thumb {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      min-width: 36px;
+      width: 36px;
+      border-radius: 999px;
+      background: var(--gold);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      cursor: grab;
+      touch-action: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .job-strip-scroll-thumb.is-dragging {
+      cursor: grabbing;
+    }
     .job-strip {
       display: flex;
-      gap: 10px;
-      padding: 10px 24px;
+      gap: 8px;
+      padding: 2px 20px 6px;
       background: var(--charcoal-mid);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      border-top: 1px solid var(--border-gold);
       flex-shrink: 0;
-      scrollbar-width: thin;
+      scrollbar-width: none;
+    }
+    .job-strip::-webkit-scrollbar {
+      display: none;
     }
     .job-strip-title {
-      padding: 8px 24px 0;
+      padding: 5px 20px 4px;
       background: var(--charcoal-mid);
       color: var(--text-muted);
       font-size: clamp(11px, 1.2vw, 13px);
@@ -378,15 +459,8 @@
       line-height: 1.35;
       text-align: left;
     }
-    .job-strip::-webkit-scrollbar {
-      height: 6px;
-    }
-    .job-strip::-webkit-scrollbar-thumb {
-      background: var(--border-gold);
-      border-radius: 3px;
-    }
     .listing-card {
-      flex: 0 0 200px;
+      flex: 0 0 164px;
       background: var(--charcoal);
       border: 1px solid var(--border-gold);
       border-radius: 10px;
@@ -405,27 +479,27 @@
       outline: none;
     }
     .listing-card .card-img {
-      height: 64px;
+      height: 48px;
       background: var(--charcoal-light);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 20px;
       border-bottom: 1px solid var(--border-light);
     }
     .listing-card .card-body {
-      padding: 8px 10px;
+      padding: 6px 8px;
     }
     .listing-card .card-price {
       color: var(--text-dark);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.03em;
       margin-bottom: 2px;
     }
     .listing-card .card-addr {
       color: var(--text-muted);
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       line-height: 1.35;
@@ -433,11 +507,11 @@
     .listing-card .card-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 5px;
+      gap: 4px;
+      margin-top: 4px;
     }
     .listing-card .tag {
-      font-size: 9px;
+      font-size: 8px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       padding: 2px 6px;
@@ -460,7 +534,7 @@
       .map-map-section {
         order: 4;
       }
-      .job-strip {
+      .job-strip-panel {
         order: 5;
       }
       .app-tab-bar {
@@ -530,6 +604,9 @@
         margin: 0 auto 0;
         min-height: 0;
         border-radius: 0 0 12px 12px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
       }
     }
 
@@ -560,6 +637,14 @@
       .map-frame-inner {
         aspect-ratio: unset;
         height: 100%;
+      }
+    }
+
+    @media (min-width: 901px) {
+      .map-frame-inner {
+        aspect-ratio: unset;
+        flex: 1 1 auto;
+        min-height: 0;
       }
     }
 
@@ -774,14 +859,7 @@
     }
 
     @media (min-width: 901px) {
-      .job-strip-title {
-        max-width: 612px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .job-strip {
+      .job-strip-panel {
         max-width: 612px;
         margin-left: auto;
         margin-right: auto;
@@ -1739,7 +1817,9 @@
     </div>
   </div>
 
-  <button class="btn-cta" id="btn-explore">Explore jobs near me →</button>
+  <button type="button" class="btn-cta btn-cta--letterpop" id="btn-explore" aria-label="Explore jobs near me">
+    <span class="cta-letter" style="--i:0">E</span><span class="cta-letter" style="--i:1">x</span><span class="cta-letter" style="--i:2">p</span><span class="cta-letter" style="--i:3">l</span><span class="cta-letter" style="--i:4">o</span><span class="cta-letter" style="--i:5">r</span><span class="cta-letter" style="--i:6">e</span><span class="cta-letter" style="--i:7">&nbsp;</span><span class="cta-letter" style="--i:8">j</span><span class="cta-letter" style="--i:9">o</span><span class="cta-letter" style="--i:10">b</span><span class="cta-letter" style="--i:11">s</span><span class="cta-letter" style="--i:12">&nbsp;</span><span class="cta-letter" style="--i:13">n</span><span class="cta-letter" style="--i:14">e</span><span class="cta-letter" style="--i:15">a</span><span class="cta-letter" style="--i:16">r</span><span class="cta-letter" style="--i:17">&nbsp;</span><span class="cta-letter" style="--i:18">m</span><span class="cta-letter" style="--i:19">e</span><span class="cta-letter" style="--i:20">&nbsp;</span><span class="cta-letter" style="--i:21">→</span>
+  </button>
   <div class="splash-trust">
     <div class="splash-trust-row">
       <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland">SEAI-registered contractor</span>
@@ -1806,8 +1886,25 @@
         </div>
       </div>
 
-      <p class="job-strip-title" data-hide-on-subview>Scroll across to view jobs</p>
-      <div class="job-strip" id="job-strip" aria-label="Projects in the area" data-hide-on-subview></div>
+      <div class="job-strip-panel" data-hide-on-subview>
+        <p class="job-strip-title">Scroll across to view jobs</p>
+        <div class="job-strip-scroll-wrap job-strip-scroll-wrap--dormant" id="job-strip-scroll-wrap" aria-hidden="true">
+          <div
+            class="job-strip-scroll-track"
+            id="job-strip-scroll-track"
+            tabindex="-1"
+            role="slider"
+            aria-controls="job-strip"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            aria-label="Scroll job cards horizontally"
+          >
+            <div class="job-strip-scroll-thumb" id="job-strip-scroll-thumb" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="job-strip" id="job-strip" aria-label="Projects in the area"></div>
+      </div>
 
       <div id="crm-view-jobs" class="crm-subview" hidden>
         <div class="max-w-6xl mx-auto px-4 py-4 pb-6">
@@ -2707,16 +2804,21 @@ let lastUserLat = null, lastUserLng = null;
 let houseTypeFilter = null;
 let markerClusterLayer = null;
 const markers = {};
+/** Set when job-strip DOM was last built for this ordered in-bounds id list (avoids reset on zoom-only). */
+let lastJobStripInViewSig = null;
 
 function scheduleMapResize() {
   if (!map) return;
-  requestAnimationFrame(() => { map.invalidateSize(true); });
+  requestAnimationFrame(() => {
+    map.invalidateSize(true);
+  });
   setTimeout(() => map.invalidateSize(true), 120);
   setTimeout(() => map.invalidateSize(true), 450);
 }
 
 window.addEventListener('resize', () => {
   if (map) map.invalidateSize(true);
+  requestAnimationFrame(() => syncJobStripScrollBar());
 });
 
 function seaiGrantByType(type) {
@@ -2754,10 +2856,119 @@ function getJobsInMapBounds() {
 
 const stripEmojis = ['🏡', '🏘', '🏠', '🏙'];
 
+let jobStripScrollBarInited = false;
+
+function syncJobStripScrollBar() {
+  const strip = document.getElementById('job-strip');
+  const wrap = document.getElementById('job-strip-scroll-wrap');
+  const track = document.getElementById('job-strip-scroll-track');
+  const thumb = document.getElementById('job-strip-scroll-thumb');
+  if (!strip || !wrap || !track || !thumb) return;
+  const panel = strip.closest('.job-strip-panel');
+  if (panel && panel.hidden) return;
+
+  const maxScroll = strip.scrollWidth - strip.clientWidth;
+  if (maxScroll <= 1 || strip.clientWidth < 48) {
+    wrap.classList.add('job-strip-scroll-wrap--dormant');
+    wrap.setAttribute('aria-hidden', 'true');
+    track.removeAttribute('aria-valuenow');
+    track.tabIndex = -1;
+    thumb.style.width = '';
+    thumb.style.left = '';
+    return;
+  }
+  wrap.classList.remove('job-strip-scroll-wrap--dormant');
+  wrap.setAttribute('aria-hidden', 'false');
+  track.tabIndex = 0;
+  const tw = track.clientWidth;
+  const thumbW = Math.max(36, Math.round((strip.clientWidth / strip.scrollWidth) * tw));
+  const maxThumbLeft = Math.max(0, tw - thumbW);
+  const scrollRatio = maxScroll > 0 ? strip.scrollLeft / maxScroll : 0;
+  const left = Math.round(scrollRatio * maxThumbLeft);
+  thumb.style.width = `${thumbW}px`;
+  thumb.style.left = `${left}px`;
+  const pct = Math.round(scrollRatio * 100);
+  track.setAttribute('aria-valuenow', String(pct));
+  track.setAttribute('aria-valuemax', '100');
+}
+
+function initJobStripScrollBar() {
+  if (jobStripScrollBarInited) return;
+  const strip = document.getElementById('job-strip');
+  const wrap = document.getElementById('job-strip-scroll-wrap');
+  const track = document.getElementById('job-strip-scroll-track');
+  const thumb = document.getElementById('job-strip-scroll-thumb');
+  if (!strip || !wrap || !track || !thumb) return;
+  jobStripScrollBarInited = true;
+
+  strip.addEventListener('scroll', () => syncJobStripScrollBar(), { passive: true });
+
+  thumb.addEventListener('pointerdown', e => {
+    e.stopPropagation();
+    e.preventDefault();
+    const startX = e.clientX;
+    const startScroll = strip.scrollLeft;
+    thumb.classList.add('is-dragging');
+    function onMove(ev) {
+      const maxScroll = strip.scrollWidth - strip.clientWidth;
+      const maxThumbLeft = track.clientWidth - thumb.offsetWidth;
+      if (maxThumbLeft <= 0 || maxScroll <= 0) return;
+      const dx = ev.clientX - startX;
+      strip.scrollLeft = Math.max(0, Math.min(maxScroll, startScroll + (dx / maxThumbLeft) * maxScroll));
+    }
+    function onUp(ev) {
+      thumb.classList.remove('is-dragging');
+      thumb.removeEventListener('pointermove', onMove);
+      thumb.removeEventListener('pointerup', onUp);
+      thumb.removeEventListener('pointercancel', onUp);
+      try {
+        thumb.releasePointerCapture(ev.pointerId);
+      } catch (_) { /* noop */ }
+    }
+    thumb.setPointerCapture(e.pointerId);
+    thumb.addEventListener('pointermove', onMove);
+    thumb.addEventListener('pointerup', onUp);
+    thumb.addEventListener('pointercancel', onUp);
+  });
+
+  track.addEventListener('pointerdown', e => {
+    if (e.target !== track) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const maxScroll = strip.scrollWidth - strip.clientWidth;
+    if (maxScroll <= 0) return;
+    const rect = track.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const thumbW = thumb.offsetWidth;
+    const maxThumbLeft = track.clientWidth - thumbW;
+    const ratio = maxThumbLeft > 0
+      ? Math.max(0, Math.min(1, (x - thumbW / 2) / maxThumbLeft))
+      : 0;
+    strip.scrollLeft = ratio * maxScroll;
+    syncJobStripScrollBar();
+  });
+
+  track.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    const maxScroll = strip.scrollWidth - strip.clientWidth;
+    if (maxScroll <= 0) return;
+    const step = Math.max(72, Math.round(strip.clientWidth * 0.35));
+    strip.scrollLeft = Math.max(0, Math.min(maxScroll, strip.scrollLeft + (e.key === 'ArrowRight' ? step : -step)));
+    syncJobStripScrollBar();
+  });
+}
+
 function renderJobStrip() {
   const strip = document.getElementById('job-strip');
   if (!strip) return;
   const list = getJobsInMapBounds();
+  const sortedSig = list.map(j => j.id).slice().sort((a, b) => a - b).join();
+  if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) return;
+
+  const prevMax = Math.max(0, strip.scrollWidth - strip.clientWidth);
+  const hScrollRatio = prevMax > 0 ? strip.scrollLeft / prevMax : 0;
+
+  lastJobStripInViewSig = sortedSig;
   strip.innerHTML = list
     .map((job, i) => {
       const emoji = stripEmojis[i % stripEmojis.length];
@@ -2781,6 +2992,15 @@ function renderJobStrip() {
       const job = portfolioJobs.find(j => j.id === id);
       if (job) openPanel(job);
     });
+  });
+  requestAnimationFrame(() => {
+    const newMax = Math.max(0, strip.scrollWidth - strip.clientWidth);
+    if (newMax > 0) {
+      strip.scrollLeft = Math.max(0, Math.min(newMax, Math.round(hScrollRatio * newMax)));
+    } else {
+      strip.scrollLeft = 0;
+    }
+    syncJobStripScrollBar();
   });
 }
 
@@ -2891,9 +3111,10 @@ function initMap() {
   map.addLayer(markerClusterLayer);
 
   initHouseTypeFilters();
+  initJobStripScrollBar();
   renderPins();
 
-  map.on('moveend zoomend', () => {
+  map.on('moveend', () => {
     renderJobStrip();
     updateMapInViewLabel();
   });
@@ -2967,6 +3188,7 @@ function renderPins() {
     markers[job.id] = marker;
   });
 
+  lastJobStripInViewSig = null;
   renderJobStrip();
   updateMapInViewLabel();
 }
