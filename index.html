@@ -391,6 +391,8 @@
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      position: relative;
+      z-index: 30;
       background: var(--charcoal-mid);
       border-top: 1px solid var(--border-gold);
     }
@@ -399,14 +401,9 @@
       padding: 0 20px 4px;
       box-sizing: border-box;
     }
-    /* Always occupies the same vertical space as the active scrollbar so the map 1fr row does not resize when overflow toggles. */
-    .job-strip-scroll-wrap--dormant .job-strip-scroll-track {
-      opacity: 0.32;
-      pointer-events: none;
-    }
+    /* Dormant = no horizontal overflow; keep hit-targets so wheel/pointer cannot fall through to the map. */
     .job-strip-scroll-wrap--dormant .job-strip-scroll-thumb {
-      opacity: 0;
-      pointer-events: none;
+      cursor: default;
     }
     .job-strip-scroll-track {
       position: relative;
@@ -419,6 +416,7 @@
     .job-strip-scroll-track:focus-visible {
       box-shadow: inset 0 0 0 1px var(--border-light), 0 0 0 2px rgba(114, 14, 50, 0.35);
     }
+    /* Width synced in JS (`JOB_STRIP_THUMB_W_PX`); fixed size, not proportional to overflow. */
     .job-strip-scroll-thumb {
       position: absolute;
       left: 0;
@@ -445,6 +443,9 @@
       -webkit-overflow-scrolling: touch;
       flex-shrink: 0;
       scrollbar-width: none;
+      touch-action: pan-x;
+      /* Same vertical space as one card row when in-bounds list is empty (zoomed in), so the flex/grid map pane does not grow. */
+      min-height: 118px;
     }
     .job-strip::-webkit-scrollbar {
       display: none;
@@ -544,6 +545,7 @@
 
     .map-map-section {
       position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       min-height: 0;
@@ -2858,6 +2860,9 @@ const stripEmojis = ['🏡', '🏘', '🏠', '🏙'];
 
 let jobStripScrollBarInited = false;
 
+/** Fixed physical thumb size (matches `.job-strip-scroll-thumb`); only position changes with scroll. */
+const JOB_STRIP_THUMB_W_PX = 36;
+
 function syncJobStripScrollBar() {
   const strip = document.getElementById('job-strip');
   const wrap = document.getElementById('job-strip-scroll-wrap');
@@ -2867,21 +2872,22 @@ function syncJobStripScrollBar() {
   const panel = strip.closest('.job-strip-panel');
   if (panel && panel.hidden) return;
 
+  const tw = track.clientWidth;
+  const thumbW = tw > 0 ? Math.min(JOB_STRIP_THUMB_W_PX, tw) : JOB_STRIP_THUMB_W_PX;
+
   const maxScroll = strip.scrollWidth - strip.clientWidth;
-  if (maxScroll <= 1 || strip.clientWidth < 48) {
+  if (maxScroll <= 1) {
     wrap.classList.add('job-strip-scroll-wrap--dormant');
     wrap.setAttribute('aria-hidden', 'true');
     track.removeAttribute('aria-valuenow');
     track.tabIndex = -1;
-    thumb.style.width = '';
-    thumb.style.left = '';
+    thumb.style.width = `${thumbW}px`;
+    thumb.style.left = '0px';
     return;
   }
   wrap.classList.remove('job-strip-scroll-wrap--dormant');
   wrap.setAttribute('aria-hidden', 'false');
   track.tabIndex = 0;
-  const tw = track.clientWidth;
-  const thumbW = Math.max(36, Math.round((strip.clientWidth / strip.scrollWidth) * tw));
   const maxThumbLeft = Math.max(0, tw - thumbW);
   const scrollRatio = maxScroll > 0 ? strip.scrollLeft / maxScroll : 0;
   const left = Math.round(scrollRatio * maxThumbLeft);
@@ -2901,10 +2907,49 @@ function initJobStripScrollBar() {
   if (!strip || !wrap || !track || !thumb) return;
   jobStripScrollBarInited = true;
 
+  const panel = strip.closest('.job-strip-panel');
+
   strip.addEventListener('scroll', () => syncJobStripScrollBar(), { passive: true });
 
+  /** Wheel anywhere on the job strip panel scrolls cards only (not the map). */
+  function onJobStripPanelWheel(e) {
+    if (!(e.target instanceof Element) || !panel || !panel.contains(e.target)) return;
+    const maxScroll = strip.scrollWidth - strip.clientWidth;
+    const overScrollUi = !!e.target.closest('#job-strip-scroll-wrap');
+    if (maxScroll > 1) {
+      const dx = e.deltaX;
+      const dy = e.deltaY;
+      const useX = Math.abs(dx) > Math.abs(dy);
+      if (useX && dx !== 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        strip.scrollLeft += dx;
+      } else if (!useX && dy !== 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        strip.scrollLeft += dy;
+      }
+      return;
+    }
+    if (overScrollUi) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+  panel?.addEventListener('wheel', onJobStripPanelWheel, { passive: false });
+
+  try {
+    const ro = new ResizeObserver(() => syncJobStripScrollBar());
+    ro.observe(strip);
+  } catch (_) { /* ResizeObserver unavailable */ }
+
   thumb.addEventListener('pointerdown', e => {
+    const maxScroll = strip.scrollWidth - strip.clientWidth;
     e.stopPropagation();
+    if (maxScroll <= 1) {
+      e.preventDefault();
+      return;
+    }
     e.preventDefault();
     const startX = e.clientX;
     const startScroll = strip.scrollLeft;
@@ -2933,6 +2978,7 @@ function initJobStripScrollBar() {
 
   track.addEventListener('pointerdown', e => {
     if (e.target !== track) return;
+    e.stopPropagation();
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     const maxScroll = strip.scrollWidth - strip.clientWidth;
     if (maxScroll <= 0) return;
@@ -2963,7 +3009,10 @@ function renderJobStrip() {
   if (!strip) return;
   const list = getJobsInMapBounds();
   const sortedSig = list.map(j => j.id).slice().sort((a, b) => a - b).join();
-  if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) return;
+  if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) {
+    requestAnimationFrame(() => syncJobStripScrollBar());
+    return;
+  }
 
   const prevMax = Math.max(0, strip.scrollWidth - strip.clientWidth);
   const hScrollRatio = prevMax > 0 ? strip.scrollLeft / prevMax : 0;
@@ -3117,6 +3166,9 @@ function initMap() {
   map.on('moveend', () => {
     renderJobStrip();
     updateMapInViewLabel();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => syncJobStripScrollBar());
+    });
   });
 
   if (navigator.geolocation) {
