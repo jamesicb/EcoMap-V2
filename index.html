@@ -130,6 +130,7 @@
       width: 100%;
       max-width: 480px;
       margin-bottom: 32px;
+      perspective: 520px;
     }
 
     .stat-card {
@@ -138,6 +139,47 @@
       border-radius: var(--radius-card);
       padding: 16px 12px 14px;
       text-align: center;
+      transform-origin: center center;
+      transform-style: preserve-3d;
+      transition:
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.18s ease,
+        border-color 0.2s ease;
+      animation: stat-card-pop 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .splash-stats .stat-card:nth-child(1) {
+      animation-delay: 0.15s;
+    }
+    .splash-stats .stat-card:nth-child(2) {
+      animation-delay: 0.22s;
+    }
+    .splash-stats .stat-card:nth-child(3) {
+      animation-delay: 0.29s;
+    }
+    @keyframes stat-card-pop {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 0.55rem, -0.45rem) scale(0.9);
+      }
+      58% {
+        opacity: 1;
+        transform: translate3d(0, -0.12rem, 0.28rem) scale(1.05);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .stat-card:hover {
+        transform: translate3d(0, -4px, 3px) scale(1.03);
+        box-shadow: 0 14px 32px rgba(107, 30, 61, 0.12);
+        border-color: rgba(107, 30, 61, 0.22);
+      }
+    }
+    .stat-card:active {
+      transform: translate3d(0, -1px, 0) scale(0.99);
+      box-shadow: 0 6px 16px rgba(107, 30, 61, 0.08);
     }
     .stat-number {
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -189,6 +231,7 @@
     }
 
     .btn-cta--letterpop {
+      --cta-letterpop-base: 0.95s; /* after last stat-card (0.29s + 0.58s) + ~80ms gap */
       perspective: 420px;
       transform-style: preserve-3d;
     }
@@ -197,7 +240,7 @@
       transform-origin: center center;
       transform-style: preserve-3d;
       animation: cta-letter-pop 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
-      animation-delay: calc(var(--i) * 42ms);
+      animation-delay: calc(var(--cta-letterpop-base) + var(--i) * 42ms);
     }
     @keyframes cta-letter-pop {
       0% {
@@ -218,6 +261,17 @@
         animation: none;
         opacity: 1;
         transform: none;
+      }
+      .stat-card {
+        animation: none;
+        opacity: 1;
+        transform: none;
+        transition: border-color 0.2s ease;
+      }
+      .stat-card:hover,
+      .stat-card:active {
+        transform: none;
+        box-shadow: none;
       }
     }
 
@@ -289,7 +343,8 @@
 
     .map-screen-layout {
       display: grid;
-      grid-template-rows: auto auto auto 1fr auto auto;
+      grid-template-rows: auto auto 1fr auto auto;
+      row-gap: 10px;
       min-height: 0;
       flex: 1;
       height: 100%;
@@ -304,57 +359,82 @@
       }
     }
 
-    /* Desktop: topbar → form → toolbar → map → job strip → tab bar */
+    /* Desktop: form → toolbar → map → job strip → tab bar */
     @media (min-width: 901px) {
       .map-map-section {
         display: contents;
       }
-      .lux-topbar {
+      .quote-bottom-sheet {
         grid-row: 1;
       }
-      .quote-bottom-sheet {
+      .lux-toolbar-row.map-filters-toolbar {
         grid-row: 2;
       }
-      .lux-toolbar-row.map-filters-toolbar {
+      .map-frame {
         grid-row: 3;
       }
-      .map-frame {
+      .job-strip-panel {
         grid-row: 4;
       }
-      .job-strip-panel {
+      .app-tab-bar {
         grid-row: 5;
       }
-      .app-tab-bar {
-        grid-row: 6;
-      }
     }
 
-    .lux-topbar {
-      flex-shrink: 0;
-      background: var(--charcoal);
-      border-bottom: 1px solid var(--border-gold);
-      padding: 0 24px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
     .lux-logo {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 15px;
-      letter-spacing: 0.2em;
-      color: var(--text-dark);
-      font-weight: 500;
+      font-size: clamp(1.45rem, 3.2vw, 1.9rem);
+      letter-spacing: 0.05em;
+      color: #6B1E3D;
+      font-weight: 600;
       text-transform: uppercase;
+      line-height: 1;
     }
-    .lux-region {
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    .lux-brand-heading-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 10px;
+      width: 100%;
+      margin: 0 0 14px;
+      padding-top: 2px;
+      box-sizing: border-box;
+      position: relative;
     }
-
+    .lux-brand-lockup {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .lux-brand-emblem {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: #6B1E3D;
+      border: 1px solid rgba(107, 30, 61, 0.22);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .lux-brand-emblem svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+    .lux-brand-above-form {
+      margin: 0;
+      padding: 0;
+      width: auto;
+      max-width: 100%;
+      text-align: center;
+      font-size: clamp(1.2rem, 4.1vw, 1.55rem);
+      line-height: 1.25;
+      flex: 0 1 auto;
+    }
     .lux-toolbar-row {
       flex-shrink: 0;
       background: var(--charcoal-mid);
@@ -362,7 +442,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid var(--border-light);
+      border-bottom: 1px solid #000;
     }
     .lux-toolbar-inner {
       display: flex;
@@ -373,7 +453,7 @@
     }
     .lux-filter-pill {
       background: transparent;
-      border: 1px solid var(--border-light);
+      border: 1px solid #000;
       color: var(--text-muted);
       border-radius: 6px;
       padding: 7px 16px;
@@ -398,7 +478,7 @@
     }
     .job-strip-scroll-wrap {
       flex-shrink: 0;
-      padding: 0 20px 4px;
+      padding: 1px 20px 5px;
       box-sizing: border-box;
     }
     /* Dormant = no horizontal overflow; keep hit-targets so wheel/pointer cannot fall through to the map. */
@@ -407,10 +487,10 @@
     }
     .job-strip-scroll-track {
       position: relative;
-      height: 8px;
+      height: 10px;
       border-radius: 999px;
-      background: var(--charcoal-light);
-      box-shadow: inset 0 0 0 1px var(--border-light);
+      background: #E9DED6;
+      box-shadow: inset 0 0 0 1px rgba(107, 30, 61, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.08);
       outline: none;
     }
     .job-strip-scroll-track:focus-visible {
@@ -426,7 +506,8 @@
       width: 36px;
       border-radius: 999px;
       background: var(--gold);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(107, 30, 61, 0.55);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
       cursor: grab;
       touch-action: none;
       -webkit-tap-highlight-color: transparent;
@@ -444,7 +525,7 @@
       flex-shrink: 0;
       scrollbar-width: none;
       touch-action: pan-x;
-      /* Same vertical space as one card row when in-bounds list is empty (zoomed in), so the flex/grid map pane does not grow. */
+      /* Same vertical space as one card row when the strip is empty, so the flex/grid map pane does not grow. */
       min-height: 118px;
     }
     .job-strip::-webkit-scrollbar {
@@ -454,20 +535,23 @@
       padding: 5px 20px 4px;
       background: var(--charcoal-mid);
       color: var(--text-muted);
-      font-size: clamp(11px, 1.2vw, 13px);
-      letter-spacing: 0.06em;
+      font-size: clamp(10px, 1.1vw, 11px);
+      letter-spacing: 0.07em;
+      font-weight: 500;
+      opacity: 0.85;
       text-transform: uppercase;
       line-height: 1.35;
       text-align: left;
     }
     .listing-card {
       flex: 0 0 164px;
-      background: var(--charcoal);
-      border: 1px solid var(--border-gold);
+      background: #F5F0EA;
+      border: 1px solid rgba(107, 30, 61, 0.2);
+      border-left: 4px solid #6B1E3D;
       border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
       text-align: left;
       font: inherit;
       color: inherit;
@@ -476,25 +560,32 @@
     }
     .listing-card:hover,
     .listing-card:focus-visible {
-      border-color: var(--text-dark);
+      border-color: rgba(107, 30, 61, 0.38);
+      box-shadow: 0 6px 14px rgba(107, 30, 61, 0.14);
+      transform: translateY(-1px);
       outline: none;
     }
     .listing-card .card-img {
       height: 48px;
-      background: var(--charcoal-light);
+      background: #F2E8E1;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
       border-bottom: 1px solid var(--border-light);
+    }
+    .listing-card .card-house-icon {
+      width: 20px;
+      height: 20px;
+      color: #6B1E3D;
+      display: block;
     }
     .listing-card .card-body {
       padding: 6px 8px;
     }
     .listing-card .card-price {
-      color: var(--text-dark);
+      color: #6B1E3D;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 700;
       letter-spacing: 0.03em;
       margin-bottom: 2px;
     }
@@ -521,25 +612,42 @@
       color: var(--text-dark);
       border: 1px solid rgba(114, 14, 50, 0.2);
     }
+    .listing-card .tag.ber-good {
+      background: #E4F3E6;
+      color: #1E6A35;
+      border-color: rgba(30, 106, 53, 0.35);
+    }
+    .listing-card .tag.ber-mid {
+      background: #FFF1DE;
+      color: #975A12;
+      border-color: rgba(151, 90, 18, 0.38);
+    }
+    .listing-card .tag.ber-warn {
+      background: #FEE9DC;
+      color: #A14D13;
+      border-color: rgba(161, 77, 19, 0.35);
+    }
+    .listing-card .tag.ber-poor {
+      background: #FDE5E5;
+      color: #9F1E1E;
+      border-color: rgba(159, 30, 30, 0.35);
+    }
 
     @media (max-width: 900px) {
-      .lux-topbar {
+      .quote-bottom-sheet {
         order: 1;
       }
-      .quote-bottom-sheet {
+      .lux-toolbar-row {
         order: 2;
       }
-      .lux-toolbar-row {
+      .map-map-section {
         order: 3;
       }
-      .map-map-section {
+      .job-strip-panel {
         order: 4;
       }
-      .job-strip-panel {
-        order: 5;
-      }
       .app-tab-bar {
-        order: 6;
+        order: 5;
       }
     }
 
@@ -563,8 +671,9 @@
 
     .map-filters-toolbar {
       flex-shrink: 0;
-      padding-top: 5px;
-      padding-bottom: 5px;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     @media (min-width: 901px) {
@@ -580,10 +689,10 @@
 
     .map-frame {
       width: 100%;
-      border: 3px solid #6B1E3D;
-      border-radius: 0;
+      border: 2px solid rgba(107, 30, 61, 0.45);
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.06);
+      box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.06), 0 6px 20px rgba(107, 30, 61, 0.08);
       background: #E8EAEF;
     }
 
@@ -591,12 +700,11 @@
       .map-map-section .map-frame {
         flex: 1;
         min-height: 0;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
+        border: 2px solid rgba(107, 30, 61, 0.35);
+        border-radius: 10px 10px 0 0;
+        box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.05);
         max-width: none;
         margin: 0;
-        border-top: 3px solid #6B1E3D;
       }
     }
 
@@ -655,14 +763,15 @@
       display: flex;
       flex-direction: column;
       min-height: 0;
-      background: transparent;
+      /* Match quote-sheet-scroll / toolbar so padding does not show map layout’s white (--charcoal). */
+      background: var(--charcoal-mid);
+      margin-bottom: 2px;
     }
 
     @media (max-width: 900px) {
       .quote-bottom-sheet {
         flex: 0 0 auto;
         min-height: 0;
-        background: transparent;
         border-radius: 0;
         box-shadow: none;
         margin-top: 0;
@@ -675,8 +784,10 @@
       .quote-bottom-sheet {
         flex-shrink: 0;
         width: 100%;
-        padding: 6px 1rem 7px;
+        padding: 0;
         box-sizing: border-box;
+        /* Page white at sides; grey only on .quote-sheet-scroll (same width as map). */
+        background: transparent;
       }
     }
 
@@ -699,7 +810,7 @@
       padding: 9px 20px;
       box-sizing: border-box;
       background: var(--charcoal-mid);
-      border-bottom: 1px solid var(--border-gold);
+      border-radius: 10px;
     }
 
     @media (min-width: 901px) {
@@ -708,6 +819,8 @@
         max-width: 612px;
         margin: 0 auto;
         width: 100%;
+        /* Former .quote-bottom-sheet vertical padding (6px / 7px) + inner 9px */
+        padding: 15px 20px 16px;
       }
       #quote-request-form .contact-above-map-submit {
         margin-right: -10px;
@@ -724,7 +837,7 @@
       align-items: stretch;
       gap: 8px;
       width: 100%;
-      margin-bottom: 0;
+      margin-bottom: 2px;
     }
 
     @media (max-width: 900px) {
@@ -743,11 +856,11 @@
       letter-spacing: 0.03em;
       color: var(--text-light);
       padding: 7px 12px;
-      border: 1px solid var(--border-gold);
+      border: 1px solid rgba(107, 30, 61, 0.24);
       border-radius: 6px;
-      background: var(--charcoal-light);
+      background: #F7F1EB;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
     .contact-above-map-input::placeholder {
@@ -755,11 +868,13 @@
       font-weight: 400;
     }
     .contact-above-map-input:hover {
-      border-color: var(--border-gold);
+      border-color: rgba(107, 30, 61, 0.35);
+      background: #FBF6F1;
     }
     .contact-above-map-input:focus {
-      border-color: var(--text-dark);
-      box-shadow: none;
+      border-color: #6B1E3D;
+      box-shadow: 0 0 0 3px rgba(107, 30, 61, 0.16);
+      background: #fffaf4;
     }
 
     .contact-above-map-submit {
@@ -771,17 +886,18 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--text-dark);
-      background: var(--charcoal-light);
-      border: 1px solid var(--gold);
+      color: #FAF8F5;
+      background: #6B1E3D;
+      border: 1px solid #6B1E3D;
       border-radius: 6px;
       cursor: pointer;
       box-shadow: none;
-      transition: background 0.2s, transform 0.12s;
+      transition: background 0.2s, transform 0.12s, box-shadow 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
     .contact-above-map-submit:hover {
-      background: var(--gold-pale);
+      background: #5E1A36;
+      box-shadow: 0 3px 12px rgba(107, 30, 61, 0.24);
     }
     .contact-above-map-submit:active {
       transform: scale(0.98);
@@ -937,16 +1053,16 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 4px 10px;
+      padding: 7px 12px;
       min-width: unset;
       background: transparent;
-      border: 1px solid var(--border-gold);
+      border: 1px solid rgba(107, 30, 61, 0.45);
       border-radius: 6px;
       font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--text-dark);
+      color: #6B1E3D;
       cursor: pointer;
       font-family: inherit;
       -webkit-tap-highlight-color: transparent;
@@ -961,18 +1077,32 @@
       flex-shrink: 0;
     }
     .browse-filters:hover {
-      background: rgba(114, 14, 50, 0.08);
+      background: rgba(107, 30, 61, 0.09);
+      border-color: #6B1E3D;
     }
     .browse-filters:active {
-      background: rgba(114, 14, 50, 0.12);
+      background: rgba(107, 30, 61, 0.16);
     }
     .browse-filters:focus-visible {
       outline: 2px solid var(--gold-light);
       outline-offset: 2px;
     }
     .browse-filters-wrap.is-open .browse-filters {
-      border-color: var(--text-dark);
-      box-shadow: 0 0 0 1px rgba(114, 14, 50, 0.25);
+      border-color: #6B1E3D;
+      box-shadow: 0 0 0 1px rgba(107, 30, 61, 0.3);
+    }
+    .browse-filters::after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-right: 1.8px solid currentColor;
+      border-bottom: 1.8px solid currentColor;
+      transform: rotate(45deg) translateY(-1px);
+      margin-left: 1px;
+      opacity: 0.9;
+    }
+    .browse-filters-wrap.is-open .browse-filters::after {
+      transform: rotate(-135deg) translateY(-1px);
     }
 
     .browse-filters-dropdown {
@@ -1020,7 +1150,7 @@
     @media (max-width: 900px) {
       .browse-filters {
         min-width: unset;
-        padding: 5px 10px;
+        padding: 6px 11px;
         border-radius: 6px;
         box-shadow: none;
       }
@@ -1049,18 +1179,23 @@
     }
 
     .job-marker-dot {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       border: 1.5px solid var(--gold);
-      background: var(--charcoal-mid);
+      background: #6B1E3D;
       box-shadow: 0 0 0 4px rgba(114, 14, 50, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      color: #F7F1EB;
       line-height: 1;
       user-select: none;
+    }
+    .job-marker-dot svg {
+      width: 18px;
+      height: 18px;
+      display: block;
     }
     .job-marker-dot.nearest {
       border: 2px solid var(--gold-light);
@@ -1086,11 +1221,11 @@
       left: 14px;
       bottom: auto;
       z-index: 500;
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border-gold);
+      background: #F7F1EB;
+      border: 1px solid rgba(107, 30, 61, 0.28);
       border-radius: 8px;
       padding: 10px 14px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 4px 16px rgba(107, 30, 61, 0.16);
       pointer-events: none;
     }
     .legend-item {
@@ -1098,9 +1233,10 @@
       align-items: center;
       gap: 8px;
       font-size: 11px;
-      color: var(--text-muted);
+      color: #6B1E3D;
       letter-spacing: 0.04em;
       line-height: 1;
+      font-weight: 500;
     }
     .legend-item + .legend-item { margin-top: 7px; }
     .legend-dot {
@@ -1111,18 +1247,23 @@
     }
     .legend-dot.green  { background: #2d7a3a; }
     .legend-house {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      border: 1.5px solid var(--gold);
-      background: var(--charcoal-mid);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid #6B1E3D;
+      background: #6B1E3D;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      color: #F7F1EB;
       line-height: 1;
       flex-shrink: 0;
-      box-shadow: 0 0 0 2px rgba(114, 14, 50, 0.12);
+      box-shadow: 0 0 0 2px rgba(107, 30, 61, 0.14);
+    }
+    .legend-house svg {
+      width: 11px;
+      height: 11px;
+      display: block;
     }
     .legend-dot.orange {
       background: transparent;
@@ -1132,21 +1273,23 @@
 
     /* CLUSTER */
     .cluster-marker {
-      background: #E8EAEF;
-      border: none;
-      border-radius: 8px;
-      color: var(--text-light);
+      width: 44px;
+      height: 44px;
+      background: #6B1E3D;
+      border: 2px solid rgba(245, 240, 234, 0.95);
+      border-radius: 50%;
+      color: #F7F1EB;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 0 4px rgba(207, 212, 222, 0.9);
+      box-shadow: 0 4px 14px rgba(107, 30, 61, 0.32);
     }
     .cluster-marker.cluster-large {
-      width: 52px !important;
-      height: 52px !important;
-      font-size: 15px;
+      width: 44px !important;
+      height: 44px !important;
+      font-size: 14px;
     }
     .cluster-marker.cluster-medium {
       width: 44px !important;
@@ -1154,9 +1297,15 @@
       font-size: 14px;
     }
     .cluster-marker.cluster-small {
-      width: 38px !important;
-      height: 38px !important;
-      font-size: 13px;
+      width: 44px !important;
+      height: 44px !important;
+      font-size: 14px;
+    }
+    .leaflet-marker-cluster.cluster-marker-wrap,
+    .leaflet-marker-cluster.cluster-marker-wrap div {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -1252,64 +1401,80 @@
     /* Badge */
     .panel-ber-hero {
       text-align: center;
-      padding: 18px 16px 20px;
+      padding: 18px 16px 16px;
       margin: -4px -18px 16px;
       background: linear-gradient(165deg, var(--charcoal-mid) 0%, var(--charcoal-light) 100%);
       border-bottom: 1px solid var(--border-gold);
-    }
-    .panel-ber-hero-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 10px;
     }
     .panel-ber-hero-grades {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
     }
     .panel-ber-hero-grade {
-      font-size: clamp(2.5rem, 10vw, 3.25rem);
-      font-weight: 800;
+      font-size: clamp(2.75rem, 10vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
       line-height: 1;
-      padding: 12px 20px;
-      border-radius: 16px;
+      padding: 10px 18px 11px;
+      border-radius: 9px;
       min-width: 4.5rem;
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      font-family: 'Inter', 'DM Sans', system-ui, sans-serif;
     }
     .panel-ber-hero-grade.old {
       color: var(--text-dark);
-      background: linear-gradient(145deg, #f5d4cf 0%, #ebb0a6 100%);
-      box-shadow: 0 4px 14px rgba(192,57,43,0.15);
+      background: linear-gradient(180deg, #f5cfc8 0%, #e8a398 100%);
+      box-shadow: 0 5px 14px rgba(192, 57, 43, 0.2);
     }
     .panel-ber-hero-grade.new {
       color: var(--text-dark);
-      background: linear-gradient(145deg, #dcf7e4 0%, #a8e6bb 100%);
-      box-shadow: 0 4px 14px rgba(34, 139, 34, 0.16);
+      background: linear-gradient(180deg, #dff4e5 0%, #9fd6ad 100%);
+      box-shadow: 0 5px 14px rgba(34, 139, 34, 0.2);
     }
     .panel-ber-hero-arrow {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--text-dark);
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #6a7277;
       opacity: 0.9;
+    }
+    .panel-ber-hero-arrow svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+    .panel-ber-hero-caption {
+      margin-top: 9px;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
     }
 
     .job-badge {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border-gold);
-      color: var(--text-dark);
+      gap: 6px;
+      background: var(--gold);
+      border: 1px solid var(--gold);
+      color: #fff;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 5px 12px;
-      border-radius: 6px;
+      padding: 6px 13px;
+      border-radius: 999px;
       margin-bottom: 10px;
+    }
+    .job-badge-icon {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
     }
 
     .job-address {
@@ -1332,8 +1497,9 @@
       max-width: 360px;
     }
     .job-subtitle {
-      font-size: 13px;
-      color: var(--text-muted);
+      font-size: 12px;
+      color: #8a8c91;
+      font-weight: 400;
       margin-bottom: 0;
     }
 
@@ -1341,7 +1507,7 @@
     .before-after-container {
       position: relative;
       border-radius: var(--radius-card);
-      border: 1px solid var(--border-gold);
+      border: 1px solid rgba(28, 28, 30, 0.16);
       overflow: hidden;
       width: 500px;
       max-width: 500px;
@@ -1355,7 +1521,7 @@
     }
     .ba-rail-label {
       position: absolute;
-      bottom: 10px;
+      bottom: 42px;
       z-index: 12;
       font-size: 10px;
       font-weight: 800;
@@ -1436,6 +1602,54 @@
       height: 22px;
       display: block;
     }
+    .ba-photo-nav {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      z-index: 14;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 999px;
+      padding: 4px 8px;
+      backdrop-filter: blur(2px);
+    }
+    .ba-photo-nav-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+    }
+    .ba-photo-nav-btn svg {
+      width: 12px;
+      height: 12px;
+      display: block;
+    }
+    .ba-photo-nav-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    .ba-photo-nav-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      min-width: 28px;
+      justify-content: center;
+    }
 
     /* BER ROW */
     .ber-row {
@@ -1501,22 +1715,30 @@
       border-color: var(--text-dark);
     }
     .benefit-icon {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
       color: var(--text-dark);
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     .benefit-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 19px;
+      height: 19px;
       display: block;
     }
     .benefit-value {
       font-size: 20px;
       font-weight: 800;
-      color: var(--text-dark);
+      color: var(--gold);
       line-height: 1;
     }
+    .benefit-card.savings .benefit-icon { background: #e9f7ee; }
+    .benefit-card.value .benefit-icon { background: #e8f2ff; }
+    .benefit-card.warmth .benefit-icon { background: #fdecec; }
+    .benefit-card.carbon .benefit-icon { background: #ebf8ef; }
     .benefit-desc {
       font-size: 11px;
       color: var(--text-muted);
@@ -1836,16 +2058,40 @@
 <div id="screen-map" class="screen hidden">
   <div class="browse-shell">
     <div class="map-screen-layout">
-      <header class="lux-topbar" aria-label="App header">
-        <div class="lux-logo">Absolute Acrylics</div>
-        <div class="lux-region">Dublin</div>
-      </header>
-
       <div class="quote-bottom-sheet" data-hide-on-subview>
         <div class="quote-sheet-handle-row" aria-hidden="true">
           <div class="quote-sheet-handle"></div>
         </div>
         <div class="quote-sheet-scroll" id="quote-sheet-scroll">
+          <div class="lux-brand-heading-wrap">
+            <div class="lux-brand-lockup" aria-label="Absolute Acrylics">
+              <span class="lux-brand-emblem" aria-hidden="true">
+                <svg viewBox="0 0 100 100" focusable="false">
+                  <circle cx="50" cy="50" r="46" fill="#F5D97A"/>
+                  <g fill="#6B1E3D">
+                    <polygon points="50.00,6.00 48.78,36.05 51.22,36.05"/>
+                    <polygon points="61.10,23.21 54.21,36.65 56.46,37.58"/>
+                    <polygon points="81.11,18.89 59.00,39.28 60.72,41.00"/>
+                    <polygon points="76.79,38.90 62.42,43.54 63.35,45.79"/>
+                    <polygon points="94.00,50.00 63.95,48.78 63.95,51.22"/>
+                    <polygon points="76.79,61.10 63.35,54.21 62.42,56.46"/>
+                    <polygon points="81.11,81.11 60.72,59.00 59.00,60.72"/>
+                    <polygon points="61.10,76.79 56.46,62.42 54.21,63.35"/>
+                    <polygon points="50.00,94.00 51.22,63.95 48.78,63.95"/>
+                    <polygon points="38.90,76.79 45.79,63.35 43.54,62.42"/>
+                    <polygon points="18.89,81.11 41.00,60.72 39.28,59.00"/>
+                    <polygon points="23.21,61.10 37.58,56.46 36.65,54.21"/>
+                    <polygon points="6.00,50.00 36.05,51.22 36.05,48.78"/>
+                    <polygon points="23.21,38.90 36.65,45.79 37.58,43.54"/>
+                    <polygon points="18.89,18.89 39.28,41.00 41.00,39.28"/>
+                    <polygon points="38.90,23.21 43.54,37.58 45.79,36.65"/>
+                  </g>
+                  <circle cx="50" cy="50" r="14" fill="#6B1E3D"/>
+                </svg>
+              </span>
+              <h1 class="lux-logo lux-brand-above-form">Absolute Acrylics</h1>
+            </div>
+          </div>
           <form class="contact-above-map js-quote-form" id="quote-request-form" aria-label="Request a free quote">
             <input class="contact-above-map-input" type="text" id="quote-name" name="name" placeholder="Name" autocomplete="name" required aria-label="Name">
             <input class="contact-above-map-input" type="email" id="quote-email" name="email" placeholder="Email address" autocomplete="email" inputmode="email" required aria-label="Email">
@@ -1877,7 +2123,7 @@
           <div class="map-frame-inner">
             <div id="map"></div>
             <div class="map-legend">
-              <div class="legend-item"><span class="legend-house" aria-hidden="true">🏠</span>Completed job</div>
+              <div class="legend-item"><span class="legend-house" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M6 10.5V20h12v-9.5"/><path d="M10 20v-5h4v5"/></svg></span>Completed job</div>
               <div class="legend-item"><div class="legend-dot orange"></div>Nearest to you</div>
             </div>
             <div class="map-inview-label" id="map-inview-label" aria-live="polite"></div>
@@ -2806,7 +3052,7 @@ let lastUserLat = null, lastUserLng = null;
 let houseTypeFilter = null;
 let markerClusterLayer = null;
 const markers = {};
-/** Set when job-strip DOM was last built for this ordered in-bounds id list (avoids reset on zoom-only). */
+/** Set when job-strip DOM was last built for this ordered visible-job id list (house filter only; avoids rebuild on pan/zoom). */
 let lastJobStripInViewSig = null;
 
 function scheduleMapResize() {
@@ -2856,7 +3102,7 @@ function getJobsInMapBounds() {
   return getVisibleJobs().filter(j => bounds.contains([j.lat, j.lng]));
 }
 
-const stripEmojis = ['🏡', '🏘', '🏠', '🏙'];
+const JOB_HOUSE_ICON = `<svg class="card-house-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M6 10.5V20h12v-9.5"/><path d="M10 20v-5h4v5"/></svg>`;
 
 let jobStripScrollBarInited = false;
 
@@ -3007,7 +3253,7 @@ function initJobStripScrollBar() {
 function renderJobStrip() {
   const strip = document.getElementById('job-strip');
   if (!strip) return;
-  const list = getJobsInMapBounds();
+  const list = getVisibleJobs();
   const sortedSig = list.map(j => j.id).slice().sort((a, b) => a - b).join();
   if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) {
     requestAnimationFrame(() => syncJobStripScrollBar());
@@ -3019,17 +3265,17 @@ function renderJobStrip() {
 
   lastJobStripInViewSig = sortedSig;
   strip.innerHTML = list
-    .map((job, i) => {
-      const emoji = stripEmojis[i % stripEmojis.length];
+    .map((job) => {
       const tag2 = job.berAfter ? `BER ${job.berAfter}` : 'Completed';
+      const berBandClass = getBerBadgeClass(job.berAfter);
       const addrShort =
         job.address.length > 36 ? `${job.address.slice(0, 34)}…` : job.address;
       return `<button type="button" class="listing-card" data-job-id="${job.id}" aria-label="View ${job.address}">
-        <div class="card-img" aria-hidden="true">${emoji}</div>
+        <div class="card-img" aria-hidden="true">${JOB_HOUSE_ICON}</div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
           <div class="card-addr">${addrShort}</div>
-          <div class="card-tags"><span class="tag">${tag2}</span></div>
+          <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
       </button>`;
     })
@@ -3051,6 +3297,15 @@ function renderJobStrip() {
     }
     syncJobStripScrollBar();
   });
+}
+
+function getBerBadgeClass(berValue) {
+  if (!berValue || typeof berValue !== 'string') return 'ber-mid';
+  const grade = berValue.trim().toUpperCase();
+  if (grade.startsWith('A') || grade.startsWith('B')) return 'ber-good';
+  if (grade.startsWith('C')) return 'ber-mid';
+  if (grade.startsWith('D')) return 'ber-warn';
+  return 'ber-poor';
 }
 
 function updateMapInViewLabel() {
@@ -3134,8 +3389,8 @@ function initMap() {
     zoomControl: false
   });
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     maxZoom: 19
   }).addTo(map);
 
@@ -3149,10 +3404,10 @@ function initMap() {
     iconCreateFunction(cluster) {
       const count = cluster.getChildCount();
       const sizeClass = count >= 10 ? 'cluster-large' : (count >= 5 ? 'cluster-medium' : 'cluster-small');
-      const size = count >= 10 ? 52 : (count >= 5 ? 44 : 38);
+      const size = 44;
       return L.divIcon({
         html: `<div class="cluster-marker ${sizeClass}">${count}</div>`,
-        className: 'leaflet-marker-cluster',
+        className: 'leaflet-marker-cluster cluster-marker-wrap',
         iconSize: L.point(size, size)
       });
     }
@@ -3216,10 +3471,10 @@ function renderPins() {
     const isNearest = job.id === nearestId;
     const a11yLabel = isNearest ? 'Nearest completed job' : 'Completed job';
     const icon = L.divIcon({
-      html: `<div class="job-marker-dot${isNearest ? ' nearest' : ''}" role="img" aria-label="${a11yLabel}">🏠</div>`,
+      html: `<div class="job-marker-dot${isNearest ? ' nearest' : ''}" role="img" aria-label="${a11yLabel}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M6 10.5V20h12v-9.5"/><path d="M10 20v-5h4v5"/></svg></div>`,
       className: '',
-      iconSize: [38, 38],
-      iconAnchor: [19, 19],
+      iconSize: [40, 40],
+      iconAnchor: [20, 20],
       popupAnchor: [0, -22]
     });
 
@@ -3257,6 +3512,7 @@ function openPanel(job) {
   jobPanel.classList.add('open');
   overlay.classList.add('active');
 
+  initPhotoCarousel(job);
   // Init before/after slider
   initBASlider();
 }
@@ -3281,37 +3537,43 @@ function panelBenefitIcons() {
 function buildPanelHTML(job) {
   const ic = panelBenefitIcons();
   const baHandleSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7 5 12l4 5M15 7l4 5-4 5"/></svg>`;
+  const arrowSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13"/><path d="m13 7 5 5-5 5"/></svg>`;
+  const checkSvg = `<svg class="job-badge-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8 3 3 7-7"/></svg>`;
+  const navLeftSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 3-5 5 5 5"/></svg>`;
+  const navRightSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>`;
+  const beforeSrc = job.beforePhotos && job.beforePhotos[0] ? job.beforePhotos[0] : DEFAULT_BEFORE_PHOTO;
+  const afterSrc = job.afterPhotos && job.afterPhotos[0] ? job.afterPhotos[0] : DEFAULT_AFTER_PHOTO;
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
-      <div class="panel-ber-hero-label">Energy rating upgrade</div>
       <div class="panel-ber-hero-grades">
         <div class="panel-ber-hero-grade old">${job.berBefore}</div>
-        <span class="panel-ber-hero-arrow" aria-hidden="true">→</span>
+        <span class="panel-ber-hero-arrow" aria-hidden="true">${arrowSvg}</span>
         <div class="panel-ber-hero-grade new">${job.berAfter}</div>
       </div>
+      <div class="panel-ber-hero-caption">BER Improvement</div>
     </div>
-    <div class="job-badge">✓ Completed ${job.completedDate}</div>
+    <div class="job-badge">${checkSvg} Completed ${job.completedDate}</div>
     <div class="job-header">
       <div class="job-info">
         <div class="job-address">${job.address}</div>
         <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
         <div class="benefits-grid">
-          <div class="benefit-card">
+          <div class="benefit-card savings">
             ${ic.euro}
             <div class="benefit-value">+€${job.annualSaving.toLocaleString()}</div>
             <div class="benefit-desc">Annual energy savings</div>
           </div>
-          <div class="benefit-card">
+          <div class="benefit-card value">
             ${ic.chart}
             <div class="benefit-value">+€${job.valueIncrease.toLocaleString()}</div>
             <div class="benefit-desc">Increase in property value</div>
           </div>
-          <div class="benefit-card">
+          <div class="benefit-card warmth">
             ${ic.temp}
             <div class="benefit-value">+${job.warmthGain}°C</div>
             <div class="benefit-desc">Warmer in winter</div>
           </div>
-          <div class="benefit-card">
+          <div class="benefit-card carbon">
             ${ic.leaf}
             <div class="benefit-value">-${job.co2Reduction}t</div>
             <div class="benefit-desc">CO₂ reduction per year</div>
@@ -3322,13 +3584,18 @@ function buildPanelHTML(job) {
         <span class="ba-rail-label before">Before</span>
         <span class="ba-rail-label after">After</span>
         <div class="ba-before">
-          <img src="${DEFAULT_BEFORE_PHOTO}" alt="Before retrofit home exterior" class="w-full h-full object-cover" />
+          <img id="ba-before-photo" src="${beforeSrc}" alt="Before retrofit home exterior" class="w-full h-full object-cover" />
         </div>
         <div class="ba-after" id="ba-after">
-          <img src="${DEFAULT_AFTER_PHOTO}" alt="After retrofit home exterior" class="w-full h-full object-cover" />
+          <img id="ba-after-photo" src="${afterSrc}" alt="After retrofit home exterior" class="w-full h-full object-cover" />
         </div>
         <div class="ba-divider" id="ba-divider"></div>
         <div class="ba-handle" id="ba-handle" title="Drag to compare">${baHandleSvg}</div>
+        <div class="ba-photo-nav">
+          <button type="button" class="ba-photo-nav-btn" id="ba-photo-prev" aria-label="Previous project photos">${navLeftSvg}</button>
+          <span class="ba-photo-nav-dots" id="ba-photo-dots" aria-live="polite">●</span>
+          <button type="button" class="ba-photo-nav-btn" id="ba-photo-next" aria-label="Next project photos">${navRightSvg}</button>
+        </div>
       </div>
       <div class="panel-action-grid">
         <div class="seai-box">
@@ -3348,6 +3615,45 @@ function buildPanelHTML(job) {
 
 function handleQuoteClick() {
   alert('Thank you for your interest!\n\nCall us: 01 234 5678\nEmail: info@absoluteacrylics.ie');
+}
+
+function initPhotoCarousel(job) {
+  const beforeEl = document.getElementById('ba-before-photo');
+  const afterEl = document.getElementById('ba-after-photo');
+  const dotsEl = document.getElementById('ba-photo-dots');
+  const prevBtn = document.getElementById('ba-photo-prev');
+  const nextBtn = document.getElementById('ba-photo-next');
+  if (!beforeEl || !afterEl || !dotsEl || !prevBtn || !nextBtn) return;
+
+  const beforePhotos = job.beforePhotos && job.beforePhotos.length ? job.beforePhotos : [DEFAULT_BEFORE_PHOTO];
+  const afterPhotos = job.afterPhotos && job.afterPhotos.length ? job.afterPhotos : [DEFAULT_AFTER_PHOTO];
+  const total = Math.max(beforePhotos.length, afterPhotos.length);
+  let index = 0;
+
+  function dotString(count, activeIdx) {
+    return Array.from({ length: count }, (_, i) => (i === activeIdx ? '●' : '○')).join(' ');
+  }
+
+  function render() {
+    const beforeSrc = beforePhotos[Math.min(index, beforePhotos.length - 1)] || DEFAULT_BEFORE_PHOTO;
+    const afterSrc = afterPhotos[Math.min(index, afterPhotos.length - 1)] || DEFAULT_AFTER_PHOTO;
+    beforeEl.src = beforeSrc;
+    afterEl.src = afterSrc;
+    dotsEl.textContent = dotString(total, index);
+  }
+
+  prevBtn.disabled = total <= 1;
+  nextBtn.disabled = total <= 1;
+  prevBtn.addEventListener('click', () => {
+    index = (index - 1 + total) % total;
+    render();
+  });
+  nextBtn.addEventListener('click', () => {
+    index = (index + 1) % total;
+    render();
+  });
+
+  render();
 }
 
 // ─────────────────────────────────────────────
