@@ -41,6 +41,8 @@
       --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.12);
       --radius-card: 10px;
       --radius-panel: 16px;
+      --map-brand: #6B1F3A;
+      --map-brand-soft: rgba(107, 31, 58, 0.12);
     }
 
     html, body {
@@ -433,8 +435,11 @@
       .map-map-section {
         display: contents;
       }
-      .map-frame {
+      .map-split {
         grid-row: 1;
+      }
+      .map-frame {
+        grid-row: unset;
       }
       .job-strip-panel {
         grid-row: 2;
@@ -754,6 +759,291 @@
         min-height: 0;
         flex-shrink: 1;
         width: 100%;
+      }
+    }
+
+    /* Map + collapsible properties sidebar */
+    .map-split {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      position: relative;
+    }
+    @media (min-width: 901px) {
+      .map-split {
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: center;
+        gap: 14px;
+        width: 100%;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 16px;
+        box-sizing: border-box;
+      }
+      .map-split .map-frame {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: 612px;
+        margin: 0;
+      }
+      .map-properties-sidebar {
+        flex: 0 0 min(300px, 32vw);
+        max-width: 300px;
+      }
+      .map-properties-sidebar.is-collapsed {
+        flex-basis: 44px;
+        max-width: 44px;
+        min-width: 44px;
+      }
+      .map-properties-sidebar.is-collapsed .map-sidebar-inner {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .map-properties-sidebar.is-collapsed .map-sidebar-collapse {
+        transform: rotate(180deg);
+      }
+    }
+
+    .map-sidebar-backdrop {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .map-sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 520;
+        background: rgba(0, 0, 0, 0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      .map-sidebar-backdrop.is-visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    .map-properties-sidebar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      background: #ffffff;
+      border: 1px solid rgba(107, 31, 58, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 6px 22px rgba(107, 31, 58, 0.1);
+      min-height: 0;
+      overflow: hidden;
+    }
+    @media (max-width: 900px) {
+      .map-properties-sidebar {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 0;
+        z-index: 530;
+        flex-direction: column;
+        max-height: 48vh;
+        border-radius: 14px 14px 0 0;
+        transform: translateY(calc(100% - 52px));
+        transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.14);
+      }
+      .map-properties-sidebar.is-sheet-open {
+        transform: translateY(0);
+      }
+      .map-properties-sidebar .map-sidebar-collapse {
+        display: none;
+      }
+    }
+
+    .map-sidebar-rail {
+      flex: 0 0 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(107, 31, 58, 0.06), rgba(107, 31, 58, 0.02));
+      border-right: 1px solid rgba(107, 31, 58, 0.12);
+    }
+    @media (max-width: 900px) {
+      .map-sidebar-rail {
+        flex: 0 0 auto;
+        flex-direction: row;
+        border-right: none;
+        border-bottom: 1px solid rgba(107, 31, 58, 0.12);
+        padding: 8px 12px;
+        justify-content: space-between;
+        align-items: center;
+        background: #faf8f6;
+      }
+    }
+
+    .map-sidebar-collapse {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--map-brand);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(107, 31, 58, 0.12);
+      transition: transform 0.2s ease, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .map-sidebar-collapse:hover {
+      background: var(--map-brand-soft);
+    }
+    .map-sidebar-collapse svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .map-sidebar-inner {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 12px 12px;
+      transition: opacity 0.2s ease;
+    }
+    @media (max-width: 900px) {
+      .map-sidebar-inner {
+        padding: 0 12px 14px;
+        min-height: 0;
+      }
+    }
+
+    .map-sidebar-header {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding-right: 4px;
+    }
+    @media (max-width: 900px) {
+      .map-sidebar-header {
+        display: none;
+      }
+    }
+
+    .map-sidebar-sheet-title {
+      display: none;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--map-brand);
+    }
+    @media (max-width: 900px) {
+      .map-sidebar-sheet-title {
+        display: block;
+      }
+    }
+
+    .map-sidebar-list {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+      padding-right: 2px;
+    }
+    .map-sidebar-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .map-sidebar-list::-webkit-scrollbar-thumb {
+      background: rgba(107, 31, 58, 0.25);
+      border-radius: 99px;
+    }
+
+    .map-sidebar-item {
+      text-align: left;
+      width: 100%;
+      border: 1px solid rgba(107, 31, 58, 0.16);
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 10px 11px;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .map-sidebar-item:hover,
+    .map-sidebar-item:focus-visible {
+      border-color: rgba(107, 31, 58, 0.35);
+      box-shadow: 0 4px 12px rgba(107, 31, 58, 0.1);
+      outline: none;
+    }
+    .map-sidebar-item.is-active {
+      border-color: var(--map-brand);
+      box-shadow: 0 0 0 2px rgba(107, 31, 58, 0.15);
+      background: rgba(107, 31, 58, 0.04);
+    }
+    .map-sidebar-item-addr {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+    .map-sidebar-item-meta {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    .map-sidebar-item-type {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--map-brand);
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .map-sidebar-mobile-toggle {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .map-sidebar-mobile-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        position: absolute;
+        left: 12px;
+        bottom: 12px;
+        z-index: 515;
+        padding: 9px 14px;
+        border: 1px solid rgba(107, 31, 58, 0.35);
+        border-radius: 999px;
+        background: #ffffff;
+        color: var(--map-brand);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .map-properties-sidebar.is-sheet-open ~ .map-sidebar-mobile-toggle {
+        opacity: 0;
+        pointer-events: none;
       }
     }
 
@@ -1101,7 +1391,7 @@
 
     @media (min-width: 901px) {
       .job-strip-panel {
-        max-width: 612px;
+        max-width: 980px;
         margin-left: auto;
         margin-right: auto;
         width: 100%;
@@ -1232,18 +1522,97 @@
       position: absolute;
       top: calc(100% + 6px);
       left: 0;
-      min-width: 220px;
-      padding: 6px;
-      background: var(--charcoal);
-      border: 1px solid var(--border-gold);
-      border-radius: 8px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      min-width: min(300px, calc(100vw - 48px));
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 12px 14px 14px;
+      background: #ffffff;
+      border: 1px solid rgba(107, 31, 58, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(107, 31, 58, 0.08);
       z-index: 600;
     }
     .browse-filters-wrap.is-open .browse-filters-dropdown {
       display: block;
     }
-    .browse-filters-dropdown button {
+    .map-filter-field {
+      margin-bottom: 12px;
+    }
+    .map-filter-field:last-of-type {
+      margin-bottom: 10px;
+    }
+    .map-filter-field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .map-filter-range-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .map-filter-field input[type="number"],
+    .map-filter-field select {
+      width: 100%;
+      font: inherit;
+      font-size: 13px;
+      padding: 8px 10px;
+      border: 1px solid rgba(107, 31, 58, 0.2);
+      border-radius: 8px;
+      background: #faf9f8;
+      color: var(--text-dark);
+      outline: none;
+    }
+    .map-filter-field input[type="number"]:focus,
+    .map-filter-field select:focus {
+      border-color: var(--map-brand);
+      box-shadow: 0 0 0 3px rgba(107, 31, 58, 0.12);
+      background: #fff;
+    }
+    .map-filter-range-row input {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .map-filter-range-row span {
+      color: var(--text-muted);
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .map-filter-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(107, 31, 58, 0.1);
+    }
+    .map-filter-actions button {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #filter-apply-btn {
+      border: none;
+      background: var(--map-brand);
+      color: #fff;
+    }
+    #filter-apply-btn:hover {
+      filter: brightness(1.06);
+    }
+    #filter-clear-btn {
+      border: 1px solid rgba(107, 31, 58, 0.28);
+      background: #fff;
+      color: var(--map-brand);
+    }
+    .browse-filters-dropdown button[role="menuitem"] {
       display: flex;
       width: 100%;
       align-items: center;
@@ -1260,10 +1629,10 @@
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
-    .browse-filters-dropdown button:hover {
+    .browse-filters-dropdown button[role="menuitem"]:hover {
       background: rgba(114, 14, 50, 0.1);
     }
-    .browse-filters-dropdown button.is-active {
+    .browse-filters-dropdown button[role="menuitem"].is-active {
       background: rgba(114, 14, 50, 0.15);
       color: var(--text-dark);
     }
@@ -1303,18 +1672,47 @@
     }
 
     .job-marker-dot {
+      position: relative;
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      border: 1.5px solid var(--gold);
-      background: #6B1E3D;
-      box-shadow: 0 0 0 4px rgba(114, 14, 50, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.92);
+      background: var(--map-brand);
+      box-shadow: 0 0 0 3px rgba(107, 31, 58, 0.18), 0 4px 14px rgba(107, 31, 58, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #F7F1EB;
       line-height: 1;
       user-select: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .job-marker-dot::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid rgba(107, 31, 58, 0.35);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .job-marker-dot.selected::after {
+      opacity: 1;
+      animation: map-marker-pulse 1.6s ease-out infinite;
+    }
+    @keyframes map-marker-pulse {
+      0% {
+        transform: scale(0.85);
+        opacity: 0.65;
+      }
+      70% {
+        transform: scale(1.25);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1.25);
+        opacity: 0;
+      }
     }
     .job-marker-dot svg {
       width: 18px;
@@ -1322,13 +1720,14 @@
       display: block;
     }
     .job-marker-dot.nearest {
-      border: 2px solid var(--gold-light);
-      box-shadow: 0 0 0 4px rgba(196, 91, 130, 0.2), 0 2px 12px rgba(0, 0, 0, 0.35);
+      border: 2px solid #F5D97A;
+      box-shadow: 0 0 0 4px rgba(245, 217, 122, 0.28), 0 4px 16px rgba(107, 31, 58, 0.4);
     }
     .job-marker-dot.selected {
-      transform: scale(1.1);
+      transform: scale(1.08);
       border: 2px solid #F5D97A;
-      box-shadow: 0 0 0 4px rgba(245, 217, 122, 0.3), 0 6px 16px rgba(0, 0, 0, 0.38);
+      box-shadow: 0 0 0 4px rgba(245, 217, 122, 0.35), 0 8px 20px rgba(107, 31, 58, 0.45);
+      z-index: 2;
     }
 
     .map-filters-overlay {
@@ -1355,7 +1754,7 @@
     .cluster-marker {
       width: 44px;
       height: 44px;
-      background: #6B1E3D;
+      background: var(--map-brand);
       border: 2px solid rgba(245, 240, 234, 0.95);
       border-radius: 50%;
       color: #F7F1EB;
@@ -1364,7 +1763,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(107, 30, 61, 0.32);
+      box-shadow: 0 4px 14px rgba(107, 31, 58, 0.35);
     }
     .cluster-marker.cluster-large {
       width: 44px !important;
@@ -1994,26 +2393,33 @@
       right: 16px !important;
     }
     .leaflet-control-zoom {
-      border: 1px solid var(--border-gold) !important;
-      border-radius: 8px !important;
+      border: none !important;
+      border-radius: 14px !important;
       overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
-      background: var(--charcoal-mid) !important;
+      box-shadow: 0 8px 28px rgba(107, 31, 58, 0.22), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+      background: #ffffff !important;
+      padding: 4px !important;
     }
     .leaflet-control-zoom.leaflet-bar a {
-      border-color: var(--border-gold) !important;
-      background: transparent !important;
+      border: none !important;
+      border-radius: 10px !important;
+      background: var(--map-brand) !important;
+      margin: 3px !important;
+      width: 38px !important;
+      height: 38px !important;
+      line-height: 36px !important;
     }
     .leaflet-control-zoom a {
-      color: var(--text-dark) !important;
-      font-size: 18px !important;
-      line-height: 34px !important;
-      width: 34px !important;
-      height: 34px !important;
+      color: #ffffff !important;
+      font-size: 20px !important;
+      font-weight: 500 !important;
+    }
+    .leaflet-control-zoom a:first-child {
+      margin-bottom: 0 !important;
     }
     .leaflet-control-zoom a:hover {
-      background: rgba(114, 14, 50, 0.12) !important;
-      color: var(--text-dark) !important;
+      background: #5a1930 !important;
+      color: #ffffff !important;
     }
     .leaflet-control-attribution {
       font-size: 9px !important;
@@ -2040,6 +2446,69 @@
     }
     .leaflet-popup-close-button {
       color: var(--text-dark) !important;
+    }
+
+    .map-prop-tooltip.leaflet-tooltip {
+      background: #ffffff !important;
+      color: var(--text-dark) !important;
+      border: 1px solid rgba(107, 31, 58, 0.22) !important;
+      border-radius: 10px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+      padding: 8px 12px !important;
+      font-size: 12px !important;
+      font-weight: 500 !important;
+      line-height: 1.45 !important;
+      max-width: 220px;
+    }
+    .map-prop-tooltip.leaflet-tooltip-top:before {
+      border-top-color: #ffffff !important;
+    }
+    .map-prop-tooltip .map-tip-price {
+      display: block;
+      font-weight: 700;
+      color: var(--map-brand);
+      margin-bottom: 2px;
+    }
+    .map-prop-tooltip .map-tip-muted {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .map-popup-card {
+      min-width: 200px;
+      max-width: 260px;
+      line-height: 1.4;
+    }
+    .map-popup-card strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--text-dark);
+    }
+    .map-popup-card .map-popup-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .map-popup-details-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 2px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      background: var(--map-brand);
+      color: #fff;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+    .map-popup-details-btn:hover {
+      filter: brightness(1.05);
     }
 
     /* Splash transition override */
@@ -2214,26 +2683,68 @@
   <div class="browse-shell">
     <div class="map-screen-layout">
       <div class="map-map-section" data-hide-on-subview>
-        <div class="map-frame">
-          <div class="map-frame-inner">
-            <div id="map"></div>
-            <div class="map-filters-overlay">
-              <div class="browse-filters-toolbar">
-                <div class="browse-filters-wrap" id="browse-filters-wrap">
-                  <button type="button" class="browse-filters" id="browse-filters-btn" aria-label="House type filters" aria-expanded="false" aria-haspopup="true" aria-controls="house-type-menu"><span class="browse-filters-text">Filters</span></button>
-                  <div class="browse-filters-dropdown" id="house-type-menu" role="menu" aria-label="House type">
-                    <button type="button" role="menuitem" data-house-filter="all">All house types</button>
-                    <button type="button" role="menuitem" data-house-filter="detached">Detached</button>
-                    <button type="button" role="menuitem" data-house-filter="semi-detached">Semi-detached</button>
-                    <button type="button" role="menuitem" data-house-filter="mid-terrace">Mid terrace</button>
+        <div class="map-split">
+          <div class="map-frame">
+            <div class="map-frame-inner">
+              <div id="map"></div>
+              <div class="map-filters-overlay">
+                <div class="browse-filters-toolbar">
+                  <div class="browse-filters-wrap" id="browse-filters-wrap">
+                    <button type="button" class="browse-filters" id="browse-filters-btn" aria-label="Map filters" aria-expanded="false" aria-haspopup="dialog" aria-controls="house-type-menu"><span class="browse-filters-text">Filters</span></button>
+                    <div class="browse-filters-dropdown" id="house-type-menu" role="dialog" aria-label="Filter properties on the map">
+                      <div class="map-filter-field">
+                        <label for="filter-price-min">Price range (est. value uplift, €)</label>
+                        <div class="map-filter-range-row">
+                          <input type="number" id="filter-price-min" min="0" step="1000" value="0" inputmode="numeric" aria-label="Minimum price">
+                          <span aria-hidden="true">–</span>
+                          <input type="number" id="filter-price-max" min="0" step="1000" value="50000" inputmode="numeric" aria-label="Maximum price">
+                        </div>
+                      </div>
+                      <div class="map-filter-field">
+                        <label for="filter-bedrooms">Bedrooms</label>
+                        <select id="filter-bedrooms" aria-label="Number of bedrooms">
+                          <option value="">Any</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
+                      <div class="map-filter-field">
+                        <label for="filter-house-type">Property type</label>
+                        <select id="filter-house-type" aria-label="Property type">
+                          <option value="all">All house types</option>
+                          <option value="detached">Detached</option>
+                          <option value="semi-detached">Semi-detached</option>
+                          <option value="mid-terrace">Mid terrace / terraced</option>
+                        </select>
+                      </div>
+                      <div class="map-filter-actions">
+                        <button type="button" id="filter-clear-btn">Clear</button>
+                        <button type="button" id="filter-apply-btn">Apply</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <button type="button" class="map-locate-btn" id="map-locate-btn" aria-label="Centre map on my location">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m8 9 4-4 4 4"/></svg>
+              </button>
             </div>
-            <button type="button" class="map-locate-btn" id="map-locate-btn" aria-label="Centre map on my location">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m8 9 4-4 4 4"/></svg>
-            </button>
           </div>
+          <div class="map-sidebar-backdrop" id="map-sidebar-backdrop" aria-hidden="true"></div>
+          <aside class="map-properties-sidebar" id="map-properties-sidebar" aria-label="Properties on the map">
+            <div class="map-sidebar-rail">
+              <button type="button" class="map-sidebar-collapse" id="map-sidebar-collapse" aria-expanded="true" aria-controls="map-sidebar-list-wrap" title="Collapse list">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <span class="map-sidebar-sheet-title">Nearby properties</span>
+            </div>
+            <div class="map-sidebar-inner" id="map-sidebar-list-wrap">
+              <div class="map-sidebar-header">Properties</div>
+              <div class="map-sidebar-list" id="map-properties-list"></div>
+            </div>
+          </aside>
+          <button type="button" class="map-sidebar-mobile-toggle" id="map-sidebar-mobile-toggle" aria-expanded="false" aria-controls="map-properties-sidebar">Listings</button>
         </div>
       </div>
 
@@ -3203,10 +3714,14 @@ let map;
 let lastUserLat = null, lastUserLng = null;
 /** @type {null | 'detached' | 'semi-detached' | 'mid-terrace'} */
 let houseTypeFilter = null;
+let mapFilterPriceMin = 0;
+let mapFilterPriceMax = 50000;
+/** @type {null | number} */
+let mapFilterBedrooms = null;
 let markerClusterLayer = null;
 const markers = {};
 let activeJobId = null;
-/** Set when job-strip DOM was last built for this ordered visible-job id list (house filter only; avoids rebuild on pan/zoom). */
+/** Set when job-strip DOM was last built for this ordered visible-job id list + active selection (avoids rebuild on pan/zoom when unchanged). */
 let lastJobStripInViewSig = null;
 
 function scheduleMapResize() {
@@ -3246,8 +3761,28 @@ function jobMatchesHouseTypeFilter(job) {
   return true;
 }
 
+function parseJobBedrooms(job) {
+  const m = String(job.type || '').match(/(\d+)-bed/i);
+  return m ? Number(m[1]) : null;
+}
+
+function estimateJobBathrooms(job) {
+  if (job.bathrooms != null && !Number.isNaN(Number(job.bathrooms))) return Number(job.bathrooms);
+  const beds = parseJobBedrooms(job);
+  if (beds == null) return 2;
+  return Math.min(4, Math.max(1, beds - 1));
+}
+
+function jobMatchesPriceBedFilter(job) {
+  const v = Number(job.valueIncrease) || 0;
+  if (v < mapFilterPriceMin || v > mapFilterPriceMax) return false;
+  if (mapFilterBedrooms == null) return true;
+  const beds = parseJobBedrooms(job);
+  return beds === mapFilterBedrooms;
+}
+
 function getVisibleJobs() {
-  return portfolioJobs.filter(j => jobMatchesHouseTypeFilter(j));
+  return portfolioJobs.filter(j => jobMatchesHouseTypeFilter(j) && jobMatchesPriceBedFilter(j));
 }
 
 function getJobsInMapBounds() {
@@ -3401,7 +3936,7 @@ function renderJobStrip() {
   const strip = document.getElementById('job-strip');
   if (!strip) return;
   const list = getVisibleJobs();
-  const sortedSig = list.map(j => j.id).slice().sort((a, b) => a - b).join();
+  const sortedSig = `${list.map(j => j.id).slice().sort((a, b) => a - b).join()}|a:${activeJobId ?? ''}`;
   if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) {
     requestAnimationFrame(() => syncJobStripScrollBar());
     return;
@@ -3434,12 +3969,7 @@ function renderJobStrip() {
       const id = Number(btn.dataset.jobId);
       const job = portfolioJobs.find(j => j.id === id);
       if (!job) return;
-      activeJobId = id;
-      if (map) {
-        map.panTo([job.lat, job.lng], { animate: true, duration: 0.35 });
-      }
-      renderPins();
-      openPanel(job);
+      activateJobOnMap(job);
     });
   });
   requestAnimationFrame(() => {
@@ -3476,18 +4006,23 @@ function resolveNearestForDisplay() {
   return findNearestJobIdInList(lastUserLat, lastUserLng, getVisibleJobs());
 }
 
-function syncHouseFilterMenuActive() {
-  document.querySelectorAll('#house-type-menu [data-house-filter]').forEach(el => {
-    const v = el.dataset.houseFilter;
-    const active = houseTypeFilter === null ? v === 'all' : houseTypeFilter === v;
-    el.classList.toggle('is-active', active);
-  });
+function syncFilterFormFromState() {
+  const minEl = document.getElementById('filter-price-min');
+  const maxEl = document.getElementById('filter-price-max');
+  const bedEl = document.getElementById('filter-bedrooms');
+  const typeEl = document.getElementById('filter-house-type');
+  if (minEl) minEl.value = String(mapFilterPriceMin);
+  if (maxEl) maxEl.value = String(mapFilterPriceMax);
+  if (bedEl) bedEl.value = mapFilterBedrooms == null ? '' : String(mapFilterBedrooms);
+  if (typeEl) typeEl.value = houseTypeFilter == null ? 'all' : houseTypeFilter;
 }
 
 function initHouseTypeFilters() {
   const wrap = document.getElementById('browse-filters-wrap');
   const btn = document.getElementById('browse-filters-btn');
   const menu = document.getElementById('house-type-menu');
+  const applyBtn = document.getElementById('filter-apply-btn');
+  const clearBtn = document.getElementById('filter-clear-btn');
   if (!wrap || !btn || !menu || wrap.dataset.bound) return;
   wrap.dataset.bound = '1';
 
@@ -3499,6 +4034,7 @@ function initHouseTypeFilters() {
   function openDropdown() {
     wrap.classList.add('is-open');
     btn.setAttribute('aria-expanded', 'true');
+    syncFilterFormFromState();
   }
 
   btn.addEventListener('click', e => {
@@ -3507,13 +4043,43 @@ function initHouseTypeFilters() {
     else openDropdown();
   });
 
-  menu.addEventListener('click', e => {
-    const item = e.target.closest('[data-house-filter]');
-    if (!item) return;
+  menu.addEventListener('click', e => e.stopPropagation());
+
+  function readFiltersAndApply() {
+    const minEl = document.getElementById('filter-price-min');
+    const maxEl = document.getElementById('filter-price-max');
+    const bedEl = document.getElementById('filter-bedrooms');
+    const typeEl = document.getElementById('filter-house-type');
+    const rawMin = minEl ? parseInt(minEl.value, 10) : 0;
+    const rawMax = maxEl ? parseInt(maxEl.value, 10) : 50000;
+    mapFilterPriceMin = Number.isFinite(rawMin) ? Math.max(0, rawMin) : 0;
+    mapFilterPriceMax = Number.isFinite(rawMax) ? Math.max(0, rawMax) : 50000;
+    if (mapFilterPriceMax < mapFilterPriceMin) {
+      const t = mapFilterPriceMin;
+      mapFilterPriceMin = mapFilterPriceMax;
+      mapFilterPriceMax = t;
+    }
+    const bv = bedEl ? bedEl.value : '';
+    mapFilterBedrooms = bv === '' ? null : Number(bv);
+    const tv = typeEl ? typeEl.value : 'all';
+    houseTypeFilter = tv === 'all' ? null : /** @type {typeof houseTypeFilter} */ (tv);
+    syncFilterFormFromState();
+    closeDropdown();
+    if (map) renderPins();
+  }
+
+  applyBtn?.addEventListener('click', e => {
     e.stopPropagation();
-    const v = item.dataset.houseFilter;
-    houseTypeFilter = v === 'all' ? null : v;
-    syncHouseFilterMenuActive();
+    readFiltersAndApply();
+  });
+
+  clearBtn?.addEventListener('click', e => {
+    e.stopPropagation();
+    mapFilterPriceMin = 0;
+    mapFilterPriceMax = 50000;
+    mapFilterBedrooms = null;
+    houseTypeFilter = null;
+    syncFilterFormFromState();
     closeDropdown();
     if (map) renderPins();
   });
@@ -3526,7 +4092,115 @@ function initHouseTypeFilters() {
     if (e.key === 'Escape' && wrap.classList.contains('is-open')) closeDropdown();
   });
 
-  syncHouseFilterMenuActive();
+  syncFilterFormFromState();
+}
+
+function focusPropertySidebar(jobId) {
+  const list = document.getElementById('map-properties-list');
+  if (!list) return;
+  list.querySelectorAll('.map-sidebar-item').forEach(el => {
+    el.classList.toggle('is-active', Number(el.dataset.jobId) === jobId);
+  });
+  const row = list.querySelector(`.map-sidebar-item[data-job-id="${jobId}"]`);
+  if (row) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function renderPropertiesSidebar() {
+  const list = document.getElementById('map-properties-list');
+  if (!list) return;
+  const jobs = getVisibleJobs();
+  list.innerHTML = jobs
+    .map((job) => {
+      const beds = parseJobBedrooms(job);
+      const bedsLabel = beds != null ? `${beds} bed` : '— bed';
+      const baths = estimateJobBathrooms(job);
+      return `<button type="button" class="map-sidebar-item${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}">
+        <span class="map-sidebar-item-addr">${job.address}</span>
+        <span class="map-sidebar-item-meta">€${job.valueIncrease.toLocaleString()} uplift · ${bedsLabel} · ${baths} bath</span>
+        <span class="map-sidebar-item-type">${job.type}</span>
+      </button>`;
+    })
+    .join('');
+  list.querySelectorAll('.map-sidebar-item[data-job-id]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = Number(btn.dataset.jobId);
+      const job = portfolioJobs.find((j) => j.id === id);
+      if (!job || !map) return;
+      activateJobOnMap(job);
+    });
+  });
+}
+
+function activateJobOnMap(job) {
+  activeJobId = job.id;
+  closePropertySheetMobile();
+  renderPins();
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const m = markers[job.id];
+      if (m && map) {
+        if (map.getZoom() < 14) map.setZoom(14);
+        map.panTo([job.lat, job.lng], { animate: true, duration: 0.35 });
+        m.openPopup();
+      }
+      focusPropertySidebar(job.id);
+      focusJobCard(job.id);
+    });
+  });
+}
+
+function closePropertySheetMobile() {
+  const aside = document.getElementById('map-properties-sidebar');
+  const backdrop = document.getElementById('map-sidebar-backdrop');
+  const mobileBtn = document.getElementById('map-sidebar-mobile-toggle');
+  aside?.classList.remove('is-sheet-open');
+  backdrop?.classList.remove('is-visible');
+  if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
+  backdrop?.setAttribute('aria-hidden', 'true');
+}
+
+function initPropertiesSidebar() {
+  const aside = document.getElementById('map-properties-sidebar');
+  const collapse = document.getElementById('map-sidebar-collapse');
+  const mobileBtn = document.getElementById('map-sidebar-mobile-toggle');
+  const backdrop = document.getElementById('map-sidebar-backdrop');
+  if (!aside || aside.dataset.sidebarBound) return;
+  aside.dataset.sidebarBound = '1';
+
+  function isNarrowMap() {
+    return window.matchMedia('(max-width: 900px)').matches;
+  }
+
+  function closeMobileSheet() {
+    closePropertySheetMobile();
+  }
+
+  function openMobileSheet() {
+    aside.classList.add('is-sheet-open');
+    backdrop?.classList.add('is-visible');
+    if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'true');
+    backdrop?.setAttribute('aria-hidden', 'false');
+  }
+
+  collapse?.addEventListener('click', () => {
+    if (isNarrowMap()) return;
+    aside.classList.toggle('is-collapsed');
+    const expanded = !aside.classList.contains('is-collapsed');
+    collapse.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    scheduleMapResize();
+  });
+
+  mobileBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (aside.classList.contains('is-sheet-open')) closeMobileSheet();
+    else openMobileSheet();
+  });
+
+  backdrop?.addEventListener('click', () => closeMobileSheet());
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && aside.classList.contains('is-sheet-open')) closeMobileSheet();
+  });
 }
 
 function initMap() {
@@ -3562,8 +4236,29 @@ function initMap() {
   map.addLayer(markerClusterLayer);
 
   initHouseTypeFilters();
+  initPropertiesSidebar();
   initJobStripScrollBar();
   renderPins();
+
+  if (!map.dataset.mapPopupDetailsBound) {
+    map.dataset.mapPopupDetailsBound = '1';
+    map.on('popupopen', (e) => {
+      const el = e.popup.getElement();
+      if (!el) return;
+      const btn = el.querySelector('.map-popup-details-btn[data-job-id]');
+      if (!btn) return;
+      const jid = Number(btn.dataset.jobId);
+      btn.addEventListener(
+        'click',
+        (ev) => {
+          ev.preventDefault();
+          const j = portfolioJobs.find((x) => x.id === jid);
+          if (j) openPanel(j);
+        },
+        { once: true }
+      );
+    });
+  }
 
   map.on('moveend', () => {
     renderJobStrip();
@@ -3625,22 +4320,37 @@ function renderPins() {
       popupAnchor: [0, -22]
     });
 
+    const beds = parseJobBedrooms(job);
+    const baths = estimateJobBathrooms(job);
+    const bedsDisp = beds != null ? `${beds}` : '—';
+    const tooltipHtml = `<span class="map-tip-price">€${job.valueIncrease.toLocaleString()} est. uplift</span><span class="map-tip-muted">${bedsDisp} bed · ${baths} bath</span>`;
+
     const popupHtml = `
-      <div style="min-width:230px;line-height:1.35;">
-        <strong>${job.address}</strong><br>
-        <span style="font-weight:700;color:#720e32;">Click Icon for more job details →</span>
+      <div class="map-popup-card">
+        <strong>${job.address}</strong>
+        <div class="map-popup-meta">€${job.valueIncrease.toLocaleString()} est. value uplift · ${bedsDisp} bed · ${baths} bath</div>
+        <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">Full job details</button>
       </div>
     `;
 
     const marker = L.marker([job.lat, job.lng], { icon });
     marker.bindPopup(popupHtml, { autoClose: true, closeButton: true });
-    marker.on('mouseover', () => marker.openPopup());
-    marker.on('mouseout', () => marker.closePopup());
+    marker.bindTooltip(tooltipHtml, {
+      direction: 'top',
+      opacity: 1,
+      className: 'map-prop-tooltip',
+      sticky: true
+    });
     marker.on('click', () => {
       activeJobId = job.id;
-      focusJobCard(job.id);
+      closePropertySheetMobile();
       renderPins();
-      openPanel(job);
+      requestAnimationFrame(() => {
+        const m = markers[job.id];
+        if (m) m.openPopup();
+        focusPropertySidebar(job.id);
+        focusJobCard(job.id);
+      });
     });
     markerClusterLayer.addLayer(marker);
 
@@ -3649,6 +4359,7 @@ function renderPins() {
 
   lastJobStripInViewSig = null;
   renderJobStrip();
+  renderPropertiesSidebar();
 }
 
 function focusJobCard(jobId) {
