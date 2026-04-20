@@ -16,8 +16,8 @@
 
     :root {
       --charcoal: #FFFFFF;
-      --charcoal-mid: #F5F5F7;
-      --charcoal-light: #EBEBEF;
+      --charcoal-mid: #F5F0EA;
+      --charcoal-light: #EFE7DE;
       --gold: #720e32;
       --gold-light: #C45B82;
       --gold-pale: #F1E4EA;
@@ -71,8 +71,8 @@
        SCREEN 1 – SPLASH
     ══════════════════════════════════════════════════════════════ */
     #screen-splash {
-      background: #FAF8F5;
-      background-color: #FAF8F5;
+      background: #ffffff;
+      background-color: #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -128,13 +128,14 @@
     .splash-stats {
       width: 100%;
       max-width: 480px;
-      margin-bottom: 32px;
+      margin-bottom: 10px;
       perspective: 520px;
     }
 
     .stat-card {
-      background: #F3EEE8;
+      background: #ffffff;
       border: 1px solid rgba(107, 30, 61, 0.14);
+      border-left: 4px solid #6B1E3D;
       border-radius: var(--radius-card);
       padding: 16px 12px 14px;
       text-align: center;
@@ -275,11 +276,11 @@
     }
 
     .splash-trust {
-      margin-top: 16px;
+      margin-top: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       max-width: 480px;
       width: 100%;
     }
@@ -294,12 +295,21 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+<<<<<<< HEAD
       gap: calc(7px * 1.3);
       padding: calc(10px * 1.3) calc(16px * 1.3);
       border-radius: 999px;
       background: #6B1E3D;
       border: 1px solid #6B1E3D;
       font-size: calc(11px * 1.3);
+=======
+      gap: 9px;
+      padding: 13px 21px;
+      border-radius: 999px;
+      background: #6B1E3D;
+      border: 1px solid #6B1E3D;
+      font-size: 14px;
+>>>>>>> 85683c6d4b8ff97144a85223a921a7b57c67a379
       font-weight: 600;
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
       letter-spacing: 0.05em;
@@ -308,6 +318,7 @@
       box-shadow: 0 6px 16px rgba(107, 30, 61, 0.16);
     }
     .splash-seai-badge svg {
+<<<<<<< HEAD
       width: calc(13px * 1.3);
       height: calc(13px * 1.3);
       display: block;
@@ -320,6 +331,20 @@
       gap: calc(3px * 1.3);
       color: #6B1E3D;
       font-size: calc(10px * 1.3);
+=======
+      width: 17px;
+      height: 17px;
+      display: block;
+    }
+    .splash-scroll-indicator {
+      margin-top: 0;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #6B1E3D;
+      font-size: 13px;
+>>>>>>> 85683c6d4b8ff97144a85223a921a7b57c67a379
       letter-spacing: 0.08em;
       text-transform: uppercase;
       opacity: 0.72;
@@ -329,8 +354,13 @@
       cursor: pointer;
     }
     .splash-scroll-indicator svg {
+<<<<<<< HEAD
       width: calc(16px * 1.3);
       height: calc(16px * 1.3);
+=======
+      width: 21px;
+      height: 21px;
+>>>>>>> 85683c6d4b8ff97144a85223a921a7b57c67a379
       display: block;
     }
     @keyframes splash-scroll-bob {
@@ -339,7 +369,11 @@
     }
     .splash-rating {
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+<<<<<<< HEAD
       font-size: calc(13px * 1.3);
+=======
+      font-size: 17px;
+>>>>>>> 85683c6d4b8ff97144a85223a921a7b57c67a379
       font-weight: 400;
       color: #6B1E3D;
       letter-spacing: 0.01em;
@@ -443,7 +477,7 @@
     }
     .lux-toolbar-row {
       flex-shrink: 0;
-      background: var(--charcoal-mid);
+      background: #ffffff;
       padding: 7px 24px;
       display: flex;
       align-items: center;
@@ -479,7 +513,7 @@
       flex-shrink: 0;
       position: relative;
       z-index: 30;
-      background: var(--charcoal-mid);
+      background: #ffffff;
       border-top: 1px solid var(--border-gold);
     }
     .job-strip-row {
@@ -496,7 +530,7 @@
     .job-strip-scroll-wrap {
       flex-shrink: 0;
       align-self: stretch;
-      padding: 2px 12px 8px 2px;
+      padding: 2px 0 8px 4px;
       box-sizing: border-box;
       display: flex;
       align-items: stretch;
@@ -513,7 +547,7 @@
       min-height: 0;
       height: 100%;
       border-radius: 999px;
-      background: #E9DED6;
+      background: #ECEFF3;
       box-shadow: inset 0 0 0 1px rgba(107, 30, 61, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.08);
       outline: none;
     }
@@ -542,16 +576,16 @@
     .job-strip {
       display: flex;
       flex-direction: column;
-      align-items: stretch;
+      align-items: flex-start;
       gap: 10px;
-      padding: 2px 0 8px 20px;
-      background: var(--charcoal-mid);
+      padding: 2px 0 8px 0;
+      background: #ECEFF3;
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      flex: 0 0 50%;
-      width: 50%;
-      max-width: 50%;
+      flex: 0 0 clamp(95px, min(27vh, 216px), 216px);
+      width: clamp(95px, min(27vh, 216px), 216px);
+      max-width: clamp(95px, min(27vh, 216px), 216px);
       min-width: 0;
       min-height: 0;
       scrollbar-width: none;
@@ -562,7 +596,7 @@
     }
     .job-strip-title {
       padding: 5px 20px 4px;
-      background: var(--charcoal-mid);
+      background: #ffffff;
       color: var(--text-muted);
       font-size: clamp(10px, 1.1vw, 11px);
       letter-spacing: 0.07em;
@@ -576,10 +610,11 @@
       flex: 0 0 auto;
       width: 100%;
       max-width: 100%;
+      aspect-ratio: 1 / 1.15;
       align-self: stretch;
       display: flex;
       flex-direction: column;
-      background: #F5F0EA;
+      background: #ffffff;
       border: 1px solid rgba(107, 30, 61, 0.22);
       border-left: 4px solid #6B1E3D;
       border-radius: 10px;
@@ -606,9 +641,9 @@
       transform: translateY(-1px);
     }
     .listing-card .card-img {
-      flex: 0 0 auto;
-      height: 52px;
-      background: #E4E6EA;
+      flex: 0 0 50%;
+      height: auto;
+      background: #ECEFF3;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -622,9 +657,9 @@
       opacity: 0.92;
     }
     .listing-card .card-body {
-      flex: 1 1 auto;
+      flex: 0 0 50%;
       padding: 8px 10px 7px;
-      background: #F5F0EA;
+      background: #ffffff;
       display: flex;
       flex-direction: column;
       min-height: 0;
@@ -728,7 +763,7 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.06), 0 6px 20px rgba(107, 30, 61, 0.08);
-      background: #E8EAEF;
+      background: #F5F0EA;
     }
     .map-frame:has(.browse-filters-wrap.is-open) {
       overflow: visible;
@@ -765,7 +800,7 @@
       width: 100%;
       aspect-ratio: 1 / 1;
       min-height: 0;
-      background: linear-gradient(135deg, #eceef2 0%, #e2e4ea 60%, #eef0f5 100%);
+      background: linear-gradient(135deg, #f6f1ea 0%, #f1e9df 60%, #fbf7f2 100%);
     }
     .map-frame-inner::before {
       content: '';
@@ -807,7 +842,7 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      background: linear-gradient(135deg, #eceef2 0%, #e2e4ea 60%, #eef0f5 100%);
+      background: #ffffff;
       border-left: 1px solid rgba(107, 30, 61, 0.14);
       overflow-x: hidden;
       overflow-y: auto;
@@ -855,7 +890,7 @@
       -webkit-overflow-scrolling: touch;
       padding: 9px 20px;
       box-sizing: border-box;
-      background: var(--charcoal-mid);
+      background: #ffffff;
       border-radius: 10px;
     }
 
@@ -900,11 +935,14 @@
 
     .contact-above-map.contact-above-map--stacked > .contact-above-map-input {
       flex: 0 0 auto;
-      width: 100%;
+      width: 97.5%;
+      margin-inline: auto;
     }
 
     .contact-above-map.contact-above-map--stacked .contact-above-map-inline-pair {
       flex: 0 0 auto;
+      width: 97.5%;
+      margin-inline: auto;
     }
 
     .contact-above-map-inline-pair {
@@ -938,7 +976,7 @@
       padding: 7px 12px;
       border: 1px solid rgba(107, 30, 61, 0.24);
       border-radius: 6px;
-      background: #F7F1EB;
+      background: #ffffff;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
       -webkit-tap-highlight-color: transparent;
@@ -949,12 +987,12 @@
     }
     .contact-above-map-input:hover {
       border-color: rgba(107, 30, 61, 0.35);
-      background: #FBF6F1;
+      background: #ffffff;
     }
     .contact-above-map-input:focus {
       border-color: #6B1E3D;
       box-shadow: 0 0 0 3px rgba(107, 30, 61, 0.16);
-      background: #fffaf4;
+      background: #ffffff;
     }
 
     .contact-above-map-submit {
@@ -1299,7 +1337,7 @@
       left: 14px;
       z-index: 500;
       max-width: calc(100% - 28px);
-      background: #F7F1EB;
+      background: #ffffff;
       border: 1px solid rgba(107, 30, 61, 0.28);
       border-radius: 8px;
       padding: 10px 14px;
@@ -1360,8 +1398,8 @@
       height: 100dvh;
       max-height: 100dvh;
       width: 100%;
-      background: var(--charcoal);
-      border: 1px solid var(--border-gold);
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
       border-bottom: none;
       border-radius: var(--radius-panel) var(--radius-panel) 0 0;
       box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
@@ -1433,20 +1471,20 @@
 
     .panel-scroll {
       flex: 1;
-      overflow-y: auto;
+      overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      padding: 14px 18px 96px;
-      background: var(--charcoal);
+      padding: 8px 14px 14px;
+      background: #ffffff;
       color: var(--text-light);
     }
 
     /* Badge */
     .panel-ber-hero {
       text-align: center;
-      padding: 18px 16px 16px;
-      margin: -4px -18px 16px;
-      background: linear-gradient(165deg, var(--charcoal-mid) 0%, var(--charcoal-light) 100%);
-      border-bottom: 1px solid var(--border-gold);
+      padding: 10px 12px 10px;
+      margin: -4px -14px 10px;
+      background: #f4f6f8;
+      border-bottom: 1px solid #e5e7eb;
     }
     .panel-ber-hero-grades {
       display: flex;
@@ -1455,11 +1493,11 @@
       gap: 12px;
     }
     .panel-ber-hero-grade {
-      font-size: clamp(2.75rem, 10vw, 3.5rem);
+      font-size: clamp(2.2rem, 8vw, 2.8rem);
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1;
-      padding: 10px 18px 11px;
+      padding: 8px 14px 9px;
       border-radius: 9px;
       min-width: 4.5rem;
       border: 1px solid rgba(0, 0, 0, 0.16);
@@ -1490,8 +1528,8 @@
       display: block;
     }
     .panel-ber-hero-caption {
-      margin-top: 9px;
-      font-size: 11px;
+      margin-top: 7px;
+      font-size: 10px;
       color: var(--text-muted);
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -1511,7 +1549,7 @@
       text-transform: uppercase;
       padding: 6px 13px;
       border-radius: 999px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .job-badge-icon {
       width: 14px;
@@ -1520,7 +1558,7 @@
     }
 
     .job-address {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text-light);
       line-height: 1.2;
@@ -1530,8 +1568,8 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      gap: 22px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 8px;
     }
     .job-info {
       flex: 0 1 360px;
@@ -1539,7 +1577,7 @@
       max-width: 360px;
     }
     .job-subtitle {
-      font-size: 12px;
+      font-size: 11px;
       color: #8a8c91;
       font-weight: 400;
       margin-bottom: 0;
@@ -1551,19 +1589,19 @@
       border-radius: var(--radius-card);
       border: 1px solid rgba(28, 28, 30, 0.16);
       overflow: hidden;
-      width: 500px;
-      max-width: 500px;
-      aspect-ratio: 1 / 1;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 8 / 9;
       height: auto;
       margin-bottom: 0;
       flex-shrink: 0;
-      cursor: ew-resize;
+      cursor: default;
       user-select: none;
-      touch-action: none;
+      touch-action: pan-y;
     }
     .ba-rail-label {
       position: absolute;
-      bottom: 42px;
+      bottom: 36px;
       z-index: 12;
       font-size: 10px;
       font-weight: 800;
@@ -1632,7 +1670,7 @@
       border: 1px solid var(--border-gold);
       border-radius: 50%;
       z-index: 11;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
@@ -1647,7 +1685,7 @@
     .ba-photo-nav {
       position: absolute;
       left: 50%;
-      bottom: 10px;
+      bottom: 8px;
       transform: translateX(-50%);
       z-index: 14;
       display: inline-flex;
@@ -1734,15 +1772,15 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
     }
     .job-info .benefits-grid {
-      margin-top: 14px;
+      margin-top: 10px;
       margin-bottom: 0;
     }
     .benefit-card {
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border-gold);
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
       border-radius: var(--radius-card);
       padding: 14px 12px;
       display: flex;
@@ -1750,7 +1788,7 @@
       gap: 4px;
     }
     .job-info {
-      --panel-card-height: 94px;
+      --panel-card-height: 86px;
     }
     .benefit-card.highlight {
       background: rgba(114, 14, 50, 0.1);
@@ -1772,7 +1810,7 @@
       display: block;
     }
     .benefit-value {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 800;
       color: #1E6A35;
       line-height: 1;
@@ -1790,35 +1828,9 @@
     .benefit-card.warmth .benefit-icon { background: #fdecec; }
     .benefit-card.carbon .benefit-icon { background: #ebf8ef; }
     .benefit-desc {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
       line-height: 1.3;
-    }
-
-    .panel-sticky-cta {
-      position: sticky;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: 14px -18px -96px;
-      padding: 10px 18px calc(10px + env(safe-area-inset-bottom, 0px));
-      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #fff 28%);
-      z-index: 18;
-    }
-    .panel-quote-cta {
-      width: 100%;
-      border: 1px solid #6B1E3D;
-      border-radius: 10px;
-      background: #6B1E3D;
-      color: #FAF8F5;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 13px 14px;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(107, 30, 61, 0.24);
     }
     .panel-location-pill {
       margin-top: 9px;
@@ -1826,7 +1838,7 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--text-muted);
-      border: 1px dashed rgba(107, 30, 61, 0.3);
+      border: 1px dashed rgba(107, 114, 128, 0.4);
       border-radius: 999px;
       display: inline-flex;
       align-items: center;
@@ -1837,12 +1849,12 @@
       width: 12px;
       height: 12px;
       display: block;
-      color: #6B1E3D;
+      color: #4b5563;
     }
     /* SEAI BOX */
     .seai-box {
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border-gold);
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
       border-radius: var(--radius-card);
       padding: 14px 12px;
       display: flex;
@@ -1954,7 +1966,7 @@
 
     @media (max-width: 640px) {
       .benefits-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
     }
 
@@ -2093,13 +2105,24 @@
       gap: 6px;
     }
     .job-strip-quote-aside .contact-above-map-inline-pair {
+      display: flex;
+      flex-direction: column;
       gap: 6px;
+    }
+    .job-strip-quote-aside .contact-above-map-inline-pair .contact-above-map-input {
+      width: 100%;
+      flex: 0 0 auto;
     }
     .job-strip-quote-aside .contact-above-map-input {
       padding: 6px 10px !important;
       line-height: 1.25;
     }
+    .job-strip-quote-aside .quote-message-input {
+      min-height: 72px;
+    }
     .job-strip-quote-aside .contact-above-map-submit {
+      width: 97.5%;
+      margin-inline: auto;
       padding: 8px 12px !important;
     }
     .job-strip-quote-aside .job-strip-seai-cta {
@@ -2172,9 +2195,6 @@
     </div>
   </div>
 
-  <button type="button" class="btn-cta btn-cta--letterpop" id="btn-explore" aria-label="Explore jobs near me">
-    <span class="cta-letter" style="--i:0">E</span><span class="cta-letter" style="--i:1">x</span><span class="cta-letter" style="--i:2">p</span><span class="cta-letter" style="--i:3">l</span><span class="cta-letter" style="--i:4">o</span><span class="cta-letter" style="--i:5">r</span><span class="cta-letter" style="--i:6">e</span><span class="cta-letter" style="--i:7">&nbsp;</span><span class="cta-letter" style="--i:8">j</span><span class="cta-letter" style="--i:9">o</span><span class="cta-letter" style="--i:10">b</span><span class="cta-letter" style="--i:11">s</span><span class="cta-letter" style="--i:12">&nbsp;</span><span class="cta-letter" style="--i:13">n</span><span class="cta-letter" style="--i:14">e</span><span class="cta-letter" style="--i:15">a</span><span class="cta-letter" style="--i:16">r</span><span class="cta-letter" style="--i:17">&nbsp;</span><span class="cta-letter" style="--i:18">m</span><span class="cta-letter" style="--i:19">e</span><span class="cta-letter" style="--i:20">&nbsp;</span><span class="cta-letter" style="--i:21">→</span>
-  </button>
   <div class="splash-trust">
     <div class="splash-trust-row">
       <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5.5 6v5.2c0 4.5 2.7 8.6 6.5 10.8 3.8-2.2 6.5-6.3 6.5-10.8V6L12 3Z"/><path d="m9.1 12.1 1.9 1.9 3.9-3.9"/></svg>SEAI-registered contractor</span>
@@ -2248,18 +2268,9 @@
                   <input class="contact-above-map-input" type="email" id="quote-email" name="email" placeholder="Email address" autocomplete="email" inputmode="email" required aria-label="Email">
                   <input class="contact-above-map-input" type="tel" id="quote-phone" name="phone" placeholder="Phone number" autocomplete="tel" inputmode="tel" required aria-label="Phone">
                 </div>
+                <textarea class="contact-above-map-input quote-message-input" id="quote-message" name="message" placeholder="Brief Message (Optional)" autocomplete="off" aria-label="Brief message (optional)"></textarea>
                 <button type="submit" class="contact-above-map-submit">Enquire for FREE QUOTE</button>
               </form>
-              <div class="seai-box job-strip-seai-cta" aria-label="SEAI grants">
-                <div class="seai-box-row">
-                  <div class="seai-icon" aria-hidden="true">⚡</div>
-                  <div class="seai-text">
-                    <strong>SEAI grants of up to €25,000</strong>
-                    <span>Available for this type of work. Ask us how to claim yours.</span>
-                  </div>
-                </div>
-                <a class="seai-eligibility-btn" href="https://www.seai.ie/grants/" target="_blank" rel="noopener noreferrer">Check my eligibility →</a>
-              </div>
               <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
             </div>
           </aside>
@@ -2568,6 +2579,7 @@ const portfolioJobs = [
 // --   name text NOT NULL,
 // --   email text,
 // --   phone text,
+// --   message text,
 // --   created_at timestamptz DEFAULT now()
 // -- );
 
@@ -2593,7 +2605,7 @@ let customers = [];
  * @type {Array<{id:number,customerId:string,title:string,location:string,beforePhotos:string[],afterPhotos:string[],annualSavings:number,propertyValueIncrease:number,seaiGrant:number,oldBER:string,newBER:string,completionDate:string,notes?:string}>}
  */
 let galleryJobs = [];
-/** @type {Array<{name:string,email?:string|null,phone?:string|null,queuedAt:string}>} */
+/** @type {Array<{name:string,email?:string|null,phone?:string|null,message?:string|null,queuedAt:string}>} */
 let pendingQuotes = [];
 
 function loadGalleryJobsFromStorage() {
@@ -2649,6 +2661,7 @@ function queuePendingQuote(payload) {
     name: payload.name,
     email: payload.email || null,
     phone: payload.phone || null,
+    message: payload.message || null,
     queuedAt: new Date().toISOString()
   });
   persistPendingQuotes();
@@ -2664,7 +2677,8 @@ async function flushPendingQuotes() {
   const payload = pendingQuotes.map(q => ({
     name: q.name,
     email: q.email || null,
-    phone: q.phone || null
+    phone: q.phone || null,
+    message: q.message || null
   }));
   const { error } = await supabaseClient.from('customers').insert(payload);
   if (error) return false;
@@ -2772,7 +2786,7 @@ function renderGalleryGrid() {
       : '<div class="flex items-center justify-center text-[10px] text-[var(--text-muted)] bg-[var(--charcoal-light)] w-full h-full">After</div>';
     return `
       <article class="rounded-lg border border-[var(--border-gold)] bg-[var(--charcoal-mid)] overflow-hidden flex flex-col shadow-md">
-        <div class="grid grid-cols-2 gap-0 h-32 sm:h-36">
+        <div class="grid grid-cols-2 gap-0 h-[9.6rem] sm:h-[10.8rem]">
           <div class="relative border-r border-[var(--border-gold)] overflow-hidden">${beforePh}</div>
           <div class="relative overflow-hidden">${afterPh}</div>
         </div>
@@ -3166,7 +3180,7 @@ function showMapScreen() {
   }, 380);
 }
 
-document.getElementById('btn-explore').addEventListener('click', showMapScreen);
+document.getElementById('btn-explore')?.addEventListener('click', showMapScreen);
 document.getElementById('splash-scroll-cta')?.addEventListener('click', showMapScreen);
 
 const splashScreenEl = document.getElementById('screen-splash');
@@ -3660,9 +3674,6 @@ function openPanel(job) {
   overlay.classList.add('active');
 
   initPhotoCarousel(job);
-  // Init before/after slider
-  initBASlider();
-  bindPanelQuoteCta();
   renderJobStrip();
 }
 
@@ -3749,20 +3760,8 @@ function buildPanelHTML(job) {
           <button type="button" class="ba-photo-nav-btn" id="ba-photo-next" aria-label="Next project photos">${navRightSvg}</button>
         </div>
       </div>
-      <div class="panel-sticky-cta">
-        <button type="button" class="panel-quote-cta" id="panel-quote-cta">Get a free quote for my home →</button>
-      </div>
     </div>
   `;
-}
-
-function bindPanelQuoteCta() {
-  const btn = document.getElementById('panel-quote-cta');
-  if (!btn || btn.dataset.bound) return;
-  btn.dataset.bound = '1';
-  btn.addEventListener('click', () => {
-    openQuoteSheet();
-  });
 }
 
 function handleQuoteClick() {
@@ -3775,6 +3774,8 @@ function initPhotoCarousel(job) {
   const dotsEl = document.getElementById('ba-photo-dots');
   const prevBtn = document.getElementById('ba-photo-prev');
   const nextBtn = document.getElementById('ba-photo-next');
+  const dividerEl = document.getElementById('ba-divider');
+  const afterMaskEl = document.getElementById('ba-after');
   if (!beforeEl || !afterEl || !dotsEl || !prevBtn || !nextBtn) return;
 
   const beforePhotos = job.beforePhotos && job.beforePhotos.length ? job.beforePhotos : [DEFAULT_BEFORE_PHOTO];
@@ -3786,24 +3787,49 @@ function initPhotoCarousel(job) {
     return Array.from({ length: count }, (_, i) => (i === activeIdx ? '●' : '○')).join(' ');
   }
 
-  function render() {
+  function setDividerPosition(direction) {
+    if (!dividerEl || !afterMaskEl || direction === 0) return;
+    const targetPct = direction > 0 ? 99 : 1;
+    dividerEl.style.transition = 'left 260ms ease';
+    afterMaskEl.style.transition = 'clip-path 260ms ease';
+    dividerEl.style.left = `${targetPct}%`;
+    afterMaskEl.style.clipPath = `inset(0 ${100 - targetPct}% 0 0)`;
+  }
+
+  function centerDivider() {
+    if (!dividerEl || !afterMaskEl) return;
+    dividerEl.style.transition = 'left 220ms ease';
+    afterMaskEl.style.transition = 'clip-path 220ms ease';
+    dividerEl.style.left = '50%';
+    afterMaskEl.style.clipPath = 'inset(0 50% 0 0)';
+  }
+
+  function render(direction = 0) {
     const beforeSrc = beforePhotos[Math.min(index, beforePhotos.length - 1)] || DEFAULT_BEFORE_PHOTO;
     const afterSrc = afterPhotos[Math.min(index, afterPhotos.length - 1)] || DEFAULT_AFTER_PHOTO;
     beforeEl.src = beforeSrc;
     afterEl.src = afterSrc;
     dotsEl.textContent = dotString(total, index);
+    setDividerPosition(direction);
   }
 
-  prevBtn.disabled = total <= 1;
-  nextBtn.disabled = total <= 1;
+  prevBtn.disabled = false;
+  nextBtn.disabled = false;
   prevBtn.addEventListener('click', () => {
-    index = (index - 1 + total) % total;
-    render();
+    if (total > 1) {
+      index = (index - 1 + total) % total;
+    }
+    render(-1);
   });
   nextBtn.addEventListener('click', () => {
-    index = (index + 1) % total;
-    render();
+    if (total > 1) {
+      index = (index + 1) % total;
+    }
+    render(1);
   });
+  dotsEl.style.cursor = 'pointer';
+  dotsEl.title = 'Reset comparison to center';
+  dotsEl.addEventListener('click', centerDivider);
 
   render();
 }
@@ -3878,11 +3904,12 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     const name = document.getElementById('quote-name')?.value.trim() || '';
     const email = document.getElementById('quote-email')?.value.trim() || '';
     const phone = document.getElementById('quote-phone')?.value.trim() || '';
+    const message = document.getElementById('quote-message')?.value.trim() || '';
 
     feedback.hidden = false;
 
     if (!supabaseClient) {
-      queuePendingQuote({ name, email: email || null, phone: phone || null });
+      queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
       showSupabaseBanner('Supabase is not connected. Submission queued locally.');
       feedback.textContent = queuedMsg;
       return;
@@ -3893,12 +3920,13 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     const { error } = await supabaseClient.from('customers').insert({
       name,
       email: email || null,
-      phone: phone || null
+      phone: phone || null,
+      message: message || null
     });
 
     if (error) {
       console.error('Quote insert failed:', error);
-      queuePendingQuote({ name, email: email || null, phone: phone || null });
+      queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
       if (isRlsPolicyError(error)) {
         showSupabaseBanner('Insert blocked by Supabase RLS policy for table "customers".');
         feedback.textContent = 'Submission was blocked by server policy (RLS). Ask your admin to allow anon inserts on "customers".';
