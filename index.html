@@ -1165,7 +1165,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      z-index: 400;
+      z-index: 0;
       pointer-events: none;
       background-image:
         linear-gradient(rgba(36, 59, 90, 0.06) 1px, transparent 1px),
@@ -1173,8 +1173,8 @@
       background-size: 40px 40px;
       opacity: 0.85;
     }
-    .leaflet-container {
-      filter: saturate(0.9) brightness(1.02) contrast(1.02) hue-rotate(-8deg);
+    .leaflet-tile-pane {
+      filter: contrast(1.1) saturate(1.04) brightness(0.99);
     }
 
     @media (max-width: 900px) {
@@ -1773,7 +1773,7 @@
       width: 100%;
       height: 100%;
       min-height: 160px;
-      z-index: 1;
+      z-index: 2;
     }
 
     .job-marker-dot {
@@ -3895,6 +3895,89 @@ function getJobsInMapBounds() {
   return getVisibleJobs().filter(j => bounds.contains([j.lat, j.lng]));
 }
 
+const GEOCODE_CACHE_KEY = 'ecomap-geocode-cache-v1';
+const GEOCODE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
+
+function readGeocodeCache() {
+  try {
+    const raw = localStorage.getItem(GEOCODE_CACHE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function writeGeocodeCache(cache) {
+  try {
+    localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(cache));
+  } catch (_) {
+    // Ignore quota/private-mode errors.
+  }
+}
+
+async function geocodeAddress(address) {
+  const q = encodeURIComponent(`${address}, Dublin, Ireland`);
+  const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ie&q=${q}`;
+  const res = await fetch(url, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+  if (!res.ok) throw new Error(`Geocode failed (${res.status})`);
+  const data = await res.json();
+  const row = Array.isArray(data) ? data[0] : null;
+  if (!row) return null;
+  const lat = Number(row.lat);
+  const lng = Number(row.lon);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  return { lat, lng };
+}
+
+/**
+ * Ensures each job's marker coordinate matches its street address.
+ * Uses cached geocodes when available and updates markers after sync.
+ */
+async function syncJobCoordinatesWithAddresses() {
+  const now = Date.now();
+  const cache = readGeocodeCache();
+  let changed = false;
+
+  for (const job of portfolioJobs) {
+    const key = String(job.address || '').trim().toLowerCase();
+    if (!key) continue;
+
+    const cached = cache[key];
+    const isFresh = cached && Number.isFinite(cached.ts) && (now - cached.ts) < GEOCODE_CACHE_TTL_MS;
+    if (isFresh && Number.isFinite(cached.lat) && Number.isFinite(cached.lng)) {
+      if (Math.abs(job.lat - cached.lat) > 0.00001 || Math.abs(job.lng - cached.lng) > 0.00001) {
+        job.lat = cached.lat;
+        job.lng = cached.lng;
+        changed = true;
+      }
+      continue;
+    }
+
+    try {
+      const result = await geocodeAddress(job.address);
+      if (!result) continue;
+      cache[key] = { lat: result.lat, lng: result.lng, ts: now };
+      if (Math.abs(job.lat - result.lat) > 0.00001 || Math.abs(job.lng - result.lng) > 0.00001) {
+        job.lat = result.lat;
+        job.lng = result.lng;
+        changed = true;
+      }
+      await new Promise(resolve => setTimeout(resolve, 250));
+    } catch (_) {
+      // Keep fallback coordinates if geocoding fails/rate-limits.
+    }
+  }
+
+  writeGeocodeCache(cache);
+  if (changed && map) renderPins();
+}
+
 const JOB_CARD_IMAGE = DEFAULT_AFTER_PHOTO;
 
 let jobStripScrollBarInited = false;
@@ -4342,15 +4425,16 @@ function initMap() {
     zoomControl: false
   });
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    maxZoom: 19
+  L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors · HOT style · OpenStreetMap France',
+    maxZoom: 19,
+    subdomains: 'abc'
   }).addTo(map);
 
   L.control.zoom({ position: 'topright' }).addTo(map);
 
   markerClusterLayer = L.markerClusterGroup({
-    disableClusteringAtZoom: 15,
+    disableClusteringAtZoom: 9,
     spiderfyOnMaxZoom: true,
     showCoverageOnHover: false,
     zoomToBoundsOnClick: true,
@@ -4359,7 +4443,7 @@ function initMap() {
       const sizeClass = count >= 10 ? 'cluster-large' : (count >= 5 ? 'cluster-medium' : 'cluster-small');
       const size = 44;
       return L.divIcon({
-        html: `<div class="cluster-marker ${sizeClass}">${count}</div>`,
+        html: `<div class="cluster-marker ${sizeClass}" aria-hidden="true"></div>`,
         className: 'leaflet-marker-cluster cluster-marker-wrap',
         iconSize: L.point(size, size)
       });
@@ -4371,6 +4455,7 @@ function initMap() {
   initPropertiesSidebar();
   initJobStripScrollBar();
   renderPins();
+  syncJobCoordinatesWithAddresses();
 
   if (!mapPopupDetailsBound) {
     mapPopupDetailsBound = true;
@@ -4436,11 +4521,20 @@ function initMap() {
 function renderPins() {
   if (!map || !markerClusterLayer) return;
   const nearestId = resolveNearestForDisplay();
+  const visibleJobs = getVisibleJobs();
 
   markerClusterLayer.clearLayers();
+  Object.values(markers).forEach(m => {
+    if (map.hasLayer(m)) map.removeLayer(m);
+  });
   Object.keys(markers).forEach(k => { delete markers[k]; });
 
-  getVisibleJobs().forEach(job => {
+  const anchorJob = visibleJobs.find(j => j.id === activeJobId)
+    || visibleJobs.find(j => j.id === nearestId)
+    || visibleJobs[0]
+    || null;
+
+  const buildMarkerForJob = (job, isAnchor) => {
     const isNearest = job.id === nearestId;
     const isSelected = job.id === activeJobId;
     const a11yLabel = isNearest ? 'Nearest completed job' : 'Completed job';
@@ -4488,9 +4582,14 @@ function renderPins() {
         focusJobCard(job.id);
       });
     });
-    markerClusterLayer.addLayer(marker);
+    if (isAnchor) map.addLayer(marker);
+    else markerClusterLayer.addLayer(marker);
 
     markers[job.id] = marker;
+  };
+
+  visibleJobs.forEach(job => {
+    buildMarkerForJob(job, !!anchorJob && job.id === anchorJob.id);
   });
 
   lastJobStripInViewSig = null;
