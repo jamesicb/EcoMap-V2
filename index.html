@@ -892,12 +892,13 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      padding: 10px 12px 12px;
+      padding: 10px 12px 8px;
+      overflow: hidden;
       transition: opacity 0.2s ease;
     }
     @media (max-width: 900px) {
       .map-sidebar-inner {
-        padding: 0 12px 14px;
+        padding: 0 12px 8px;
         min-height: 0;
       }
     }
@@ -934,49 +935,66 @@
       flex: 1 1 auto;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      scrollbar-color: rgba(128, 128, 128, 0.38) rgba(0, 0, 0, 0.12);
+      scrollbar-gutter: stable;
       display: flex;
       flex-direction: column;
       gap: 8px;
       min-height: 0;
-      padding-right: 2px;
+      padding-right: 8px;
     }
     .map-sidebar-list {
       flex: 0 0 auto;
-      min-height: calc(156px * 3 + 16px);
-      max-height: calc(156px * 3 + 16px);
+      min-height: calc(140px * 2 + 8px);
+      max-height: calc(140px * 2 + 8px);
     }
     .map-sidebar-list::-webkit-scrollbar {
       width: 5px;
     }
+    .map-sidebar-list::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 99px;
+    }
     .map-sidebar-list::-webkit-scrollbar-thumb {
-      background: rgba(107, 31, 58, 0.25);
+      background: rgba(128, 128, 128, 0.38);
       border-radius: 99px;
     }
     .map-sidebar-list .listing-card {
       aspect-ratio: auto;
-      min-height: 176px;
-      height: 176px;
-      grid-template-rows: 42% 58%;
+      min-height: 140px;
+      height: 140px;
+      grid-template-rows: 50% 50%;
     }
     .map-sidebar-list .listing-card .card-body {
-      padding: 10px 11px 9px;
+      padding: 6px 8px 5px;
     }
     .map-sidebar-list .listing-card .card-price {
-      font-size: 15px;
+      font-size: 13px;
+      margin-bottom: 2px;
     }
     .map-sidebar-list .listing-card .card-addr {
-      font-size: 10px;
+      font-size: 9px;
+      line-height: 1.2;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
     }
     .map-sidebar-list .listing-card .card-type {
-      font-size: 9px;
+      margin-top: 2px;
+      font-size: 8px;
+      line-height: 1.1;
+    }
+    .map-sidebar-list .listing-card .card-tags {
+      gap: 3px;
+      padding-top: 4px;
     }
     .map-sidebar-list .listing-card .tag {
-      font-size: 9px;
+      font-size: 8px;
+      padding: 2px 5px;
     }
     .map-sidebar-quote {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(107, 30, 61, 0.14);
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(107, 30, 61, 0.45);
     }
     .map-sidebar-quote .quote-sheet-scroll {
       padding: 0;
@@ -1004,16 +1022,17 @@
     .map-sidebar-quote .contact-above-map-submit {
       width: 100%;
       margin-top: 2px;
+      margin-bottom: 2px;
     }
     @media (max-width: 900px) {
       .map-sidebar-list {
         min-height: 0;
-        max-height: min(38vh, 300px);
+        max-height: min(24vh, 190px);
       }
       .map-sidebar-list .listing-card {
-        height: auto;
-        grid-template-rows: 42% 58%;
-        min-height: 176px;
+        height: 140px;
+        grid-template-rows: 50% 50%;
+        min-height: 140px;
       }
     }
 
@@ -1366,12 +1385,12 @@
     }
 
     .quote-feedback {
-      margin: 10px 0 0;
-      font-size: 12px;
+      margin: 8px 0 0;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--text-dark);
-      line-height: 1.35;
-      letter-spacing: 0.04em;
+      line-height: 1.3;
+      letter-spacing: 0.01em;
     }
     .quote-feedback[hidden] {
       display: none !important;
@@ -4770,7 +4789,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     feedback.textContent = successMsg;
     form.reset();
     closeQuoteSheet();
-    setTimeout(() => { feedback.hidden = true; }, 8000);
+    setTimeout(() => { feedback.hidden = true; }, 16000);
   });
 })();
 
