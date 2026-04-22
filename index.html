@@ -640,14 +640,23 @@
       background: #ffffff;
       display: flex;
       flex-direction: column;
+      position: relative;
+      z-index: 0;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .listing-card .card-body::before,
+    .listing-card .card-body::after {
+      content: none !important;
     }
     .listing-card .card-price {
-      color: #6B1E3D;
+      color: #1f314a;
       font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.02em;
       margin-bottom: 4px;
       line-height: 1.2;
+      flex-shrink: 0;
     }
     .listing-card .card-addr {
       color: #7a6f6a;
@@ -655,14 +664,18 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       line-height: 1.35;
+      margin-bottom: 4px;
       display: -webkit-box;
       line-clamp: 2;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
     }
     .listing-card .card-type {
-      margin-top: 4px;
+      margin-top: 8px;
       color: #6B1E3D;
       font-size: 8px;
       letter-spacing: 0.06em;
@@ -673,6 +686,9 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
     }
     .listing-card .card-tags {
       display: flex;
@@ -681,6 +697,9 @@
       gap: 4px;
       margin-top: auto;
       padding-top: 6px;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
     }
     .listing-card .tag {
       font-size: 8px;
@@ -966,6 +985,8 @@
     }
     .map-sidebar-list .listing-card .card-addr {
       font-size: 10px;
+      line-clamp: 1;
+      -webkit-line-clamp: 1;
     }
     .map-sidebar-list .listing-card .card-type {
       font-size: 9px;
@@ -2029,8 +2050,8 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--gold);
-      border: 1px solid var(--gold);
+      background: #1f314a;
+      border: 1px solid #1f314a;
       color: #fff;
       font-size: 11px;
       font-weight: 700;
@@ -2118,7 +2139,7 @@
     .ba-after {
       background: linear-gradient(135deg, #f1e4ea 0%, #ead4df 55%, #e5c9d6 100%);
       z-index: 2;
-      clip-path: inset(0 50% 0 0);
+      clip-path: inset(0 0 0 50%);
       transition: clip-path 0.05s linear;
     }
     .ba-emoji {
@@ -3056,11 +3077,13 @@ const portfolioJobs = [
   {
     id: 1,
     lat: 53.3241, lng: -6.2856,
-    address: "14 Rathgar Avenue, Dublin 6",
+    address: "27 Mount Carmel Road, Goatstown, Dublin 14",
     type: "3-bed semi-detached",
     completedDate: "May 2024",
-    berBefore: "F", berAfter: "B2",
-    annualSaving: 2100, valueIncrease: 22000, co2Reduction: 3.2, warmthGain: 4
+    berBefore: "E2", berAfter: "B1",
+    annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, warmthGain: 5,
+    beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
+    afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
   },
   {
     id: 2,
@@ -3083,11 +3106,13 @@ const portfolioJobs = [
   {
     id: 4,
     lat: 53.3944, lng: -6.3880,
-    address: "21 Hartstown Road, Clonsilla, Dublin 15",
+    address: "27 Mount Carmel Road, Goatstown, Dublin 14",
     type: "4-bed semi-detached",
     completedDate: "July 2024",
-    berBefore: "E2", berAfter: "B2",
-    annualSaving: 2300, valueIncrease: 24500, co2Reduction: 3.5, warmthGain: 5
+    berBefore: "E2", berAfter: "B1",
+    annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, warmthGain: 5,
+    beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
+    afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
   },
   {
     id: 5,
@@ -3184,6 +3209,8 @@ const supabaseClient = (typeof supabase !== 'undefined' && supabase.createClient
   : null;
 
 const BER_SCALE = ['G', 'F1', 'F2', 'E1', 'E2', 'D1', 'D2', 'C1', 'C2', 'B3', 'B2', 'B1', 'A3', 'A2', 'A1'];
+const BER_BADGE_MIN = 'B3';
+const BER_BADGE_MAX = 'A2';
 const GALLERY_JOBS_STORAGE_KEY = 'ecomap_gallery_jobs_v1';
 const PENDING_QUOTES_STORAGE_KEY = 'ecomap_pending_quotes_v1';
 const DEFAULT_BEFORE_PHOTO = './assets/job-photos/before-default.png';
@@ -3876,7 +3903,26 @@ function getJobsInMapBounds() {
   return getVisibleJobs().filter(j => bounds.contains([j.lat, j.lng]));
 }
 
-const JOB_CARD_IMAGE = DEFAULT_AFTER_PHOTO;
+function getJobCardImage(job) {
+  return (job.afterPhotos && job.afterPhotos[0]) || DEFAULT_AFTER_PHOTO;
+}
+
+function formatJobTypeForCard(type) {
+  return String(type || '')
+    .replace(/^\s*\d+\s*-\s*bed\s*/i, '')
+    .trim();
+}
+
+function clampBerBadgeValue(berValue) {
+  if (!berValue || typeof berValue !== 'string') return '';
+  const grade = berValue.trim().toUpperCase();
+  const idx = BER_SCALE.indexOf(grade);
+  if (idx < 0) return grade;
+  const minIdx = BER_SCALE.indexOf(BER_BADGE_MIN);
+  const maxIdx = BER_SCALE.indexOf(BER_BADGE_MAX);
+  const boundedIdx = Math.max(minIdx, Math.min(maxIdx, idx));
+  return BER_SCALE[boundedIdx];
+}
 
 let jobStripScrollBarInited = false;
 
@@ -4033,16 +4079,19 @@ function renderJobStrip() {
   lastJobStripInViewSig = sortedSig;
   strip.innerHTML = list
     .map((job) => {
-      const tag2 = job.berAfter ? `BER ${job.berAfter}` : 'Completed';
-      const berBandClass = getBerBadgeClass(job.berAfter);
+      const berDisplay = clampBerBadgeValue(job.berAfter);
+      const tag2 = berDisplay ? `BER ${berDisplay}` : 'Completed';
+      const berBandClass = getBerBadgeClass(berDisplay);
+      const cardType = formatJobTypeForCard(job.type);
       const addrShort =
         job.address.length > 36 ? `${job.address.slice(0, 34)}…` : job.address;
+      const cardImage = getJobCardImage(job);
       return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${job.address}">
-        <div class="card-img" aria-hidden="true"><img src="${JOB_CARD_IMAGE}" alt="" loading="lazy" /></div>
+        <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
           <div class="card-addr">${addrShort}</div>
-          <div class="card-type">${job.type}</div>
+          <div class="card-type">${cardType}</div>
           <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
       </button>`;
@@ -4070,7 +4119,7 @@ function renderJobStrip() {
 
 function getBerBadgeClass(berValue) {
   if (!berValue || typeof berValue !== 'string') return 'ber-mid';
-  const grade = berValue.trim().toUpperCase();
+  const grade = clampBerBadgeValue(berValue);
   if (grade.startsWith('A') || grade.startsWith('B')) return 'ber-good';
   if (grade.startsWith('C')) return 'ber-mid';
   if (grade.startsWith('D')) return 'ber-warn';
@@ -4218,14 +4267,17 @@ function renderPropertiesSidebar() {
   const jobs = getVisibleJobs();
   list.innerHTML = jobs
     .map((job) => {
-      const tag2 = job.berAfter ? `BER ${job.berAfter}` : 'Completed';
-      const berBandClass = getBerBadgeClass(job.berAfter);
+      const berDisplay = clampBerBadgeValue(job.berAfter);
+      const tag2 = berDisplay ? `BER ${berDisplay}` : 'Completed';
+      const berBandClass = getBerBadgeClass(berDisplay);
+      const cardType = formatJobTypeForCard(job.type);
+      const cardImage = getJobCardImage(job);
       return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${job.address}">
-        <div class="card-img" aria-hidden="true"><img src="${JOB_CARD_IMAGE}" alt="" loading="lazy" /></div>
+        <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
           <div class="card-addr">${job.address}</div>
-          <div class="card-type">${job.type}</div>
+          <div class="card-type">${cardType}</div>
           <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
       </button>`;
@@ -4438,7 +4490,7 @@ function renderPins() {
     const bedsDisp = beds != null ? `${beds}` : '—';
     const tooltipHtml = `<span class="map-tip-price">€${job.valueIncrease.toLocaleString()} est. uplift</span><span class="map-tip-muted">${bedsDisp} bed · ${baths} bath</span>`;
 
-    const listingPhoto = (job.afterPhotos && job.afterPhotos[0]) || (job.beforePhotos && job.beforePhotos[0]) || DEFAULT_AFTER_PHOTO;
+    const listingPhoto = (job.afterPhotos && job.afterPhotos[0]) || DEFAULT_AFTER_PHOTO;
     const popupHtml = `
       <div class="map-popup-card">
         <img class="map-popup-photo" src="${listingPhoto}" alt="${job.address} project photo" loading="lazy" />
@@ -4532,14 +4584,16 @@ function buildPanelHTML(job) {
   const navRightSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>`;
   const pinSvg = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s5-4.4 5-8.3A5 5 0 1 0 5 9.7C5 13.6 10 18 10 18Z"/><circle cx="10" cy="9.5" r="1.8"/></svg>`;
   const postCodeArea = (job.address.match(/Dublin\s*\d+/i) || ['Dublin area'])[0];
+  const berBeforeDisplay = clampBerBadgeValue(job.berBefore);
+  const berAfterDisplay = clampBerBadgeValue(job.berAfter);
   const beforeSrc = job.beforePhotos && job.beforePhotos[0] ? job.beforePhotos[0] : DEFAULT_BEFORE_PHOTO;
   const afterSrc = job.afterPhotos && job.afterPhotos[0] ? job.afterPhotos[0] : DEFAULT_AFTER_PHOTO;
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
       <div class="panel-ber-hero-grades">
-        <div class="panel-ber-hero-grade old">${job.berBefore}</div>
+        <div class="panel-ber-hero-grade old">${berBeforeDisplay || 'B3'}</div>
         <span class="panel-ber-hero-arrow" aria-hidden="true">${arrowSvg}</span>
-        <div class="panel-ber-hero-grade new">${job.berAfter}</div>
+        <div class="panel-ber-hero-grade new">${berAfterDisplay || 'A2'}</div>
       </div>
       <div class="panel-ber-hero-caption">BER Improvement</div>
     </div>
@@ -4618,11 +4672,11 @@ function initPhotoCarousel(job) {
 
   function setDividerPosition(direction) {
     if (!dividerEl || !afterMaskEl || direction === 0) return;
-    const targetPct = direction > 0 ? 99 : 1;
+    const targetPct = direction > 0 ? 1 : 99;
     dividerEl.style.transition = 'left 260ms ease';
     afterMaskEl.style.transition = 'clip-path 260ms ease';
     dividerEl.style.left = `${targetPct}%`;
-    afterMaskEl.style.clipPath = `inset(0 ${100 - targetPct}% 0 0)`;
+    afterMaskEl.style.clipPath = `inset(0 0 0 ${targetPct}%)`;
   }
 
   function centerDivider() {
@@ -4630,7 +4684,7 @@ function initPhotoCarousel(job) {
     dividerEl.style.transition = 'left 220ms ease';
     afterMaskEl.style.transition = 'clip-path 220ms ease';
     dividerEl.style.left = '50%';
-    afterMaskEl.style.clipPath = 'inset(0 50% 0 0)';
+    afterMaskEl.style.clipPath = 'inset(0 0 0 50%)';
   }
 
   function render(direction = 0) {
@@ -4639,7 +4693,12 @@ function initPhotoCarousel(job) {
     beforeEl.src = beforeSrc;
     afterEl.src = afterSrc;
     dotsEl.textContent = dotString(total, index);
-    setDividerPosition(direction);
+    if (direction === 0 && dividerEl && afterMaskEl) {
+      dividerEl.style.left = '50%';
+      afterMaskEl.style.clipPath = 'inset(0 0 0 50%)';
+    } else {
+      setDividerPosition(direction);
+    }
   }
 
   prevBtn.disabled = false;
@@ -4677,7 +4736,7 @@ function initBASlider() {
 
   function setPosition(pct) {
     pct = Math.max(5, Math.min(95, pct));
-    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    after.style.clipPath = `inset(0 0 0 ${pct}%)`;
     divider.style.left   = pct + '%';
     handle.style.left    = pct + '%';
   }
