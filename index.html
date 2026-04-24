@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://nominatim.openstreetmap.org; font-src 'self' https://fonts.gstatic.com data:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Absolute Acrylics – Dublin Wall Insulation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -3248,20 +3250,13 @@ const portfolioJobs = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// SUPABASE — customers (run SQL in Supabase SQL editor if needed)
+// SUPABASE (run SQL in Supabase SQL editor; see supabase/security_hardening.sql)
 // ═══════════════════════════════════════════════════════════════
-// -- CREATE TABLE customers (
-// --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-// --   name text NOT NULL,
-// --   email text,
-// --   phone text,
-// --   message text,
-// --   created_at timestamptz DEFAULT now()
-// -- );
-
 const runtimeEnv = (typeof window !== 'undefined' && window.ECOMAP_ENV) ? window.ECOMAP_ENV : {};
 const SUPABASE_URL = runtimeEnv.SUPABASE_URL || 'https://tfnjbqnagdfrexoegbdi.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = runtimeEnv.SUPABASE_PUBLISHABLE_KEY || '';
+const CUSTOMER_TABLE = 'customers';
+const QUOTE_REQUEST_TABLE = 'quote_requests';
 
 const supabaseClient = (typeof supabase !== 'undefined' && supabase.createClient && SUPABASE_PUBLISHABLE_KEY)
   ? supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
@@ -3272,6 +3267,8 @@ const BER_BADGE_MIN = 'B3';
 const BER_BADGE_MAX = 'A2';
 const GALLERY_JOBS_STORAGE_KEY = 'ecomap_gallery_jobs_v1';
 const PENDING_QUOTES_STORAGE_KEY = 'ecomap_pending_quotes_v1';
+const QUOTE_SUBMIT_COOLDOWN_MS = 30 * 1000;
+const QUOTE_LAST_SUBMIT_KEY = 'ecomap_quote_last_submit_at';
 const DEFAULT_BEFORE_PHOTO = './assets/job-photos/before-default.png';
 const DEFAULT_AFTER_PHOTO = './assets/job-photos/after-default.png';
 
@@ -3335,6 +3332,9 @@ function persistPendingQuotes() {
 }
 
 function queuePendingQuote(payload) {
+  if (pendingQuotes.length >= 20) {
+    pendingQuotes = pendingQuotes.slice(-19);
+  }
   pendingQuotes.push({
     name: payload.name,
     email: payload.email || null,
@@ -3350,6 +3350,14 @@ function isRlsPolicyError(error) {
   return msg.includes('row-level security') || msg.includes('violates row-level security policy');
 }
 
+function formatSupabaseError(error) {
+  const code = String(error?.code || '').trim();
+  const msg = String(error?.message || '').trim();
+  if (code && msg) return `[${code}] ${msg}`;
+  if (msg) return msg;
+  return 'Unknown Supabase error';
+}
+
 async function flushPendingQuotes() {
   if (!supabaseClient || !pendingQuotes.length) return true;
   const payload = pendingQuotes.map(q => ({
@@ -3358,7 +3366,7 @@ async function flushPendingQuotes() {
     phone: q.phone || null,
     message: q.message || null
   }));
-  const { error } = await supabaseClient.from('customers').insert(payload);
+  const { error } = await supabaseClient.from(QUOTE_REQUEST_TABLE).insert(payload, { returning: 'minimal' });
   if (error) return false;
   pendingQuotes = [];
   persistPendingQuotes();
@@ -3410,6 +3418,29 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
+function sanitizeImageSrc(raw, fallback = '') {
+  const value = String(raw || '').trim();
+  if (!value) return fallback;
+  if (/^data:image\/(?:png|jpe?g|webp|gif);base64,[a-z0-9+/=]+$/i.test(value)) return value;
+  if (/^(?:\.{0,2}\/|\/|https?:\/\/|blob:)/i.test(value)) return value;
+  return fallback;
+}
+
+function sanitizePhoneForHref(raw) {
+  const cleaned = String(raw || '').replace(/[^\d+]/g, '');
+  return /^[+]?\d{6,20}$/.test(cleaned) ? cleaned : '';
+}
+
+function looksLikeEmail(raw) {
+  if (!raw) return true;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(raw));
+}
+
+function isValidName(raw) {
+  const value = String(raw || '').trim();
+  return value.length >= 2 && value.length <= 80;
+}
+
 async function fetchCustomers() {
   const listErr = document.getElementById('crm-customers-error');
   if (listErr) listErr.classList.add('hidden');
@@ -3425,7 +3456,7 @@ async function fetchCustomers() {
     renderGalleryGrid();
     return;
   }
-  const { data, error } = await supabaseClient.from('customers').select('*').order('name', { ascending: true });
+  const { data, error } = await supabaseClient.from(CUSTOMER_TABLE).select('*').order('name', { ascending: true });
   if (error) {
     showSupabaseBanner(error.message || 'Could not load customers.');
     if (listErr) {
@@ -3454,8 +3485,8 @@ function renderGalleryGrid() {
   }
   empty.classList.add('hidden');
   grid.innerHTML = galleryJobs.map(job => {
-    const beforeSrc = job.beforePhotos && job.beforePhotos[0] ? job.beforePhotos[0] : DEFAULT_BEFORE_PHOTO;
-    const afterSrc = job.afterPhotos && job.afterPhotos[0] ? job.afterPhotos[0] : DEFAULT_AFTER_PHOTO;
+    const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
+    const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
     const beforePh = beforeSrc
       ? `<img src="${beforeSrc}" alt="" class="w-full h-full object-cover" />`
       : '<div class="flex items-center justify-center text-[10px] text-[var(--text-muted)] bg-[var(--charcoal-light)] w-full h-full">Before</div>';
@@ -3512,7 +3543,7 @@ function renderCustomersList() {
     const em = c.email
       ? `<a href="${mailHref}" class="text-[var(--text-dark)] underline-offset-2 hover:underline text-sm">${escapeHtml(c.email)}</a>`
       : '<span class="text-[var(--text-muted)] text-sm">—</span>';
-    const telDigits = c.phone ? String(c.phone).replace(/[^\d+]/g, '') : '';
+    const telDigits = sanitizePhoneForHref(c.phone);
     const ph = c.phone && telDigits
       ? `<a href="tel:${escapeHtml(telDigits)}" class="text-[var(--text-dark)] text-sm">${escapeHtml(c.phone)}</a>`
       : '<span class="text-[var(--text-muted)] text-sm">—</span>';
@@ -3565,7 +3596,7 @@ function renderPhotoPreviews(container, photos, which) {
   if (!container) return;
   container.innerHTML = photos.map((src, idx) => `
     <div class="relative w-16 h-16 rounded border border-[var(--border-gold)] overflow-hidden shrink-0">
-      <img src="${src}" alt="" class="w-full h-full object-cover" />
+      <img src="${sanitizeImageSrc(src, DEFAULT_AFTER_PHOTO)}" alt="" class="w-full h-full object-cover" />
       <button type="button" class="absolute top-0 right-0 w-5 h-5 flex items-center justify-center bg-white/90 border border-black/15 text-black text-xs leading-none gj-rm-ph" data-which="${which}" data-i="${idx}" aria-label="Remove photo">×</button>
     </div>
   `).join('');
@@ -3727,16 +3758,37 @@ document.getElementById('form-customer')?.addEventListener('submit', async e => 
   const name = document.getElementById('cust-name').value.trim();
   const email = document.getElementById('cust-email').value.trim() || null;
   const phone = document.getElementById('cust-phone').value.trim() || null;
+  if (!isValidName(name)) {
+    if (errEl) {
+      errEl.textContent = 'Please enter a valid name (2-80 characters).';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
+  if (!looksLikeEmail(email)) {
+    if (errEl) {
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
+  if (phone && !sanitizePhoneForHref(phone)) {
+    if (errEl) {
+      errEl.textContent = 'Please enter a valid phone number.';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
   const payload = id ? { id, name, email, phone } : { name, email, phone };
   saveBtn.disabled = true;
   const prev = saveBtn.textContent;
   saveBtn.textContent = 'Saving…';
-  const { error } = await supabaseClient.from('customers').upsert(payload, { onConflict: 'id' });
+  const { error } = await supabaseClient.from(CUSTOMER_TABLE).upsert(payload, { onConflict: 'id' });
   saveBtn.disabled = false;
   saveBtn.textContent = prev;
   if (error) {
     if (errEl) {
-      errEl.textContent = error.message || 'Save failed.';
+      errEl.textContent = 'Save failed. Please try again.';
       errEl.classList.remove('hidden');
     }
     return;
@@ -3751,7 +3803,7 @@ async function deleteCustomer(id) {
     showSupabaseBanner('Supabase is not available.');
     return;
   }
-  const { error } = await supabaseClient.from('customers').delete().eq('id', id);
+  const { error } = await supabaseClient.from(CUSTOMER_TABLE).delete().eq('id', id);
   if (error) {
     const err = document.getElementById('crm-customers-error');
     if (err) {
@@ -3766,7 +3818,7 @@ async function deleteCustomer(id) {
 /** @type {'home'|'jobs'|'customers'} */
 let appView = 'home';
 
-function setAppView(view) {
+async function setAppView(view) {
   appView = view;
   const hideEls = document.querySelectorAll('[data-hide-on-subview]');
   const vJobs = document.getElementById('crm-view-jobs');
@@ -3784,6 +3836,10 @@ function setAppView(view) {
   document.getElementById('nav-desk-home')?.classList.toggle('is-active', view === 'home');
   document.getElementById('nav-desk-jobs')?.classList.toggle('is-active', view === 'jobs');
   document.getElementById('nav-desk-customers')?.classList.toggle('is-active', view === 'customers');
+
+  if (view === 'jobs' || view === 'customers') {
+    await fetchCustomers();
+  }
 
   if (view === 'home') {
     scheduleMapResize();
@@ -3822,7 +3878,6 @@ document.getElementById('btn-add-customer')?.addEventListener('click', () => ope
 
 loadGalleryJobsFromStorage();
 populateBerSelects();
-fetchCustomers();
 
 // ─────────────────────────────────────────────
 // SPLASH → MAP TRANSITION
@@ -3983,7 +4038,7 @@ function getJobsInMapBounds() {
 }
 
 function getJobCardImage(job) {
-  return (job.afterPhotos && job.afterPhotos[0]) || DEFAULT_AFTER_PHOTO;
+  return sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
 }
 
 function formatJobTypeForCard(type) {
@@ -4248,12 +4303,12 @@ function renderJobStrip() {
       const addrShort =
         job.address.length > 36 ? `${job.address.slice(0, 34)}…` : job.address;
       const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${job.address}">
+      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.address)}">
         <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
-          <div class="card-addr">${addrShort}</div>
-          <div class="card-type">${cardType}</div>
+          <div class="card-addr">${escapeHtml(addrShort)}</div>
+          <div class="card-type">${escapeHtml(cardType)}</div>
           <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
       </button>`;
@@ -4434,12 +4489,12 @@ function renderPropertiesSidebar() {
       const berBandClass = getBerBadgeClass(berDisplay);
       const cardType = formatJobTypeForCard(job.type);
       const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${job.address}">
+      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.address)}">
         <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
-          <div class="card-addr">${job.address}</div>
-          <div class="card-type">${cardType}</div>
+          <div class="card-addr">${escapeHtml(job.address)}</div>
+          <div class="card-type">${escapeHtml(cardType)}</div>
           <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
       </button>`;
@@ -4698,14 +4753,16 @@ function renderPins() {
     const bedsDisp = beds != null ? `${beds}` : '—';
     const tooltipHtml = `<span class="map-tip-price">€${job.valueIncrease.toLocaleString()} est. uplift</span><span class="map-tip-muted">${bedsDisp} bed · ${baths} bath</span>`;
 
-    const listingPhoto = (job.afterPhotos && job.afterPhotos[0]) || DEFAULT_AFTER_PHOTO;
+    const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
+    const safeAddress = escapeHtml(job.address);
+    const safeType = escapeHtml(job.type);
     const popupHtml = `
       <div class="map-popup-card">
-        <img class="map-popup-photo" src="${listingPhoto}" alt="${job.address} project photo" loading="lazy" />
+        <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
         <strong>Estimated value uplift</strong>
         <span class="map-popup-value">€${job.valueIncrease.toLocaleString()}</span>
-        <span class="map-popup-address">${job.address}</span>
-        <div class="map-popup-meta">${bedsDisp} bed · ${baths} bath · ${job.type}</div>
+        <span class="map-popup-address">${safeAddress}</span>
+        <div class="map-popup-meta">${bedsDisp} bed · ${baths} bath · ${safeType}</div>
         <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">View listing</button>
       </div>
     `;
@@ -4799,8 +4856,10 @@ function buildPanelHTML(job) {
   const postCodeArea = (job.address.match(/Dublin\s*\d+/i) || ['Dublin area'])[0];
   const berBeforeDisplay = clampBerBadgeValue(job.berBefore);
   const berAfterDisplay = clampBerBadgeValue(job.berAfter);
-  const beforeSrc = job.beforePhotos && job.beforePhotos[0] ? job.beforePhotos[0] : DEFAULT_BEFORE_PHOTO;
-  const afterSrc = job.afterPhotos && job.afterPhotos[0] ? job.afterPhotos[0] : DEFAULT_AFTER_PHOTO;
+  const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
+  const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
+  const safeAddress = escapeHtml(job.address);
+  const safeType = escapeHtml(job.type);
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
       <div class="panel-ber-hero-grades">
@@ -4810,12 +4869,12 @@ function buildPanelHTML(job) {
       </div>
       <div class="panel-ber-hero-caption">BER Improvement</div>
     </div>
-    <div class="job-badge">${checkSvg} Completed ${job.completedDate}</div>
+    <div class="job-badge">${checkSvg} Completed ${escapeHtml(job.completedDate)}</div>
     <div class="job-header">
       <div class="job-info">
-        <div class="job-address">${job.address}</div>
-        <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
-        <div class="panel-location-pill">${pinSvg}<span>${postCodeArea}</span></div>
+        <div class="job-address">${safeAddress}</div>
+        <div class="job-subtitle">External Wall Insulation · ${safeType}</div>
+        <div class="panel-location-pill">${pinSvg}<span>${escapeHtml(postCodeArea)}</span></div>
         <div class="benefits-grid">
           <div class="benefit-card savings">
             ${ic.euro}
@@ -4862,6 +4921,25 @@ function buildPanelHTML(job) {
 
 function handleQuoteClick() {
   alert('Thank you for your interest!\n\nCall us: 01 234 5678\nEmail: info@absoluteacrylics.ie');
+}
+
+function getRemainingQuoteCooldownMs() {
+  try {
+    const raw = localStorage.getItem(QUOTE_LAST_SUBMIT_KEY);
+    const last = Number(raw || 0);
+    if (!Number.isFinite(last) || last <= 0) return 0;
+    return Math.max(0, QUOTE_SUBMIT_COOLDOWN_MS - (Date.now() - last));
+  } catch (_) {
+    return 0;
+  }
+}
+
+function markQuoteSubmittedNow() {
+  try {
+    localStorage.setItem(QUOTE_LAST_SUBMIT_KEY, String(Date.now()));
+  } catch (_) {
+    // no-op
+  }
 }
 
 function initPhotoCarousel(job) {
@@ -5006,11 +5084,38 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     const email = document.getElementById('quote-email')?.value.trim() || '';
     const phone = document.getElementById('quote-phone')?.value.trim() || '';
     const message = document.getElementById('quote-message')?.value.trim() || '';
+    if (!isValidName(name)) {
+      feedback.hidden = false;
+      feedback.textContent = 'Please enter a valid name (2-80 characters).';
+      return;
+    }
+    if (!looksLikeEmail(email)) {
+      feedback.hidden = false;
+      feedback.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    if (phone && !sanitizePhoneForHref(phone)) {
+      feedback.hidden = false;
+      feedback.textContent = 'Please enter a valid phone number.';
+      return;
+    }
+    if (message.length > 2000) {
+      feedback.hidden = false;
+      feedback.textContent = 'Message is too long. Please keep it under 2000 characters.';
+      return;
+    }
+    const remainingMs = getRemainingQuoteCooldownMs();
+    if (remainingMs > 0) {
+      feedback.hidden = false;
+      feedback.textContent = `Please wait ${Math.ceil(remainingMs / 1000)}s before sending another request.`;
+      return;
+    }
 
     feedback.hidden = false;
 
     if (!supabaseClient) {
       queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
+      markQuoteSubmittedNow();
       showSupabaseBanner('Supabase is not connected. Submission queued locally.');
       feedback.textContent = queuedMsg;
       return;
@@ -5018,27 +5123,31 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 
     await flushPendingQuotes();
 
-    const { error } = await supabaseClient.from('customers').insert({
+    const { error } = await supabaseClient.from(QUOTE_REQUEST_TABLE).insert({
       name,
       email: email || null,
       phone: phone || null,
       message: message || null
-    });
+    }, { returning: 'minimal' });
 
     if (error) {
       console.error('Quote insert failed:', error);
       queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
+      markQuoteSubmittedNow();
       if (isRlsPolicyError(error)) {
-        showSupabaseBanner('Insert blocked by Supabase RLS policy for table "customers".');
-        feedback.textContent = 'Submission was blocked by server policy (RLS). Ask your admin to allow anon inserts on "customers".';
+        const detail = formatSupabaseError(error);
+        showSupabaseBanner('Submission blocked by server policy.');
+        feedback.textContent = `Saved locally only. Supabase blocked insert: ${detail}`;
       } else {
-        showSupabaseBanner(error.message || 'Could not save enquiry to Supabase.');
-        feedback.textContent = queuedMsg;
+        const detail = formatSupabaseError(error);
+        showSupabaseBanner('Could not save enquiry right now.');
+        feedback.textContent = `Saved locally only. Supabase error: ${detail}`;
       }
       return;
     }
 
     await fetchCustomers();
+    markQuoteSubmittedNow();
     feedback.textContent = successMsg;
     form.reset();
     closeQuoteSheet();
