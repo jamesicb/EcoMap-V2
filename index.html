@@ -745,6 +745,7 @@
       }
       .job-strip-panel {
         order: 3;
+        display: none;
       }
       .app-tab-bar {
         order: 4;
@@ -766,6 +767,7 @@
         min-height: 0;
         flex-shrink: 1;
         width: 100%;
+        overflow: hidden;
       }
       .job-strip-panel {
         flex: 0 1 auto;
@@ -861,7 +863,7 @@
         bottom: 0;
         z-index: 530;
         flex-direction: column;
-        max-height: 48vh;
+        max-height: min(46dvh, 360px);
         border-radius: 14px 14px 0 0;
         transform: translateY(calc(100% - 52px));
         transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1213,7 +1215,7 @@
       .map-frame-inner {
         aspect-ratio: unset;
         flex: 1 1 auto;
-        min-height: clamp(220px, 36dvh, 320px);
+        min-height: clamp(260px, 48dvh, 420px);
         height: 100%;
       }
     }
@@ -1486,7 +1488,44 @@
 
     @media (max-width: 900px) {
       .map-locate-btn {
-        bottom: 40px;
+        bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+      }
+    }
+
+    @media (max-width: 480px) {
+      .map-screen-layout {
+        height: 100svh;
+        padding-top: max(8px, env(safe-area-inset-top, 0px));
+      }
+      .map-map-section {
+        padding: 0 8px;
+      }
+      .map-split {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+      .map-map-section .map-frame {
+        border-radius: 12px;
+      }
+      .map-frame-inner {
+        min-height: clamp(300px, 58svh, 520px);
+      }
+      .map-properties-sidebar {
+        left: 8px;
+        right: 8px;
+        max-height: min(44svh, 330px);
+        transform: translateY(calc(100% - 56px));
+      }
+      .map-sidebar-mobile-toggle {
+        left: 14px;
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+      }
+      .map-locate-btn {
+        right: 12px;
+        bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+      }
+      .app-tab-bar {
+        padding-inline: 8px;
       }
     }
 
@@ -2902,6 +2941,9 @@
           <div class="map-frame">
             <div class="map-frame-inner">
               <div id="map"></div>
+              <p class="absolute left-3 bottom-3 z-[500] max-w-[min(90vw,380px)] rounded-md border border-black/10 bg-white/90 px-3 py-2 text-[11px] leading-snug text-[var(--text-dark)] shadow-sm">
+                All locations shown are approximate. No personally identifiable information is displayed.
+              </p>
               <div class="map-filters-overlay">
                 <div class="browse-filters-toolbar">
                   <div class="browse-filters-wrap" id="browse-filters-wrap">
@@ -3144,15 +3186,18 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="./env.js"></script>
+<script src="./assets/privacy-utils.js"></script>
 <script>
 // ─────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────
-const portfolioJobs = [
+const portfolioJobsRaw = [
   {
     id: 1,
     lat: 53.3241, lng: -6.2856,
     address: "27 Mount Carmel Road, Goatstown, Dublin 14",
+    areaText: "Dublin 14",
+    consent_to_display: true,
     type: "3-bed semi-detached",
     completedDate: "May 2024",
     berBefore: "E2", berAfter: "B1",
@@ -3164,6 +3209,8 @@ const portfolioJobs = [
     id: 2,
     lat: 53.3798, lng: -6.2520,
     address: "7 Collins Avenue, Dublin 9",
+    areaText: "Dublin 9",
+    consent_to_display: true,
     type: "4-bed detached",
     completedDate: "March 2024",
     berBefore: "E1", berAfter: "B3",
@@ -3173,6 +3220,8 @@ const portfolioJobs = [
     id: 3,
     lat: 53.3153, lng: -6.3512,
     address: "32 Kimmage Road West, Dublin 12",
+    areaText: "Dublin 12",
+    consent_to_display: true,
     type: "3-bed terraced",
     completedDate: "January 2024",
     berBefore: "G", berAfter: "C1",
@@ -3182,6 +3231,8 @@ const portfolioJobs = [
     id: 4,
     lat: 53.3944, lng: -6.3880,
     address: "27 Mount Carmel Road, Goatstown, Dublin 14",
+    areaText: "Dublin 15",
+    consent_to_display: true,
     type: "4-bed semi-detached",
     completedDate: "July 2024",
     berBefore: "E2", berAfter: "B1",
@@ -3193,6 +3244,8 @@ const portfolioJobs = [
     id: 5,
     lat: 53.4597, lng: -6.2192,
     address: "9 Malahide Marina Village, Malahide",
+    areaText: "Malahide",
+    consent_to_display: true,
     type: "3-bed end-of-terrace",
     completedDate: "September 2024",
     berBefore: "D1", berAfter: "B3",
@@ -3202,6 +3255,8 @@ const portfolioJobs = [
     id: 6,
     lat: 53.3055, lng: -6.4192,
     address: "45 Monastery Road, Clondalkin",
+    areaText: "Clondalkin",
+    consent_to_display: true,
     type: "3-bed semi-detached",
     completedDate: "April 2024",
     berBefore: "F", berAfter: "C2",
@@ -3211,6 +3266,8 @@ const portfolioJobs = [
     id: 7,
     lat: 53.2936, lng: -6.1358,
     address: "18 Glenageary Road, Dún Laoghaire",
+    areaText: "Dun Laoghaire",
+    consent_to_display: true,
     type: "5-bed detached",
     completedDate: "February 2024",
     berBefore: "E1", berAfter: "B1",
@@ -3220,6 +3277,8 @@ const portfolioJobs = [
     id: 8,
     lat: 53.4573, lng: -6.2658,
     address: "3 Seatown Road, Swords",
+    areaText: "Swords",
+    consent_to_display: true,
     type: "4-bed semi-detached",
     completedDate: "June 2024",
     berBefore: "D2", berAfter: "B2",
@@ -3229,6 +3288,8 @@ const portfolioJobs = [
     id: 9,
     lat: 53.3531, lng: -6.4474,
     address: "62 Esker Lawns, Lucan",
+    areaText: "Lucan",
+    consent_to_display: true,
     type: "3-bed semi-detached",
     completedDate: "August 2024",
     berBefore: "E2", berAfter: "B3",
@@ -3238,6 +3299,8 @@ const portfolioJobs = [
     id: 10,
     lat: 53.2871, lng: -6.3745,
     address: "27 Orlagh Crescent, Tallaght",
+    areaText: "Tallaght",
+    consent_to_display: true,
     type: "3-bed terraced",
     completedDate: "October 2024",
     berBefore: "F", berAfter: "C1",
@@ -3247,6 +3310,8 @@ const portfolioJobs = [
     id: 11,
     lat: 53.3936, lng: -6.3747,
     address: "14 Coolmine Meadows, Blanchardstown",
+    areaText: "Blanchardstown",
+    consent_to_display: true,
     type: "4-bed detached",
     completedDate: "November 2024",
     berBefore: "E1", berAfter: "B2",
@@ -3256,12 +3321,24 @@ const portfolioJobs = [
     id: 12,
     lat: 53.2736, lng: -6.2152,
     address: "5 Beechwood Park, Sandyford",
+    areaText: "Sandyford",
+    consent_to_display: true,
     type: "4-bed semi-detached",
     completedDate: "December 2024",
     berBefore: "D1", berAfter: "A3",
     annualSaving: 2780, valueIncrease: 35000, co2Reduction: 4.2, warmthGain: 5
   }
 ];
+
+/**
+ * Public map payload: no exact address, no direct identifiers, consent-gated rows only.
+ * @typedef {{id:number,lat:number,lng:number,blurMeters:number,areaText:string,type:string,completedDate:string,berBefore:string,berAfter:string,annualSaving:number,valueIncrease:number,co2Reduction:number,warmthGain:number,bathrooms:number|null,beforePhotos:string[],afterPhotos:string[],consentToDisplay:true}} PublicJob
+ */
+const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePublicJobs)
+  ? window.EcoMapPrivacy.sanitizePublicJobs(portfolioJobsRaw)
+  : portfolioJobsRaw
+      .filter(j => j.consent_to_display !== false)
+      .map(j => ({ ...j, areaText: j.areaText || 'Dublin area', consentToDisplay: true }));
 
 // ═══════════════════════════════════════════════════════════════
 // SUPABASE (run SQL in Supabase SQL editor; see supabase/security_hardening.sql)
@@ -4072,88 +4149,7 @@ function clampBerBadgeValue(berValue) {
   return BER_SCALE[boundedIdx];
 }
 
-const GEOCODE_CACHE_KEY = 'ecomap-geocode-cache-v1';
-const GEOCODE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
-
-function readGeocodeCache() {
-  try {
-    const raw = localStorage.getItem(GEOCODE_CACHE_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch (_) {
-    return {};
-  }
-}
-
-function writeGeocodeCache(cache) {
-  try {
-    localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(cache));
-  } catch (_) {
-    // Ignore quota/private-mode errors.
-  }
-}
-
-async function geocodeAddress(address) {
-  const q = encodeURIComponent(`${address}, Dublin, Ireland`);
-  const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ie&q=${q}`;
-  const res = await fetch(url, {
-    headers: {
-      Accept: 'application/json'
-    }
-  });
-  if (!res.ok) throw new Error(`Geocode failed (${res.status})`);
-  const data = await res.json();
-  const row = Array.isArray(data) ? data[0] : null;
-  if (!row) return null;
-  const lat = Number(row.lat);
-  const lng = Number(row.lon);
-  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-  return { lat, lng };
-}
-
-/**
- * Ensures each job's marker coordinate matches its street address.
- * Uses cached geocodes when available and updates markers after sync.
- */
-async function syncJobCoordinatesWithAddresses() {
-  const now = Date.now();
-  const cache = readGeocodeCache();
-  let changed = false;
-
-  for (const job of portfolioJobs) {
-    const key = String(job.address || '').trim().toLowerCase();
-    if (!key) continue;
-
-    const cached = cache[key];
-    const isFresh = cached && Number.isFinite(cached.ts) && (now - cached.ts) < GEOCODE_CACHE_TTL_MS;
-    if (isFresh && Number.isFinite(cached.lat) && Number.isFinite(cached.lng)) {
-      if (Math.abs(job.lat - cached.lat) > 0.00001 || Math.abs(job.lng - cached.lng) > 0.00001) {
-        job.lat = cached.lat;
-        job.lng = cached.lng;
-        changed = true;
-      }
-      continue;
-    }
-
-    try {
-      const result = await geocodeAddress(job.address);
-      if (!result) continue;
-      cache[key] = { lat: result.lat, lng: result.lng, ts: now };
-      if (Math.abs(job.lat - result.lat) > 0.00001 || Math.abs(job.lng - result.lng) > 0.00001) {
-        job.lat = result.lat;
-        job.lng = result.lng;
-        changed = true;
-      }
-      await new Promise(resolve => setTimeout(resolve, 250));
-    } catch (_) {
-      // Keep fallback coordinates if geocoding fails/rate-limits.
-    }
-  }
-
-  writeGeocodeCache(cache);
-  if (changed && map) renderPins();
-}
+// Exact-address geocoding intentionally removed for GDPR compliance.
 
 let jobStripScrollBarInited = false;
 
@@ -4315,9 +4311,9 @@ function renderJobStrip() {
       const berBandClass = getBerBadgeClass(berDisplay);
       const cardType = formatJobTypeForCard(job.type);
       const addrShort =
-        job.address.length > 36 ? `${job.address.slice(0, 34)}…` : job.address;
+        job.areaText.length > 36 ? `${job.areaText.slice(0, 34)}…` : job.areaText;
       const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.address)}">
+      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
         <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
@@ -4503,11 +4499,11 @@ function renderPropertiesSidebar() {
       const berBandClass = getBerBadgeClass(berDisplay);
       const cardType = formatJobTypeForCard(job.type);
       const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.address)}">
+      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
         <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
-          <div class="card-addr">${escapeHtml(job.address)}</div>
+          <div class="card-addr">${escapeHtml(job.areaText)}</div>
           <div class="card-type">${escapeHtml(cardType)}</div>
           <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
@@ -4636,7 +4632,7 @@ function initMap() {
   initPropertiesSidebar();
   initJobStripScrollBar();
   renderPins();
-  syncJobCoordinatesWithAddresses();
+  // Coordinates are privacy-preserving and deterministic per job id.
 
   if (!mapPopupDetailsBound) {
     mapPopupDetailsBound = true;
@@ -4768,7 +4764,7 @@ function renderPins() {
     const tooltipHtml = `<span class="map-tip-price">€${job.valueIncrease.toLocaleString()} est. uplift</span><span class="map-tip-muted">${bedsDisp} bed · ${baths} bath</span>`;
 
     const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
-    const safeAddress = escapeHtml(job.address);
+    const safeAddress = escapeHtml(job.areaText);
     const safeType = escapeHtml(job.type);
     const popupHtml = `
       <div class="map-popup-card">
@@ -4867,12 +4863,12 @@ function buildPanelHTML(job) {
   const navLeftSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 3-5 5 5 5"/></svg>`;
   const navRightSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>`;
   const pinSvg = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s5-4.4 5-8.3A5 5 0 1 0 5 9.7C5 13.6 10 18 10 18Z"/><circle cx="10" cy="9.5" r="1.8"/></svg>`;
-  const postCodeArea = (job.address.match(/Dublin\s*\d+/i) || ['Dublin area'])[0];
+  const postCodeArea = job.areaText || 'Dublin area';
   const berBeforeDisplay = clampBerBadgeValue(job.berBefore);
   const berAfterDisplay = clampBerBadgeValue(job.berAfter);
   const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
   const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
-  const safeAddress = escapeHtml(job.address);
+  const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
