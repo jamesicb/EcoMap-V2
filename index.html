@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://nominatim.openstreetmap.org; font-src 'self' https://fonts.gstatic.com data:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Absolute Acrylics – Dublin Wall Insulation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -394,6 +396,11 @@
         display: flex;
         flex-direction: column;
         min-height: 0;
+        height: 100dvh;
+        row-gap: 8px;
+        padding-top: max(8px, env(safe-area-inset-top, 0px));
+        padding-bottom: 0;
+        overflow: hidden;
       }
     }
 
@@ -446,6 +453,19 @@
       font-size: clamp(1.2rem, 4.1vw, 1.55rem);
       line-height: 1.25;
       flex: 0 1 auto;
+    }
+    .lux-brand-above-form--row {
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.35em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .lux-brand-above-form--row .lux-brand-part {
+      flex: 0 0 auto;
     }
     .lux-toolbar-row {
       flex-shrink: 0;
@@ -738,6 +758,7 @@
       }
       .job-strip-panel {
         order: 3;
+        display: none;
       }
       .app-tab-bar {
         order: 4;
@@ -759,6 +780,13 @@
         min-height: 0;
         flex-shrink: 1;
         width: 100%;
+        overflow: hidden;
+      }
+      .job-strip-panel {
+        flex: 0 1 auto;
+        min-height: 0;
+        max-height: min(34dvh, 280px);
+        overflow: hidden;
       }
     }
 
@@ -848,7 +876,7 @@
         bottom: 0;
         z-index: 530;
         flex-direction: column;
-        max-height: 48vh;
+        max-height: min(46dvh, 360px);
         border-radius: 14px 14px 0 0;
         transform: translateY(calc(100% - 52px));
         transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
@@ -911,6 +939,7 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
       padding: 10px 12px 8px;
       overflow: hidden;
       transition: opacity 0.2s ease;
@@ -963,9 +992,9 @@
       padding-right: 8px;
     }
     .map-sidebar-list {
-      flex: 0 0 auto;
-      min-height: calc(140px * 2 + 8px);
-      max-height: calc(140px * 2 + 8px);
+      flex: 0 1 auto;
+      min-height: 0;
+      max-height: calc(140px * 3 + 8px * 2);
     }
     .map-sidebar-list::-webkit-scrollbar {
       width: 5px;
@@ -992,16 +1021,13 @@
       margin-bottom: 2px;
     }
     .map-sidebar-list .listing-card .card-addr {
-<<<<<<< HEAD
       font-size: 10px;
+      line-height: 1.2;
       line-clamp: 1;
+<<<<<<< HEAD
       -webkit-line-clamp: 1;
 =======
-      font-size: 9px;
-      line-height: 1.2;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
->>>>>>> 8c64356714a1fe8808c62f4adadce2e3e0643f75
+>>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
     }
     .map-sidebar-list .listing-card .card-type {
       margin-top: 2px;
@@ -1017,8 +1043,9 @@
       padding: 2px 5px;
     }
     .map-sidebar-quote {
-      margin-top: 4px;
-      padding-top: 4px;
+      flex: 0 0 auto;
+      margin-top: 0;
+      padding-top: 10px;
       border-top: 1px solid rgba(107, 30, 61, 0.45);
     }
     .map-sidebar-quote .quote-sheet-scroll {
@@ -1027,7 +1054,7 @@
       border-radius: 0;
     }
     .map-sidebar-quote .job-strip-quote-brand {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .map-sidebar-quote .contact-above-map.contact-above-map--stacked {
       gap: 7px;
@@ -1206,7 +1233,7 @@
       .map-frame-inner {
         aspect-ratio: unset;
         flex: 1 1 auto;
-        min-height: min(42vh, 360px);
+        min-height: clamp(260px, 48dvh, 420px);
         height: 100%;
       }
     }
@@ -1246,10 +1273,14 @@
       width: 100%;
     }
     .lux-brand-heading-wrap--compact {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .lux-brand-heading-wrap--compact .lux-brand-above-form {
       font-size: clamp(1rem, 2.5vw, 1.35rem);
+    }
+    .lux-brand-heading-wrap--compact .lux-brand-above-form--row {
+      font-size: clamp(0.88rem, 2.2vw, 1.2rem);
+      line-height: 1;
     }
     .job-strip-quote-brand {
       justify-content: center;
@@ -1288,7 +1319,7 @@
         flex: 0 1 auto;
         width: 100%;
         max-width: 100%;
-        max-height: min(38vh, 300px);
+        max-height: min(24dvh, 200px);
       }
       .job-strip-scroll-wrap {
         display: none;
@@ -1479,7 +1510,44 @@
 
     @media (max-width: 900px) {
       .map-locate-btn {
-        bottom: 40px;
+        bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+      }
+    }
+
+    @media (max-width: 480px) {
+      .map-screen-layout {
+        height: 100svh;
+        padding-top: max(8px, env(safe-area-inset-top, 0px));
+      }
+      .map-map-section {
+        padding: 0 8px;
+      }
+      .map-split {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+      .map-map-section .map-frame {
+        border-radius: 12px;
+      }
+      .map-frame-inner {
+        min-height: clamp(300px, 58svh, 520px);
+      }
+      .map-properties-sidebar {
+        left: 8px;
+        right: 8px;
+        max-height: min(44svh, 330px);
+        transform: translateY(calc(100% - 56px));
+      }
+      .map-sidebar-mobile-toggle {
+        left: 14px;
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+      }
+      .map-locate-btn {
+        right: 12px;
+        bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+      }
+      .app-tab-bar {
+        padding-inline: 8px;
       }
     }
 
@@ -1508,6 +1576,9 @@
     @media (max-width: 900px) {
       .app-tab-bar {
         display: flex;
+        position: sticky;
+        bottom: 0;
+        z-index: 45;
       }
     }
 
@@ -1863,6 +1934,37 @@
       transform: scale(1.06);
       box-shadow: 0 0 0 3px rgba(36, 59, 90, 0.24), 0 8px 20px rgba(28, 46, 72, 0.45);
     }
+    .user-location-dot {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #2B8CFF;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 2px rgba(43, 140, 255, 0.28), 0 4px 10px rgba(0, 34, 92, 0.3);
+    }
+    .user-location-dot::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 2px solid rgba(43, 140, 255, 0.55);
+      animation: user-location-pulse 2s ease-out infinite;
+    }
+    @keyframes user-location-pulse {
+      0% {
+        transform: scale(0.7);
+        opacity: 0.85;
+      }
+      75% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
 
     .map-filters-overlay {
       position: absolute;
@@ -1928,8 +2030,8 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       z-index: 600;
-      height: 100dvh;
-      max-height: 100dvh;
+      height: 99dvh;
+      max-height: 99dvh;
       width: 100%;
       background: #ffffff;
       border: 1px solid #e5e7eb;
@@ -1963,8 +2065,8 @@
       }
       #job-panel .before-after-container {
         width: 100%;
-        max-width: 420px;
-        margin: 0 auto;
+        max-width: none;
+        margin: 0;
       }
     }
 
@@ -2123,10 +2225,10 @@
       border: 1px solid rgba(28, 28, 30, 0.16);
       overflow: hidden;
       width: 100%;
-      max-width: 420px;
-      aspect-ratio: 8 / 9;
+      max-width: none;
+      aspect-ratio: 8 / 5;
       height: auto;
-      margin-bottom: 0;
+      margin: 0;
       flex-shrink: 0;
       cursor: default;
       user-select: none;
@@ -2164,6 +2266,11 @@
       z-index: 2;
       clip-path: inset(0 0 0 50%);
       transition: clip-path 0.05s linear;
+    }
+    .ba-before img,
+    .ba-after img {
+      object-fit: cover;
+      background: transparent;
     }
     .ba-emoji {
       font-size: 42px;
@@ -2304,32 +2411,32 @@
     .benefits-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
+      margin-bottom: 8px;
     }
     .job-info .benefits-grid {
-      margin-top: 10px;
+      margin-top: 8px;
       margin-bottom: 0;
     }
     .benefit-card {
       background: #f8fafc;
       border: 1px solid #e5e7eb;
       border-radius: var(--radius-card);
-      padding: 14px 12px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
     .job-info {
-      --panel-card-height: 86px;
+      --panel-card-height: 74px;
     }
     .benefit-card.highlight {
       background: rgba(114, 14, 50, 0.1);
       border-color: var(--text-dark);
     }
     .benefit-icon {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       flex-shrink: 0;
       color: var(--text-dark);
       border-radius: 999px;
@@ -2338,20 +2445,26 @@
       justify-content: center;
     }
     .benefit-icon svg {
-      width: 19px;
-      height: 19px;
+      width: 16px;
+      height: 16px;
       display: block;
     }
     .benefit-value {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 800;
       color: #1E6A35;
       line-height: 1;
     }
     .benefit-card.savings .benefit-value,
-    .benefit-card.value .benefit-value,
+    .benefit-card.value .benefit-value {
+      color: #1d4f91;
+    }
     .benefit-card.warmth .benefit-value {
-      color: #6B1E3D;
+      background: linear-gradient(90deg, #f59e0b 0%, #ef4444 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
     }
     .benefit-card.carbon .benefit-value {
       color: #1E6A35;
@@ -2361,9 +2474,9 @@
     .benefit-card.warmth .benefit-icon { background: #fdecec; }
     .benefit-card.carbon .benefit-icon { background: #ebf8ef; }
     .benefit-desc {
-      font-size: 10px;
+      font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.3;
+      line-height: 1.2;
     }
     .panel-location-pill {
       margin-top: 9px;
@@ -2492,8 +2605,8 @@
       }
       .before-after-container {
         width: 100%;
-        max-width: 420px;
-        margin: 0 auto;
+        max-width: none;
+        margin: 0;
       }
     }
 
@@ -2850,6 +2963,9 @@
           <div class="map-frame">
             <div class="map-frame-inner">
               <div id="map"></div>
+              <p class="absolute left-3 bottom-3 z-[500] max-w-[min(90vw,380px)] rounded-md border border-black/10 bg-white/90 px-3 py-2 text-[11px] leading-snug text-[var(--text-dark)] shadow-sm">
+                All locations shown are approximate. No personally identifiable information is displayed.
+              </p>
               <div class="map-filters-overlay">
                 <div class="browse-filters-toolbar">
                   <div class="browse-filters-wrap" id="browse-filters-wrap">
@@ -2893,7 +3009,7 @@
               <aside class="map-sidebar-quote" aria-label="Request a free quote">
                 <div class="quote-sheet-scroll" id="quote-sheet-scroll">
                   <div class="lux-brand-heading-wrap lux-brand-heading-wrap--compact job-strip-quote-brand">
-                    <h2 class="lux-logo lux-brand-above-form">Absolute Acrylics</h2>
+                    <h2 class="lux-logo lux-brand-above-form lux-brand-above-form--row"><span class="lux-brand-part">Absolute</span><span class="lux-brand-part">Acrylics</span></h2>
                   </div>
                   <form class="contact-above-map contact-above-map--stacked js-quote-form" id="quote-request-form" aria-label="Request a free quote">
                     <input class="contact-above-map-input" type="text" id="quote-name" name="name" placeholder="Name" autocomplete="name" required aria-label="Name">
@@ -3092,15 +3208,17 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="./env.js"></script>
+<script src="./assets/privacy-utils.js"></script>
 <script>
 // ─────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────
-const portfolioJobs = [
+const portfolioJobsRaw = [
   {
     id: 1,
     lat: 53.3241, lng: -6.2856,
-    address: "27 Mount Carmel Road, Goatstown, Dublin 14",
+    areaText: "Dublin 14",
+    consent_to_display: true,
     type: "3-bed semi-detached",
     completedDate: "May 2024",
     berBefore: "E2", berAfter: "B1",
@@ -3111,7 +3229,8 @@ const portfolioJobs = [
   {
     id: 2,
     lat: 53.3798, lng: -6.2520,
-    address: "7 Collins Avenue, Dublin 9",
+    areaText: "Dublin 9",
+    consent_to_display: true,
     type: "4-bed detached",
     completedDate: "March 2024",
     berBefore: "E1", berAfter: "B3",
@@ -3120,7 +3239,8 @@ const portfolioJobs = [
   {
     id: 3,
     lat: 53.3153, lng: -6.3512,
-    address: "32 Kimmage Road West, Dublin 12",
+    areaText: "Dublin 12",
+    consent_to_display: true,
     type: "3-bed terraced",
     completedDate: "January 2024",
     berBefore: "G", berAfter: "C1",
@@ -3129,7 +3249,8 @@ const portfolioJobs = [
   {
     id: 4,
     lat: 53.3944, lng: -6.3880,
-    address: "27 Mount Carmel Road, Goatstown, Dublin 14",
+    areaText: "Dublin 15",
+    consent_to_display: true,
     type: "4-bed semi-detached",
     completedDate: "July 2024",
     berBefore: "E2", berAfter: "B1",
@@ -3140,7 +3261,8 @@ const portfolioJobs = [
   {
     id: 5,
     lat: 53.4597, lng: -6.2192,
-    address: "9 Malahide Marina Village, Malahide",
+    areaText: "Malahide",
+    consent_to_display: true,
     type: "3-bed end-of-terrace",
     completedDate: "September 2024",
     berBefore: "D1", berAfter: "B3",
@@ -3149,7 +3271,8 @@ const portfolioJobs = [
   {
     id: 6,
     lat: 53.3055, lng: -6.4192,
-    address: "45 Monastery Road, Clondalkin",
+    areaText: "Clondalkin",
+    consent_to_display: true,
     type: "3-bed semi-detached",
     completedDate: "April 2024",
     berBefore: "F", berAfter: "C2",
@@ -3158,7 +3281,8 @@ const portfolioJobs = [
   {
     id: 7,
     lat: 53.2936, lng: -6.1358,
-    address: "18 Glenageary Road, Dún Laoghaire",
+    areaText: "Dun Laoghaire",
+    consent_to_display: true,
     type: "5-bed detached",
     completedDate: "February 2024",
     berBefore: "E1", berAfter: "B1",
@@ -3167,7 +3291,8 @@ const portfolioJobs = [
   {
     id: 8,
     lat: 53.4573, lng: -6.2658,
-    address: "3 Seatown Road, Swords",
+    areaText: "Swords",
+    consent_to_display: true,
     type: "4-bed semi-detached",
     completedDate: "June 2024",
     berBefore: "D2", berAfter: "B2",
@@ -3176,7 +3301,8 @@ const portfolioJobs = [
   {
     id: 9,
     lat: 53.3531, lng: -6.4474,
-    address: "62 Esker Lawns, Lucan",
+    areaText: "Lucan",
+    consent_to_display: true,
     type: "3-bed semi-detached",
     completedDate: "August 2024",
     berBefore: "E2", berAfter: "B3",
@@ -3185,7 +3311,8 @@ const portfolioJobs = [
   {
     id: 10,
     lat: 53.2871, lng: -6.3745,
-    address: "27 Orlagh Crescent, Tallaght",
+    areaText: "Tallaght",
+    consent_to_display: true,
     type: "3-bed terraced",
     completedDate: "October 2024",
     berBefore: "F", berAfter: "C1",
@@ -3194,7 +3321,8 @@ const portfolioJobs = [
   {
     id: 11,
     lat: 53.3936, lng: -6.3747,
-    address: "14 Coolmine Meadows, Blanchardstown",
+    areaText: "Blanchardstown",
+    consent_to_display: true,
     type: "4-bed detached",
     completedDate: "November 2024",
     berBefore: "E1", berAfter: "B2",
@@ -3203,7 +3331,8 @@ const portfolioJobs = [
   {
     id: 12,
     lat: 53.2736, lng: -6.2152,
-    address: "5 Beechwood Park, Sandyford",
+    areaText: "Sandyford",
+    consent_to_display: true,
     type: "4-bed semi-detached",
     completedDate: "December 2024",
     berBefore: "D1", berAfter: "A3",
@@ -3211,8 +3340,10 @@ const portfolioJobs = [
   }
 ];
 
+<<<<<<< HEAD
 // ═══════════════════════════════════════════════════════════════
-// SUPABASE — customers (run SQL in Supabase SQL editor if needed)
+// SUPABASE — customers
+// Run supabase/customers-setup.sql once in Supabase → SQL Editor (fixes quote RLS).
 // ═══════════════════════════════════════════════════════════════
 // -- CREATE TABLE customers (
 // --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -3222,10 +3353,26 @@ const portfolioJobs = [
 // --   message text,
 // --   created_at timestamptz DEFAULT now()
 // -- );
+=======
+/**
+ * Public map payload: no exact address, no direct identifiers, consent-gated rows only.
+ * @typedef {{id:number,lat:number,lng:number,blurMeters:number,areaText:string,type:string,completedDate:string,berBefore:string,berAfter:string,annualSaving:number,valueIncrease:number,co2Reduction:number,warmthGain:number,bathrooms:number|null,beforePhotos:string[],afterPhotos:string[],consentToDisplay:true}} PublicJob
+ */
+const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePublicJobs)
+  ? window.EcoMapPrivacy.sanitizePublicJobs(portfolioJobsRaw)
+  : portfolioJobsRaw
+      .filter(j => j.consent_to_display !== false)
+      .map(j => ({ ...j, areaText: j.areaText || 'Dublin area', consentToDisplay: true }));
+>>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
 
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE (run SQL in Supabase SQL editor; see supabase/security_hardening.sql)
+// ═══════════════════════════════════════════════════════════════
 const runtimeEnv = (typeof window !== 'undefined' && window.ECOMAP_ENV) ? window.ECOMAP_ENV : {};
 const SUPABASE_URL = runtimeEnv.SUPABASE_URL || 'https://tfnjbqnagdfrexoegbdi.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = runtimeEnv.SUPABASE_PUBLISHABLE_KEY || '';
+const CUSTOMER_TABLE = 'customers';
+const QUOTE_REQUEST_TABLE = 'quote_requests';
 
 const supabaseClient = (typeof supabase !== 'undefined' && supabase.createClient && SUPABASE_PUBLISHABLE_KEY)
   ? supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
@@ -3236,6 +3383,8 @@ const BER_BADGE_MIN = 'B3';
 const BER_BADGE_MAX = 'A2';
 const GALLERY_JOBS_STORAGE_KEY = 'ecomap_gallery_jobs_v1';
 const PENDING_QUOTES_STORAGE_KEY = 'ecomap_pending_quotes_v1';
+const QUOTE_SUBMIT_COOLDOWN_MS = 30 * 1000;
+const QUOTE_LAST_SUBMIT_KEY = 'ecomap_quote_last_submit_at';
 const DEFAULT_BEFORE_PHOTO = './assets/job-photos/before-default.png';
 const DEFAULT_AFTER_PHOTO = './assets/job-photos/after-default.png';
 
@@ -3299,6 +3448,9 @@ function persistPendingQuotes() {
 }
 
 function queuePendingQuote(payload) {
+  if (pendingQuotes.length >= 20) {
+    pendingQuotes = pendingQuotes.slice(-19);
+  }
   pendingQuotes.push({
     name: payload.name,
     email: payload.email || null,
@@ -3314,16 +3466,58 @@ function isRlsPolicyError(error) {
   return msg.includes('row-level security') || msg.includes('violates row-level security policy');
 }
 
+<<<<<<< HEAD
+function isMissingQuoteRpcError(error) {
+  const msg = String(error?.message || '').toLowerCase();
+  return error?.code === 'PGRST202'
+    || msg.includes('submit_quote_enquiry')
+    || msg.includes('could not find the function');
+}
+
+/** Save a quote enquiry via RPC (preferred) or direct insert. */
+async function insertCustomerEnquiry(row) {
+  const directPayload = {
+    name: row.name,
+    email: row.email || null,
+    phone: row.phone || null,
+    message: row.message || null
+  };
+  const { error: rpcError } = await supabaseClient.rpc('submit_quote_enquiry', {
+    p_name: directPayload.name,
+    p_email: directPayload.email,
+    p_phone: directPayload.phone,
+    p_message: directPayload.message
+  });
+  if (!rpcError) return { error: null };
+  if (!isMissingQuoteRpcError(rpcError)) return { error: rpcError };
+  return supabaseClient.from('customers').insert(directPayload);
+=======
+function formatSupabaseError(error) {
+  const code = String(error?.code || '').trim();
+  const msg = String(error?.message || '').trim();
+  if (code && msg) return `[${code}] ${msg}`;
+  if (msg) return msg;
+  return 'Unknown Supabase error';
+>>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
+}
+
 async function flushPendingQuotes() {
   if (!supabaseClient || !pendingQuotes.length) return true;
+<<<<<<< HEAD
+  for (const q of pendingQuotes) {
+    const { error } = await insertCustomerEnquiry(q);
+    if (error) return false;
+  }
+=======
   const payload = pendingQuotes.map(q => ({
     name: q.name,
     email: q.email || null,
     phone: q.phone || null,
     message: q.message || null
   }));
-  const { error } = await supabaseClient.from('customers').insert(payload);
+  const { error } = await supabaseClient.from(QUOTE_REQUEST_TABLE).insert(payload, { returning: 'minimal' });
   if (error) return false;
+>>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
   pendingQuotes = [];
   persistPendingQuotes();
   return true;
@@ -3374,6 +3568,29 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
+function sanitizeImageSrc(raw, fallback = '') {
+  const value = String(raw || '').trim();
+  if (!value) return fallback;
+  if (/^data:image\/(?:png|jpe?g|webp|gif);base64,[a-z0-9+/=]+$/i.test(value)) return value;
+  if (/^(?:\.{0,2}\/|\/|https?:\/\/|blob:)/i.test(value)) return value;
+  return fallback;
+}
+
+function sanitizePhoneForHref(raw) {
+  const cleaned = String(raw || '').replace(/[^\d+]/g, '');
+  return /^[+]?\d{6,20}$/.test(cleaned) ? cleaned : '';
+}
+
+function looksLikeEmail(raw) {
+  if (!raw) return true;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(raw));
+}
+
+function isValidName(raw) {
+  const value = String(raw || '').trim();
+  return value.length >= 2 && value.length <= 80;
+}
+
 async function fetchCustomers() {
   const listErr = document.getElementById('crm-customers-error');
   if (listErr) listErr.classList.add('hidden');
@@ -3389,7 +3606,7 @@ async function fetchCustomers() {
     renderGalleryGrid();
     return;
   }
-  const { data, error } = await supabaseClient.from('customers').select('*').order('name', { ascending: true });
+  const { data, error } = await supabaseClient.from(CUSTOMER_TABLE).select('*').order('name', { ascending: true });
   if (error) {
     showSupabaseBanner(error.message || 'Could not load customers.');
     if (listErr) {
@@ -3418,8 +3635,8 @@ function renderGalleryGrid() {
   }
   empty.classList.add('hidden');
   grid.innerHTML = galleryJobs.map(job => {
-    const beforeSrc = job.beforePhotos && job.beforePhotos[0] ? job.beforePhotos[0] : DEFAULT_BEFORE_PHOTO;
-    const afterSrc = job.afterPhotos && job.afterPhotos[0] ? job.afterPhotos[0] : DEFAULT_AFTER_PHOTO;
+    const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
+    const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
     const beforePh = beforeSrc
       ? `<img src="${beforeSrc}" alt="" class="w-full h-full object-cover" />`
       : '<div class="flex items-center justify-center text-[10px] text-[var(--text-muted)] bg-[var(--charcoal-light)] w-full h-full">Before</div>';
@@ -3476,7 +3693,7 @@ function renderCustomersList() {
     const em = c.email
       ? `<a href="${mailHref}" class="text-[var(--text-dark)] underline-offset-2 hover:underline text-sm">${escapeHtml(c.email)}</a>`
       : '<span class="text-[var(--text-muted)] text-sm">—</span>';
-    const telDigits = c.phone ? String(c.phone).replace(/[^\d+]/g, '') : '';
+    const telDigits = sanitizePhoneForHref(c.phone);
     const ph = c.phone && telDigits
       ? `<a href="tel:${escapeHtml(telDigits)}" class="text-[var(--text-dark)] text-sm">${escapeHtml(c.phone)}</a>`
       : '<span class="text-[var(--text-muted)] text-sm">—</span>';
@@ -3529,7 +3746,7 @@ function renderPhotoPreviews(container, photos, which) {
   if (!container) return;
   container.innerHTML = photos.map((src, idx) => `
     <div class="relative w-16 h-16 rounded border border-[var(--border-gold)] overflow-hidden shrink-0">
-      <img src="${src}" alt="" class="w-full h-full object-cover" />
+      <img src="${sanitizeImageSrc(src, DEFAULT_AFTER_PHOTO)}" alt="" class="w-full h-full object-cover" />
       <button type="button" class="absolute top-0 right-0 w-5 h-5 flex items-center justify-center bg-white/90 border border-black/15 text-black text-xs leading-none gj-rm-ph" data-which="${which}" data-i="${idx}" aria-label="Remove photo">×</button>
     </div>
   `).join('');
@@ -3691,16 +3908,37 @@ document.getElementById('form-customer')?.addEventListener('submit', async e => 
   const name = document.getElementById('cust-name').value.trim();
   const email = document.getElementById('cust-email').value.trim() || null;
   const phone = document.getElementById('cust-phone').value.trim() || null;
+  if (!isValidName(name)) {
+    if (errEl) {
+      errEl.textContent = 'Please enter a valid name (2-80 characters).';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
+  if (!looksLikeEmail(email)) {
+    if (errEl) {
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
+  if (phone && !sanitizePhoneForHref(phone)) {
+    if (errEl) {
+      errEl.textContent = 'Please enter a valid phone number.';
+      errEl.classList.remove('hidden');
+    }
+    return;
+  }
   const payload = id ? { id, name, email, phone } : { name, email, phone };
   saveBtn.disabled = true;
   const prev = saveBtn.textContent;
   saveBtn.textContent = 'Saving…';
-  const { error } = await supabaseClient.from('customers').upsert(payload, { onConflict: 'id' });
+  const { error } = await supabaseClient.from(CUSTOMER_TABLE).upsert(payload, { onConflict: 'id' });
   saveBtn.disabled = false;
   saveBtn.textContent = prev;
   if (error) {
     if (errEl) {
-      errEl.textContent = error.message || 'Save failed.';
+      errEl.textContent = 'Save failed. Please try again.';
       errEl.classList.remove('hidden');
     }
     return;
@@ -3715,7 +3953,7 @@ async function deleteCustomer(id) {
     showSupabaseBanner('Supabase is not available.');
     return;
   }
-  const { error } = await supabaseClient.from('customers').delete().eq('id', id);
+  const { error } = await supabaseClient.from(CUSTOMER_TABLE).delete().eq('id', id);
   if (error) {
     const err = document.getElementById('crm-customers-error');
     if (err) {
@@ -3730,7 +3968,7 @@ async function deleteCustomer(id) {
 /** @type {'home'|'jobs'|'customers'} */
 let appView = 'home';
 
-function setAppView(view) {
+async function setAppView(view) {
   appView = view;
   const hideEls = document.querySelectorAll('[data-hide-on-subview]');
   const vJobs = document.getElementById('crm-view-jobs');
@@ -3748,6 +3986,10 @@ function setAppView(view) {
   document.getElementById('nav-desk-home')?.classList.toggle('is-active', view === 'home');
   document.getElementById('nav-desk-jobs')?.classList.toggle('is-active', view === 'jobs');
   document.getElementById('nav-desk-customers')?.classList.toggle('is-active', view === 'customers');
+
+  if (view === 'jobs' || view === 'customers') {
+    await fetchCustomers();
+  }
 
   if (view === 'home') {
     scheduleMapResize();
@@ -3786,7 +4028,6 @@ document.getElementById('btn-add-customer')?.addEventListener('click', () => ope
 
 loadGalleryJobsFromStorage();
 populateBerSelects();
-fetchCustomers();
 
 // ─────────────────────────────────────────────
 // SPLASH → MAP TRANSITION
@@ -3827,11 +4068,29 @@ document.getElementById('splash-scroll-cta')?.addEventListener('click', showMapS
 
 const splashScreenEl = document.getElementById('screen-splash');
 if (splashScreenEl) {
+  let wheelDeltaAccumulator = 0;
+  let touchStartY = null;
+
   splashScreenEl.addEventListener('wheel', e => {
-    if (e.deltaY > 8) showMapScreen();
+    // Trackpads and some mouse wheels emit small deltas; accumulate intent.
+    if (e.deltaY > 0) {
+      wheelDeltaAccumulator += e.deltaY;
+      if (wheelDeltaAccumulator > 2) showMapScreen();
+    } else if (e.deltaY < 0) {
+      wheelDeltaAccumulator = 0;
+    }
+  }, { passive: true });
+  splashScreenEl.addEventListener('touchstart', e => {
+    touchStartY = e.touches?.[0]?.clientY ?? null;
   }, { passive: true });
   splashScreenEl.addEventListener('touchmove', () => {
     if (splashScreenEl.scrollTop > 24) showMapScreen();
+  }, { passive: true });
+  splashScreenEl.addEventListener('touchend', e => {
+    if (touchStartY == null) return;
+    const endY = e.changedTouches?.[0]?.clientY ?? touchStartY;
+    if (touchStartY - endY > 24) showMapScreen();
+    touchStartY = null;
   }, { passive: true });
   splashScreenEl.addEventListener('scroll', () => {
     if (splashScreenEl.scrollTop > 24) showMapScreen();
@@ -3843,6 +4102,8 @@ if (splashScreenEl) {
 // ─────────────────────────────────────────────
 let map;
 let lastUserLat = null, lastUserLng = null;
+let userLocationMarker = null;
+let userLocationWatchId = null;
 /** @type {null | 'detached' | 'semi-detached' | 'end-of-terrace' | 'mid-terrace'} */
 let houseTypeFilter = null;
 let mapFilterPriceMin = 0;
@@ -3926,9 +4187,8 @@ function getJobsInMapBounds() {
   return getVisibleJobs().filter(j => bounds.contains([j.lat, j.lng]));
 }
 
-<<<<<<< HEAD
 function getJobCardImage(job) {
-  return (job.afterPhotos && job.afterPhotos[0]) || DEFAULT_AFTER_PHOTO;
+  return sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
 }
 
 function formatJobTypeForCard(type) {
@@ -3947,7 +4207,8 @@ function clampBerBadgeValue(berValue) {
   const boundedIdx = Math.max(minIdx, Math.min(maxIdx, idx));
   return BER_SCALE[boundedIdx];
 }
-=======
+<<<<<<< HEAD
+
 const GEOCODE_CACHE_KEY = 'ecomap-geocode-cache-v1';
 const GEOCODE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
 
@@ -4030,9 +4291,10 @@ async function syncJobCoordinatesWithAddresses() {
   writeGeocodeCache(cache);
   if (changed && map) renderPins();
 }
+=======
 
-const JOB_CARD_IMAGE = DEFAULT_AFTER_PHOTO;
->>>>>>> 8c64356714a1fe8808c62f4adadce2e3e0643f75
+// Exact-address geocoding intentionally removed for GDPR compliance.
+>>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
 
 let jobStripScrollBarInited = false;
 
@@ -4194,14 +4456,14 @@ function renderJobStrip() {
       const berBandClass = getBerBadgeClass(berDisplay);
       const cardType = formatJobTypeForCard(job.type);
       const addrShort =
-        job.address.length > 36 ? `${job.address.slice(0, 34)}…` : job.address;
+        job.areaText.length > 36 ? `${job.areaText.slice(0, 34)}…` : job.areaText;
       const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${job.address}">
+      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
         <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
-          <div class="card-addr">${addrShort}</div>
-          <div class="card-type">${cardType}</div>
+          <div class="card-addr">${escapeHtml(addrShort)}</div>
+          <div class="card-type">${escapeHtml(cardType)}</div>
           <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
       </button>`;
@@ -4382,12 +4644,12 @@ function renderPropertiesSidebar() {
       const berBandClass = getBerBadgeClass(berDisplay);
       const cardType = formatJobTypeForCard(job.type);
       const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${job.address}">
+      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
         <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
-          <div class="card-addr">${job.address}</div>
-          <div class="card-type">${cardType}</div>
+          <div class="card-addr">${escapeHtml(job.areaText)}</div>
+          <div class="card-type">${escapeHtml(cardType)}</div>
           <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
         </div>
       </button>`;
@@ -4515,7 +4777,7 @@ function initMap() {
   initPropertiesSidebar();
   initJobStripScrollBar();
   renderPins();
-  syncJobCoordinatesWithAddresses();
+  // Coordinates are privacy-preserving and deterministic per job id.
 
   if (!mapPopupDetailsBound) {
     mapPopupDetailsBound = true;
@@ -4544,15 +4806,52 @@ function initMap() {
     });
   });
 
+  function updateLiveUserLocation(coords, shouldCenter = false) {
+    lastUserLat = coords.latitude;
+    lastUserLng = coords.longitude;
+
+    const userLatLng = [lastUserLat, lastUserLng];
+    if (!userLocationMarker) {
+      const icon = L.divIcon({
+        html: '<div class="user-location-dot" role="img" aria-label="Your current location"></div>',
+        className: '',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      });
+      userLocationMarker = L.marker(userLatLng, {
+        icon,
+        zIndexOffset: 2000,
+        interactive: false
+      }).addTo(map);
+    } else {
+      userLocationMarker.setLatLng(userLatLng);
+    }
+
+    if (shouldCenter) {
+      const z = Math.max(map.getZoom(), 14);
+      map.setView(userLatLng, z);
+      scheduleMapResize();
+    }
+    renderPins();
+  }
+
+  function startLiveUserLocationTracking() {
+    if (!navigator.geolocation || userLocationWatchId != null) return;
+    userLocationWatchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        updateLiveUserLocation(pos.coords, false);
+      },
+      () => { /* permission denied or unavailable */ },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 15000 }
+    );
+  }
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-      pos => {
-        lastUserLat = pos.coords.latitude;
-        lastUserLng = pos.coords.longitude;
-        renderPins();
-      },
+      pos => updateLiveUserLocation(pos.coords, false),
       () => { /* permission denied — no nearest highlight */ }
     );
+    startLiveUserLocationTracking();
   }
 
   const locateBtn = document.getElementById('map-locate-btn');
@@ -4561,14 +4860,7 @@ function initMap() {
     locateBtn.addEventListener('click', () => {
       if (!map || !navigator.geolocation) return;
       navigator.geolocation.getCurrentPosition(
-        pos => {
-          lastUserLat = pos.coords.latitude;
-          lastUserLng = pos.coords.longitude;
-          const z = Math.max(map.getZoom(), 14);
-          map.setView([lastUserLat, lastUserLng], z);
-          renderPins();
-          scheduleMapResize();
-        },
+        pos => updateLiveUserLocation(pos.coords, true),
         () => {},
         { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
       );
@@ -4577,6 +4869,11 @@ function initMap() {
 
   scheduleMapResize();
 }
+
+window.addEventListener('beforeunload', () => {
+  if (!navigator.geolocation || userLocationWatchId == null) return;
+  navigator.geolocation.clearWatch(userLocationWatchId);
+});
 
 function renderPins() {
   if (!map || !markerClusterLayer) return;
@@ -4611,14 +4908,16 @@ function renderPins() {
     const bedsDisp = beds != null ? `${beds}` : '—';
     const tooltipHtml = `<span class="map-tip-price">€${job.valueIncrease.toLocaleString()} est. uplift</span><span class="map-tip-muted">${bedsDisp} bed · ${baths} bath</span>`;
 
-    const listingPhoto = (job.afterPhotos && job.afterPhotos[0]) || DEFAULT_AFTER_PHOTO;
+    const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
+    const safeAddress = escapeHtml(job.areaText);
+    const safeType = escapeHtml(job.type);
     const popupHtml = `
       <div class="map-popup-card">
-        <img class="map-popup-photo" src="${listingPhoto}" alt="${job.address} project photo" loading="lazy" />
+        <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
         <strong>Estimated value uplift</strong>
         <span class="map-popup-value">€${job.valueIncrease.toLocaleString()}</span>
-        <span class="map-popup-address">${job.address}</span>
-        <div class="map-popup-meta">${bedsDisp} bed · ${baths} bath · ${job.type}</div>
+        <span class="map-popup-address">${safeAddress}</span>
+        <div class="map-popup-meta">${bedsDisp} bed · ${baths} bath · ${safeType}</div>
         <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">View listing</button>
       </div>
     `;
@@ -4709,11 +5008,13 @@ function buildPanelHTML(job) {
   const navLeftSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 3-5 5 5 5"/></svg>`;
   const navRightSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>`;
   const pinSvg = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s5-4.4 5-8.3A5 5 0 1 0 5 9.7C5 13.6 10 18 10 18Z"/><circle cx="10" cy="9.5" r="1.8"/></svg>`;
-  const postCodeArea = (job.address.match(/Dublin\s*\d+/i) || ['Dublin area'])[0];
+  const postCodeArea = job.areaText || 'Dublin area';
   const berBeforeDisplay = clampBerBadgeValue(job.berBefore);
   const berAfterDisplay = clampBerBadgeValue(job.berAfter);
-  const beforeSrc = job.beforePhotos && job.beforePhotos[0] ? job.beforePhotos[0] : DEFAULT_BEFORE_PHOTO;
-  const afterSrc = job.afterPhotos && job.afterPhotos[0] ? job.afterPhotos[0] : DEFAULT_AFTER_PHOTO;
+  const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
+  const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
+  const safeAddress = escapeHtml(job.areaText);
+  const safeType = escapeHtml(job.type);
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
       <div class="panel-ber-hero-grades">
@@ -4723,12 +5024,12 @@ function buildPanelHTML(job) {
       </div>
       <div class="panel-ber-hero-caption">BER Improvement</div>
     </div>
-    <div class="job-badge">${checkSvg} Completed ${job.completedDate}</div>
+    <div class="job-badge">${checkSvg} Completed ${escapeHtml(job.completedDate)}</div>
     <div class="job-header">
       <div class="job-info">
-        <div class="job-address">${job.address}</div>
-        <div class="job-subtitle">External Wall Insulation · ${job.type}</div>
-        <div class="panel-location-pill">${pinSvg}<span>${postCodeArea}</span></div>
+        <div class="job-address">${safeAddress}</div>
+        <div class="job-subtitle">External Wall Insulation · ${safeType}</div>
+        <div class="panel-location-pill">${pinSvg}<span>${escapeHtml(postCodeArea)}</span></div>
         <div class="benefits-grid">
           <div class="benefit-card savings">
             ${ic.euro}
@@ -4756,10 +5057,10 @@ function buildPanelHTML(job) {
         <span class="ba-rail-label before">Before</span>
         <span class="ba-rail-label after">After</span>
         <div class="ba-before">
-          <img id="ba-before-photo" src="${beforeSrc}" alt="Before retrofit home exterior" class="w-full h-full object-cover" />
+          <img id="ba-before-photo" src="${beforeSrc}" alt="Before retrofit home exterior" class="w-full h-full" />
         </div>
         <div class="ba-after" id="ba-after">
-          <img id="ba-after-photo" src="${afterSrc}" alt="After retrofit home exterior" class="w-full h-full object-cover" />
+          <img id="ba-after-photo" src="${afterSrc}" alt="After retrofit home exterior" class="w-full h-full" />
         </div>
         <div class="ba-divider" id="ba-divider"></div>
         <div class="ba-handle" id="ba-handle" title="Drag to compare">${baHandleSvg}</div>
@@ -4775,6 +5076,25 @@ function buildPanelHTML(job) {
 
 function handleQuoteClick() {
   alert('Thank you for your interest!\n\nCall us: 01 234 5678\nEmail: info@absoluteacrylics.ie');
+}
+
+function getRemainingQuoteCooldownMs() {
+  try {
+    const raw = localStorage.getItem(QUOTE_LAST_SUBMIT_KEY);
+    const last = Number(raw || 0);
+    if (!Number.isFinite(last) || last <= 0) return 0;
+    return Math.max(0, QUOTE_SUBMIT_COOLDOWN_MS - (Date.now() - last));
+  } catch (_) {
+    return 0;
+  }
+}
+
+function markQuoteSubmittedNow() {
+  try {
+    localStorage.setItem(QUOTE_LAST_SUBMIT_KEY, String(Date.now()));
+  } catch (_) {
+    // no-op
+  }
 }
 
 function initPhotoCarousel(job) {
@@ -4919,11 +5239,38 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     const email = document.getElementById('quote-email')?.value.trim() || '';
     const phone = document.getElementById('quote-phone')?.value.trim() || '';
     const message = document.getElementById('quote-message')?.value.trim() || '';
+    if (!isValidName(name)) {
+      feedback.hidden = false;
+      feedback.textContent = 'Please enter a valid name (2-80 characters).';
+      return;
+    }
+    if (!looksLikeEmail(email)) {
+      feedback.hidden = false;
+      feedback.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    if (phone && !sanitizePhoneForHref(phone)) {
+      feedback.hidden = false;
+      feedback.textContent = 'Please enter a valid phone number.';
+      return;
+    }
+    if (message.length > 2000) {
+      feedback.hidden = false;
+      feedback.textContent = 'Message is too long. Please keep it under 2000 characters.';
+      return;
+    }
+    const remainingMs = getRemainingQuoteCooldownMs();
+    if (remainingMs > 0) {
+      feedback.hidden = false;
+      feedback.textContent = `Please wait ${Math.ceil(remainingMs / 1000)}s before sending another request.`;
+      return;
+    }
 
     feedback.hidden = false;
 
     if (!supabaseClient) {
       queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
+      markQuoteSubmittedNow();
       showSupabaseBanner('Supabase is not connected. Submission queued locally.');
       feedback.textContent = queuedMsg;
       return;
@@ -4931,27 +5278,41 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 
     await flushPendingQuotes();
 
-    const { error } = await supabaseClient.from('customers').insert({
+<<<<<<< HEAD
+    const { error } = await insertCustomerEnquiry({
+=======
+    const { error } = await supabaseClient.from(QUOTE_REQUEST_TABLE).insert({
+>>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
       name,
       email: email || null,
       phone: phone || null,
       message: message || null
-    });
+    }, { returning: 'minimal' });
 
     if (error) {
       console.error('Quote insert failed:', error);
       queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
+<<<<<<< HEAD
+      if (isRlsPolicyError(error) || isMissingQuoteRpcError(error)) {
+        showSupabaseBanner('Quote save blocked — run supabase/customers-setup.sql in Supabase SQL Editor.');
+        feedback.textContent = 'Could not save your enquiry yet. Your admin needs to run supabase/customers-setup.sql once in the Supabase dashboard.';
+=======
+      markQuoteSubmittedNow();
       if (isRlsPolicyError(error)) {
-        showSupabaseBanner('Insert blocked by Supabase RLS policy for table "customers".');
-        feedback.textContent = 'Submission was blocked by server policy (RLS). Ask your admin to allow anon inserts on "customers".';
+        const detail = formatSupabaseError(error);
+        showSupabaseBanner('Submission blocked by server policy.');
+        feedback.textContent = `Saved locally only. Supabase blocked insert: ${detail}`;
+>>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
       } else {
-        showSupabaseBanner(error.message || 'Could not save enquiry to Supabase.');
-        feedback.textContent = queuedMsg;
+        const detail = formatSupabaseError(error);
+        showSupabaseBanner('Could not save enquiry right now.');
+        feedback.textContent = `Saved locally only. Supabase error: ${detail}`;
       }
       return;
     }
 
     await fetchCustomers();
+    markQuoteSubmittedNow();
     feedback.textContent = successMsg;
     form.reset();
     closeQuoteSheet();
