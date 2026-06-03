@@ -447,6 +447,19 @@
       line-height: 1.25;
       flex: 0 1 auto;
     }
+    .lux-brand-above-form--row {
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.35em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .lux-brand-above-form--row .lux-brand-part {
+      flex: 0 0 auto;
+    }
     .lux-toolbar-row {
       flex-shrink: 0;
       background: #ffffff;
@@ -911,6 +924,7 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
       padding: 10px 12px 8px;
       overflow: hidden;
       transition: opacity 0.2s ease;
@@ -963,9 +977,9 @@
       padding-right: 8px;
     }
     .map-sidebar-list {
-      flex: 0 0 auto;
-      min-height: calc(140px * 2 + 8px);
-      max-height: calc(140px * 2 + 8px);
+      flex: 0 1 auto;
+      min-height: 0;
+      max-height: calc(140px * 3 + 8px * 2);
     }
     .map-sidebar-list::-webkit-scrollbar {
       width: 5px;
@@ -992,16 +1006,10 @@
       margin-bottom: 2px;
     }
     .map-sidebar-list .listing-card .card-addr {
-<<<<<<< HEAD
       font-size: 10px;
-      line-clamp: 1;
-      -webkit-line-clamp: 1;
-=======
-      font-size: 9px;
       line-height: 1.2;
-      -webkit-line-clamp: 1;
       line-clamp: 1;
->>>>>>> 8c64356714a1fe8808c62f4adadce2e3e0643f75
+      -webkit-line-clamp: 1;
     }
     .map-sidebar-list .listing-card .card-type {
       margin-top: 2px;
@@ -1017,8 +1025,9 @@
       padding: 2px 5px;
     }
     .map-sidebar-quote {
-      margin-top: 4px;
-      padding-top: 4px;
+      flex: 0 0 auto;
+      margin-top: 0;
+      padding-top: 10px;
       border-top: 1px solid rgba(107, 30, 61, 0.45);
     }
     .map-sidebar-quote .quote-sheet-scroll {
@@ -1027,7 +1036,7 @@
       border-radius: 0;
     }
     .map-sidebar-quote .job-strip-quote-brand {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .map-sidebar-quote .contact-above-map.contact-above-map--stacked {
       gap: 7px;
@@ -1246,10 +1255,14 @@
       width: 100%;
     }
     .lux-brand-heading-wrap--compact {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .lux-brand-heading-wrap--compact .lux-brand-above-form {
       font-size: clamp(1rem, 2.5vw, 1.35rem);
+    }
+    .lux-brand-heading-wrap--compact .lux-brand-above-form--row {
+      font-size: clamp(0.88rem, 2.2vw, 1.2rem);
+      line-height: 1;
     }
     .job-strip-quote-brand {
       justify-content: center;
@@ -2893,7 +2906,7 @@
               <aside class="map-sidebar-quote" aria-label="Request a free quote">
                 <div class="quote-sheet-scroll" id="quote-sheet-scroll">
                   <div class="lux-brand-heading-wrap lux-brand-heading-wrap--compact job-strip-quote-brand">
-                    <h2 class="lux-logo lux-brand-above-form">Absolute Acrylics</h2>
+                    <h2 class="lux-logo lux-brand-above-form lux-brand-above-form--row"><span class="lux-brand-part">Absolute</span><span class="lux-brand-part">Acrylics</span></h2>
                   </div>
                   <form class="contact-above-map contact-above-map--stacked js-quote-form" id="quote-request-form" aria-label="Request a free quote">
                     <input class="contact-above-map-input" type="text" id="quote-name" name="name" placeholder="Name" autocomplete="name" required aria-label="Name">
@@ -3212,7 +3225,8 @@ const portfolioJobs = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// SUPABASE — customers (run SQL in Supabase SQL editor if needed)
+// SUPABASE — customers
+// Run supabase/customers-setup.sql once in Supabase → SQL Editor (fixes quote RLS).
 // ═══════════════════════════════════════════════════════════════
 // -- CREATE TABLE customers (
 // --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -3314,16 +3328,38 @@ function isRlsPolicyError(error) {
   return msg.includes('row-level security') || msg.includes('violates row-level security policy');
 }
 
+function isMissingQuoteRpcError(error) {
+  const msg = String(error?.message || '').toLowerCase();
+  return error?.code === 'PGRST202'
+    || msg.includes('submit_quote_enquiry')
+    || msg.includes('could not find the function');
+}
+
+/** Save a quote enquiry via RPC (preferred) or direct insert. */
+async function insertCustomerEnquiry(row) {
+  const directPayload = {
+    name: row.name,
+    email: row.email || null,
+    phone: row.phone || null,
+    message: row.message || null
+  };
+  const { error: rpcError } = await supabaseClient.rpc('submit_quote_enquiry', {
+    p_name: directPayload.name,
+    p_email: directPayload.email,
+    p_phone: directPayload.phone,
+    p_message: directPayload.message
+  });
+  if (!rpcError) return { error: null };
+  if (!isMissingQuoteRpcError(rpcError)) return { error: rpcError };
+  return supabaseClient.from('customers').insert(directPayload);
+}
+
 async function flushPendingQuotes() {
   if (!supabaseClient || !pendingQuotes.length) return true;
-  const payload = pendingQuotes.map(q => ({
-    name: q.name,
-    email: q.email || null,
-    phone: q.phone || null,
-    message: q.message || null
-  }));
-  const { error } = await supabaseClient.from('customers').insert(payload);
-  if (error) return false;
+  for (const q of pendingQuotes) {
+    const { error } = await insertCustomerEnquiry(q);
+    if (error) return false;
+  }
   pendingQuotes = [];
   persistPendingQuotes();
   return true;
@@ -3926,7 +3962,6 @@ function getJobsInMapBounds() {
   return getVisibleJobs().filter(j => bounds.contains([j.lat, j.lng]));
 }
 
-<<<<<<< HEAD
 function getJobCardImage(job) {
   return (job.afterPhotos && job.afterPhotos[0]) || DEFAULT_AFTER_PHOTO;
 }
@@ -3947,7 +3982,7 @@ function clampBerBadgeValue(berValue) {
   const boundedIdx = Math.max(minIdx, Math.min(maxIdx, idx));
   return BER_SCALE[boundedIdx];
 }
-=======
+
 const GEOCODE_CACHE_KEY = 'ecomap-geocode-cache-v1';
 const GEOCODE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
 
@@ -4030,9 +4065,6 @@ async function syncJobCoordinatesWithAddresses() {
   writeGeocodeCache(cache);
   if (changed && map) renderPins();
 }
-
-const JOB_CARD_IMAGE = DEFAULT_AFTER_PHOTO;
->>>>>>> 8c64356714a1fe8808c62f4adadce2e3e0643f75
 
 let jobStripScrollBarInited = false;
 
@@ -4931,7 +4963,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 
     await flushPendingQuotes();
 
-    const { error } = await supabaseClient.from('customers').insert({
+    const { error } = await insertCustomerEnquiry({
       name,
       email: email || null,
       phone: phone || null,
@@ -4941,9 +4973,9 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     if (error) {
       console.error('Quote insert failed:', error);
       queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
-      if (isRlsPolicyError(error)) {
-        showSupabaseBanner('Insert blocked by Supabase RLS policy for table "customers".');
-        feedback.textContent = 'Submission was blocked by server policy (RLS). Ask your admin to allow anon inserts on "customers".';
+      if (isRlsPolicyError(error) || isMissingQuoteRpcError(error)) {
+        showSupabaseBanner('Quote save blocked — run supabase/customers-setup.sql in Supabase SQL Editor.');
+        feedback.textContent = 'Could not save your enquiry yet. Your admin needs to run supabase/customers-setup.sql once in the Supabase dashboard.';
       } else {
         showSupabaseBanner(error.message || 'Could not save enquiry to Supabase.');
         feedback.textContent = queuedMsg;
