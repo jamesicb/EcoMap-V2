@@ -80,11 +80,22 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       padding: 42px 24px 48px;
       gap: 0;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+    }
+    /* Flex spacers: vertically center when content fits; allow normal scroll when it overflows */
+    #screen-splash::before,
+    #screen-splash::after {
+      content: '';
+      flex: 1 0 24px;
+      min-height: 24px;
+      width: 100%;
+      pointer-events: none;
     }
     #screen-splash.hidden {
       transform: scale(0.96);
@@ -332,6 +343,11 @@
       border: none;
       background: transparent;
       cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
     .splash-scroll-indicator svg {
       width: calc(16px * 1.3);
@@ -1024,10 +1040,7 @@
       font-size: 10px;
       line-height: 1.2;
       line-clamp: 1;
-<<<<<<< HEAD
       -webkit-line-clamp: 1;
-=======
->>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
     }
     .map-sidebar-list .listing-card .card-type {
       margin-top: 2px;
@@ -2787,11 +2800,10 @@
       filter: brightness(1.05);
     }
 
-    /* Splash transition override */
+    /* Splash transition override (keep pointer-events until .hidden so CTA clicks complete) */
     #screen-splash.out {
       opacity: 0;
       transform: scale(0.95);
-      pointer-events: none;
     }
 
     /* CRM subviews (Jobs gallery, Customers) */
@@ -3340,20 +3352,6 @@ const portfolioJobsRaw = [
   }
 ];
 
-<<<<<<< HEAD
-// ═══════════════════════════════════════════════════════════════
-// SUPABASE — customers
-// Run supabase/customers-setup.sql once in Supabase → SQL Editor (fixes quote RLS).
-// ═══════════════════════════════════════════════════════════════
-// -- CREATE TABLE customers (
-// --   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-// --   name text NOT NULL,
-// --   email text,
-// --   phone text,
-// --   message text,
-// --   created_at timestamptz DEFAULT now()
-// -- );
-=======
 /**
  * Public map payload: no exact address, no direct identifiers, consent-gated rows only.
  * @typedef {{id:number,lat:number,lng:number,blurMeters:number,areaText:string,type:string,completedDate:string,berBefore:string,berAfter:string,annualSaving:number,valueIncrease:number,co2Reduction:number,warmthGain:number,bathrooms:number|null,beforePhotos:string[],afterPhotos:string[],consentToDisplay:true}} PublicJob
@@ -3363,7 +3361,11 @@ const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePubl
   : portfolioJobsRaw
       .filter(j => j.consent_to_display !== false)
       .map(j => ({ ...j, areaText: j.areaText || 'Dublin area', consentToDisplay: true }));
->>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
+
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE — customers
+// Run supabase/customers-setup.sql once in Supabase → SQL Editor (fixes quote RLS).
+// ═══════════════════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════════════
 // SUPABASE (run SQL in Supabase SQL editor; see supabase/security_hardening.sql)
@@ -3466,7 +3468,14 @@ function isRlsPolicyError(error) {
   return msg.includes('row-level security') || msg.includes('violates row-level security policy');
 }
 
-<<<<<<< HEAD
+function formatSupabaseError(error) {
+  const code = String(error?.code || '').trim();
+  const msg = String(error?.message || '').trim();
+  if (code && msg) return `[${code}] ${msg}`;
+  if (msg) return msg;
+  return 'Unknown Supabase error';
+}
+
 function isMissingQuoteRpcError(error) {
   const msg = String(error?.message || '').toLowerCase();
   return error?.code === 'PGRST202'
@@ -3491,33 +3500,14 @@ async function insertCustomerEnquiry(row) {
   if (!rpcError) return { error: null };
   if (!isMissingQuoteRpcError(rpcError)) return { error: rpcError };
   return supabaseClient.from('customers').insert(directPayload);
-=======
-function formatSupabaseError(error) {
-  const code = String(error?.code || '').trim();
-  const msg = String(error?.message || '').trim();
-  if (code && msg) return `[${code}] ${msg}`;
-  if (msg) return msg;
-  return 'Unknown Supabase error';
->>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
 }
 
 async function flushPendingQuotes() {
   if (!supabaseClient || !pendingQuotes.length) return true;
-<<<<<<< HEAD
   for (const q of pendingQuotes) {
     const { error } = await insertCustomerEnquiry(q);
     if (error) return false;
   }
-=======
-  const payload = pendingQuotes.map(q => ({
-    name: q.name,
-    email: q.email || null,
-    phone: q.phone || null,
-    message: q.message || null
-  }));
-  const { error } = await supabaseClient.from(QUOTE_REQUEST_TABLE).insert(payload, { returning: 'minimal' });
-  if (error) return false;
->>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
   pendingQuotes = [];
   persistPendingQuotes();
   return true;
@@ -4042,6 +4032,11 @@ function openQuoteSheet() {
 
 function closeQuoteSheet() {}
 
+function isSplashVisible() {
+  const splash = document.getElementById('screen-splash');
+  return splash && !splash.classList.contains('hidden');
+}
+
 function showMapScreen() {
   if (splashTransitioning) return;
   const splash = document.getElementById('screen-splash');
@@ -4049,33 +4044,51 @@ function showMapScreen() {
   if (!splash || !mapScreen || splash.classList.contains('hidden')) return;
   splashTransitioning = true;
 
-  splash.classList.add('out');
+  requestAnimationFrame(() => splash.classList.add('out'));
   setTimeout(() => {
-    splash.classList.add('hidden');
-    mapScreen.classList.remove('hidden');
-    if (!mapInitialised) {
-      initMap();
-      mapInitialised = true;
+    try {
+      splash.classList.add('hidden');
+      splash.classList.remove('out');
+      mapScreen.classList.remove('hidden');
+      if (!mapInitialised) {
+        initMap();
+        mapInitialised = true;
+      }
+      scheduleMapResize();
+      setTimeout(() => scheduleMapResize(), 450);
+      setTimeout(() => scheduleMapResize(), 900);
+    } catch (err) {
+      console.error('Map init failed', err);
+      splash.classList.remove('out', 'hidden');
+      mapScreen.classList.add('hidden');
+    } finally {
+      splashTransitioning = false;
     }
-    scheduleMapResize();
-    setTimeout(() => scheduleMapResize(), 450);
-    setTimeout(() => scheduleMapResize(), 900);
   }, 380);
 }
 
 document.getElementById('btn-explore')?.addEventListener('click', showMapScreen);
-document.getElementById('splash-scroll-cta')?.addEventListener('click', showMapScreen);
+document.getElementById('splash-scroll-cta')?.addEventListener('click', e => {
+  e.preventDefault();
+  showMapScreen();
+});
 
 const splashScreenEl = document.getElementById('screen-splash');
 if (splashScreenEl) {
   let wheelDeltaAccumulator = 0;
   let touchStartY = null;
 
+  function handleSplashScrollIntent() {
+    if (!isSplashVisible() || splashTransitioning) return;
+    showMapScreen();
+  }
+
   splashScreenEl.addEventListener('wheel', e => {
+    if (!isSplashVisible()) return;
     // Trackpads and some mouse wheels emit small deltas; accumulate intent.
     if (e.deltaY > 0) {
       wheelDeltaAccumulator += e.deltaY;
-      if (wheelDeltaAccumulator > 2) showMapScreen();
+      if (wheelDeltaAccumulator > 2) handleSplashScrollIntent();
     } else if (e.deltaY < 0) {
       wheelDeltaAccumulator = 0;
     }
@@ -4084,16 +4097,16 @@ if (splashScreenEl) {
     touchStartY = e.touches?.[0]?.clientY ?? null;
   }, { passive: true });
   splashScreenEl.addEventListener('touchmove', () => {
-    if (splashScreenEl.scrollTop > 24) showMapScreen();
+    if (splashScreenEl.scrollTop > 24) handleSplashScrollIntent();
   }, { passive: true });
   splashScreenEl.addEventListener('touchend', e => {
     if (touchStartY == null) return;
     const endY = e.changedTouches?.[0]?.clientY ?? touchStartY;
-    if (touchStartY - endY > 24) showMapScreen();
+    if (touchStartY - endY > 24) handleSplashScrollIntent();
     touchStartY = null;
   }, { passive: true });
   splashScreenEl.addEventListener('scroll', () => {
-    if (splashScreenEl.scrollTop > 24) showMapScreen();
+    if (splashScreenEl.scrollTop > 24) handleSplashScrollIntent();
   }, { passive: true });
 }
 
@@ -4207,94 +4220,7 @@ function clampBerBadgeValue(berValue) {
   const boundedIdx = Math.max(minIdx, Math.min(maxIdx, idx));
   return BER_SCALE[boundedIdx];
 }
-<<<<<<< HEAD
-
-const GEOCODE_CACHE_KEY = 'ecomap-geocode-cache-v1';
-const GEOCODE_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
-
-function readGeocodeCache() {
-  try {
-    const raw = localStorage.getItem(GEOCODE_CACHE_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch (_) {
-    return {};
-  }
-}
-
-function writeGeocodeCache(cache) {
-  try {
-    localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(cache));
-  } catch (_) {
-    // Ignore quota/private-mode errors.
-  }
-}
-
-async function geocodeAddress(address) {
-  const q = encodeURIComponent(`${address}, Dublin, Ireland`);
-  const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ie&q=${q}`;
-  const res = await fetch(url, {
-    headers: {
-      Accept: 'application/json'
-    }
-  });
-  if (!res.ok) throw new Error(`Geocode failed (${res.status})`);
-  const data = await res.json();
-  const row = Array.isArray(data) ? data[0] : null;
-  if (!row) return null;
-  const lat = Number(row.lat);
-  const lng = Number(row.lon);
-  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-  return { lat, lng };
-}
-
-/**
- * Ensures each job's marker coordinate matches its street address.
- * Uses cached geocodes when available and updates markers after sync.
- */
-async function syncJobCoordinatesWithAddresses() {
-  const now = Date.now();
-  const cache = readGeocodeCache();
-  let changed = false;
-
-  for (const job of portfolioJobs) {
-    const key = String(job.address || '').trim().toLowerCase();
-    if (!key) continue;
-
-    const cached = cache[key];
-    const isFresh = cached && Number.isFinite(cached.ts) && (now - cached.ts) < GEOCODE_CACHE_TTL_MS;
-    if (isFresh && Number.isFinite(cached.lat) && Number.isFinite(cached.lng)) {
-      if (Math.abs(job.lat - cached.lat) > 0.00001 || Math.abs(job.lng - cached.lng) > 0.00001) {
-        job.lat = cached.lat;
-        job.lng = cached.lng;
-        changed = true;
-      }
-      continue;
-    }
-
-    try {
-      const result = await geocodeAddress(job.address);
-      if (!result) continue;
-      cache[key] = { lat: result.lat, lng: result.lng, ts: now };
-      if (Math.abs(job.lat - result.lat) > 0.00001 || Math.abs(job.lng - result.lng) > 0.00001) {
-        job.lat = result.lat;
-        job.lng = result.lng;
-        changed = true;
-      }
-      await new Promise(resolve => setTimeout(resolve, 250));
-    } catch (_) {
-      // Keep fallback coordinates if geocoding fails/rate-limits.
-    }
-  }
-
-  writeGeocodeCache(cache);
-  if (changed && map) renderPins();
-}
-=======
-
 // Exact-address geocoding intentionally removed for GDPR compliance.
->>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
 
 let jobStripScrollBarInited = false;
 
@@ -5278,31 +5204,19 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 
     await flushPendingQuotes();
 
-<<<<<<< HEAD
     const { error } = await insertCustomerEnquiry({
-=======
-    const { error } = await supabaseClient.from(QUOTE_REQUEST_TABLE).insert({
->>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
       name,
       email: email || null,
       phone: phone || null,
       message: message || null
-    }, { returning: 'minimal' });
+    });
 
     if (error) {
       console.error('Quote insert failed:', error);
       queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
-<<<<<<< HEAD
       if (isRlsPolicyError(error) || isMissingQuoteRpcError(error)) {
         showSupabaseBanner('Quote save blocked — run supabase/customers-setup.sql in Supabase SQL Editor.');
         feedback.textContent = 'Could not save your enquiry yet. Your admin needs to run supabase/customers-setup.sql once in the Supabase dashboard.';
-=======
-      markQuoteSubmittedNow();
-      if (isRlsPolicyError(error)) {
-        const detail = formatSupabaseError(error);
-        showSupabaseBanner('Submission blocked by server policy.');
-        feedback.textContent = `Saved locally only. Supabase blocked insert: ${detail}`;
->>>>>>> 2c1573d893bcdeacc9c83e34a50bea963d38a8eb
       } else {
         const detail = formatSupabaseError(error);
         showSupabaseBanner('Could not save enquiry right now.');
