@@ -2239,7 +2239,7 @@
       overflow: hidden;
       width: 100%;
       max-width: none;
-      aspect-ratio: 8 / 5;
+      aspect-ratio: 8 / 9.375;
       height: auto;
       margin: 0;
       flex-shrink: 0;
@@ -2282,7 +2282,11 @@
     }
     .ba-before img,
     .ba-after img {
-      object-fit: cover;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
       background: transparent;
     }
     .ba-emoji {
@@ -2461,6 +2465,7 @@
       width: 16px;
       height: 16px;
       display: block;
+      color: #000;
     }
     .benefit-value {
       font-size: 18px;
@@ -2470,7 +2475,7 @@
     }
     .benefit-card.savings .benefit-value,
     .benefit-card.value .benefit-value {
-      color: #1d4f91;
+      color: #1E6A35;
     }
     .benefit-card.warmth .benefit-value {
       background: linear-gradient(90deg, #f59e0b 0%, #ef4444 100%);
@@ -2482,33 +2487,23 @@
     .benefit-card.carbon .benefit-value {
       color: #1E6A35;
     }
-    .benefit-card.savings .benefit-icon { background: #e9f7ee; }
-    .benefit-card.value .benefit-icon { background: #e8f2ff; }
-    .benefit-card.warmth .benefit-icon { background: #fdecec; }
-    .benefit-card.carbon .benefit-icon { background: #ebf8ef; }
+    .benefit-card.savings .benefit-icon,
+    .benefit-card.value .benefit-icon,
+    .benefit-card.warmth .benefit-icon,
+    .benefit-card.carbon .benefit-icon {
+      background: #f3f4f6;
+    }
     .benefit-desc {
       font-size: 12px;
       color: var(--text-muted);
       line-height: 1.2;
     }
-    .panel-location-pill {
-      margin-top: 9px;
+    .benefits-disclaimer {
+      margin-top: 6px;
       font-size: 10px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      line-height: 1.35;
       color: var(--text-muted);
-      border: 1px dashed rgba(107, 114, 128, 0.4);
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 10px;
-    }
-    .panel-location-pill svg {
-      width: 12px;
-      height: 12px;
-      display: block;
-      color: #4b5563;
+      font-style: italic;
     }
     /* SEAI BOX */
     .seai-box {
@@ -3226,6 +3221,18 @@
 // DATA
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
+  {
+    id: 13,
+    lat: 53.399343, lng: -6.166444,
+    address: "9 Elmfield Park, Dublin 13",
+    areaText: "Dublin 13",
+    consent_to_display: true,
+    type: "106m² Semi-Detached house",
+    completedDate: "March 2026",
+    annualSaving: 850, valueIncrease: 25000, co2Reduction: 1.1, warmthGain: 5,
+    beforePhotos: ["./assets/job-photos/9-elmfield-park-before.png"],
+    afterPhotos: ["./assets/job-photos/9-elmfield-park-after.png"]
+  },
   {
     id: 1,
     lat: 53.3241, lng: -6.2856,
@@ -4919,10 +4926,10 @@ overlay.addEventListener('click', closePanel);
 
 function panelBenefitIcons() {
   return {
-    euro: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1F9D45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.3"/><path d="M7 9h.01M17 15h.01"/><path d="M13.8 10.4h-2a1.6 1.6 0 1 0 0 3.2h2"/><path d="M10.9 12h2.7"/></svg></span>`,
-    chart: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 15l4-4 3 2 5-6" stroke="#1F9D45"/><path d="M18 7h-4" stroke="#1F9D45"/><path d="m18 7-2-2" stroke="#1F9D45"/><path d="m18 7-2 2" stroke="#1F9D45"/></svg></span>`,
-    temp: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="tempGradient" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#7FD8FF"/><stop offset="100%" stop-color="#FF2A2A"/></linearGradient></defs><path d="M10 5a2 2 0 1 1 4 0v8.3a4.4 4.4 0 1 1-4 0Z" stroke="url(#tempGradient)"/><path d="M12 10v5" stroke="url(#tempGradient)"/><path d="M12 17.6v.01" stroke="url(#tempGradient)"/><path d="M8 7h1.5M8 10h1.5M8 13h1.5" stroke="url(#tempGradient)"/></svg></span>`,
-    leaf: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><defs><linearGradient id="leafTopGrad" x1="22" y1="22" x2="52" y2="8" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1F9D45"/><stop offset="100%" stop-color="#A7E96E"/></linearGradient><linearGradient id="leafBottomGrad" x1="6" y1="42" x2="26" y2="30" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#168A3A"/><stop offset="100%" stop-color="#84D95A"/></linearGradient><linearGradient id="stemGrad" x1="28" y1="52" x2="32" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#137A33"/><stop offset="100%" stop-color="#45B14F"/></linearGradient></defs><path d="M31 52C30 42 31 33 34 26" stroke="url(#stemGrad)" stroke-width="4" stroke-linecap="round"/><path d="M34 26C42 15 54 12 60 10C54 18 48 24 40 28C37 29 35 29 34 26Z" fill="url(#leafTopGrad)"/><path d="M30 40C22 35 14 36 6 40C13 42 19 45 26 47C29 48 31 46 30 40Z" fill="url(#leafBottomGrad)"/><path d="M35 25C43 20 51 16 58 12" stroke="#0F6C2F" stroke-width="1.5" stroke-linecap="round" opacity=".45"/><path d="M29 41C21 40 14 40 8 40" stroke="#0F6C2F" stroke-width="1.5" stroke-linecap="round" opacity=".4"/></svg></span>`
+    euro: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.3"/><path d="M7 9h.01M17 15h.01"/><path d="M13.8 10.4h-2a1.6 1.6 0 1 0 0 3.2h2"/><path d="M10.9 12h2.7"/></svg></span>`,
+    chart: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 15l4-4 3 2 5-6"/><path d="M18 7h-4"/><path d="m18 7-2-2"/><path d="m18 7-2 2"/></svg></span>`,
+    temp: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0v8.3a4.4 4.4 0 1 1-4 0Z"/><path d="M12 10v5"/><path d="M12 17.6v.01"/><path d="M8 7h1.5M8 10h1.5M8 13h1.5"/></svg></span>`,
+    leaf: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-1.5-4.5-1.5-8 0-11.5"/><path d="M12 9.5C15 6 18 5 21 4c-2 3-4.5 5-9 5.5"/><path d="M12 14.5C9 17 6 18 3 19c2-3 4.5-5 9-5.5"/></svg></span>`
   };
 }
 
@@ -4933,8 +4940,6 @@ function buildPanelHTML(job) {
   const checkSvg = `<svg class="job-badge-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8 3 3 7-7"/></svg>`;
   const navLeftSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 3-5 5 5 5"/></svg>`;
   const navRightSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>`;
-  const pinSvg = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18s5-4.4 5-8.3A5 5 0 1 0 5 9.7C5 13.6 10 18 10 18Z"/><circle cx="10" cy="9.5" r="1.8"/></svg>`;
-  const postCodeArea = job.areaText || 'Dublin area';
   const berBeforeDisplay = clampBerBadgeValue(job.berBefore);
   const berAfterDisplay = clampBerBadgeValue(job.berAfter);
   const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
@@ -4955,7 +4960,6 @@ function buildPanelHTML(job) {
       <div class="job-info">
         <div class="job-address">${safeAddress}</div>
         <div class="job-subtitle">External Wall Insulation · ${safeType}</div>
-        <div class="panel-location-pill">${pinSvg}<span>${escapeHtml(postCodeArea)}</span></div>
         <div class="benefits-grid">
           <div class="benefit-card savings">
             ${ic.euro}
@@ -4978,15 +4982,16 @@ function buildPanelHTML(job) {
             <div class="benefit-desc">CO₂ reduction per year</div>
           </div>
         </div>
+        <p class="benefits-disclaimer">All values are approximate based on each individual house.</p>
       </div>
       <div class="before-after-container" id="ba-container">
         <span class="ba-rail-label before">Before</span>
         <span class="ba-rail-label after">After</span>
         <div class="ba-before">
-          <img id="ba-before-photo" src="${beforeSrc}" alt="Before retrofit home exterior" class="w-full h-full" />
+          <img id="ba-before-photo" src="${beforeSrc}" alt="Before retrofit home exterior" />
         </div>
         <div class="ba-after" id="ba-after">
-          <img id="ba-after-photo" src="${afterSrc}" alt="After retrofit home exterior" class="w-full h-full" />
+          <img id="ba-after-photo" src="${afterSrc}" alt="After retrofit home exterior" />
         </div>
         <div class="ba-divider" id="ba-divider"></div>
         <div class="ba-handle" id="ba-handle" title="Drag to compare">${baHandleSvg}</div>
