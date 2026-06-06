@@ -650,23 +650,30 @@
     }
     .listing-card .card-img {
       min-height: 0;
-      background: #ECEFF3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative;
       overflow: hidden;
       border-bottom: 1px solid rgba(107, 30, 61, 0.1);
     }
+    .listing-card .card-img-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      line-height: 0;
+    }
     .listing-card .card-img img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      object-position: left center;
+      margin: 0;
+      border: none;
+      background: transparent;
     }
     .listing-card .card-house-icon {
       width: 22px;
       height: 22px;
-      color: #6B1E3D;
+      color: var(--map-brand);
       display: block;
       opacity: 0.92;
     }
@@ -676,6 +683,8 @@
       background: #ffffff;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      text-align: center;
       position: relative;
       z-index: 0;
       overflow: hidden;
@@ -686,42 +695,69 @@
       content: none !important;
     }
     .listing-card .card-price {
-      color: #1f314a;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      margin-bottom: 4px;
-      line-height: 1.2;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      align-self: center;
+      max-width: 100%;
+      margin: 0 0 4px;
+      padding-right: 0;
+      box-sizing: border-box;
       flex-shrink: 0;
+      line-height: 1;
+    }
+    .listing-card .card-price-amount,
+    .listing-card .card-price-saved {
+      display: block;
+      color: #157347;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.05;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .listing-card .card-price-saved {
+      letter-spacing: 0;
     }
     .listing-card .card-addr {
-      color: #7a6f6a;
-      font-size: 9px;
-      letter-spacing: 0.06em;
+      color: var(--map-brand);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
       text-transform: uppercase;
-      line-height: 1.35;
-      margin-bottom: 4px;
-      display: -webkit-box;
-      line-clamp: 2;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      line-height: 1.05;
+      margin: 0;
+      display: block;
+      white-space: nowrap;
       overflow: hidden;
-      position: relative;
+      text-overflow: ellipsis;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: max-content;
+      max-width: calc(100% - 12px);
+      text-align: center;
       z-index: 1;
       flex-shrink: 0;
     }
     .listing-card .card-type {
-      margin-top: 8px;
-      color: #6B1E3D;
-      font-size: 8px;
-      letter-spacing: 0.06em;
+      margin-top: auto;
+      margin-bottom: 4px;
+      color: var(--map-brand);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
       text-transform: uppercase;
-      line-height: 1.2;
-      font-weight: 600;
-      opacity: 0.78;
+      line-height: 1.05;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      align-self: center;
+      width: max-content;
+      max-width: calc(100% - 12px);
+      text-align: center;
       position: relative;
       z-index: 1;
       flex-shrink: 0;
@@ -729,10 +765,12 @@
     .listing-card .card-tags {
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content: center;
+      align-self: stretch;
+      width: 100%;
       gap: 4px;
-      margin-top: auto;
-      padding-top: 6px;
+      margin-top: 0;
+      padding-top: 0;
       position: relative;
       z-index: 1;
       flex-shrink: 0;
@@ -1023,37 +1061,59 @@
       background: rgba(128, 128, 128, 0.38);
       border-radius: 99px;
     }
-    .map-sidebar-list .listing-card {
+    .map-sidebar-list .listing-card,
+    .job-strip .listing-card {
       aspect-ratio: auto;
       min-height: 140px;
       height: 140px;
-      grid-template-rows: 50% 50%;
+      grid-template-columns: minmax(0, 58%) minmax(0, 1fr);
+      grid-template-rows: 1fr;
+      grid-template-areas: "photo body";
     }
-    .map-sidebar-list .listing-card .card-body {
-      padding: 6px 8px 5px;
+    .map-sidebar-list .listing-card .card-img,
+    .job-strip .listing-card .card-img {
+      grid-area: photo;
+      border-bottom: none;
+      border-right: 1px solid rgba(107, 30, 61, 0.1);
     }
-    .map-sidebar-list .listing-card .card-price {
-      font-size: 13px;
+    .map-sidebar-list .listing-card .card-body,
+    .job-strip .listing-card .card-body {
+      grid-area: body;
+      padding: 5px 6px 4px;
+    }
+    .map-sidebar-list .listing-card .card-price,
+    .job-strip .listing-card .card-price {
       margin-bottom: 2px;
+      padding-right: 0;
     }
-    .map-sidebar-list .listing-card .card-addr {
-      font-size: 10px;
-      line-height: 1.2;
-      line-clamp: 1;
-      -webkit-line-clamp: 1;
+    .map-sidebar-list .listing-card .card-price-amount,
+    .map-sidebar-list .listing-card .card-price-saved,
+    .job-strip .listing-card .card-price-amount,
+    .job-strip .listing-card .card-price-saved {
+      font-size: 17px;
+      letter-spacing: 0;
+      line-height: 1;
     }
-    .map-sidebar-list .listing-card .card-type {
-      margin-top: 2px;
-      font-size: 8px;
-      line-height: 1.1;
+    .map-sidebar-list .listing-card .card-addr,
+    .job-strip .listing-card .card-addr {
+      max-width: calc(100% - 8px);
+      line-height: 1.05;
     }
-    .map-sidebar-list .listing-card .card-tags {
-      gap: 3px;
-      padding-top: 4px;
+    .map-sidebar-list .listing-card .card-type,
+    .job-strip .listing-card .card-type {
+      margin-top: auto;
+      margin-bottom: 3px;
+      max-width: calc(100% - 8px);
+      line-height: 1.05;
     }
-    .map-sidebar-list .listing-card .tag {
-      font-size: 8px;
-      padding: 2px 5px;
+    .map-sidebar-list .listing-card .card-tags,
+    .job-strip .listing-card .card-tags {
+      gap: 2px;
+    }
+    .map-sidebar-list .listing-card .tag,
+    .job-strip .listing-card .tag {
+      font-size: 7px;
+      padding: 1px 4px;
     }
     .map-sidebar-quote {
       flex: 0 0 auto;
@@ -1094,10 +1154,13 @@
         min-height: 0;
         max-height: min(24vh, 190px);
       }
-      .map-sidebar-list .listing-card {
+      .map-sidebar-list .listing-card,
+      .job-strip .listing-card {
         height: 140px;
-        grid-template-rows: 50% 50%;
         min-height: 140px;
+        grid-template-columns: minmax(0, 58%) minmax(0, 1fr);
+        grid-template-rows: 1fr;
+        grid-template-areas: "photo body";
       }
     }
 
@@ -2737,14 +2800,24 @@
       line-height: 1.4;
       color: var(--text-dark);
     }
-    .map-popup-card .map-popup-photo {
-      width: 100%;
-      height: 112px;
-      object-fit: cover;
-      border-radius: 8px;
+    .map-popup-card .map-popup-photo-wrap {
+      display: block;
+      width: fit-content;
+      max-width: 100%;
       margin-bottom: 10px;
+      border-radius: 8px;
+      overflow: hidden;
       border: 1px solid rgba(36, 59, 90, 0.12);
-      background: #e8edf4;
+      line-height: 0;
+    }
+    .map-popup-card .map-popup-photo {
+      display: block;
+      height: 96px;
+      width: auto;
+      max-width: 100%;
+      margin: 0;
+      border: none;
+      background: transparent;
     }
     .map-popup-card strong {
       display: block;
@@ -4217,6 +4290,98 @@ function formatJobTypeForCard(type) {
     .trim();
 }
 
+function formatJobCardPriceHtml(annualSaving) {
+  const amount = `+€${Number(annualSaving || 0).toLocaleString()}`;
+  return `<div class="card-price"><span class="card-price-amount">${amount}</span><span class="card-price-saved">saved each year</span></div>`;
+}
+
+function formatJobCardTagHtml(job) {
+  const berDisplay = clampBerBadgeValue(job.berAfter);
+  const tagText = berDisplay ? `BER ${berDisplay}` : 'Completed';
+  return `<span class="tag ber-mid">${escapeHtml(tagText)}</span>`;
+}
+
+function renderListingCardHtml(job, isActive) {
+  const cardType = formatJobTypeForCard(job.type);
+  const cardImage = getJobCardImage(job);
+  return `<button type="button" class="listing-card${isActive ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
+    <div class="card-img" aria-hidden="true"><div class="card-img-wrap"><img src="${cardImage}" alt="" loading="lazy" /></div></div>
+    <div class="card-body">
+      ${formatJobCardPriceHtml(job.annualSaving)}
+      <div class="card-addr">${escapeHtml(job.areaText)}</div>
+      <div class="card-type">${escapeHtml(cardType)}</div>
+      <div class="card-tags">${formatJobCardTagHtml(job)}</div>
+    </div>
+  </button>`;
+}
+
+function fitJobCardLineToWidth(el, targetWidth, baseFontSize) {
+  if (!el || targetWidth <= 0) return null;
+  el.style.removeProperty('font-size');
+  el.style.letterSpacing = '0px';
+  let fontSize = baseFontSize;
+  el.style.fontSize = `${fontSize}px`;
+  for (let i = 0; i < 4; i += 1) {
+    const currentWidth = el.offsetWidth;
+    if (currentWidth <= 0) break;
+    fontSize *= targetWidth / currentWidth;
+    el.style.fontSize = `${fontSize}px`;
+  }
+  return parseFloat(getComputedStyle(el).fontSize);
+}
+
+function measureJobCardTextSizes(referenceCard) {
+  const amount = referenceCard.querySelector('.card-price-amount');
+  const saved = referenceCard.querySelector('.card-price-saved');
+  const addr = referenceCard.querySelector('.card-addr');
+  const type = referenceCard.querySelector('.card-type');
+  if (!amount || !saved) return null;
+
+  saved.style.removeProperty('font-size');
+  addr?.style.removeProperty('font-size');
+  type?.style.removeProperty('font-size');
+  amount.style.removeProperty('font-size');
+
+  const baseFontSize = parseFloat(getComputedStyle(amount).fontSize) || 17;
+  const amountWidth = amount.offsetWidth;
+  if (amountWidth <= 0) return null;
+
+  const savedFontSize = fitJobCardLineToWidth(saved, amountWidth, baseFontSize);
+  const targetWidth = Math.max(amountWidth, saved.offsetWidth);
+  const addrFontSize = addr ? fitJobCardLineToWidth(addr, targetWidth, baseFontSize) : null;
+  const typeFontSize = type ? fitJobCardLineToWidth(type, targetWidth, baseFontSize) : null;
+
+  return {
+    amountFontSize: parseFloat(getComputedStyle(amount).fontSize) || baseFontSize,
+    savedFontSize: savedFontSize || baseFontSize,
+    addrFontSize: addrFontSize || baseFontSize,
+    typeFontSize: typeFontSize || baseFontSize,
+  };
+}
+
+function applyJobCardTextSizes(card, sizes) {
+  if (!sizes) return;
+  const amount = card.querySelector('.card-price-amount');
+  const saved = card.querySelector('.card-price-saved');
+  const addr = card.querySelector('.card-addr');
+  const type = card.querySelector('.card-type');
+  if (amount) amount.style.fontSize = `${sizes.amountFontSize}px`;
+  if (saved) saved.style.fontSize = `${sizes.savedFontSize}px`;
+  if (addr) addr.style.fontSize = `${sizes.addrFontSize}px`;
+  if (type) type.style.fontSize = `${sizes.typeFontSize}px`;
+}
+
+function syncJobCardPriceWidths(scope) {
+  const root = scope || document;
+  const cards = root.querySelectorAll('.listing-card');
+  if (!cards.length) return;
+
+  const sizes = measureJobCardTextSizes(cards[0]);
+  if (!sizes) return;
+
+  cards.forEach((card) => applyJobCardTextSizes(card, sizes));
+}
+
 function clampBerBadgeValue(berValue) {
   if (!berValue || typeof berValue !== 'string') return '';
   const grade = berValue.trim().toUpperCase();
@@ -4374,7 +4539,12 @@ function renderJobStrip() {
   const list = getVisibleJobs();
   const sortedSig = `${list.map(j => j.id).slice().sort((a, b) => a - b).join()}|a:${activeJobId ?? ''}`;
   if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) {
-    requestAnimationFrame(() => syncJobStripScrollBar());
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        syncJobCardPriceWidths(strip);
+        syncJobStripScrollBar();
+      });
+    });
     return;
   }
 
@@ -4383,24 +4553,7 @@ function renderJobStrip() {
 
   lastJobStripInViewSig = sortedSig;
   strip.innerHTML = list
-    .map((job) => {
-      const berDisplay = clampBerBadgeValue(job.berAfter);
-      const tag2 = berDisplay ? `BER ${berDisplay}` : 'Completed';
-      const berBandClass = getBerBadgeClass(berDisplay);
-      const cardType = formatJobTypeForCard(job.type);
-      const addrShort =
-        job.areaText.length > 36 ? `${job.areaText.slice(0, 34)}…` : job.areaText;
-      const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
-        <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
-        <div class="card-body">
-          <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
-          <div class="card-addr">${escapeHtml(addrShort)}</div>
-          <div class="card-type">${escapeHtml(cardType)}</div>
-          <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
-        </div>
-      </button>`;
-    })
+    .map((job) => renderListingCardHtml(job, activeJobId === job.id))
     .join('');
 
   strip.querySelectorAll('.listing-card[data-job-id]').forEach(btn => {
@@ -4412,13 +4565,16 @@ function renderJobStrip() {
     });
   });
   requestAnimationFrame(() => {
-    const newMax = Math.max(0, strip.scrollHeight - strip.clientHeight);
-    if (newMax > 0) {
-      strip.scrollTop = Math.max(0, Math.min(newMax, Math.round(vScrollRatio * newMax)));
-    } else {
-      strip.scrollTop = 0;
-    }
-    syncJobStripScrollBar();
+    requestAnimationFrame(() => {
+      syncJobCardPriceWidths(strip);
+      const newMax = Math.max(0, strip.scrollHeight - strip.clientHeight);
+      if (newMax > 0) {
+        strip.scrollTop = Math.max(0, Math.min(newMax, Math.round(vScrollRatio * newMax)));
+      } else {
+        strip.scrollTop = 0;
+      }
+      syncJobStripScrollBar();
+    });
   });
 }
 
@@ -4571,22 +4727,7 @@ function renderPropertiesSidebar() {
   if (!list) return;
   const jobs = getVisibleJobs();
   list.innerHTML = jobs
-    .map((job) => {
-      const berDisplay = clampBerBadgeValue(job.berAfter);
-      const tag2 = berDisplay ? `BER ${berDisplay}` : 'Completed';
-      const berBandClass = getBerBadgeClass(berDisplay);
-      const cardType = formatJobTypeForCard(job.type);
-      const cardImage = getJobCardImage(job);
-      return `<button type="button" class="listing-card${activeJobId === job.id ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
-        <div class="card-img" aria-hidden="true"><img src="${cardImage}" alt="" loading="lazy" /></div>
-        <div class="card-body">
-          <div class="card-price">€${job.annualSaving.toLocaleString()}/yr saved</div>
-          <div class="card-addr">${escapeHtml(job.areaText)}</div>
-          <div class="card-type">${escapeHtml(cardType)}</div>
-          <div class="card-tags"><span class="tag ${berBandClass}">${tag2}</span></div>
-        </div>
-      </button>`;
-    })
+    .map((job) => renderListingCardHtml(job, activeJobId === job.id))
     .join('');
   list.querySelectorAll('.listing-card[data-job-id]').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -4595,6 +4736,9 @@ function renderPropertiesSidebar() {
       if (!job || !map) return;
       activateJobOnMap(job);
     });
+  });
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => syncJobCardPriceWidths(list));
   });
 }
 
@@ -4846,7 +4990,9 @@ function renderPins() {
     const safeType = escapeHtml(job.type);
     const popupHtml = `
       <div class="map-popup-card">
-        <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
+        <div class="map-popup-photo-wrap">
+          <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
+        </div>
         <strong>Estimated value uplift</strong>
         <span class="map-popup-value">€${job.valueIncrease.toLocaleString()}</span>
         <span class="map-popup-address">${safeAddress}</span>
