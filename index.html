@@ -1709,13 +1709,13 @@
       padding: 7px 12px;
       min-width: unset;
       background: transparent;
-      border: 1px solid rgba(107, 30, 61, 0.45);
+      border: 1px solid rgba(36, 59, 90, 0.45);
       border-radius: 6px;
       font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #6B1E3D;
+      color: var(--map-brand);
       cursor: pointer;
       font-family: inherit;
       -webkit-tap-highlight-color: transparent;
@@ -1725,24 +1725,24 @@
       content: '';
       width: 5px;
       height: 5px;
-      background: var(--gold);
+      background: var(--map-brand);
       border-radius: 50%;
       flex-shrink: 0;
     }
     .browse-filters:hover {
-      background: rgba(107, 30, 61, 0.09);
-      border-color: #6B1E3D;
+      background: var(--map-brand-soft);
+      border-color: var(--map-brand);
     }
     .browse-filters:active {
-      background: rgba(107, 30, 61, 0.16);
+      background: rgba(36, 59, 90, 0.16);
     }
     .browse-filters:focus-visible {
-      outline: 2px solid var(--gold-light);
+      outline: 2px solid rgba(36, 59, 90, 0.45);
       outline-offset: 2px;
     }
     .browse-filters-wrap.is-open .browse-filters {
-      border-color: #6B1E3D;
-      box-shadow: 0 0 0 1px rgba(107, 30, 61, 0.3);
+      border-color: var(--map-brand);
+      box-shadow: 0 0 0 1px rgba(36, 59, 90, 0.3);
     }
     .browse-filters::after {
       content: '';
@@ -1767,9 +1767,9 @@
       max-width: min(320px, calc(100vw - 40px));
       padding: 12px 14px 14px;
       background: #ffffff;
-      border: 1px solid rgba(107, 31, 58, 0.2);
+      border: 1px solid rgba(36, 59, 90, 0.2);
       border-radius: 12px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(107, 31, 58, 0.08);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(36, 59, 90, 0.08);
       z-index: 600;
     }
     .browse-filters-wrap.is-open .browse-filters-dropdown {
@@ -1805,7 +1805,7 @@
       letter-spacing: 0.02em;
       line-height: 1.35;
       padding: 8px 10px;
-      border: 1px solid rgba(107, 31, 58, 0.2);
+      border: 1px solid rgba(36, 59, 90, 0.2);
       border-radius: 8px;
       background: #faf9f8;
       color: var(--text-dark);
@@ -1818,10 +1818,10 @@
     }
     .map-filter-select-option {
       width: 100%;
-      border: 1px solid rgba(107, 31, 58, 0.2);
+      border: 1px solid rgba(36, 59, 90, 0.2);
       border-radius: 8px;
       background: #ffffff;
-      color: #6B1E3D;
+      color: var(--map-brand);
       font-family: inherit;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -1834,19 +1834,19 @@
     }
     .map-filter-select-option:hover,
     .map-filter-select-option:focus-visible {
-      background: rgba(107, 30, 61, 0.12);
-      border-color: rgba(107, 30, 61, 0.45);
+      background: var(--map-brand-soft);
+      border-color: rgba(36, 59, 90, 0.45);
       outline: none;
     }
     .map-filter-select-option.is-active {
-      background: #6B1E3D;
+      background: var(--map-brand);
       color: #ffffff;
-      border-color: #6B1E3D;
+      border-color: var(--map-brand);
     }
     .map-filter-field input[type="number"]:focus,
     .map-filter-field select:focus {
       border-color: var(--map-brand);
-      box-shadow: 0 0 0 3px rgba(107, 31, 58, 0.12);
+      box-shadow: 0 0 0 3px rgba(36, 59, 90, 0.12);
       background: #fff;
     }
     .map-filter-range-row input {
@@ -1863,7 +1863,7 @@
       gap: 8px;
       margin-top: 4px;
       padding-top: 4px;
-      border-top: 1px solid rgba(107, 31, 58, 0.1);
+      border-top: 1px solid rgba(36, 59, 90, 0.1);
     }
     .map-filter-actions button {
       flex: 1;
@@ -1885,7 +1885,7 @@
       filter: brightness(1.06);
     }
     #filter-clear-btn {
-      border: 1px solid rgba(107, 31, 58, 0.28);
+      border: 1px solid rgba(36, 59, 90, 0.28);
       background: #fff;
       color: var(--map-brand);
     }
@@ -1907,10 +1907,10 @@
       -webkit-tap-highlight-color: transparent;
     }
     .browse-filters-dropdown button[role="menuitem"]:hover {
-      background: rgba(114, 14, 50, 0.1);
+      background: var(--map-brand-soft);
     }
     .browse-filters-dropdown button[role="menuitem"].is-active {
-      background: rgba(114, 14, 50, 0.15);
+      background: rgba(36, 59, 90, 0.15);
       color: var(--text-dark);
     }
 
