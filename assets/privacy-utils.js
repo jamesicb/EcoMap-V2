@@ -99,6 +99,8 @@
       valueIncrease: normalizeNumber(rawJob.valueIncrease, 0),
       co2Reduction: normalizeNumber(rawJob.co2Reduction, 0),
       warmthGain: normalizeNumber(rawJob.warmthGain, 0),
+      seaiGrant: normalizeNumber(rawJob.seaiGrant, 0) || undefined,
+      treesEquivalent: normalizeNumber(rawJob.treesEquivalent, 0) || undefined,
       bathrooms: rawJob.bathrooms == null ? null : normalizeNumber(rawJob.bathrooms, null),
       beforePhotos: Array.isArray(rawJob.beforePhotos) ? rawJob.beforePhotos.slice() : [],
       afterPhotos: Array.isArray(rawJob.afterPhotos) ? rawJob.afterPhotos.slice() : [],

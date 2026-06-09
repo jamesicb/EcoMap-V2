@@ -12,6 +12,8 @@ export interface PublicJob {
   valueIncrease: number;
   co2Reduction: number;
   warmthGain: number;
+  seaiGrant?: number;
+  treesEquivalent?: number;
   bathrooms: number | null;
   beforePhotos: string[];
   afterPhotos: string[];

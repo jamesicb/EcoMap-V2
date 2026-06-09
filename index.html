@@ -45,6 +45,7 @@
       --radius-panel: 16px;
       --map-brand: #243B5A;
       --map-brand-soft: rgba(36, 59, 90, 0.14);
+      --scrollbar-track-grey: rgba(0, 0, 0, 0.12);
     }
 
     html, body {
@@ -683,84 +684,88 @@
       background: #ffffff;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       text-align: center;
       position: relative;
       z-index: 0;
       overflow: hidden;
       isolation: isolate;
+      gap: 3px;
     }
     .listing-card .card-body::before,
     .listing-card .card-body::after {
       content: none !important;
     }
+    .listing-card .card-info {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      gap: 21px;
+      min-height: 0;
+      width: 100%;
+    }
     .listing-card .card-price {
-      display: inline-flex;
+      display: flex;
       flex-direction: column;
       align-items: center;
-      align-self: center;
+      align-self: stretch;
+      width: 100%;
       max-width: 100%;
-      margin: 0 0 4px;
-      padding-right: 0;
+      margin: 0;
+      padding: 3px 6px;
       box-sizing: border-box;
       flex-shrink: 0;
       line-height: 1;
+      background: var(--scrollbar-track-grey);
+      border-radius: 3px;
+    }
+    .listing-card .card-price-amount,
+    .listing-card .card-price-saved,
+    .listing-card .card-addr,
+    .listing-card .card-type {
+      font-size: var(--job-card-info-font-size, 16.25px);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      width: 100%;
     }
     .listing-card .card-price-amount,
     .listing-card .card-price-saved {
       display: block;
       color: #157347;
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      line-height: 1.05;
-      white-space: nowrap;
-      text-align: center;
-    }
-    .listing-card .card-price-saved {
-      letter-spacing: 0;
     }
     .listing-card .card-addr {
       color: var(--map-brand);
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
       text-transform: uppercase;
-      line-height: 1.05;
       margin: 0;
+      padding: 3px 6px;
       display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: max-content;
-      max-width: calc(100% - 12px);
-      text-align: center;
-      z-index: 1;
+      align-self: stretch;
+      width: 100%;
+      max-width: 100%;
       flex-shrink: 0;
+      background: var(--scrollbar-track-grey);
+      border-radius: 3px;
+      box-sizing: border-box;
     }
     .listing-card .card-type {
-      margin-top: auto;
-      margin-bottom: 4px;
+      margin: 0;
       color: var(--map-brand);
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
       text-transform: uppercase;
-      line-height: 1.05;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      align-self: center;
-      width: max-content;
-      max-width: calc(100% - 12px);
-      text-align: center;
-      position: relative;
-      z-index: 1;
+      align-self: stretch;
+      width: 100%;
+      max-width: 100%;
+      padding: 3px 6px;
       flex-shrink: 0;
+      background: var(--scrollbar-track-grey);
+      border-radius: 3px;
+      box-sizing: border-box;
     }
     .listing-card .card-tags {
       display: flex;
@@ -1037,7 +1042,7 @@
       flex: 1 1 auto;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      scrollbar-color: rgba(128, 128, 128, 0.38) rgba(0, 0, 0, 0.12);
+      scrollbar-color: rgba(128, 128, 128, 0.38) var(--scrollbar-track-grey);
       scrollbar-gutter: stable;
       display: flex;
       flex-direction: column;
@@ -1054,7 +1059,7 @@
       width: 5px;
     }
     .map-sidebar-list::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.12);
+      background: var(--scrollbar-track-grey);
       border-radius: 99px;
     }
     .map-sidebar-list::-webkit-scrollbar-thumb {
@@ -1066,7 +1071,7 @@
       aspect-ratio: auto;
       min-height: 140px;
       height: 140px;
-      grid-template-columns: minmax(0, 58%) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 50%) minmax(0, 1fr);
       grid-template-rows: 1fr;
       grid-template-areas: "photo body";
     }
@@ -1080,31 +1085,19 @@
     .job-strip .listing-card .card-body {
       grid-area: body;
       padding: 5px 6px 4px;
+      gap: 2px;
+    }
+    .map-sidebar-list .listing-card .card-info,
+    .job-strip .listing-card .card-info {
+      gap: 14px;
     }
     .map-sidebar-list .listing-card .card-price,
-    .job-strip .listing-card .card-price {
-      margin-bottom: 2px;
-      padding-right: 0;
-    }
-    .map-sidebar-list .listing-card .card-price-amount,
-    .map-sidebar-list .listing-card .card-price-saved,
-    .job-strip .listing-card .card-price-amount,
-    .job-strip .listing-card .card-price-saved {
-      font-size: 17px;
-      letter-spacing: 0;
-      line-height: 1;
-    }
+    .job-strip .listing-card .card-price,
     .map-sidebar-list .listing-card .card-addr,
-    .job-strip .listing-card .card-addr {
-      max-width: calc(100% - 8px);
-      line-height: 1.05;
-    }
+    .job-strip .listing-card .card-addr,
     .map-sidebar-list .listing-card .card-type,
     .job-strip .listing-card .card-type {
-      margin-top: auto;
-      margin-bottom: 3px;
-      max-width: calc(100% - 8px);
-      line-height: 1.05;
+      padding: 2px 5px;
     }
     .map-sidebar-list .listing-card .card-tags,
     .job-strip .listing-card .card-tags {
@@ -1158,7 +1151,7 @@
       .job-strip .listing-card {
         height: 140px;
         min-height: 140px;
-        grid-template-columns: minmax(0, 58%) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 50%) minmax(0, 1fr);
         grid-template-rows: 1fr;
         grid-template-areas: "photo body";
       }
@@ -3295,6 +3288,18 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
+    id: 14,
+    lat: 53.3732, lng: -6.2048,
+    address: "Killester Park, Killester, Dublin 5",
+    areaText: "Killester Park, Killester, Dublin 5",
+    consent_to_display: true,
+    type: "Semi-detached house",
+    completedDate: "June 2026",
+    annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/killester-park-before.png"],
+    afterPhotos: ["./assets/job-photos/killester-park-after.png"]
+  },
+  {
     id: 13,
     lat: 53.399343, lng: -6.166444,
     address: "9 Elmfield Park, Dublin 13",
@@ -3434,7 +3439,7 @@ const portfolioJobsRaw = [
 
 /**
  * Public map payload: no exact address, no direct identifiers, consent-gated rows only.
- * @typedef {{id:number,lat:number,lng:number,blurMeters:number,areaText:string,type:string,completedDate:string,berBefore:string,berAfter:string,annualSaving:number,valueIncrease:number,co2Reduction:number,warmthGain:number,bathrooms:number|null,beforePhotos:string[],afterPhotos:string[],consentToDisplay:true}} PublicJob
+ * @typedef {{id:number,lat:number,lng:number,blurMeters:number,areaText:string,type:string,completedDate:string,berBefore:string,berAfter:string,annualSaving:number,valueIncrease:number,co2Reduction:number,warmthGain:number,seaiGrant?:number,treesEquivalent?:number,bathrooms:number|null,beforePhotos:string[],afterPhotos:string[],consentToDisplay:true}} PublicJob
  */
 const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePublicJobs)
   ? window.EcoMapPrivacy.sanitizePublicJobs(portfolioJobsRaw)
@@ -4307,79 +4312,128 @@ function renderListingCardHtml(job, isActive) {
   return `<button type="button" class="listing-card${isActive ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
     <div class="card-img" aria-hidden="true"><div class="card-img-wrap"><img src="${cardImage}" alt="" loading="lazy" /></div></div>
     <div class="card-body">
-      ${formatJobCardPriceHtml(job.annualSaving)}
-      <div class="card-addr">${escapeHtml(job.areaText)}</div>
-      <div class="card-type">${escapeHtml(cardType)}</div>
+      <div class="card-info">
+        ${formatJobCardPriceHtml(job.annualSaving)}
+        <div class="card-addr">${escapeHtml(job.areaText)}</div>
+        <div class="card-type">${escapeHtml(cardType)}</div>
+      </div>
       <div class="card-tags">${formatJobCardTagHtml(job)}</div>
     </div>
   </button>`;
 }
 
-function fitJobCardLineToWidth(el, targetWidth, baseFontSize) {
-  if (!el || targetWidth <= 0) return null;
-  el.style.removeProperty('font-size');
-  el.style.letterSpacing = '0px';
-  let fontSize = baseFontSize;
-  el.style.fontSize = `${fontSize}px`;
-  for (let i = 0; i < 4; i += 1) {
-    const currentWidth = el.offsetWidth;
-    if (currentWidth <= 0) break;
-    fontSize *= targetWidth / currentWidth;
-    el.style.fontSize = `${fontSize}px`;
+const JOB_CARD_TEXT_SELECTORS = ['.card-price-amount', '.card-price-saved', '.card-addr', '.card-type'];
+const JOB_CARD_TEXT_SIZE_MIN = 10;
+const JOB_CARD_TEXT_SIZE_MAX = 35;
+const JOB_CARD_TEXT_SIZE_SCALE = 1.25;
+
+function applyJobCardFontSize(cards, fontSize) {
+  cards.forEach((card) => {
+    JOB_CARD_TEXT_SELECTORS.forEach((sel) => {
+      const el = card.querySelector(sel);
+      if (el) el.style.fontSize = `${fontSize}px`;
+    });
+  });
+}
+
+function jobCardTextLineFits(el) {
+  if (!el || el.clientWidth <= 0) return true;
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const textWidth = range.getBoundingClientRect().width;
+  return textWidth <= el.clientWidth + 1;
+}
+
+function jobCardTextFitsAtSize(cards, fontSize) {
+  applyJobCardFontSize(cards, fontSize);
+  for (const card of cards) {
+    const body = card.querySelector('.card-body');
+    const info = card.querySelector('.card-info');
+    const tags = card.querySelector('.card-tags');
+    if (!body || !info) return false;
+    if (body.clientWidth <= 0 || body.clientHeight <= 0) return false;
+
+    const tagsHeight = tags ? tags.offsetHeight : 0;
+    const bodyStyles = getComputedStyle(body);
+    const bodyGap = parseFloat(bodyStyles.rowGap || bodyStyles.gap || '0') || 0;
+    const availableHeight = body.clientHeight - tagsHeight - bodyGap;
+    if (info.scrollHeight > availableHeight + 1) return false;
+
+    for (const sel of JOB_CARD_TEXT_SELECTORS) {
+      const el = card.querySelector(sel);
+      if (!el) continue;
+      if (!jobCardTextLineFits(el)) return false;
+    }
   }
-  return parseFloat(getComputedStyle(el).fontSize);
-}
-
-function measureJobCardTextSizes(referenceCard) {
-  const amount = referenceCard.querySelector('.card-price-amount');
-  const saved = referenceCard.querySelector('.card-price-saved');
-  const addr = referenceCard.querySelector('.card-addr');
-  const type = referenceCard.querySelector('.card-type');
-  if (!amount || !saved) return null;
-
-  saved.style.removeProperty('font-size');
-  addr?.style.removeProperty('font-size');
-  type?.style.removeProperty('font-size');
-  amount.style.removeProperty('font-size');
-
-  const baseFontSize = parseFloat(getComputedStyle(amount).fontSize) || 17;
-  const amountWidth = amount.offsetWidth;
-  if (amountWidth <= 0) return null;
-
-  const savedFontSize = fitJobCardLineToWidth(saved, amountWidth, baseFontSize);
-  const targetWidth = Math.max(amountWidth, saved.offsetWidth);
-  const addrFontSize = addr ? fitJobCardLineToWidth(addr, targetWidth, baseFontSize) : null;
-  const typeFontSize = type ? fitJobCardLineToWidth(type, targetWidth, baseFontSize) : null;
-
-  return {
-    amountFontSize: parseFloat(getComputedStyle(amount).fontSize) || baseFontSize,
-    savedFontSize: savedFontSize || baseFontSize,
-    addrFontSize: addrFontSize || baseFontSize,
-    typeFontSize: typeFontSize || baseFontSize,
-  };
-}
-
-function applyJobCardTextSizes(card, sizes) {
-  if (!sizes) return;
-  const amount = card.querySelector('.card-price-amount');
-  const saved = card.querySelector('.card-price-saved');
-  const addr = card.querySelector('.card-addr');
-  const type = card.querySelector('.card-type');
-  if (amount) amount.style.fontSize = `${sizes.amountFontSize}px`;
-  if (saved) saved.style.fontSize = `${sizes.savedFontSize}px`;
-  if (addr) addr.style.fontSize = `${sizes.addrFontSize}px`;
-  if (type) type.style.fontSize = `${sizes.typeFontSize}px`;
+  return true;
 }
 
 function syncJobCardPriceWidths(scope) {
   const root = scope || document;
-  const cards = root.querySelectorAll('.listing-card');
+  const cards = [...root.querySelectorAll('.listing-card')];
   if (!cards.length) return;
 
-  const sizes = measureJobCardTextSizes(cards[0]);
-  if (!sizes) return;
+  const sampleBody = cards[0].querySelector('.card-body');
+  if (!sampleBody || sampleBody.clientWidth <= 0 || sampleBody.clientHeight <= 0) {
+    const retries = Number(root.dataset.jobCardSizeRetry || '0');
+    if (retries < 6) {
+      root.dataset.jobCardSizeRetry = String(retries + 1);
+      requestAnimationFrame(() => syncJobCardPriceWidths(scope));
+    }
+    return;
+  }
+  root.dataset.jobCardSizeRetry = '0';
 
-  cards.forEach((card) => applyJobCardTextSizes(card, sizes));
+  JOB_CARD_TEXT_SELECTORS.forEach((sel) => {
+    cards.forEach((card) => {
+      card.querySelector(sel)?.style.removeProperty('font-size');
+    });
+  });
+
+  if (!jobCardTextFitsAtSize(cards, JOB_CARD_TEXT_SIZE_MIN)) {
+    applyJobCardFontSize(cards, JOB_CARD_TEXT_SIZE_MIN);
+    root.style.setProperty('--job-card-info-font-size', `${JOB_CARD_TEXT_SIZE_MIN}px`);
+    return;
+  }
+
+  let bestSize = JOB_CARD_TEXT_SIZE_MIN;
+  for (let testSize = JOB_CARD_TEXT_SIZE_MIN; testSize <= JOB_CARD_TEXT_SIZE_MAX; testSize += 0.5) {
+    if (!jobCardTextFitsAtSize(cards, testSize)) break;
+    bestSize = testSize;
+  }
+
+  let finalSize = Math.min(
+    JOB_CARD_TEXT_SIZE_MAX,
+    Math.round(bestSize * JOB_CARD_TEXT_SIZE_SCALE * 10) / 10
+  );
+  while (finalSize > JOB_CARD_TEXT_SIZE_MIN && !jobCardTextFitsAtSize(cards, finalSize)) {
+    finalSize = Math.round((finalSize - 0.5) * 10) / 10;
+  }
+
+  applyJobCardFontSize(cards, finalSize);
+  root.style.setProperty('--job-card-info-font-size', `${finalSize}px`);
+}
+
+let jobCardTextResizeInited = false;
+function initJobCardTextResize() {
+  if (jobCardTextResizeInited) return;
+  jobCardTextResizeInited = true;
+  const resync = () => {
+    const list = document.getElementById('map-properties-list');
+    const strip = document.getElementById('job-strip');
+    if (list) syncJobCardPriceWidths(list);
+    if (strip) syncJobCardPriceWidths(strip);
+  };
+  try {
+    const ro = new ResizeObserver(() => resync());
+    const list = document.getElementById('map-properties-list');
+    const strip = document.getElementById('job-strip');
+    if (list) ro.observe(list);
+    if (strip) ro.observe(strip);
+  } catch (_) { /* ResizeObserver unavailable */ }
+  window.addEventListener('resize', () => {
+    requestAnimationFrame(() => resync());
+  });
 }
 
 function clampBerBadgeValue(berValue) {
@@ -4852,6 +4906,7 @@ function initMap() {
 
   initHouseTypeFilters();
   initPropertiesSidebar();
+  initJobCardTextResize();
   initJobStripScrollBar();
   renderPins();
   // Coordinates are privacy-preserving and deterministic per job id.
@@ -5075,6 +5130,7 @@ function panelBenefitIcons() {
     euro: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.3"/><path d="M7 9h.01M17 15h.01"/><path d="M13.8 10.4h-2a1.6 1.6 0 1 0 0 3.2h2"/><path d="M10.9 12h2.7"/></svg></span>`,
     chart: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 15l4-4 3 2 5-6"/><path d="M18 7h-4"/><path d="m18 7-2-2"/><path d="m18 7-2 2"/></svg></span>`,
     temp: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0v8.3a4.4 4.4 0 1 1-4 0Z"/><path d="M12 10v5"/><path d="M12 17.6v.01"/><path d="M8 7h1.5M8 10h1.5M8 13h1.5"/></svg></span>`,
+    seai: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5.5 6v5.2c0 4.5 2.7 8.6 6.5 10.8 3.8-2.2 6.5-6.3 6.5-10.8V6L12 3Z"/><path d="m9.1 12.1 1.9 1.9 3.9-3.9"/></svg></span>`,
     leaf: `<span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-1.5-4.5-1.5-8 0-11.5"/><path d="M12 9.5C15 6 18 5 21 4c-2 3-4.5 5-9 5.5"/><path d="M12 14.5C9 17 6 18 3 19c2-3 4.5-5 9-5.5"/></svg></span>`
   };
 }
@@ -5092,6 +5148,20 @@ function buildPanelHTML(job) {
   const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
+  const thirdBenefitCard = job.seaiGrant
+    ? `<div class="benefit-card warmth">
+            ${ic.seai}
+            <div class="benefit-value">€${Number(job.seaiGrant).toLocaleString()}</div>
+            <div class="benefit-desc">SEAI grant</div>
+          </div>`
+    : `<div class="benefit-card warmth">
+            ${ic.temp}
+            <div class="benefit-value">+${job.warmthGain}°C</div>
+            <div class="benefit-desc">Warmer in winter</div>
+          </div>`;
+  const co2Desc = job.treesEquivalent
+    ? `CO₂ reduction per year · ${Number(job.treesEquivalent).toLocaleString()} trees equivalent`
+    : 'CO₂ reduction per year';
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
       <div class="panel-ber-hero-grades">
@@ -5117,15 +5187,11 @@ function buildPanelHTML(job) {
             <div class="benefit-value">+€${job.valueIncrease.toLocaleString()}</div>
             <div class="benefit-desc">Increase in property value</div>
           </div>
-          <div class="benefit-card warmth">
-            ${ic.temp}
-            <div class="benefit-value">+${job.warmthGain}°C</div>
-            <div class="benefit-desc">Warmer in winter</div>
-          </div>
+          ${thirdBenefitCard}
           <div class="benefit-card carbon">
             ${ic.leaf}
             <div class="benefit-value">-${job.co2Reduction}t</div>
-            <div class="benefit-desc">CO₂ reduction per year</div>
+            <div class="benefit-desc">${co2Desc}</div>
           </div>
         </div>
         <p class="benefits-disclaimer">All values are approximate based on each individual house.</p>
