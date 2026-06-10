@@ -798,7 +798,7 @@
     .listing-card .card-price-amount,
     .listing-card .card-price-saved {
       display: block;
-      color: #157347;
+      color: #1E6A35;
     }
     .listing-card .card-addr {
       color: var(--map-brand);
@@ -1077,8 +1077,8 @@
     .map-sidebar-header {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      text-transform: none;
       color: var(--text-muted);
       margin-bottom: 10px;
       padding-right: 4px;
@@ -2802,7 +2802,7 @@
     .map-prop-tooltip .map-tip-price {
       display: block;
       font-weight: 700;
-      color: var(--map-brand);
+      color: #1E6A35;
       margin-bottom: 2px;
     }
     .map-prop-tooltip .map-tip-muted {
@@ -2822,7 +2822,7 @@
       display: block;
       width: fit-content;
       max-width: 100%;
-      margin-bottom: 10px;
+      margin: 0 auto 10px;
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid rgba(36, 59, 90, 0.12);
@@ -2850,7 +2850,7 @@
       font-size: 18px;
       font-weight: 800;
       margin-bottom: 6px;
-      color: var(--map-brand);
+      color: #1E6A35;
       letter-spacing: 0.01em;
     }
     .map-popup-card .map-popup-address {
@@ -2874,16 +2874,17 @@
       padding: 8px 12px;
       border: none;
       border-radius: 8px;
-      background: var(--map-brand);
-      color: #fff;
+      background: #6B1E3D;
+      color: #FAF8F5;
       font: inherit;
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.02em;
       cursor: pointer;
+      transition: background 0.2s;
     }
     .map-popup-details-btn:hover {
-      filter: brightness(1.05);
+      background: #5E1A36;
     }
 
     /* Splash transition override (keep pointer-events until .hidden so CTA clicks complete) */
@@ -3102,7 +3103,7 @@
               <span class="map-sidebar-sheet-title">Nearby jobs</span>
             </div>
             <div class="map-sidebar-inner" id="map-sidebar-list-wrap">
-              <div class="map-sidebar-header">Jobs</div>
+              <div class="map-sidebar-header">Click Job Profiles to view details</div>
               <div class="map-sidebar-list" id="map-properties-list"></div>
               <aside class="map-sidebar-quote" aria-label="Request a free quote">
                 <div class="quote-sheet-scroll" id="quote-sheet-scroll">
@@ -3312,6 +3313,31 @@
 // DATA
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
+  {
+    id: 18,
+    lat: 53.2703576, lng: -6.1634957,
+    address: "64 South Park, Deansgrange, D18 DX32",
+    areaText: "Deansgrange",
+    consent_to_display: true,
+    type: "214m² · Matt White Acrylic",
+    completedDate: "December 2025",
+    berBefore: "B3", berAfter: "A2",
+    annualSaving: 2200, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
+    beforePhotos: ["./assets/job-photos/64-south-park-before.png"],
+    afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
+  },
+  {
+    id: 17,
+    lat: 53.3854210, lng: -6.1757110,
+    address: "69 Woodbine Park, Raheny, Dublin 5",
+    areaText: "Dublin 5",
+    consent_to_display: true,
+    type: "120m² · Dash White 10% Black",
+    berBefore: "C3", berAfter: "B1",
+    annualSaving: 1550, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/69-woodbine-park-before.png"],
+    afterPhotos: ["./assets/job-photos/69-woodbine-park-after.png"]
+  },
   {
     id: 16,
     lat: 53.3808214, lng: -6.1684881,
@@ -4933,10 +4959,7 @@ function renderPins() {
       popupAnchor: [0, -22]
     });
 
-    const beds = parseJobBedrooms(job);
-    const baths = estimateJobBathrooms(job);
-    const bedsDisp = beds != null ? `${beds}` : '—';
-    const tooltipHtml = `<span class="map-tip-price">€${job.valueIncrease.toLocaleString()} est. uplift</span><span class="map-tip-muted">${bedsDisp} bed · ${baths} bath</span>`;
+    const tooltipHtml = `<span class="map-tip-price">+€${job.valueIncrease.toLocaleString()} est. uplift</span>`;
 
     const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
     const safeAddress = escapeHtml(job.areaText);
@@ -4947,9 +4970,9 @@ function renderPins() {
           <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
         </div>
         <strong>Estimated value uplift</strong>
-        <span class="map-popup-value">€${job.valueIncrease.toLocaleString()}</span>
+        <span class="map-popup-value">+€${job.valueIncrease.toLocaleString()}</span>
         <span class="map-popup-address">${safeAddress}</span>
-        <div class="map-popup-meta">${bedsDisp} bed · ${baths} bath · ${safeType}</div>
+        <div class="map-popup-meta">${safeType}</div>
         <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">View listing</button>
       </div>
     `;
