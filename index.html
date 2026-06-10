@@ -619,13 +619,12 @@
       flex: 0 0 auto;
       width: 100%;
       max-width: 100%;
-      aspect-ratio: 1 / 1.15;
+      aspect-ratio: 2 / 1;
       align-self: stretch;
-      display: grid;
-      grid-template-rows: 1fr 1fr;
+      display: block;
       background: #ffffff;
-      border: 1px solid rgba(107, 30, 61, 0.22);
-      border-left: 4px solid #6B1E3D;
+      border: 2px solid #6B1E3D;
+      border-left: 5px solid #6B1E3D;
       border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
@@ -639,7 +638,7 @@
     }
     .listing-card:hover,
     .listing-card:focus-visible {
-      border-color: rgba(107, 30, 61, 0.38);
+      border-color: #5E1A36;
       box-shadow: 0 6px 14px rgba(107, 30, 61, 0.14);
       transform: translateY(-1px);
       outline: none;
@@ -649,28 +648,89 @@
       box-shadow: 0 8px 18px rgba(107, 30, 61, 0.2);
       transform: translateY(-1px);
     }
-    .listing-card .card-img {
-      min-height: 0;
+    .listing-card-ba {
       position: relative;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
-      border-bottom: 1px solid rgba(107, 30, 61, 0.1);
+      user-select: none;
+      touch-action: pan-y;
+      cursor: ew-resize;
     }
-    .listing-card .card-img-wrap {
+    .listing-card-ba-before,
+    .listing-card-ba-after {
       position: absolute;
       inset: 0;
-      overflow: hidden;
-      line-height: 0;
     }
-    .listing-card .card-img img {
+    .listing-card-ba-before {
+      z-index: 1;
+    }
+    .listing-card-ba-after {
+      z-index: 2;
+      clip-path: inset(0 0 0 50%);
+    }
+    .listing-card-ba-before img,
+    .listing-card-ba-after img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: left center;
+      object-position: center center;
       margin: 0;
       border: none;
       background: transparent;
+      pointer-events: none;
     }
+    .listing-card-ba-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: auto;
+      min-width: 28px;
+      padding: 0 2px;
+      transform: translateX(-50%);
+      z-index: 3;
+      cursor: ew-resize;
+      touch-action: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+    }
+    .listing-card-ba-divider-chevron {
+      flex: 0 0 auto;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.9);
+      pointer-events: none;
+      user-select: none;
+    }
+    .listing-card-ba-divider-line {
+      flex: 0 0 auto;
+      align-self: stretch;
+      width: 3.75px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.18);
+      pointer-events: none;
+    }
+    .listing-card-ba-label {
+      position: absolute;
+      bottom: 6px;
+      z-index: 4;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .listing-card-ba-label.before { left: 8px; }
+    .listing-card-ba-label.after { right: 8px; }
     .listing-card .card-house-icon {
       width: 22px;
       height: 22px;
@@ -809,6 +869,10 @@
       background: #FDE5E5;
       color: #9F1E1E;
       border-color: rgba(159, 30, 30, 0.35);
+    }
+    .listing-card .card-placeholder {
+      color: var(--text-muted);
+      opacity: 0.65;
     }
 
     @media (max-width: 900px) {
@@ -1071,42 +1135,6 @@
       aspect-ratio: auto;
       min-height: 140px;
       height: 140px;
-      grid-template-columns: minmax(0, 50%) minmax(0, 1fr);
-      grid-template-rows: 1fr;
-      grid-template-areas: "photo body";
-    }
-    .map-sidebar-list .listing-card .card-img,
-    .job-strip .listing-card .card-img {
-      grid-area: photo;
-      border-bottom: none;
-      border-right: 1px solid rgba(107, 30, 61, 0.1);
-    }
-    .map-sidebar-list .listing-card .card-body,
-    .job-strip .listing-card .card-body {
-      grid-area: body;
-      padding: 5px 6px 4px;
-      gap: 2px;
-    }
-    .map-sidebar-list .listing-card .card-info,
-    .job-strip .listing-card .card-info {
-      gap: 14px;
-    }
-    .map-sidebar-list .listing-card .card-price,
-    .job-strip .listing-card .card-price,
-    .map-sidebar-list .listing-card .card-addr,
-    .job-strip .listing-card .card-addr,
-    .map-sidebar-list .listing-card .card-type,
-    .job-strip .listing-card .card-type {
-      padding: 2px 5px;
-    }
-    .map-sidebar-list .listing-card .card-tags,
-    .job-strip .listing-card .card-tags {
-      gap: 2px;
-    }
-    .map-sidebar-list .listing-card .tag,
-    .job-strip .listing-card .tag {
-      font-size: 7px;
-      padding: 1px 4px;
     }
     .map-sidebar-quote {
       flex: 0 0 auto;
@@ -1151,9 +1179,6 @@
       .job-strip .listing-card {
         height: 140px;
         min-height: 140px;
-        grid-template-columns: minmax(0, 50%) minmax(0, 1fr);
-        grid-template-rows: 1fr;
-        grid-template-areas: "photo body";
       }
     }
 
@@ -3288,6 +3313,32 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
+    id: 16,
+    lat: 53.3808214, lng: -6.1684881,
+    address: "103 St Assam's Avenue, Raheny, Dublin 5, D05 AE37",
+    areaText: "Dublin 5",
+    consent_to_display: true,
+    type: "118m² · 7m² brick slip · Matt White Acrylic & Dash Finish",
+    completedDate: "November 2025",
+    berBefore: "B3", berAfter: "A2",
+    annualSaving: 1400, valueIncrease: 27200, co2Reduction: 3, treesEquivalent: 209, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/103-st-assams-avenue-before.png"],
+    afterPhotos: ["./assets/job-photos/103-st-assams-avenue-after.png"]
+  },
+  {
+    id: 15,
+    lat: 53.2827359, lng: -6.2194374,
+    address: "4 Lakelands Close, Stillorgan, A94 W586",
+    areaText: "Stillorgan",
+    consent_to_display: true,
+    type: "110m² Semi-detached · 1002-Y50R Acrylic, Anatolia & Med grey brick slips",
+    completedDate: "November 2025",
+    berBefore: "C1", berAfter: "A3",
+    annualSaving: 1200, valueIncrease: 23750, co2Reduction: 3.5, treesEquivalent: 248, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/4-lakelands-close-before.png"],
+    afterPhotos: ["./assets/job-photos/4-lakelands-close-after.png"]
+  },
+  {
     id: 14,
     lat: 53.3732, lng: -6.2048,
     address: "Killester Park, Killester, Dublin 5",
@@ -3322,118 +3373,6 @@ const portfolioJobsRaw = [
     annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, warmthGain: 5,
     beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
     afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
-  },
-  {
-    id: 2,
-    lat: 53.3798, lng: -6.2520,
-    areaText: "Dublin 9",
-    consent_to_display: true,
-    type: "4-bed detached",
-    completedDate: "March 2024",
-    berBefore: "E1", berAfter: "B3",
-    annualSaving: 2450, valueIncrease: 26000, co2Reduction: 3.8, warmthGain: 5
-  },
-  {
-    id: 3,
-    lat: 53.3153, lng: -6.3512,
-    areaText: "Dublin 12",
-    consent_to_display: true,
-    type: "3-bed terraced",
-    completedDate: "January 2024",
-    berBefore: "G", berAfter: "C1",
-    annualSaving: 1950, valueIncrease: 18500, co2Reduction: 2.9, warmthGain: 4
-  },
-  {
-    id: 4,
-    lat: 53.3944, lng: -6.3880,
-    areaText: "Dublin 15",
-    consent_to_display: true,
-    type: "4-bed semi-detached",
-    completedDate: "July 2024",
-    berBefore: "E2", berAfter: "B1",
-    annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, warmthGain: 5,
-    beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
-    afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
-  },
-  {
-    id: 5,
-    lat: 53.4597, lng: -6.2192,
-    areaText: "Malahide",
-    consent_to_display: true,
-    type: "3-bed end-of-terrace",
-    completedDate: "September 2024",
-    berBefore: "D1", berAfter: "B3",
-    annualSaving: 1800, valueIncrease: 20000, co2Reduction: 2.7, warmthGain: 3
-  },
-  {
-    id: 6,
-    lat: 53.3055, lng: -6.4192,
-    areaText: "Clondalkin",
-    consent_to_display: true,
-    type: "3-bed semi-detached",
-    completedDate: "April 2024",
-    berBefore: "F", berAfter: "C2",
-    annualSaving: 2050, valueIncrease: 19000, co2Reduction: 3.1, warmthGain: 4
-  },
-  {
-    id: 7,
-    lat: 53.2936, lng: -6.1358,
-    areaText: "Dun Laoghaire",
-    consent_to_display: true,
-    type: "5-bed detached",
-    completedDate: "February 2024",
-    berBefore: "E1", berAfter: "B1",
-    annualSaving: 3100, valueIncrease: 38000, co2Reduction: 4.6, warmthGain: 6
-  },
-  {
-    id: 8,
-    lat: 53.4573, lng: -6.2658,
-    areaText: "Swords",
-    consent_to_display: true,
-    type: "4-bed semi-detached",
-    completedDate: "June 2024",
-    berBefore: "D2", berAfter: "B2",
-    annualSaving: 2200, valueIncrease: 23000, co2Reduction: 3.3, warmthGain: 4
-  },
-  {
-    id: 9,
-    lat: 53.3531, lng: -6.4474,
-    areaText: "Lucan",
-    consent_to_display: true,
-    type: "3-bed semi-detached",
-    completedDate: "August 2024",
-    berBefore: "E2", berAfter: "B3",
-    annualSaving: 1980, valueIncrease: 21000, co2Reduction: 3.0, warmthGain: 4
-  },
-  {
-    id: 10,
-    lat: 53.2871, lng: -6.3745,
-    areaText: "Tallaght",
-    consent_to_display: true,
-    type: "3-bed terraced",
-    completedDate: "October 2024",
-    berBefore: "F", berAfter: "C1",
-    annualSaving: 2250, valueIncrease: 17500, co2Reduction: 3.4, warmthGain: 5
-  },
-  {
-    id: 11,
-    lat: 53.3936, lng: -6.3747,
-    areaText: "Blanchardstown",
-    consent_to_display: true,
-    type: "4-bed detached",
-    completedDate: "November 2024",
-    berBefore: "E1", berAfter: "B2",
-    annualSaving: 2680, valueIncrease: 29000, co2Reduction: 4.0, warmthGain: 5
-  },
-  {
-    id: 12,
-    lat: 53.2736, lng: -6.2152,
-    areaText: "Sandyford",
-    consent_to_display: true,
-    type: "4-bed semi-detached",
-    completedDate: "December 2024",
-    berBefore: "D1", berAfter: "A3",
-    annualSaving: 2780, valueIncrease: 35000, co2Reduction: 4.2, warmthGain: 5
   }
 ];
 
@@ -3445,7 +3384,7 @@ const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePubl
   ? window.EcoMapPrivacy.sanitizePublicJobs(portfolioJobsRaw)
   : portfolioJobsRaw
       .filter(j => j.consent_to_display !== false)
-      .map(j => ({ ...j, areaText: j.areaText || 'Dublin area', consentToDisplay: true }));
+      .map(j => ({ ...j, areaText: j.areaText || (j.placeholder ? '' : 'Dublin area'), consentToDisplay: true }));
 
 // ═══════════════════════════════════════════════════════════════
 // SUPABASE — customers
@@ -4285,154 +4224,118 @@ function getJobsInMapBounds() {
   return getVisibleJobs().filter(j => bounds.contains([j.lat, j.lng]));
 }
 
-function getJobCardImage(job) {
-  return sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
-}
-
-function formatJobTypeForCard(type) {
-  return String(type || '')
-    .replace(/^\s*\d+\s*-\s*bed\s*/i, '')
-    .trim();
-}
-
-function formatJobCardPriceHtml(annualSaving) {
-  const amount = `+€${Number(annualSaving || 0).toLocaleString()}`;
-  return `<div class="card-price"><span class="card-price-amount">${amount}</span><span class="card-price-saved">saved each year</span></div>`;
-}
-
-function formatJobCardTagHtml(job) {
-  const berDisplay = clampBerBadgeValue(job.berAfter);
-  const tagText = berDisplay ? `BER ${berDisplay}` : 'Completed';
-  return `<span class="tag ber-mid">${escapeHtml(tagText)}</span>`;
+function isJobPlaceholder(job) {
+  if (job.placeholder) return true;
+  return !String(job.areaText || '').trim()
+    && !Number(job.annualSaving)
+    && !String(job.type || '').trim();
 }
 
 function renderListingCardHtml(job, isActive) {
-  const cardType = formatJobTypeForCard(job.type);
-  const cardImage = getJobCardImage(job);
-  return `<button type="button" class="listing-card${isActive ? ' is-active' : ''}" data-job-id="${job.id}" aria-label="View ${escapeHtml(job.areaText)}">
-    <div class="card-img" aria-hidden="true"><div class="card-img-wrap"><img src="${cardImage}" alt="" loading="lazy" /></div></div>
-    <div class="card-body">
-      <div class="card-info">
-        ${formatJobCardPriceHtml(job.annualSaving)}
-        <div class="card-addr">${escapeHtml(job.areaText)}</div>
-        <div class="card-type">${escapeHtml(cardType)}</div>
-      </div>
-      <div class="card-tags">${formatJobCardTagHtml(job)}</div>
+  const placeholder = isJobPlaceholder(job);
+  const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
+  const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
+  const ariaLabel = placeholder ? 'Empty job slot' : `View ${job.areaText}`;
+  return `<button type="button" class="listing-card${isActive ? ' is-active' : ''}${placeholder ? ' is-placeholder' : ''}" data-job-id="${job.id}" aria-label="${escapeHtml(ariaLabel)}">
+    <div class="listing-card-ba" aria-hidden="true">
+      <div class="listing-card-ba-before"><img src="${beforeSrc}" alt="" loading="lazy" draggable="false" /></div>
+      <div class="listing-card-ba-after"><img src="${afterSrc}" alt="" loading="lazy" draggable="false" /></div>
+      <div class="listing-card-ba-divider" aria-hidden="true"><span class="listing-card-ba-divider-chevron">&lt;</span><span class="listing-card-ba-divider-line"></span><span class="listing-card-ba-divider-chevron">&gt;</span></div>
+      <span class="listing-card-ba-label before">Before</span>
+      <span class="listing-card-ba-label after">After</span>
     </div>
   </button>`;
 }
 
-const JOB_CARD_TEXT_SELECTORS = ['.card-price-amount', '.card-price-saved', '.card-addr', '.card-type'];
-const JOB_CARD_TEXT_SIZE_MIN = 10;
-const JOB_CARD_TEXT_SIZE_MAX = 35;
-const JOB_CARD_TEXT_SIZE_SCALE = 1.25;
+const LISTING_CARD_BA_DRAG_THRESHOLD = 6;
 
-function applyJobCardFontSize(cards, fontSize) {
-  cards.forEach((card) => {
-    JOB_CARD_TEXT_SELECTORS.forEach((sel) => {
-      const el = card.querySelector(sel);
-      if (el) el.style.fontSize = `${fontSize}px`;
-    });
-  });
+function setListingCardBAPosition(container, pct) {
+  const after = container.querySelector('.listing-card-ba-after');
+  const divider = container.querySelector('.listing-card-ba-divider');
+  if (!after || !divider) return;
+  const clamped = Math.max(5, Math.min(95, pct));
+  after.style.clipPath = `inset(0 0 0 ${clamped}%)`;
+  divider.style.left = `${clamped}%`;
 }
 
-function jobCardTextLineFits(el) {
-  if (!el || el.clientWidth <= 0) return true;
-  const range = document.createRange();
-  range.selectNodeContents(el);
-  const textWidth = range.getBoundingClientRect().width;
-  return textWidth <= el.clientWidth + 1;
+function getListingCardBAPercent(container, clientX) {
+  const rect = container.getBoundingClientRect();
+  if (!rect.width) return 50;
+  return ((clientX - rect.left) / rect.width) * 100;
 }
 
-function jobCardTextFitsAtSize(cards, fontSize) {
-  applyJobCardFontSize(cards, fontSize);
-  for (const card of cards) {
-    const body = card.querySelector('.card-body');
-    const info = card.querySelector('.card-info');
-    const tags = card.querySelector('.card-tags');
-    if (!body || !info) return false;
-    if (body.clientWidth <= 0 || body.clientHeight <= 0) return false;
+function initListingCardBASliders(root) {
+  const scope = root || document;
+  scope.querySelectorAll('.listing-card-ba:not([data-ba-inited])').forEach((container) => {
+    container.dataset.baInited = '1';
+    const cardBtn = container.closest('.listing-card');
+    let activePointer = null;
+    let startX = 0;
+    let startY = 0;
+    let gestureMode = null;
+    let suppressClick = false;
 
-    const tagsHeight = tags ? tags.offsetHeight : 0;
-    const bodyStyles = getComputedStyle(body);
-    const bodyGap = parseFloat(bodyStyles.rowGap || bodyStyles.gap || '0') || 0;
-    const availableHeight = body.clientHeight - tagsHeight - bodyGap;
-    if (info.scrollHeight > availableHeight + 1) return false;
+    setListingCardBAPosition(container, 50);
 
-    for (const sel of JOB_CARD_TEXT_SELECTORS) {
-      const el = card.querySelector(sel);
-      if (!el) continue;
-      if (!jobCardTextLineFits(el)) return false;
+    function finishPointer(e) {
+      if (activePointer !== e.pointerId) return;
+      try { container.releasePointerCapture(e.pointerId); } catch (_) { /* no-op */ }
+      activePointer = null;
+      gestureMode = null;
     }
-  }
-  return true;
-}
 
-function syncJobCardPriceWidths(scope) {
-  const root = scope || document;
-  const cards = [...root.querySelectorAll('.listing-card')];
-  if (!cards.length) return;
-
-  const sampleBody = cards[0].querySelector('.card-body');
-  if (!sampleBody || sampleBody.clientWidth <= 0 || sampleBody.clientHeight <= 0) {
-    const retries = Number(root.dataset.jobCardSizeRetry || '0');
-    if (retries < 6) {
-      root.dataset.jobCardSizeRetry = String(retries + 1);
-      requestAnimationFrame(() => syncJobCardPriceWidths(scope));
-    }
-    return;
-  }
-  root.dataset.jobCardSizeRetry = '0';
-
-  JOB_CARD_TEXT_SELECTORS.forEach((sel) => {
-    cards.forEach((card) => {
-      card.querySelector(sel)?.style.removeProperty('font-size');
+    container.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      activePointer = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      gestureMode = null;
+      suppressClick = false;
+      container.setPointerCapture(e.pointerId);
+      if (e.target.closest('.listing-card-ba-divider')) {
+        gestureMode = 'slide';
+        suppressClick = true;
+        e.preventDefault();
+        setListingCardBAPosition(container, getListingCardBAPercent(container, e.clientX));
+      }
     });
-  });
 
-  if (!jobCardTextFitsAtSize(cards, JOB_CARD_TEXT_SIZE_MIN)) {
-    applyJobCardFontSize(cards, JOB_CARD_TEXT_SIZE_MIN);
-    root.style.setProperty('--job-card-info-font-size', `${JOB_CARD_TEXT_SIZE_MIN}px`);
-    return;
-  }
+    container.addEventListener('pointermove', (e) => {
+      if (activePointer !== e.pointerId) return;
+      const dx = Math.abs(e.clientX - startX);
+      const dy = Math.abs(e.clientY - startY);
+      if (!gestureMode && (dx > LISTING_CARD_BA_DRAG_THRESHOLD || dy > LISTING_CARD_BA_DRAG_THRESHOLD)) {
+        gestureMode = dx >= dy ? 'slide' : 'scroll';
+      }
+      if (gestureMode !== 'slide') return;
+      suppressClick = true;
+      e.preventDefault();
+      setListingCardBAPosition(container, getListingCardBAPercent(container, e.clientX));
+    });
 
-  let bestSize = JOB_CARD_TEXT_SIZE_MIN;
-  for (let testSize = JOB_CARD_TEXT_SIZE_MIN; testSize <= JOB_CARD_TEXT_SIZE_MAX; testSize += 0.5) {
-    if (!jobCardTextFitsAtSize(cards, testSize)) break;
-    bestSize = testSize;
-  }
+    container.addEventListener('pointerup', (e) => {
+      if (activePointer === e.pointerId) {
+        const dx = Math.abs(e.clientX - startX);
+        const dy = Math.abs(e.clientY - startY);
+        if (!suppressClick && dx <= LISTING_CARD_BA_DRAG_THRESHOLD && dy <= LISTING_CARD_BA_DRAG_THRESHOLD) {
+          setListingCardBAPosition(container, getListingCardBAPercent(container, e.clientX));
+        }
+      }
+      finishPointer(e);
+      if (suppressClick) {
+        window.setTimeout(() => { suppressClick = false; }, 0);
+      }
+    });
+    container.addEventListener('pointercancel', finishPointer);
 
-  let finalSize = Math.min(
-    JOB_CARD_TEXT_SIZE_MAX,
-    Math.round(bestSize * JOB_CARD_TEXT_SIZE_SCALE * 10) / 10
-  );
-  while (finalSize > JOB_CARD_TEXT_SIZE_MIN && !jobCardTextFitsAtSize(cards, finalSize)) {
-    finalSize = Math.round((finalSize - 0.5) * 10) / 10;
-  }
-
-  applyJobCardFontSize(cards, finalSize);
-  root.style.setProperty('--job-card-info-font-size', `${finalSize}px`);
-}
-
-let jobCardTextResizeInited = false;
-function initJobCardTextResize() {
-  if (jobCardTextResizeInited) return;
-  jobCardTextResizeInited = true;
-  const resync = () => {
-    const list = document.getElementById('map-properties-list');
-    const strip = document.getElementById('job-strip');
-    if (list) syncJobCardPriceWidths(list);
-    if (strip) syncJobCardPriceWidths(strip);
-  };
-  try {
-    const ro = new ResizeObserver(() => resync());
-    const list = document.getElementById('map-properties-list');
-    const strip = document.getElementById('job-strip');
-    if (list) ro.observe(list);
-    if (strip) ro.observe(strip);
-  } catch (_) { /* ResizeObserver unavailable */ }
-  window.addEventListener('resize', () => {
-    requestAnimationFrame(() => resync());
+    if (cardBtn) {
+      cardBtn.addEventListener('click', (e) => {
+        if (!suppressClick) return;
+        e.preventDefault();
+        e.stopPropagation();
+        suppressClick = false;
+      }, true);
+    }
   });
 }
 
@@ -4594,10 +4497,7 @@ function renderJobStrip() {
   const sortedSig = `${list.map(j => j.id).slice().sort((a, b) => a - b).join()}|a:${activeJobId ?? ''}`;
   if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        syncJobCardPriceWidths(strip);
-        syncJobStripScrollBar();
-      });
+      requestAnimationFrame(() => syncJobStripScrollBar());
     });
     return;
   }
@@ -4618,9 +4518,9 @@ function renderJobStrip() {
       activateJobOnMap(job);
     });
   });
+  initListingCardBASliders(strip);
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      syncJobCardPriceWidths(strip);
       const newMax = Math.max(0, strip.scrollHeight - strip.clientHeight);
       if (newMax > 0) {
         strip.scrollTop = Math.max(0, Math.min(newMax, Math.round(vScrollRatio * newMax)));
@@ -4791,10 +4691,9 @@ function renderPropertiesSidebar() {
       activateJobOnMap(job);
     });
   });
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => syncJobCardPriceWidths(list));
-  });
+  initListingCardBASliders(list);
 }
+
 
 function activateJobOnMap(job) {
   activeJobId = job.id;
@@ -4906,7 +4805,6 @@ function initMap() {
 
   initHouseTypeFilters();
   initPropertiesSidebar();
-  initJobCardTextResize();
   initJobStripScrollBar();
   renderPins();
   // Coordinates are privacy-preserving and deterministic per job id.
