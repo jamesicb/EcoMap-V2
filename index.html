@@ -2514,7 +2514,8 @@
       line-height: 1;
     }
     .benefit-card.savings .benefit-value,
-    .benefit-card.value .benefit-value {
+    .benefit-card.value .benefit-value,
+    .benefit-card.grant .benefit-value {
       color: #1E6A35;
     }
     .benefit-card.warmth .benefit-value {
@@ -2529,6 +2530,7 @@
     }
     .benefit-card.savings .benefit-icon,
     .benefit-card.value .benefit-icon,
+    .benefit-card.grant .benefit-icon,
     .benefit-card.warmth .benefit-icon,
     .benefit-card.carbon .benefit-icon {
       background: #f3f4f6;
@@ -3021,7 +3023,7 @@
           <div class="map-frame">
             <div class="map-frame-inner">
               <div id="map"></div>
-              <p class="absolute left-3 bottom-3 z-[500] max-w-[min(90vw,380px)] rounded-md border border-black/10 bg-white/90 px-3 py-2 text-[11px] leading-snug text-[var(--text-dark)] shadow-sm">
+              <p class="absolute left-3 bottom-3 z-[500] max-w-[min(calc(100%-12rem),220px)] rounded-md border border-black/10 bg-white/90 px-2.5 py-1.5 text-[10px] leading-snug text-[var(--text-dark)] shadow-sm">
                 All locations shown are approximate. No personally identifiable information is displayed.
               </p>
               <div class="map-filters-overlay">
@@ -3270,42 +3272,29 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
-    id: 18,
-    lat: 53.2703576, lng: -6.1634957,
-    address: "64 South Park, Deansgrange, D18 DX32",
-    areaText: "Deansgrange",
-    consent_to_display: true,
-    type: "214m² · Matt White Acrylic",
-    completedDate: "December 2025",
-    berBefore: "B3", berAfter: "A2",
-    annualSaving: 2200, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
-    beforePhotos: ["./assets/job-photos/64-south-park-before.png"],
-    afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
-  },
-  {
-    id: 17,
-    lat: 53.3854210, lng: -6.1757110,
-    address: "69 Woodbine Park, Raheny, Dublin 5",
+    id: 19,
+    lat: 53.385325, lng: -6.152571,
+    address: "15 Greendale Avenue, Dublin 5",
     areaText: "Dublin 5",
     consent_to_display: true,
-    type: "120m² · Dash White 10% Black",
-    berBefore: "C3", berAfter: "B1",
-    annualSaving: 1550, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/69-woodbine-park-before.png"],
-    afterPhotos: ["./assets/job-photos/69-woodbine-park-after.png"]
+    type: "117m² + Brickslips · 1002-Y50R Acrylic",
+    completedDate: "April 2026",
+    berBefore: "C2", berAfter: "B1",
+    annualSaving: 1250, valueIncrease: 21600, co2Reduction: 2.9, treesEquivalent: 201, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/15-greendale-avenue-before.png"],
+    afterPhotos: ["./assets/job-photos/15-greendale-avenue-after.png"]
   },
   {
-    id: 16,
-    lat: 53.3808214, lng: -6.1684881,
-    address: "103 St Assam's Avenue, Raheny, Dublin 5, D05 AE37",
-    areaText: "Dublin 5",
+    id: 14,
+    lat: 53.3732, lng: -6.2048,
+    address: "Killester Park, Killester, Dublin 5",
+    areaText: "Killester Park, Killester, Dublin 5",
     consent_to_display: true,
-    type: "118m² · 7m² brick slip · Matt White Acrylic & Dash Finish",
-    completedDate: "November 2025",
-    berBefore: "B3", berAfter: "A2",
-    annualSaving: 1400, valueIncrease: 27200, co2Reduction: 3, treesEquivalent: 209, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/103-st-assams-avenue-before.png"],
-    afterPhotos: ["./assets/job-photos/103-st-assams-avenue-after.png"]
+    type: "Semi-detached house",
+    completedDate: "June 2026",
+    annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/killester-park-before.png"],
+    afterPhotos: ["./assets/job-photos/killester-park-after.png"]
   },
   {
     id: 15,
@@ -3321,41 +3310,30 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/4-lakelands-close-after.png"]
   },
   {
-    id: 14,
-    lat: 53.3732, lng: -6.2048,
-    address: "Killester Park, Killester, Dublin 5",
-    areaText: "Killester Park, Killester, Dublin 5",
+    id: 17,
+    lat: 53.3854210, lng: -6.1757110,
+    address: "69 Woodbine Park, Raheny, Dublin 5",
+    areaText: "Dublin 5",
     consent_to_display: true,
-    type: "Semi-detached house",
-    completedDate: "June 2026",
-    annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/killester-park-before.png"],
-    afterPhotos: ["./assets/job-photos/killester-park-after.png"]
+    type: "120m² · Dash White 10% Black",
+    berBefore: "C3", berAfter: "B1",
+    annualSaving: 1550, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/69-woodbine-park-after.png"],
+    afterPhotos: ["./assets/job-photos/69-woodbine-park-before.png"]
   },
   {
-    id: 13,
-    lat: 53.399343, lng: -6.166444,
-    address: "9 Elmfield Park, Dublin 13",
-    areaText: "Dublin 13",
+    id: 18,
+    lat: 53.2703576, lng: -6.1634957,
+    address: "64 South Park, Deansgrange, D18 DX32",
+    areaText: "Deansgrange",
     consent_to_display: true,
-    type: "106m² Semi-Detached house",
-    completedDate: "March 2026",
-    annualSaving: 850, valueIncrease: 25000, co2Reduction: 1.1, warmthGain: 5,
-    beforePhotos: ["./assets/job-photos/9-elmfield-park-before.png"],
-    afterPhotos: ["./assets/job-photos/9-elmfield-park-after.png"]
+    type: "214m² · Matt White Acrylic",
+    completedDate: "December 2025",
+    berBefore: "B3", berAfter: "A2",
+    annualSaving: 2200, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
+    beforePhotos: ["./assets/job-photos/64-south-park-before.png"],
+    afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
   },
-  {
-    id: 1,
-    lat: 53.3241, lng: -6.2856,
-    areaText: "Dublin 14",
-    consent_to_display: true,
-    type: "3-bed semi-detached",
-    completedDate: "May 2024",
-    berBefore: "E2", berAfter: "B1",
-    annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, warmthGain: 5,
-    beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
-    afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
-  }
 ];
 
 /**
@@ -5038,7 +5016,7 @@ function buildPanelHTML(job) {
   const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
   const thirdBenefitCard = job.seaiGrant
-    ? `<div class="benefit-card warmth">
+    ? `<div class="benefit-card grant">
             ${ic.seai}
             <div class="benefit-value">€${Number(job.seaiGrant).toLocaleString()}</div>
             <div class="benefit-desc">SEAI grant</div>
@@ -5069,7 +5047,7 @@ function buildPanelHTML(job) {
           <div class="benefit-card savings">
             ${ic.euro}
             <div class="benefit-value">+€${job.annualSaving.toLocaleString()}</div>
-            <div class="benefit-desc">Annual energy savings</div>
+            <div class="benefit-desc">Avg. Annual Energy Savings</div>
           </div>
           <div class="benefit-card value">
             ${ic.chart}
