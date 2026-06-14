@@ -48,3 +48,26 @@ test('public sanitization drops non-consented jobs and identifiers', () => {
   assert.equal(Object.hasOwn(result[0], 'owner_email'), false);
   assert.equal(Object.hasOwn(result[0], 'owner_phone'), false);
 });
+
+test('areaFromAddress returns neighbourhood and postal district only', () => {
+  assert.equal(
+    privacy.areaFromAddress('Killester Park, Killester, Dublin 5'),
+    'Killester, Dublin 5'
+  );
+  assert.equal(
+    privacy.areaFromAddress('4 Lakelands Close, Stillorgan, A94 W586'),
+    'Stillorgan, A94'
+  );
+  assert.equal(
+    privacy.areaFromAddress('69 Woodbine Park, Raheny, Dublin 5'),
+    'Raheny, Dublin 5'
+  );
+  assert.equal(
+    privacy.areaFromAddress('64 South Park, Deansgrange, D18 DX32'),
+    'Deansgrange, D18'
+  );
+  assert.equal(
+    privacy.areaFromAddress('15 Greendale Avenue, Dublin 5'),
+    'Dublin 5'
+  );
+});

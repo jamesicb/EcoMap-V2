@@ -50,6 +50,10 @@
       --map-marker-heat-shadow: rgba(182, 131, 126, 0.22);
       --map-marker-heat-shadow-deep: rgba(151, 114, 109, 0.32);
       --map-marker-heat-pulse: rgba(210, 158, 111, 0.36);
+      --map-marker-location-gradient: radial-gradient(circle at 32% 28%, #93C5FD 0%, #3B82F6 42%, #2563EB 100%);
+      --map-marker-location-shadow: rgba(59, 130, 246, 0.22);
+      --map-marker-location-shadow-deep: rgba(37, 99, 235, 0.32);
+      --map-marker-location-pulse: rgba(59, 130, 246, 0.36);
       --scrollbar-track-grey: rgba(0, 0, 0, 0.12);
     }
 
@@ -129,10 +133,33 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: clamp(2.05rem, 5.5vw, 2.7rem);
       font-weight: 600;
-      color: #6B1E3D;
       text-align: center;
       line-height: 1.15;
       margin-bottom: 16px;
+      background: linear-gradient(
+        90deg,
+        #6B1E3D 0%,
+        #6B1E3D 38%,
+        #c4849e 44%,
+        #ffffff 50%,
+        #c4849e 56%,
+        #6B1E3D 62%,
+        #6B1E3D 100%
+      );
+      background-size: 280% 100%;
+      background-position: 100% center;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: splash-name-shine 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s 1 forwards;
+    }
+    @keyframes splash-name-shine {
+      0% {
+        background-position: 100% center;
+      }
+      100% {
+        background-position: 0% center;
+      }
     }
 
     .splash-tagline {
@@ -156,7 +183,7 @@
     .stat-card {
       background: #ffffff;
       border: 1px solid rgba(107, 30, 61, 0.14);
-      border-left: 4px solid #6B1E3D;
+      border-left: 4px solid #1E6A35;
       border-radius: var(--radius-card);
       padding: 16px 12px 14px;
       text-align: center;
@@ -206,7 +233,7 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: clamp(2rem, 4.8vw, 2.25rem);
       font-weight: 600;
-      color: #6B1E3D;
+      color: #1E6A35;
       line-height: 1;
       margin-bottom: 7px;
       white-space: nowrap;
@@ -293,6 +320,11 @@
       .stat-card:active {
         transform: none;
         box-shadow: none;
+      }
+      .splash-name {
+        animation: none;
+        background: none;
+        color: #6B1E3D;
       }
     }
 
@@ -1996,16 +2028,16 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--map-marker-heat-gradient);
+      background: var(--map-marker-location-gradient);
       border: 2px solid #ffffff;
-      box-shadow: 0 0 0 2px var(--map-marker-heat-shadow), 0 4px 10px var(--map-marker-heat-shadow-deep);
+      box-shadow: 0 0 0 2px var(--map-marker-location-shadow), 0 4px 10px var(--map-marker-location-shadow-deep);
     }
     .user-location-dot::after {
       content: '';
       position: absolute;
       inset: -8px;
       border-radius: 50%;
-      border: 2px solid var(--map-marker-heat-pulse);
+      border: 2px solid var(--map-marker-location-pulse);
       animation: user-location-pulse 2s ease-out infinite;
     }
     @keyframes user-location-pulse {
@@ -2983,7 +3015,7 @@
     </svg>
   </div>
   <div class="splash-name">Absolute Acrylics</div>
-  <p class="splash-tagline">Dublin's leading external wall insulation specialists — see how we've transformed homes near you.</p>
+  <p class="splash-tagline">Dublin's leading Insulation Specialists - See how we have transformed homes near you.</p>
 
   <div class="splash-stats flex flex-col gap-2.5 sm:flex-row sm:gap-2.5">
     <div class="stat-card w-full min-w-0 sm:flex-1">
@@ -2991,11 +3023,11 @@
       <div class="stat-label">Dublin homes insulated</div>
     </div>
     <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€2,000</div>
+      <div class="stat-number">+€1,300</div>
       <div class="stat-label">Avg. Annual Savings Increase</div>
     </div>
     <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€22,000</div>
+      <div class="stat-number">+€27,750</div>
       <div class="stat-label">Avg. Property Value Increase</div>
     </div>
   </div>
@@ -3274,8 +3306,8 @@ const portfolioJobsRaw = [
   {
     id: 19,
     lat: 53.385325, lng: -6.152571,
-    address: "15 Greendale Avenue, Dublin 5",
-    areaText: "Dublin 5",
+    address: "15 Greendale Avenue, Raheny, Dublin 5",
+    areaText: "Raheny, Dublin 5",
     consent_to_display: true,
     type: "117m² + Brickslips · 1002-Y50R Acrylic",
     completedDate: "April 2026",
@@ -3288,9 +3320,9 @@ const portfolioJobsRaw = [
     id: 14,
     lat: 53.3732, lng: -6.2048,
     address: "Killester Park, Killester, Dublin 5",
-    areaText: "Killester Park, Killester, Dublin 5",
+    areaText: "Killester, Dublin 5",
     consent_to_display: true,
-    type: "Semi-detached house",
+    type: "End of Terrace, Acrylic",
     completedDate: "June 2026",
     annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/killester-park-before.png"],
@@ -3300,7 +3332,7 @@ const portfolioJobsRaw = [
     id: 15,
     lat: 53.2827359, lng: -6.2194374,
     address: "4 Lakelands Close, Stillorgan, A94 W586",
-    areaText: "Stillorgan",
+    areaText: "Stillorgan, A94",
     consent_to_display: true,
     type: "110m² Semi-detached · 1002-Y50R Acrylic, Anatolia & Med grey brick slips",
     completedDate: "November 2025",
@@ -3313,7 +3345,7 @@ const portfolioJobsRaw = [
     id: 17,
     lat: 53.3854210, lng: -6.1757110,
     address: "69 Woodbine Park, Raheny, Dublin 5",
-    areaText: "Dublin 5",
+    areaText: "Raheny, Dublin 5",
     consent_to_display: true,
     type: "120m² · Dash White 10% Black",
     berBefore: "C3", berAfter: "B1",
@@ -3325,7 +3357,7 @@ const portfolioJobsRaw = [
     id: 18,
     lat: 53.2703576, lng: -6.1634957,
     address: "64 South Park, Deansgrange, D18 DX32",
-    areaText: "Deansgrange",
+    areaText: "Deansgrange, D18",
     consent_to_display: true,
     type: "214m² · Matt White Acrylic",
     completedDate: "December 2025",
@@ -4915,7 +4947,7 @@ function renderPins() {
         <div class="map-popup-photo-wrap">
           <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
         </div>
-        <strong>Estimated value uplift</strong>
+        <strong>Estimated Property Valuation increase</strong>
         <span class="map-popup-value">+€${job.valueIncrease.toLocaleString()}</span>
         <span class="map-popup-address">${safeAddress}</span>
         <div class="map-popup-meta">${safeType}</div>
@@ -5027,7 +5059,7 @@ function buildPanelHTML(job) {
             <div class="benefit-desc">Warmer in winter</div>
           </div>`;
   const co2Desc = job.treesEquivalent
-    ? `CO₂ reduction per year · ${Number(job.treesEquivalent).toLocaleString()} trees equivalent`
+    ? `CO₂ reduction per year<br>(${Number(job.treesEquivalent).toLocaleString()} trees equivalent)`
     : 'CO₂ reduction per year';
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">

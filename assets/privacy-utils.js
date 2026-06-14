@@ -70,10 +70,27 @@
   function areaFromAddress(rawAddress, fallbackArea) {
     var value = String(rawAddress || '').trim();
     if (!value) return String(fallbackArea || 'Dublin area');
-    var dublinMatch = value.match(/Dublin\s*\d+/i);
-    if (dublinMatch) return dublinMatch[0].replace(/\s+/g, ' ').trim();
     var parts = value.split(',').map(function trimPart(part) { return part.trim(); }).filter(Boolean);
     if (!parts.length) return String(fallbackArea || 'Dublin area');
+
+    var lastPart = parts[parts.length - 1];
+    var dublinMatch = lastPart.match(/^Dublin\s*\d+$/i) || value.match(/Dublin\s*\d+/i);
+    if (dublinMatch) {
+      var dublin = dublinMatch[0].replace(/\s+/g, ' ').trim();
+      if (parts.length >= 3) return parts[parts.length - 2] + ', ' + dublin;
+      return dublin;
+    }
+
+    var eircodeMatch = lastPart.match(/^([A-Z]\d{2})\s+[A-Z0-9]{4}$/i);
+    if (eircodeMatch && parts.length >= 2) {
+      return parts[parts.length - 2] + ', ' + eircodeMatch[1].toUpperCase();
+    }
+
+    var routingOnly = lastPart.match(/^([A-Z]\d{2})$/i);
+    if (routingOnly && parts.length >= 2) {
+      return parts[parts.length - 2] + ', ' + routingOnly[1].toUpperCase();
+    }
+
     if (parts.length >= 2) return parts[parts.length - 1];
     return parts[0];
   }
@@ -83,7 +100,10 @@
     if (rawJob.consent_to_display === false || rawJob.consentToDisplay === false) return null;
     var id = rawJob.id;
     var blurred = blurCoordinate(rawJob.lat, rawJob.lng, id);
-    var areaText = String(rawJob.areaText || rawJob.area || areaFromAddress(rawJob.address, rawJob.location) || 'Dublin area').trim();
+    var areaText = rawJob.address
+      ? areaFromAddress(rawJob.address, rawJob.areaText || rawJob.area || rawJob.location)
+      : String(rawJob.areaText || rawJob.area || 'Dublin area').trim();
+    areaText = String(areaText || 'Dublin area').trim();
 
     return {
       id: id,
