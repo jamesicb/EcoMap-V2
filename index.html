@@ -50,6 +50,10 @@
       --map-marker-heat-shadow: rgba(182, 131, 126, 0.22);
       --map-marker-heat-shadow-deep: rgba(151, 114, 109, 0.32);
       --map-marker-heat-pulse: rgba(210, 158, 111, 0.36);
+      --map-marker-location-gradient: radial-gradient(circle at 32% 28%, #93C5FD 0%, #3B82F6 42%, #2563EB 100%);
+      --map-marker-location-shadow: rgba(59, 130, 246, 0.22);
+      --map-marker-location-shadow-deep: rgba(37, 99, 235, 0.32);
+      --map-marker-location-pulse: rgba(59, 130, 246, 0.36);
       --scrollbar-track-grey: rgba(0, 0, 0, 0.12);
     }
 
@@ -129,10 +133,33 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: clamp(2.05rem, 5.5vw, 2.7rem);
       font-weight: 600;
-      color: #6B1E3D;
       text-align: center;
       line-height: 1.15;
       margin-bottom: 16px;
+      background: linear-gradient(
+        90deg,
+        #6B1E3D 0%,
+        #6B1E3D 38%,
+        #c4849e 44%,
+        #ffffff 50%,
+        #c4849e 56%,
+        #6B1E3D 62%,
+        #6B1E3D 100%
+      );
+      background-size: 280% 100%;
+      background-position: 100% center;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: splash-name-shine 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s 1 forwards;
+    }
+    @keyframes splash-name-shine {
+      0% {
+        background-position: 100% center;
+      }
+      100% {
+        background-position: 0% center;
+      }
     }
 
     .splash-tagline {
@@ -156,7 +183,7 @@
     .stat-card {
       background: #ffffff;
       border: 1px solid rgba(107, 30, 61, 0.14);
-      border-left: 4px solid #6B1E3D;
+      border-left: 4px solid #1E6A35;
       border-radius: var(--radius-card);
       padding: 16px 12px 14px;
       text-align: center;
@@ -206,7 +233,7 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: clamp(2rem, 4.8vw, 2.25rem);
       font-weight: 600;
-      color: #6B1E3D;
+      color: #1E6A35;
       line-height: 1;
       margin-bottom: 7px;
       white-space: nowrap;
@@ -294,6 +321,11 @@
         transform: none;
         box-shadow: none;
       }
+      .splash-name {
+        animation: none;
+        background: none;
+        color: #6B1E3D;
+      }
     }
 
     .splash-trust {
@@ -360,6 +392,14 @@
       height: calc(16px * 1.3);
       display: block;
     }
+    /* Gives the splash room to scroll on short viewports so scroll/swipe can reveal the map */
+    .splash-scroll-spacer {
+      flex-shrink: 0;
+      width: 100%;
+      height: min(32vh, 220px);
+      min-height: 80px;
+      pointer-events: none;
+    }
     @keyframes splash-scroll-bob {
       0%, 100% { transform: translateY(0); opacity: 0.72; }
       50% { transform: translateY(calc(4px * 1.3)); opacity: 1; }
@@ -381,6 +421,161 @@
       background: var(--map-page-bg);
       background-color: #ffffff;
       color: var(--text-light);
+    }
+
+    /* Desktop header — hidden on mobile */
+    .app-desk-header {
+      display: none;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 20px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-gold);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      z-index: 50;
+    }
+    .app-desk-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 4px 0;
+      font: inherit;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .app-desk-brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #6B1E3D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .app-desk-brand-logo svg {
+      width: 22px;
+      height: 22px;
+    }
+    .app-desk-brand-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #6B1E3D;
+      text-transform: uppercase;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .app-desk-trust {
+      font-size: 12px;
+      font-weight: 500;
+      color: #6B1E3D;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .app-desk-trust-star {
+      color: #C45B82;
+    }
+
+    /* Filter chips — desktop only */
+    .map-filter-chips {
+      display: none;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px 12px;
+      flex-shrink: 0;
+      background: #F5F0EA;
+      border-bottom: 1px solid rgba(107, 30, 61, 0.1);
+      position: relative;
+      z-index: 5;
+    }
+    .map-filter-chip {
+      border: 1px solid rgba(182, 131, 126, 0.35);
+      background: #ffffff;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .map-filter-chip:hover {
+      border-color: var(--map-brand);
+      color: #6B1E3D;
+      background: var(--map-brand-soft);
+    }
+    .map-filter-chip.is-active {
+      background: #6B1E3D;
+      border-color: #6B1E3D;
+      color: #ffffff;
+    }
+
+    /* Privacy disclaimer footer */
+    .map-disclaimer-footer {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      text-align: center;
+      background: var(--charcoal);
+      border-top: 1px solid var(--border-light);
+    }
+    .map-disclaimer-footer p {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Mobile jobs sheet hint */
+    .map-jobs-hint {
+      position: absolute;
+      left: 50%;
+      bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%);
+      z-index: 516;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #6B1E3D;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 999px;
+      box-shadow: 0 4px 20px rgba(107, 30, 61, 0.35);
+      white-space: nowrap;
+      animation: map-hint-bounce 2s ease-in-out infinite;
+    }
+    .map-jobs-hint[hidden] {
+      display: none !important;
+    }
+    .map-jobs-hint-dismiss {
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    @keyframes map-hint-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-4px); }
     }
 
     .browse-shell {
@@ -426,22 +621,67 @@
       }
     }
 
-    /* Desktop: map → job strip (quote form in grey column) → tab bar */
+    /* Desktop: header + split map/sidebar layout */
     @media (min-width: 901px) {
+      .app-desk-header {
+        display: flex;
+      }
+      .map-screen-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding-top: 0;
+        row-gap: 0;
+      }
       .map-map-section {
-        display: contents;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
       .map-split {
-        grid-row: 1;
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        min-height: 0;
+        gap: 14px;
+        padding: 12px 16px;
+        align-items: stretch;
+        width: 100%;
+        max-width: none;
+        margin: 0;
       }
       .map-frame {
-        grid-row: unset;
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
-      .job-strip-panel {
-        grid-row: 2;
+      .map-filter-chips {
+        display: flex;
       }
-      .app-tab-bar {
-        grid-row: 3;
+      .map-filters-overlay {
+        display: none !important;
+      }
+      .map-properties-sidebar {
+        width: min(380px, 32vw);
+        flex-shrink: 0;
+        position: relative;
+        max-height: none;
+        height: auto;
+        transform: none !important;
+        border-radius: 12px;
+      }
+      .map-sidebar-mobile-toggle {
+        display: none !important;
+      }
+      .map-jobs-hint {
+        display: none !important;
+      }
+      #screen-map .browse-shell {
+        overflow: hidden;
       }
     }
 
@@ -652,6 +892,10 @@
       border-color: #6B1E3D;
       box-shadow: 0 8px 18px rgba(107, 30, 61, 0.2);
       transform: translateY(-1px);
+    }
+    .listing-card.is-hovered:not(.is-active) {
+      border-color: #C45B82;
+      box-shadow: 0 4px 12px rgba(107, 30, 61, 0.12);
     }
     .listing-card-ba {
       position: relative;
@@ -884,6 +1128,10 @@
       .map-map-section {
         order: 2;
       }
+      .map-disclaimer-footer {
+        order: 3;
+        flex-shrink: 0;
+      }
       .job-strip-panel {
         order: 3;
         display: none;
@@ -929,26 +1177,20 @@
     }
     @media (min-width: 901px) {
       .map-split {
-        display: grid;
-        grid-template-columns: minmax(0, 612px) minmax(0, 300px);
-        align-items: stretch;
-        gap: 2px;
-        width: fit-content;
-        max-width: min(980px, 100%);
-        margin: 0 auto;
-        padding: 0 16px;
-        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
       }
       .map-split .map-frame {
-        width: 100%;
+        width: auto;
         min-width: 0;
-        max-width: 612px;
+        max-width: none;
         margin: 0;
+        flex: 1;
       }
       .map-properties-sidebar {
-        width: 100%;
-        min-width: 0;
-        max-width: 300px;
+        width: min(380px, 32vw);
+        min-width: 280px;
+        max-width: 380px;
       }
     }
 
@@ -996,7 +1238,7 @@
         max-height: min(46dvh, 360px);
         border: 2px solid rgba(107, 30, 61, 0.35);
         border-radius: 14px 14px 0 0;
-        transform: translateY(calc(100% - 52px));
+        transform: translateY(calc(100% - 64px));
         transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
         box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.14);
       }
@@ -1041,11 +1283,12 @@
     }
 
     .map-sidebar-header {
-      font-size: 11px;
-      font-weight: 700;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
       letter-spacing: 0.02em;
       text-transform: none;
-      color: var(--text-muted);
+      color: #6B1E3D;
       margin-bottom: 10px;
       padding-right: 4px;
     }
@@ -1201,23 +1444,32 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 8px;
         position: absolute;
         left: 12px;
         bottom: 12px;
         z-index: 515;
-        padding: 9px 14px;
+        padding: 10px 16px;
         border: 1px solid rgba(107, 31, 58, 0.35);
         border-radius: 999px;
         background: #ffffff;
         color: var(--map-brand);
         font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        text-transform: none;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+      }
+      .map-sidebar-mobile-toggle svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        transition: transform 0.25s ease;
+      }
+      .map-properties-sidebar.is-sheet-open ~ .map-sidebar-mobile-toggle svg {
+        transform: rotate(180deg);
       }
       .map-properties-sidebar.is-sheet-open ~ .map-sidebar-mobile-toggle {
         opacity: 0;
@@ -1253,9 +1505,9 @@
 
     @media (min-width: 901px) {
       .map-frame {
-        max-width: 612px;
+        max-width: none;
         margin: 0;
-        min-height: 0;
+        min-height: clamp(400px, 70vh, 900px);
         border-radius: 12px;
         height: 100%;
         display: flex;
@@ -1300,6 +1552,12 @@
         aspect-ratio: unset;
         flex: 1 1 auto;
         min-height: 0;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .map-disclaimer-footer {
+        padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 0px));
       }
     }
 
@@ -1593,7 +1851,7 @@
         left: 8px;
         right: 8px;
         max-height: min(44svh, 330px);
-        transform: translateY(calc(100% - 56px));
+        transform: translateY(calc(100% - 64px));
       }
       .map-sidebar-mobile-toggle {
         left: 14px;
@@ -1660,12 +1918,22 @@
       -webkit-tap-highlight-color: transparent;
     }
     .app-tab-btn[aria-current="page"] {
-      color: var(--text-dark);
+      color: #6B1E3D;
+      background: var(--gold-pale);
     }
     .app-tab-icon {
-      font-size: 22px;
-      line-height: 1;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       opacity: 0.85;
+    }
+    .app-tab-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
     }
     .app-tab-btn[aria-current="page"] .app-tab-icon {
       opacity: 1;
@@ -1996,16 +2264,16 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--map-marker-heat-gradient);
+      background: var(--map-marker-location-gradient);
       border: 2px solid #ffffff;
-      box-shadow: 0 0 0 2px var(--map-marker-heat-shadow), 0 4px 10px var(--map-marker-heat-shadow-deep);
+      box-shadow: 0 0 0 2px var(--map-marker-location-shadow), 0 4px 10px var(--map-marker-location-shadow-deep);
     }
     .user-location-dot::after {
       content: '';
       position: absolute;
       inset: -8px;
       border-radius: 50%;
-      border: 2px solid var(--map-marker-heat-pulse);
+      border: 2px solid var(--map-marker-location-pulse);
       animation: user-location-pulse 2s ease-out infinite;
     }
     @keyframes user-location-pulse {
@@ -2106,11 +2374,46 @@
       transform: translateY(0);
     }
 
-    @media (min-width: 1101px) {
+    @media (min-width: 901px) {
       #job-panel {
+<<<<<<< HEAD
         max-width: 430px;
         margin: 0 auto;
         border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+=======
+        top: 50%;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        width: min(480px, calc(100vw - 48px));
+        max-width: 480px;
+        max-height: min(92dvh, 920px);
+        height: auto;
+        margin: 0;
+        border-radius: var(--radius-panel);
+        border: 1px solid #e5e7eb;
+        transform: translate(-50%, calc(-50% + 28px)) scale(0.96);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+        transition:
+          transform 0.38s cubic-bezier(0.32, 0.72, 0, 1),
+          opacity 0.32s ease,
+          visibility 0.32s;
+      }
+      #job-panel.open {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      #job-panel .panel-handle {
+        display: none;
+      }
+      #job-panel .panel-scroll {
+        flex: 1 1 auto;
+>>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
       }
       #job-panel .job-header {
         flex-direction: column;
@@ -2779,6 +3082,14 @@
     .map-prop-tooltip.leaflet-tooltip-top:before {
       border-top-color: #ffffff !important;
     }
+    .map-prop-tooltip .map-tip-addr {
+      display: block;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 3px;
+      font-size: 11px;
+      line-height: 1.3;
+    }
     .map-prop-tooltip .map-tip-price {
       display: block;
       font-weight: 700;
@@ -2887,8 +3198,8 @@
     }
     @media (min-width: 901px) {
       .crm-subview:not([hidden]) {
-        grid-row: 1 / 4;
-        grid-column: 1;
+        flex: 1;
+        min-height: 0;
       }
     }
 
@@ -3002,7 +3313,7 @@
     </svg>
   </div>
   <div class="splash-name">Absolute Acrylics</div>
-  <p class="splash-tagline">Dublin's leading external wall insulation specialists — see how we've transformed homes near you.</p>
+  <p class="splash-tagline">Dublin's leading Insulation Specialists - See how we have transformed homes near you.</p>
 
   <div class="splash-stats flex flex-col gap-2.5 sm:flex-row sm:gap-2.5">
     <div class="stat-card w-full min-w-0 sm:flex-1">
@@ -3010,11 +3321,11 @@
       <div class="stat-label">Dublin homes insulated</div>
     </div>
     <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€2,000</div>
+      <div class="stat-number">+€1,300</div>
       <div class="stat-label">Avg. Annual Savings Increase</div>
     </div>
     <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€22,000</div>
+      <div class="stat-number">+€27,750</div>
       <div class="stat-label">Avg. Property Value Increase</div>
     </div>
   </div>
@@ -3024,27 +3335,49 @@
       <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5.5 6v5.2c0 4.5 2.7 8.6 6.5 10.8 3.8-2.2 6.5-6.3 6.5-10.8V6L12 3Z"/><path d="m9.1 12.1 1.9 1.9 3.9-3.9"/></svg>SEAI-registered contractor</span>
     </div>
     <div class="splash-rating" aria-label="Customer rating 4.76 out of 5">★ 4.76 Google Reviews</div>
-    <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="Scroll to map">
+    <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View map">
       <span>Scroll for map</span>
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 5 5 5-5"/></svg>
     </button>
   </div>
+  <div class="splash-scroll-spacer" aria-hidden="true"></div>
 </div>
 
 <!-- ═══════════════════════════════════════════
      SCREEN 2 – MAP FOCUS
 ═══════════════════════════════════════════ -->
 <div id="screen-map" class="screen hidden">
+  <header class="app-desk-header" aria-label="Site navigation">
+    <button type="button" class="app-desk-brand" id="nav-desk-brand" aria-label="Absolute Acrylics – Home">
+      <span class="app-desk-brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#F5D97A"/><circle cx="12" cy="12" r="4" fill="#6B1E3D"/></svg>
+      </span>
+      <span class="app-desk-brand-name">Absolute Acrylics</span>
+    </button>
+    <div class="app-desk-trust" aria-label="Customer rating 4.76 out of 5">
+      <span class="app-desk-trust-star">★</span> 4.76 Google Reviews
+    </div>
+  </header>
   <div class="browse-shell">
     <div class="map-screen-layout">
       <div class="map-map-section" data-hide-on-subview>
         <div class="map-split">
           <div class="map-frame">
+            <div class="map-filter-chips" id="map-filter-chips" role="group" aria-label="Property type filters">
+              <button type="button" class="map-filter-chip is-active" data-value="all">All</button>
+              <button type="button" class="map-filter-chip" data-value="detached">Detached</button>
+              <button type="button" class="map-filter-chip" data-value="semi-detached">Semi-Detached</button>
+              <button type="button" class="map-filter-chip" data-value="mid-terrace">Mid-Terrace</button>
+              <button type="button" class="map-filter-chip" data-value="end-of-terrace">End of Terrace</button>
+            </div>
             <div class="map-frame-inner">
               <div id="map"></div>
+<<<<<<< HEAD
               <p class="map-privacy-notice">
                 All locations shown are approximate. No personally identifiable information is displayed.
               </p>
+=======
+>>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
               <div class="map-filters-overlay">
                 <div class="browse-filters-toolbar">
                   <div class="browse-filters-wrap" id="browse-filters-wrap">
@@ -3080,7 +3413,7 @@
               <span class="map-sidebar-sheet-title">Nearby jobs</span>
             </div>
             <div class="map-sidebar-inner" id="map-sidebar-list-wrap">
-              <div class="map-sidebar-header">Click Job Profiles to view details</div>
+              <div class="map-sidebar-header">Nearby jobs — click to view details</div>
               <div class="map-sidebar-list" id="map-properties-list"></div>
               <aside class="map-sidebar-quote" aria-label="Request a free quote">
                 <div class="quote-sheet-scroll" id="quote-sheet-scroll">
@@ -3101,7 +3434,14 @@
               </aside>
             </div>
           </aside>
-          <button type="button" class="map-sidebar-mobile-toggle" id="map-sidebar-mobile-toggle" aria-expanded="false" aria-controls="map-properties-sidebar">Jobs</button>
+          <button type="button" class="map-sidebar-mobile-toggle" id="map-sidebar-mobile-toggle" aria-expanded="false" aria-controls="map-properties-sidebar">
+            <span id="map-jobs-toggle-label">Jobs nearby</span>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg>
+          </button>
+          <div class="map-jobs-hint" id="map-jobs-hint" role="status" hidden>
+            Swipe up for nearby jobs
+            <button type="button" class="map-jobs-hint-dismiss" id="map-jobs-hint-dismiss" aria-label="Dismiss hint">×</button>
+          </div>
         </div>
       </div>
 
@@ -3136,22 +3476,26 @@
         </div>
       </div>
 
+      <footer class="map-disclaimer-footer">
+        <p>All locations shown are approximate. No personally identifiable information is displayed.</p>
+      </footer>
+
       <nav class="app-tab-bar" aria-label="Main">
         <button type="button" class="app-tab-btn" id="tab-home" aria-current="page">
-          <span class="app-tab-icon" aria-hidden="true">⌂</span>
+          <span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M6 10.5V20h12v-9.5"/><path d="M10 20v-5h4v5"/></svg></span>
           Home
         </button>
         <button type="button" class="app-tab-btn" id="tab-jobs">
-          <span class="app-tab-icon" aria-hidden="true">📋</span>
+          <span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span>
           Jobs
         </button>
         <button type="button" class="app-tab-btn" id="tab-customers">
-          <span class="app-tab-icon" aria-hidden="true">👥</span>
+          <span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5M14 19c0-2.2 1.8-4 4-4"/></svg></span>
           Clients
         </button>
-        <button type="button" class="app-tab-btn" id="tab-account">
-          <span class="app-tab-icon" aria-hidden="true">👤</span>
-          Account
+        <button type="button" class="app-tab-btn" id="tab-enquire">
+          <span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          Enquire
         </button>
       </nav>
     </div>
@@ -3291,19 +3635,20 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
-    id: 18,
-    lat: 53.2703576, lng: -6.1634957,
-    address: "64 South Park, Deansgrange, D18 DX32",
-    areaText: "Deansgrange",
+    id: 19,
+    lat: 53.385325, lng: -6.152571,
+    address: "15 Greendale Avenue, Raheny, Dublin 5",
+    areaText: "Raheny, Dublin 5",
     consent_to_display: true,
-    type: "214m² · Matt White Acrylic",
-    completedDate: "December 2025",
-    berBefore: "B3", berAfter: "A2",
-    annualSaving: 2200, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
-    beforePhotos: ["./assets/job-photos/64-south-park-before.png"],
-    afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
+    type: "117m² + Brickslips · 1002-Y50R Acrylic",
+    completedDate: "April 2026",
+    berBefore: "C2", berAfter: "B1",
+    annualSaving: 1250, valueIncrease: 21600, co2Reduction: 2.9, treesEquivalent: 201, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/15-greendale-avenue-before.png"],
+    afterPhotos: ["./assets/job-photos/15-greendale-avenue-after.png"]
   },
   {
+<<<<<<< HEAD
     id: 16,
     lat: 53.3808214, lng: -6.1684881,
     address: "103 St Assam's Avenue, Raheny, Dublin 5, D05 AE37",
@@ -3315,12 +3660,24 @@ const portfolioJobsRaw = [
     annualSaving: 1400, valueIncrease: 27200, co2Reduction: 3, treesEquivalent: 209, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/103-st-assams-avenue-before.png"],
     afterPhotos: ["./assets/job-photos/103-st-assams-avenue-after.png"]
+=======
+    id: 14,
+    lat: 53.3732, lng: -6.2048,
+    address: "Killester Park, Killester, Dublin 5",
+    areaText: "Killester, Dublin 5",
+    consent_to_display: true,
+    type: "End of Terrace, Acrylic",
+    completedDate: "June 2026",
+    annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/killester-park-before.png"],
+    afterPhotos: ["./assets/job-photos/killester-park-after.png"]
+>>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
   },
   {
     id: 15,
     lat: 53.2827359, lng: -6.2194374,
     address: "4 Lakelands Close, Stillorgan, A94 W586",
-    areaText: "Stillorgan",
+    areaText: "Stillorgan, A94",
     consent_to_display: true,
     type: "110m² Semi-detached · 1002-Y50R Acrylic, Anatolia & Med grey brick slips",
     completedDate: "November 2025",
@@ -3330,18 +3687,19 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/4-lakelands-close-after.png"]
   },
   {
-    id: 14,
-    lat: 53.3732, lng: -6.2048,
-    address: "Killester Park, Killester, Dublin 5",
-    areaText: "Killester Park, Killester, Dublin 5",
+    id: 17,
+    lat: 53.3854210, lng: -6.1757110,
+    address: "69 Woodbine Park, Raheny, Dublin 5",
+    areaText: "Raheny, Dublin 5",
     consent_to_display: true,
-    type: "Semi-detached house",
-    completedDate: "June 2026",
-    annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/killester-park-before.png"],
-    afterPhotos: ["./assets/job-photos/killester-park-after.png"]
+    type: "120m² · Dash White 10% Black",
+    berBefore: "C3", berAfter: "B1",
+    annualSaving: 1550, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/69-woodbine-park-after.png"],
+    afterPhotos: ["./assets/job-photos/69-woodbine-park-before.png"]
   },
   {
+<<<<<<< HEAD
     id: 1,
     lat: 53.3241, lng: -6.2856,
     areaText: "Dublin 14",
@@ -3353,6 +3711,20 @@ const portfolioJobsRaw = [
     beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
     afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
   }
+=======
+    id: 18,
+    lat: 53.2703576, lng: -6.1634957,
+    address: "64 South Park, Deansgrange, D18 DX32",
+    areaText: "Deansgrange, D18",
+    consent_to_display: true,
+    type: "214m² · Matt White Acrylic",
+    completedDate: "December 2025",
+    berBefore: "B3", berAfter: "A2",
+    annualSaving: 2200, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
+    beforePhotos: ["./assets/job-photos/64-south-park-before.png"],
+    afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
+  },
+>>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
 ];
 
 /**
@@ -3977,10 +4349,6 @@ async function setAppView(view) {
     vCust.hidden = view !== 'customers';
   }
 
-  document.getElementById('nav-desk-home')?.classList.toggle('is-active', view === 'home');
-  document.getElementById('nav-desk-jobs')?.classList.toggle('is-active', view === 'jobs');
-  document.getElementById('nav-desk-customers')?.classList.toggle('is-active', view === 'customers');
-
   if (view === 'jobs' || view === 'customers') {
     await fetchCustomers();
   }
@@ -3990,30 +4358,26 @@ async function setAppView(view) {
   }
 }
 
-document.getElementById('nav-desk-home')?.addEventListener('click', () => {
+function openQuoteEnquire() {
+  setAppView('home');
+  const tabEnquire = document.getElementById('tab-enquire');
+  const tabHome = document.getElementById('tab-home');
+  document.querySelectorAll('.app-tab-btn').forEach(t => t.removeAttribute('aria-current'));
+  if (window.matchMedia('(max-width: 900px)').matches && tabEnquire) {
+    tabEnquire.setAttribute('aria-current', 'page');
+  } else if (tabHome) {
+    tabHome.setAttribute('aria-current', 'page');
+  }
+  closePanel();
+  openQuoteSheet();
+}
+
+document.getElementById('nav-desk-brand')?.addEventListener('click', () => {
   setAppView('home');
   const tabHome = document.getElementById('tab-home');
   if (tabHome) {
     document.querySelectorAll('.app-tab-btn').forEach(t => t.removeAttribute('aria-current'));
     tabHome.setAttribute('aria-current', 'page');
-  }
-});
-
-document.getElementById('nav-desk-jobs')?.addEventListener('click', () => {
-  setAppView('jobs');
-  const t = document.getElementById('tab-jobs');
-  if (t) {
-    document.querySelectorAll('.app-tab-btn').forEach(x => x.removeAttribute('aria-current'));
-    t.setAttribute('aria-current', 'page');
-  }
-});
-
-document.getElementById('nav-desk-customers')?.addEventListener('click', () => {
-  setAppView('customers');
-  const t = document.getElementById('tab-customers');
-  if (t) {
-    document.querySelectorAll('.app-tab-btn').forEach(x => x.removeAttribute('aria-current'));
-    t.setAttribute('aria-current', 'page');
   }
 });
 
@@ -4029,6 +4393,16 @@ populateBerSelects();
 let mapInitialised = false;
 let splashTransitioning = false;
 function openQuoteSheet() {
+  if (window.matchMedia('(max-width: 900px)').matches) {
+    const aside = document.getElementById('map-properties-sidebar');
+    const backdrop = document.getElementById('map-sidebar-backdrop');
+    const mobileBtn = document.getElementById('map-sidebar-mobile-toggle');
+    aside?.classList.add('is-sheet-open');
+    backdrop?.classList.add('is-visible');
+    mobileBtn?.setAttribute('aria-expanded', 'true');
+    backdrop?.setAttribute('aria-hidden', 'false');
+    dismissJobsHint();
+  }
   const el = document.getElementById('quote-sheet-scroll');
   el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   document.getElementById('quote-name')?.focus({ preventScroll: true });
@@ -4063,6 +4437,7 @@ function showMapScreen() {
       setTimeout(() => scheduleMapResize(), 900);
     } catch (err) {
       console.error('Map init failed', err);
+      resetMapContainer();
       splash.classList.remove('out', 'hidden');
       mapScreen.classList.add('hidden');
     } finally {
@@ -4079,8 +4454,8 @@ document.getElementById('splash-scroll-cta')?.addEventListener('click', e => {
 
 const splashScreenEl = document.getElementById('screen-splash');
 if (splashScreenEl) {
-  let wheelDeltaAccumulator = 0;
   let touchStartY = null;
+  let touchSwipeDelta = 0;
 
   function handleSplashScrollIntent() {
     if (!isSplashVisible() || splashTransitioning) return;
@@ -4089,28 +4464,30 @@ if (splashScreenEl) {
 
   splashScreenEl.addEventListener('wheel', e => {
     if (!isSplashVisible()) return;
-    // Trackpads and some mouse wheels emit small deltas; accumulate intent.
-    if (e.deltaY > 0) {
-      wheelDeltaAccumulator += e.deltaY;
-      if (wheelDeltaAccumulator > 2) handleSplashScrollIntent();
-    } else if (e.deltaY < 0) {
-      wheelDeltaAccumulator = 0;
-    }
+    if (e.deltaY > 0) handleSplashScrollIntent();
   }, { passive: true });
+
   splashScreenEl.addEventListener('touchstart', e => {
     touchStartY = e.touches?.[0]?.clientY ?? null;
+    touchSwipeDelta = 0;
   }, { passive: true });
-  splashScreenEl.addEventListener('touchmove', () => {
-    if (splashScreenEl.scrollTop > 24) handleSplashScrollIntent();
-  }, { passive: true });
-  splashScreenEl.addEventListener('touchend', e => {
+
+  splashScreenEl.addEventListener('touchmove', e => {
     if (touchStartY == null) return;
-    const endY = e.changedTouches?.[0]?.clientY ?? touchStartY;
-    if (touchStartY - endY > 24) handleSplashScrollIntent();
-    touchStartY = null;
+    const currentY = e.touches?.[0]?.clientY ?? touchStartY;
+    touchSwipeDelta = touchStartY - currentY;
+    if (touchSwipeDelta > 18) handleSplashScrollIntent();
+    if (splashScreenEl.scrollTop > 12) handleSplashScrollIntent();
   }, { passive: true });
+
+  splashScreenEl.addEventListener('touchend', () => {
+    if (touchSwipeDelta > 12) handleSplashScrollIntent();
+    touchStartY = null;
+    touchSwipeDelta = 0;
+  }, { passive: true });
+
   splashScreenEl.addEventListener('scroll', () => {
-    if (splashScreenEl.scrollTop > 24) handleSplashScrollIntent();
+    if (splashScreenEl.scrollTop > 12) handleSplashScrollIntent();
   }, { passive: true });
 }
 
@@ -4535,6 +4912,70 @@ function resolveNearestForDisplay() {
   return findNearestJobIdInList(lastUserLat, lastUserLng, getVisibleJobs());
 }
 
+function syncFilterChipsFromState() {
+  const selectedType = houseTypeFilter == null ? 'all' : houseTypeFilter;
+  document.querySelectorAll('#map-filter-chips .map-filter-chip').forEach(btn => {
+    const isActive = btn.getAttribute('data-value') === selectedType;
+    btn.classList.toggle('is-active', isActive);
+  });
+}
+
+function applyHouseTypeFilter(value) {
+  const tv = value || 'all';
+  houseTypeFilter = tv === 'all' ? null : /** @type {typeof houseTypeFilter} */ (tv);
+  const typeValueEl = document.getElementById('filter-house-type-value');
+  if (typeValueEl) typeValueEl.value = tv;
+  syncFilterFormFromState();
+  syncFilterChipsFromState();
+  if (map) renderPins();
+}
+
+function initFilterChips() {
+  const chips = document.getElementById('map-filter-chips');
+  if (!chips || chips.dataset.bound) return;
+  chips.dataset.bound = '1';
+  chips.addEventListener('click', e => {
+    const btn = e.target.closest('.map-filter-chip');
+    if (!btn) return;
+    applyHouseTypeFilter(btn.getAttribute('data-value') || 'all');
+  });
+  syncFilterChipsFromState();
+}
+
+const JOBS_HINT_KEY = 'ecomap_jobs_hint_dismissed';
+
+function maybeShowJobsHint() {
+  if (window.matchMedia('(min-width: 901px)').matches) return;
+  try {
+    if (localStorage.getItem(JOBS_HINT_KEY)) return;
+  } catch (_) { /* no-op */ }
+  const hint = document.getElementById('map-jobs-hint');
+  if (hint) hint.hidden = false;
+}
+
+function dismissJobsHint() {
+  const hint = document.getElementById('map-jobs-hint');
+  if (hint) hint.hidden = true;
+  try {
+    localStorage.setItem(JOBS_HINT_KEY, '1');
+  } catch (_) { /* no-op */ }
+}
+
+function updateMobileJobsToggle() {
+  const label = document.getElementById('map-jobs-toggle-label');
+  const railTitle = document.querySelector('.map-sidebar-sheet-title');
+  const count = getVisibleJobs().filter(j => !isJobPlaceholder(j)).length;
+  const text = count === 1 ? '1 job nearby' : `${count} jobs nearby`;
+  if (label) label.textContent = text;
+  if (railTitle) railTitle.textContent = text;
+}
+
+function initMapJobsHint() {
+  document.getElementById('map-jobs-hint-dismiss')?.addEventListener('click', dismissJobsHint);
+  const mobileBtn = document.getElementById('map-sidebar-mobile-toggle');
+  mobileBtn?.addEventListener('click', () => dismissJobsHint(), { once: false });
+}
+
 function syncFilterFormFromState() {
   const minEl = document.getElementById('filter-price-min');
   const maxEl = document.getElementById('filter-price-max');
@@ -4552,6 +4993,7 @@ function syncFilterFormFromState() {
     btn.classList.toggle('is-active', isActive);
     btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
+  syncFilterChipsFromState();
 }
 
 function initHouseTypeFilters() {
@@ -4615,6 +5057,7 @@ function initHouseTypeFilters() {
     const tv = typeValueEl ? typeValueEl.value : (typeEl ? typeEl.value : 'all');
     houseTypeFilter = tv === 'all' ? null : /** @type {typeof houseTypeFilter} */ (tv);
     syncFilterFormFromState();
+    syncFilterChipsFromState();
     closeDropdown();
     if (map) renderPins();
   }
@@ -4631,6 +5074,7 @@ function initHouseTypeFilters() {
     mapFilterBedrooms = null;
     houseTypeFilter = null;
     syncFilterFormFromState();
+    syncFilterChipsFromState();
     closeDropdown();
     if (map) renderPins();
   });
@@ -4651,6 +5095,7 @@ function focusPropertySidebar(jobId) {
   if (!list) return;
   list.querySelectorAll('.listing-card[data-job-id]').forEach(el => {
     el.classList.toggle('is-active', Number(el.dataset.jobId) === jobId);
+    if (Number(el.dataset.jobId) !== jobId) el.classList.remove('is-hovered');
   });
   const row = list.querySelector(`.listing-card[data-job-id="${jobId}"]`);
   if (row) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -4690,6 +5135,7 @@ function renderPropertiesSidebar() {
   });
   initListingCardBASliders(list);
   requestAnimationFrame(syncSidebarListMaxHeight);
+  updateMobileJobsToggle();
 }
 
 
@@ -4762,7 +5208,32 @@ function initPropertiesSidebar() {
   }
 }
 
+function resetMapContainer() {
+  if (map) {
+    try { map.remove(); } catch (_) { /* no-op */ }
+    map = undefined;
+  }
+  markerClusterLayer = null;
+  Object.keys(markers).forEach(k => { delete markers[k]; });
+  mapInitialised = false;
+  const mapEl = document.getElementById('map');
+  if (mapEl) {
+    mapEl.innerHTML = '';
+    delete mapEl._leaflet_id;
+  }
+}
+
 function initMap() {
+  if (map) {
+    renderPins();
+    scheduleMapResize();
+    return;
+  }
+  const mapEl = document.getElementById('map');
+  if (mapEl && mapEl._leaflet_id) {
+    mapEl.innerHTML = '';
+    delete mapEl._leaflet_id;
+  }
   map = L.map('map', {
     center: [53.3498, -6.2603],
     zoom: 12,
@@ -4796,9 +5267,12 @@ function initMap() {
   map.addLayer(markerClusterLayer);
 
   initHouseTypeFilters();
+  initFilterChips();
   initPropertiesSidebar();
+  initMapJobsHint();
   initJobStripScrollBar();
   renderPins();
+  maybeShowJobsHint();
   // Coordinates are privacy-preserving and deterministic per job id.
 
   if (!mapPopupDetailsBound) {
@@ -4925,17 +5399,17 @@ function renderPins() {
       popupAnchor: [0, -22]
     });
 
-    const tooltipHtml = `<span class="map-tip-price">+€${job.valueIncrease.toLocaleString()} est. uplift</span>`;
-
     const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
     const safeAddress = escapeHtml(job.areaText);
     const safeType = escapeHtml(job.type);
+    const tooltipHtml = `<span class="map-tip-addr">${safeAddress}</span><span class="map-tip-price">+€${job.valueIncrease.toLocaleString()} est. uplift</span>`;
+
     const popupHtml = `
       <div class="map-popup-card">
         <div class="map-popup-photo-wrap">
           <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
         </div>
-        <strong>Estimated value uplift</strong>
+        <strong>Estimated Property Valuation increase</strong>
         <span class="map-popup-value">+€${job.valueIncrease.toLocaleString()}</span>
         <span class="map-popup-address">${safeAddress}</span>
         <div class="map-popup-meta">${safeType}</div>
@@ -4961,6 +5435,15 @@ function renderPins() {
         focusPropertySidebar(job.id);
         focusJobCard(job.id);
       });
+    });
+    marker.on('mouseover', () => {
+      document.querySelectorAll('.listing-card.is-hovered').forEach(el => el.classList.remove('is-hovered'));
+      document.querySelectorAll(`.listing-card[data-job-id="${job.id}"]`).forEach(el => {
+        if (!el.classList.contains('is-active')) el.classList.add('is-hovered');
+      });
+    });
+    marker.on('mouseout', () => {
+      document.querySelectorAll(`.listing-card[data-job-id="${job.id}"]`).forEach(el => el.classList.remove('is-hovered'));
     });
     if (isAnchor) map.addLayer(marker);
     else markerClusterLayer.addLayer(marker);
@@ -5035,13 +5518,22 @@ function buildPanelHTML(job) {
   const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
+<<<<<<< HEAD
   const thirdBenefitCard = `<div class="benefit-card grant">
+=======
+  const thirdBenefitCard = job.seaiGrant
+    ? `<div class="benefit-card grant">
+>>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
             ${ic.seai}
             <div class="benefit-value">€${Number(job.seaiGrant || 0).toLocaleString()}</div>
             <div class="benefit-desc">SEAI Grant</div>
           </div>`;
   const co2Desc = job.treesEquivalent
+<<<<<<< HEAD
     ? `CO₂ reduction per year · (${Number(job.treesEquivalent).toLocaleString()} Trees planted each year equivalent)`
+=======
+    ? `CO₂ reduction per year<br>(${Number(job.treesEquivalent).toLocaleString()} trees equivalent)`
+>>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
     : 'CO₂ reduction per year';
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
@@ -5061,7 +5553,11 @@ function buildPanelHTML(job) {
           <div class="benefit-card savings">
             ${ic.euro}
             <div class="benefit-value">+€${job.annualSaving.toLocaleString()}</div>
+<<<<<<< HEAD
             <div class="benefit-desc">Avg. Annual energy savings</div>
+=======
+            <div class="benefit-desc">Avg. Annual Energy Savings</div>
+>>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
           </div>
           <div class="benefit-card value">
             ${ic.chart}
@@ -5336,12 +5832,12 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
   const tabHome = document.getElementById('tab-home');
   const tabJobs = document.getElementById('tab-jobs');
   const tabCustomers = document.getElementById('tab-customers');
-  const tabAccount = document.getElementById('tab-account');
+  const tabEnquire = document.getElementById('tab-enquire');
   const sheetScroll = document.getElementById('quote-sheet-scroll');
   const mapScrollAnchor = document.querySelector('.map-frame');
-  if (!tabHome || !tabJobs || !tabCustomers || !tabAccount) return;
+  if (!tabHome || !tabJobs || !tabCustomers || !tabEnquire) return;
 
-  const tabs = [tabHome, tabJobs, tabCustomers, tabAccount];
+  const tabs = [tabHome, tabJobs, tabCustomers, tabEnquire];
 
   function setTab(active) {
     tabs.forEach(t => t.removeAttribute('aria-current'));
@@ -5368,12 +5864,9 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     closePanel();
   });
 
-  tabAccount.addEventListener('click', () => {
-    setTab(tabAccount);
-    setAppView('home');
-    closePanel();
-    sheetScroll?.scrollTo({ top: 0, behavior: 'smooth' });
-    handleQuoteClick();
+  tabEnquire.addEventListener('click', () => {
+    openQuoteEnquire();
+    setTab(tabEnquire);
   });
 })();
 
