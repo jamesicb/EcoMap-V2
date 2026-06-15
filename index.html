@@ -2085,17 +2085,18 @@
     ══════════════════════════════════════════════════════════════ */
     #job-panel {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 600;
       height: auto;
       max-height: 99dvh;
       width: 100%;
+      padding-top: env(safe-area-inset-top, 0px);
       background: #ffffff;
       border: 1px solid #e5e7eb;
-      border-bottom: none;
-      border-radius: var(--radius-panel) var(--radius-panel) 0 0;
-      box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
-      transform: translateY(100%);
+      border-top: none;
+      border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+      transform: translateY(-100%);
       transition: transform 0.38s cubic-bezier(0.32,0.72,0,1);
       display: flex;
       flex-direction: column;
@@ -2109,7 +2110,7 @@
       #job-panel {
         max-width: 430px;
         margin: 0 auto;
-        border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+        border-radius: 0 0 var(--radius-panel) var(--radius-panel);
       }
       #job-panel .job-header {
         flex-direction: column;
@@ -2514,7 +2515,8 @@
       line-height: 1;
     }
     .benefit-card.savings .benefit-value,
-    .benefit-card.value .benefit-value {
+    .benefit-card.value .benefit-value,
+    .benefit-card.grant .benefit-value {
       color: #1E6A35;
     }
     .benefit-card.warmth .benefit-value {
@@ -2529,6 +2531,7 @@
     }
     .benefit-card.savings .benefit-icon,
     .benefit-card.value .benefit-icon,
+    .benefit-card.grant .benefit-icon,
     .benefit-card.warmth .benefit-icon,
     .benefit-card.carbon .benefit-icon {
       background: #f3f4f6;
@@ -2715,6 +2718,24 @@
     .leaflet-control-zoom a:hover {
       background: var(--map-brand-hover) !important;
       color: #ffffff !important;
+    }
+    .map-privacy-notice {
+      position: absolute;
+      left: 0.75rem;
+      right: 0.75rem;
+      bottom: 1.625rem;
+      z-index: 500;
+      width: auto;
+      max-width: 14rem;
+      padding: 0.3rem 0.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      font-size: 9px;
+      line-height: 1.35;
+      color: var(--text-dark);
+      pointer-events: none;
     }
     .leaflet-control-attribution {
       font-size: 9px !important;
@@ -3021,7 +3042,7 @@
           <div class="map-frame">
             <div class="map-frame-inner">
               <div id="map"></div>
-              <p class="absolute left-3 bottom-3 z-[500] max-w-[min(90vw,380px)] rounded-md border border-black/10 bg-white/90 px-3 py-2 text-[11px] leading-snug text-[var(--text-dark)] shadow-sm">
+              <p class="map-privacy-notice">
                 All locations shown are approximate. No personally identifiable information is displayed.
               </p>
               <div class="map-filters-overlay">
@@ -3181,7 +3202,7 @@
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div>
-          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-savings">Annual savings</label>
+          <label class="block text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1" for="gj-savings">Avg. Annual energy savings</label>
           <div class="relative">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-sm pointer-events-none">€</span>
             <input id="gj-savings" name="annualSavings" type="number" min="0" step="1" required class="w-full rounded-md border border-[var(--border-gold)] bg-[var(--charcoal)] text-[var(--text-light)] pl-8 pr-3 py-2 text-sm" />
@@ -3283,18 +3304,6 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
   },
   {
-    id: 17,
-    lat: 53.3854210, lng: -6.1757110,
-    address: "69 Woodbine Park, Raheny, Dublin 5",
-    areaText: "Dublin 5",
-    consent_to_display: true,
-    type: "120m² · Dash White 10% Black",
-    berBefore: "C3", berAfter: "B1",
-    annualSaving: 1550, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/69-woodbine-park-before.png"],
-    afterPhotos: ["./assets/job-photos/69-woodbine-park-after.png"]
-  },
-  {
     id: 16,
     lat: 53.3808214, lng: -6.1684881,
     address: "103 St Assam's Avenue, Raheny, Dublin 5, D05 AE37",
@@ -3333,18 +3342,6 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/killester-park-after.png"]
   },
   {
-    id: 13,
-    lat: 53.399343, lng: -6.166444,
-    address: "9 Elmfield Park, Dublin 13",
-    areaText: "Dublin 13",
-    consent_to_display: true,
-    type: "106m² Semi-Detached house",
-    completedDate: "March 2026",
-    annualSaving: 850, valueIncrease: 25000, co2Reduction: 1.1, warmthGain: 5,
-    beforePhotos: ["./assets/job-photos/9-elmfield-park-before.png"],
-    afterPhotos: ["./assets/job-photos/9-elmfield-park-after.png"]
-  },
-  {
     id: 1,
     lat: 53.3241, lng: -6.2856,
     areaText: "Dublin 14",
@@ -3352,7 +3349,7 @@ const portfolioJobsRaw = [
     type: "3-bed semi-detached",
     completedDate: "May 2024",
     berBefore: "E2", berAfter: "B1",
-    annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, warmthGain: 5,
+    annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
     afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
   }
@@ -3654,7 +3651,8 @@ function renderGalleryGrid() {
           <div class="inline-flex items-center gap-1 self-start px-2 py-0.5 rounded border border-[var(--border-gold)] text-[11px] font-semibold text-[var(--text-dark)]">
             <span>${escapeHtml(job.oldBER)}</span><span class="text-[var(--text-muted)]">→</span><span>${escapeHtml(job.newBER)}</span>
           </div>
-          <p class="text-sm text-[var(--text-light)]">€${Number(job.annualSavings || 0).toLocaleString()}<span class="text-[var(--text-muted)] text-xs">/yr</span></p>
+          <p class="text-xs text-[var(--text-muted)]">Avg. Annual energy savings</p>
+          <p class="text-sm text-[var(--text-light)]">+€${Number(job.annualSavings || 0).toLocaleString()}</p>
           <div class="flex gap-2 mt-auto pt-1">
             <button type="button" class="flex-1 text-xs font-semibold uppercase tracking-wide py-2 rounded border border-[var(--border-gold)] text-[var(--text-dark)] hover:bg-black/5 gallery-job-edit" data-id="${job.id}">Edit</button>
             <button type="button" class="flex-1 text-xs font-semibold uppercase tracking-wide py-2 rounded border border-red-500/40 text-red-700 hover:bg-red-500/10 gallery-job-del" data-id="${job.id}">Delete</button>
@@ -4772,7 +4770,7 @@ function initMap() {
   });
 
   L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors · HOT style · OpenStreetMap France',
+    attribution: '© OpenStreetMap contributors',
     maxZoom: 19,
     subdomains: 'abc'
   }).addTo(map);
@@ -5037,19 +5035,13 @@ function buildPanelHTML(job) {
   const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
-  const thirdBenefitCard = job.seaiGrant
-    ? `<div class="benefit-card warmth">
+  const thirdBenefitCard = `<div class="benefit-card grant">
             ${ic.seai}
-            <div class="benefit-value">€${Number(job.seaiGrant).toLocaleString()}</div>
-            <div class="benefit-desc">SEAI grant</div>
-          </div>`
-    : `<div class="benefit-card warmth">
-            ${ic.temp}
-            <div class="benefit-value">+${job.warmthGain}°C</div>
-            <div class="benefit-desc">Warmer in winter</div>
+            <div class="benefit-value">€${Number(job.seaiGrant || 0).toLocaleString()}</div>
+            <div class="benefit-desc">SEAI Grant</div>
           </div>`;
   const co2Desc = job.treesEquivalent
-    ? `CO₂ reduction per year · ${Number(job.treesEquivalent).toLocaleString()} trees equivalent`
+    ? `CO₂ reduction per year · (${Number(job.treesEquivalent).toLocaleString()} Trees planted each year equivalent)`
     : 'CO₂ reduction per year';
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
@@ -5069,7 +5061,7 @@ function buildPanelHTML(job) {
           <div class="benefit-card savings">
             ${ic.euro}
             <div class="benefit-value">+€${job.annualSaving.toLocaleString()}</div>
-            <div class="benefit-desc">Annual energy savings</div>
+            <div class="benefit-desc">Avg. Annual energy savings</div>
           </div>
           <div class="benefit-card value">
             ${ic.chart}
