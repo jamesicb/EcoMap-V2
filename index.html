@@ -2376,11 +2376,6 @@
 
     @media (min-width: 901px) {
       #job-panel {
-<<<<<<< HEAD
-        max-width: 430px;
-        margin: 0 auto;
-        border-radius: 0 0 var(--radius-panel) var(--radius-panel);
-=======
         top: 50%;
         left: 50%;
         right: auto;
@@ -2413,7 +2408,6 @@
       }
       #job-panel .panel-scroll {
         flex: 1 1 auto;
->>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
       }
       #job-panel .job-header {
         flex-direction: column;
@@ -3372,12 +3366,9 @@
             </div>
             <div class="map-frame-inner">
               <div id="map"></div>
-<<<<<<< HEAD
               <p class="map-privacy-notice">
                 All locations shown are approximate. No personally identifiable information is displayed.
               </p>
-=======
->>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
               <div class="map-filters-overlay">
                 <div class="browse-filters-toolbar">
                   <div class="browse-filters-wrap" id="browse-filters-wrap">
@@ -3648,19 +3639,6 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/15-greendale-avenue-after.png"]
   },
   {
-<<<<<<< HEAD
-    id: 16,
-    lat: 53.3808214, lng: -6.1684881,
-    address: "103 St Assam's Avenue, Raheny, Dublin 5, D05 AE37",
-    areaText: "Dublin 5",
-    consent_to_display: true,
-    type: "118m² · 7m² brick slip · Matt White Acrylic & Dash Finish",
-    completedDate: "November 2025",
-    berBefore: "B3", berAfter: "A2",
-    annualSaving: 1400, valueIncrease: 27200, co2Reduction: 3, treesEquivalent: 209, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/103-st-assams-avenue-before.png"],
-    afterPhotos: ["./assets/job-photos/103-st-assams-avenue-after.png"]
-=======
     id: 14,
     lat: 53.3732, lng: -6.2048,
     address: "Killester Park, Killester, Dublin 5",
@@ -3671,7 +3649,6 @@ const portfolioJobsRaw = [
     annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/killester-park-before.png"],
     afterPhotos: ["./assets/job-photos/killester-park-after.png"]
->>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
   },
   {
     id: 15,
@@ -3699,19 +3676,6 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/69-woodbine-park-before.png"]
   },
   {
-<<<<<<< HEAD
-    id: 1,
-    lat: 53.3241, lng: -6.2856,
-    areaText: "Dublin 14",
-    consent_to_display: true,
-    type: "3-bed semi-detached",
-    completedDate: "May 2024",
-    berBefore: "E2", berAfter: "B1",
-    annualSaving: 1000, valueIncrease: 30000, co2Reduction: 1.5, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/27-mount-carmel-road-before.png"],
-    afterPhotos: ["./assets/job-photos/27-mount-carmel-road-after.png"]
-  }
-=======
     id: 18,
     lat: 53.2703576, lng: -6.1634957,
     address: "64 South Park, Deansgrange, D18 DX32",
@@ -3723,8 +3687,7 @@ const portfolioJobsRaw = [
     annualSaving: 2200, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
     beforePhotos: ["./assets/job-photos/64-south-park-before.png"],
     afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
-  },
->>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
+  }
 ];
 
 /**
@@ -5518,22 +5481,19 @@ function buildPanelHTML(job) {
   const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
-<<<<<<< HEAD
-  const thirdBenefitCard = `<div class="benefit-card grant">
-=======
   const thirdBenefitCard = job.seaiGrant
     ? `<div class="benefit-card grant">
->>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
             ${ic.seai}
-            <div class="benefit-value">€${Number(job.seaiGrant || 0).toLocaleString()}</div>
-            <div class="benefit-desc">SEAI Grant</div>
+            <div class="benefit-value">€${Number(job.seaiGrant).toLocaleString()}</div>
+            <div class="benefit-desc">SEAI grant</div>
+          </div>`
+    : `<div class="benefit-card warmth">
+            ${ic.temp}
+            <div class="benefit-value">+${job.warmthGain}°C</div>
+            <div class="benefit-desc">Warmer in winter</div>
           </div>`;
   const co2Desc = job.treesEquivalent
-<<<<<<< HEAD
-    ? `CO₂ reduction per year · (${Number(job.treesEquivalent).toLocaleString()} Trees planted each year equivalent)`
-=======
     ? `CO₂ reduction per year<br>(${Number(job.treesEquivalent).toLocaleString()} trees equivalent)`
->>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
     : 'CO₂ reduction per year';
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
@@ -5553,11 +5513,7 @@ function buildPanelHTML(job) {
           <div class="benefit-card savings">
             ${ic.euro}
             <div class="benefit-value">+€${job.annualSaving.toLocaleString()}</div>
-<<<<<<< HEAD
-            <div class="benefit-desc">Avg. Annual energy savings</div>
-=======
             <div class="benefit-desc">Avg. Annual Energy Savings</div>
->>>>>>> 6018aa48cdf0a622fcec34845b4cfee3da2036dd
           </div>
           <div class="benefit-card value">
             ${ic.chart}
