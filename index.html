@@ -1467,16 +1467,18 @@
         flex: 1 1 auto;
         display: flex;
         flex-direction: column;
-        padding: 10px 6px 8px;
+        padding: 10px 6px 20px;
         background: #ffffff;
         border-radius: 10px;
         min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
       .map-properties-sidebar.is-quote-sheet .js-quote-form {
-        flex: 1 1 auto;
+        flex: 0 0 auto;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-start;
         min-height: 0;
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map-input {
@@ -1487,7 +1489,9 @@
         font-size: 18px;
       }
       .map-properties-sidebar.is-quote-sheet .quote-message-input {
-        min-height: 180px;
+        min-height: 88px;
+        max-height: 88px;
+        resize: none;
       }
       .map-properties-sidebar.is-quote-sheet .job-strip-quote-brand {
         margin-bottom: 10px;
@@ -1497,13 +1501,24 @@
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map.contact-above-map--stacked {
         gap: 14px;
-        flex: 1 1 auto;
+        flex: 0 0 auto;
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map-submit {
         width: 100%;
         padding: 18px 20px;
         font-size: 20px;
         letter-spacing: 0.06em;
+        flex: 0 0 auto;
+        margin-bottom: 0;
+      }
+      .map-properties-sidebar.is-quote-sheet .quote-feedback {
+        flex: 0 0 auto;
+        margin: 14px 4px 0;
+        padding-bottom: 28px;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.45;
+        color: var(--text-dark);
       }
       .map-properties-sidebar.is-jobs-sheet {
         max-height: none;
@@ -4707,8 +4722,12 @@ let markerClusterLayer = null;
 const markers = {};
 let activeJobId = null;
 let mapPopupDetailsBound = false;
-/** Set when job-strip DOM was last built for this ordered visible-job id list + active selection (avoids rebuild on pan/zoom when unchanged). */
+/** Set when job-strip DOM was last built for this ordered visible-job id list (avoids rebuild on pan/zoom/GPS when unchanged). */
 let lastJobStripInViewSig = null;
+/** Same for the map properties sidebar list on mobile. */
+let lastPropertiesSidebarSig = null;
+/** Nearest-job highlight last applied in renderPins (skip full pin rebuild on GPS tick when unchanged). */
+let lastRenderedNearestId = undefined;
 
 function scheduleMapResize() {
   if (!map) return;
@@ -5046,12 +5065,26 @@ function initJobStripScrollBar() {
   });
 }
 
+function getVisibleJobsListSig(jobs) {
+  return jobs.map(j => j.id).slice().sort((a, b) => a - b).join('|');
+}
+
+function syncListingCardActiveStates(root) {
+  const scope = root || document;
+  scope.querySelectorAll('.listing-card[data-job-id]').forEach((btn) => {
+    const isActive = Number(btn.dataset.jobId) === activeJobId;
+    btn.classList.toggle('is-active', isActive);
+    if (!isActive) btn.classList.remove('is-hovered');
+  });
+}
+
 function renderJobStrip() {
   const strip = document.getElementById('job-strip');
   if (!strip) return;
   const list = getVisibleJobs();
-  const sortedSig = `${list.map(j => j.id).slice().sort((a, b) => a - b).join()}|a:${activeJobId ?? ''}`;
+  const sortedSig = getVisibleJobsListSig(list);
   if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) {
+    syncListingCardActiveStates(strip);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => syncJobStripScrollBar());
     });
@@ -5364,6 +5397,14 @@ function renderPropertiesSidebar() {
   const list = document.getElementById('map-properties-list');
   if (!list) return;
   const jobs = getVisibleJobs();
+  const sortedSig = getVisibleJobsListSig(jobs);
+  if (lastPropertiesSidebarSig !== null && sortedSig === lastPropertiesSidebarSig) {
+    syncListingCardActiveStates(list);
+    requestAnimationFrame(syncSidebarListMaxHeight);
+    updateMobileJobsToggle();
+    return;
+  }
+  lastPropertiesSidebarSig = sortedSig;
   list.innerHTML = jobs
     .map((job) => renderListingCardHtml(job, activeJobId === job.id))
     .join('');
@@ -5383,26 +5424,36 @@ function renderPropertiesSidebar() {
 
 function activateJobOnMap(job) {
   activeJobId = job.id;
-  const aside = document.getElementById('map-properties-sidebar');
-  const keepJobsSheetOpen = aside?.classList.contains('is-jobs-sheet')
-    && window.matchMedia('(max-width: 900px)').matches;
-  if (!keepJobsSheetOpen) closePropertySheetMobile();
+  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+  if (isMobile) {
+    closePropertySheetMobile();
+    scheduleMapResize();
+  } else {
+    closePropertySheetMobile();
+  }
   renderPins();
-  requestAnimationFrame(() => {
+
+  function flyToJobAndOpenPopup() {
+    const m = markers[job.id];
+    if (m && map) {
+      map.closePopup();
+      const targetZoom = Math.max(map.getZoom(), 15);
+      map.setView([job.lat, job.lng], targetZoom, { animate: true });
+      map.once('moveend', () => {
+        markers[job.id]?.openPopup();
+      });
+    }
+    focusPropertySidebar(job.id);
+    focusJobCard(job.id);
+  }
+
+  if (isMobile) {
+    setTimeout(flyToJobAndOpenPopup, 180);
+  } else {
     requestAnimationFrame(() => {
-      const m = markers[job.id];
-      if (m && map) {
-        const targetZoom = Math.max(map.getZoom(), 15);
-        map.setView([job.lat, job.lng], targetZoom, { animate: true });
-        map.once('moveend', () => {
-          const mm = markers[job.id];
-          mm?.openPopup();
-        });
-      }
-      focusPropertySidebar(job.id);
-      focusJobCard(job.id);
+      requestAnimationFrame(flyToJobAndOpenPopup);
     });
-  });
+  }
 }
 
 function closePropertySheetMobile() {
@@ -5578,8 +5629,14 @@ function initMap() {
       const z = Math.max(map.getZoom(), 14);
       map.setView(userLatLng, z);
       scheduleMapResize();
+      renderPins();
+      return;
     }
-    renderPins();
+
+    const nearestId = resolveNearestForDisplay();
+    if (nearestId !== lastRenderedNearestId) {
+      renderPins();
+    }
   }
 
   function startLiveUserLocationTracking() {
@@ -5706,7 +5763,7 @@ function renderPins() {
     buildMarkerForJob(job, !!anchorJob && job.id === anchorJob.id);
   });
 
-  lastJobStripInViewSig = null;
+  lastRenderedNearestId = resolveNearestForDisplay();
   renderJobStrip();
   renderPropertiesSidebar();
 }
@@ -6067,7 +6124,11 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     markQuoteSubmittedNow();
     feedback.textContent = successMsg;
     form.reset();
-    closeQuoteSheet();
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      requestAnimationFrame(() => {
+        feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
     setTimeout(() => { feedback.hidden = true; }, 16000);
   });
 })();
