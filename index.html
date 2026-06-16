@@ -536,6 +536,27 @@
       color: var(--text-muted);
       margin: 0;
     }
+    .mobile-build-marker {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .mobile-build-marker {
+        display: block;
+        position: fixed;
+        right: 8px;
+        top: calc(env(safe-area-inset-top, 0px) + 2px);
+        z-index: 560;
+        padding: 2px 6px;
+        border-radius: 8px;
+        border: 1px solid rgba(107, 30, 61, 0.35);
+        background: rgba(255, 255, 255, 0.92);
+        color: #6B1E3D;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        pointer-events: none;
+      }
+    }
 
     /* Mobile jobs sheet hint */
     .map-jobs-hint {
@@ -3614,6 +3635,7 @@
           Free Quotation
         </button>
       </nav>
+      <div class="mobile-build-marker" aria-hidden="true">MOB-1612</div>
     </div>
   </div>
 </div>
