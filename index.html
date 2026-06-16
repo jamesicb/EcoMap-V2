@@ -1266,8 +1266,8 @@
         box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.14);
       }
       .map-properties-sidebar.is-sheet-open {
-        top: calc(env(safe-area-inset-top, 0px) + 54px);
-        bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+        top: calc(env(safe-area-inset-top, 0px) + 26px);
+        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
         max-height: none;
         height: auto;
         transform: translateY(0);
@@ -1480,8 +1480,11 @@
         min-height: 0;
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map-input {
-        font-size: 20px;
+        font-size: 18px;
         padding: 14px 16px;
+      }
+      .map-properties-sidebar.is-quote-sheet .contact-above-map-input::placeholder {
+        font-size: 18px;
       }
       .map-properties-sidebar.is-quote-sheet .quote-message-input {
         min-height: 180px;
@@ -1508,9 +1511,12 @@
       .map-properties-sidebar.is-jobs-sheet .map-sidebar-sheet-title {
         flex: 1 1 auto;
         min-width: 0;
-        font-size: 0.78rem;
+        font-size: 0.936rem;
         line-height: 1.25;
         padding-right: 8px;
+      }
+      .map-properties-sidebar.is-quote-sheet .map-sidebar-sheet-title {
+        font-size: 1.38rem;
       }
       .map-properties-sidebar.is-jobs-sheet .map-sidebar-quote {
         display: none !important;
@@ -1671,14 +1677,15 @@
         flex-shrink: 0;
         align-self: flex-start;
         margin: 0 12px 6px;
-        max-width: 10.5rem;
-        padding: 4px 6px;
-        border: 2px solid rgba(107, 30, 61, 0.35);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 2px 8px rgba(107, 31, 58, 0.1);
-        font-size: 6px;
+        max-width: calc(100vw - 96px);
+        padding: 2px 0;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        font-size: 7.2px;
         line-height: 1.2;
+        white-space: nowrap;
         color: var(--text-dark);
       }
       .map-frame-inner .map-privacy-notice {
@@ -1985,8 +1992,8 @@
         pointer-events: none;
       }
       .map-properties-sidebar.is-sheet-open {
-        top: calc(env(safe-area-inset-top, 0px) + 54px);
-        bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+        top: calc(env(safe-area-inset-top, 0px) + 26px);
+        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
         max-height: none;
         height: auto;
         transform: translateY(0);
