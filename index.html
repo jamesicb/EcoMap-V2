@@ -2347,10 +2347,25 @@
 
 
     @media (max-width: 900px) {
-      .browse-filters {
+      .map-filters-overlay .browse-filters {
         min-width: unset;
         padding: 6px 11px;
-        border-radius: 6px;
+        border-radius: 10px;
+        box-shadow: none;
+        background: var(--map-marker-heat-gradient);
+        border: none;
+        color: #ffffff;
+      }
+      .map-filters-overlay .browse-filters::before {
+        background: #ffffff;
+      }
+      .map-filters-overlay .browse-filters:hover,
+      .map-filters-overlay .browse-filters:active {
+        background: var(--map-brand-hover);
+        border: none;
+      }
+      .map-filters-overlay .browse-filters-wrap.is-open .browse-filters {
+        border: none;
         box-shadow: none;
       }
     }
@@ -3500,7 +3515,7 @@
       color: #ffffff !important;
     }
 
-    #map .map-filters-overlay {
+    .map-frame-inner .map-filters-overlay {
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
@@ -3508,24 +3523,27 @@
     }
 
     @media (max-width: 900px) {
-      #map .browse-filters {
+      .map-filters-overlay .browse-filters,
+      .map-filters-overlay #browse-filters-btn {
         background: var(--map-marker-heat-gradient) !important;
         border: none !important;
         box-shadow: none !important;
         color: #ffffff !important;
-        border-radius: 10px;
+        border-radius: 10px !important;
       }
-      #map .browse-filters::before {
+      .map-filters-overlay .browse-filters::before {
         background: #ffffff !important;
       }
-      #map .browse-filters:hover,
-      #map .browse-filters:active {
+      .map-filters-overlay .browse-filters-text {
+        color: #ffffff !important;
+      }
+      .map-filters-overlay .browse-filters:hover,
+      .map-filters-overlay .browse-filters:active,
+      .map-filters-overlay .browse-filters-wrap.is-open .browse-filters {
         background: var(--map-brand-hover) !important;
         border: none !important;
-      }
-      #map .browse-filters-wrap.is-open .browse-filters {
-        border: none !important;
         box-shadow: none !important;
+        color: #ffffff !important;
       }
     }
   </style>
