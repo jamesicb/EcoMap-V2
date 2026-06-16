@@ -1232,12 +1232,12 @@
         position: fixed;
         left: 12px;
         right: 12px;
-        bottom: 0;
+        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
         z-index: 530;
         flex-direction: column;
         max-height: min(46dvh, 360px);
         border: 2px solid rgba(107, 30, 61, 0.35);
-        border-radius: 14px 14px 0 0;
+        border-radius: 16px;
         transform: translateY(100%);
         visibility: hidden;
         pointer-events: none;
@@ -1245,6 +1245,8 @@
         box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.14);
       }
       .map-properties-sidebar.is-sheet-open {
+        top: max(64px, calc(env(safe-area-inset-top, 0px) + 12px));
+        max-height: none;
         transform: translateY(0);
         visibility: visible;
         pointer-events: auto;
@@ -1910,12 +1912,15 @@
       .map-properties-sidebar {
         left: 8px;
         right: 8px;
+        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
         max-height: min(44svh, 330px);
         transform: translateY(100%);
         visibility: hidden;
         pointer-events: none;
       }
       .map-properties-sidebar.is-sheet-open {
+        top: max(64px, calc(env(safe-area-inset-top, 0px) + 12px));
+        max-height: none;
         transform: translateY(0);
         visibility: visible;
         pointer-events: auto;
