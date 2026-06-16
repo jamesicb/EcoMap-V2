@@ -1238,16 +1238,23 @@
         max-height: min(46dvh, 360px);
         border: 2px solid rgba(107, 30, 61, 0.35);
         border-radius: 14px 14px 0 0;
-        transform: translateY(calc(100% - 64px));
-        transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        transform: translateY(100%);
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.32s;
         box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.14);
       }
       .map-properties-sidebar.is-sheet-open {
         transform: translateY(0);
+        visibility: visible;
+        pointer-events: auto;
       }
     }
 
     .map-sidebar-rail {
+      display: none;
+    }
+    .map-sidebar-sheet-close {
       display: none;
     }
     @media (max-width: 900px) {
@@ -1308,6 +1315,28 @@
     @media (max-width: 900px) {
       .map-sidebar-sheet-title {
         display: block;
+      }
+      .map-sidebar-sheet-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        margin: -4px -4px -4px 8px;
+        padding: 0;
+        border: 1px solid rgba(107, 31, 58, 0.22);
+        border-radius: 8px;
+        background: #ffffff;
+        color: #6B1E3D;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .map-sidebar-sheet-close:focus-visible {
+        outline: 2px solid rgba(107, 30, 61, 0.35);
+        outline-offset: 2px;
       }
     }
 
@@ -1386,6 +1415,66 @@
         height: auto;
         min-height: 0;
       }
+      .map-properties-sidebar.is-quote-sheet {
+        max-height: min(62dvh, 460px);
+      }
+      .map-properties-sidebar.is-quote-sheet .map-sidebar-list,
+      .map-properties-sidebar.is-quote-sheet .map-sidebar-header {
+        display: none !important;
+      }
+      .map-properties-sidebar.is-quote-sheet .map-sidebar-quote {
+        flex: 1 1 auto;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .map-properties-sidebar.is-quote-sheet .map-sidebar-inner {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 12px;
+      }
+      .map-properties-sidebar.is-quote-sheet .quote-sheet-scroll {
+        flex: 1 1 auto;
+        padding: 8px 4px 4px;
+        background: #ffffff;
+        border-radius: 10px;
+      }
+      .map-properties-sidebar.is-quote-sheet .job-strip-quote-brand {
+        margin-bottom: 10px;
+      }
+      .map-properties-sidebar.is-quote-sheet .lux-brand-heading-wrap--compact .lux-brand-above-form--row {
+        font-size: clamp(1.1rem, 4.8vw, 1.45rem);
+      }
+      .map-properties-sidebar.is-quote-sheet .contact-above-map.contact-above-map--stacked {
+        gap: 10px;
+      }
+      .map-properties-sidebar.is-quote-sheet .contact-above-map-submit {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 13px;
+        letter-spacing: 0.06em;
+      }
+      .map-properties-sidebar.is-jobs-sheet {
+        max-height: min(62dvh, 460px);
+      }
+      .map-properties-sidebar.is-jobs-sheet .map-sidebar-quote {
+        display: none !important;
+      }
+      .map-properties-sidebar.is-jobs-sheet .map-sidebar-list {
+        flex: 1 1 auto;
+        max-height: none;
+      }
+      .map-properties-sidebar.is-jobs-sheet .map-sidebar-inner {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
     }
 
     .map-sidebar-item {
@@ -1437,43 +1526,11 @@
     }
 
     .map-sidebar-mobile-toggle {
-      display: none;
+      display: none !important;
     }
     @media (max-width: 900px) {
-      .map-sidebar-mobile-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        position: absolute;
-        left: 12px;
-        bottom: 12px;
-        z-index: 515;
-        padding: 10px 16px;
-        border: 1px solid rgba(107, 31, 58, 0.35);
-        border-radius: 999px;
-        background: #ffffff;
-        color: var(--map-brand);
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: none;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-      }
-      .map-sidebar-mobile-toggle svg {
-        width: 14px;
-        height: 14px;
-        flex-shrink: 0;
-        transition: transform 0.25s ease;
-      }
-      .map-properties-sidebar.is-sheet-open ~ .map-sidebar-mobile-toggle svg {
-        transform: rotate(180deg);
-      }
-      .map-properties-sidebar.is-sheet-open ~ .map-sidebar-mobile-toggle {
-        opacity: 0;
-        pointer-events: none;
+      .map-jobs-hint {
+        display: none !important;
       }
     }
 
@@ -1854,15 +1911,18 @@
         left: 8px;
         right: 8px;
         max-height: min(44svh, 330px);
-        transform: translateY(calc(100% - 64px));
+        transform: translateY(100%);
+        visibility: hidden;
+        pointer-events: none;
       }
-      .map-sidebar-mobile-toggle {
-        left: 14px;
-        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+      .map-properties-sidebar.is-sheet-open {
+        transform: translateY(0);
+        visibility: visible;
+        pointer-events: auto;
       }
       .map-locate-btn {
         right: 12px;
-        bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
       }
       .app-tab-bar {
         padding-inline: 8px;
@@ -1897,6 +1957,14 @@
         position: sticky;
         bottom: 0;
         z-index: 45;
+      }
+      #tab-customers {
+        display: none;
+      }
+      .app-tab-btn {
+        max-width: none;
+        font-size: 10px;
+        letter-spacing: 0.03em;
       }
     }
 
@@ -3405,6 +3473,7 @@
           <aside class="map-properties-sidebar" id="map-properties-sidebar" aria-label="Jobs on the map">
             <div class="map-sidebar-rail">
               <span class="map-sidebar-sheet-title">Nearby jobs</span>
+              <button type="button" class="map-sidebar-sheet-close" id="map-sidebar-sheet-close" aria-label="Close panel">×</button>
             </div>
             <div class="map-sidebar-inner" id="map-sidebar-list-wrap">
               <div class="map-sidebar-header">Nearby jobs — click to view details</div>
@@ -3489,7 +3558,7 @@
         </button>
         <button type="button" class="app-tab-btn" id="tab-enquire">
           <span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-          Enquire
+          Free Quotation
         </button>
       </nav>
     </div>
@@ -4410,6 +4479,7 @@ let mapInitialised = false;
 let splashTransitioning = false;
 function openQuoteSheet() {
   if (window.matchMedia('(max-width: 900px)').matches) {
+    setMobileSheetQuoteMode(true);
     const aside = document.getElementById('map-properties-sidebar');
     const backdrop = document.getElementById('map-sidebar-backdrop');
     const mobileBtn = document.getElementById('map-sidebar-mobile-toggle');
@@ -4424,7 +4494,11 @@ function openQuoteSheet() {
   document.getElementById('quote-name')?.focus({ preventScroll: true });
 }
 
-function closeQuoteSheet() {}
+function closeQuoteSheet() {
+  if (window.matchMedia('(max-width: 900px)').matches) {
+    closePropertySheetMobile();
+  }
+}
 
 function isSplashVisible() {
   const splash = document.getElementById('screen-splash');
@@ -4980,10 +5054,45 @@ function dismissJobsHint() {
 function updateMobileJobsToggle() {
   const label = document.getElementById('map-jobs-toggle-label');
   const railTitle = document.querySelector('.map-sidebar-sheet-title');
+  const aside = document.getElementById('map-properties-sidebar');
+  if (aside?.classList.contains('is-quote-sheet')) {
+    if (railTitle) railTitle.textContent = 'Free quotation';
+    return;
+  }
   const count = getVisibleJobs().filter(j => !isJobPlaceholder(j)).length;
   const text = count === 1 ? '1 job nearby' : `${count} jobs nearby`;
   if (label) label.textContent = text;
   if (railTitle) railTitle.textContent = text;
+}
+
+function setMobileSheetQuoteMode(on) {
+  const aside = document.getElementById('map-properties-sidebar');
+  if (!aside || !window.matchMedia('(max-width: 900px)').matches) return;
+  aside.classList.toggle('is-quote-sheet', on);
+  if (on) aside.classList.remove('is-jobs-sheet');
+  const railTitle = document.querySelector('.map-sidebar-sheet-title');
+  if (on && railTitle) railTitle.textContent = 'Free quotation';
+  else updateMobileJobsToggle();
+}
+
+function clearMobileSheetQuoteMode() {
+  setMobileSheetQuoteMode(false);
+}
+
+function openMobileJobsSheet() {
+  if (!window.matchMedia('(max-width: 900px)').matches) return;
+  const aside = document.getElementById('map-properties-sidebar');
+  const backdrop = document.getElementById('map-sidebar-backdrop');
+  aside?.classList.remove('is-quote-sheet');
+  aside?.classList.add('is-sheet-open', 'is-jobs-sheet');
+  backdrop?.classList.add('is-visible');
+  backdrop?.setAttribute('aria-hidden', 'false');
+  dismissJobsHint();
+  updateMobileJobsToggle();
+  requestAnimationFrame(() => {
+    syncSidebarListMaxHeight();
+    renderPropertiesSidebar();
+  });
 }
 
 function initMapJobsHint() {
@@ -5157,7 +5266,10 @@ function renderPropertiesSidebar() {
 
 function activateJobOnMap(job) {
   activeJobId = job.id;
-  closePropertySheetMobile();
+  const aside = document.getElementById('map-properties-sidebar');
+  const keepJobsSheetOpen = aside?.classList.contains('is-jobs-sheet')
+    && window.matchMedia('(max-width: 900px)').matches;
+  if (!keepJobsSheetOpen) closePropertySheetMobile();
   renderPins();
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
@@ -5180,7 +5292,7 @@ function closePropertySheetMobile() {
   const aside = document.getElementById('map-properties-sidebar');
   const backdrop = document.getElementById('map-sidebar-backdrop');
   const mobileBtn = document.getElementById('map-sidebar-mobile-toggle');
-  aside?.classList.remove('is-sheet-open');
+  aside?.classList.remove('is-sheet-open', 'is-quote-sheet', 'is-jobs-sheet');
   backdrop?.classList.remove('is-visible');
   if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
   backdrop?.setAttribute('aria-hidden', 'true');
@@ -5198,6 +5310,8 @@ function initPropertiesSidebar() {
   }
 
   function openMobileSheet() {
+    aside.classList.remove('is-quote-sheet', 'is-jobs-sheet');
+    updateMobileJobsToggle();
     aside.classList.add('is-sheet-open');
     backdrop?.classList.add('is-visible');
     if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'true');
@@ -5208,6 +5322,10 @@ function initPropertiesSidebar() {
     e.stopPropagation();
     if (aside.classList.contains('is-sheet-open')) closeMobileSheet();
     else openMobileSheet();
+  });
+
+  document.getElementById('map-sidebar-sheet-close')?.addEventListener('click', () => {
+    closeMobileSheet();
   });
 
   backdrop?.addEventListener('click', () => closeMobileSheet());
@@ -5857,14 +5975,21 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     setTab(tabHome);
     setAppView('home');
     closePanel();
+    if (window.matchMedia('(max-width: 900px)').matches) closePropertySheetMobile();
     sheetScroll?.scrollTo({ top: 0, behavior: 'smooth' });
     mapScrollAnchor?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   tabJobs.addEventListener('click', () => {
     setTab(tabJobs);
-    setAppView('jobs');
     closePanel();
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      setAppView('home');
+      openMobileJobsSheet();
+      scheduleMapResize();
+    } else {
+      setAppView('jobs');
+    }
   });
 
   tabCustomers.addEventListener('click', () => {
