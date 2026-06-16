@@ -1245,7 +1245,7 @@
         box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.14);
       }
       .map-properties-sidebar.is-sheet-open {
-        top: max(64px, calc(env(safe-area-inset-top, 0px) + 12px));
+        top: max(26px, calc(env(safe-area-inset-top, 0px) + 4px));
         max-height: none;
         transform: translateY(0);
         visibility: visible;
@@ -1446,6 +1446,13 @@
         background: #ffffff;
         border-radius: 10px;
       }
+      .map-properties-sidebar.is-quote-sheet .contact-above-map-input {
+        font-size: 18px;
+        padding: 12px 14px;
+      }
+      .map-properties-sidebar.is-quote-sheet .quote-message-input {
+        min-height: 150px;
+      }
       .map-properties-sidebar.is-quote-sheet .job-strip-quote-brand {
         margin-bottom: 10px;
       }
@@ -1457,12 +1464,12 @@
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map-submit {
         width: 100%;
-        padding: 12px 20px;
-        font-size: 13px;
+        padding: 16px 20px;
+        font-size: 18px;
         letter-spacing: 0.06em;
       }
       .map-properties-sidebar.is-jobs-sheet {
-        max-height: min(62dvh, 460px);
+        max-height: none;
       }
       .map-properties-sidebar.is-jobs-sheet .map-sidebar-quote {
         display: none !important;
@@ -1618,17 +1625,19 @@
       .map-privacy-notice {
         position: fixed;
         left: 12px;
-        top: calc(env(safe-area-inset-top, 0px) + 10px);
+        top: calc(env(safe-area-inset-top, 0px) + 2px);
         right: auto;
         bottom: auto;
         z-index: 515;
-        max-width: 8rem;
+        width: fit-content;
+        max-width: 9rem;
+        margin: 0;
         padding: 0.18rem 0.3rem;
         border: 2px solid rgba(107, 30, 61, 0.35);
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.92);
         box-shadow: 0 2px 8px rgba(107, 31, 58, 0.1);
-        font-size: 5px;
+        font-size: 6px;
         line-height: 1.15;
         color: var(--text-dark);
       }
@@ -1933,7 +1942,7 @@
         pointer-events: none;
       }
       .map-properties-sidebar.is-sheet-open {
-        top: max(64px, calc(env(safe-area-inset-top, 0px) + 12px));
+        top: max(26px, calc(env(safe-area-inset-top, 0px) + 4px));
         max-height: none;
         transform: translateY(0);
         visibility: visible;
@@ -5101,6 +5110,12 @@ function updateMobileJobsToggle() {
   const aside = document.getElementById('map-properties-sidebar');
   if (aside?.classList.contains('is-quote-sheet')) {
     if (railTitle) railTitle.textContent = 'Free quotation';
+    return;
+  }
+  if (aside?.classList.contains('is-jobs-sheet')) {
+    const text = 'Nearby Jobs - Click on job to view details';
+    if (label) label.textContent = text;
+    if (railTitle) railTitle.textContent = text;
     return;
   }
   const count = getVisibleJobs().filter(j => !isJobPlaceholder(j)).length;
