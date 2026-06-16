@@ -3466,6 +3466,54 @@
     }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style id="map-leaflet-overrides">
+    /* After Tailwind — map chrome overrides must win */
+    #map .leaflet-control-attribution,
+    #map .leaflet-bottom .leaflet-control-attribution {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #map .leaflet-control-zoom.leaflet-bar {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+
+    #map .leaflet-control-zoom.leaflet-bar a {
+      background: var(--map-marker-heat-gradient) !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: #ffffff !important;
+    }
+
+    #map .leaflet-control-zoom.leaflet-bar a:hover {
+      background: var(--map-brand-hover) !important;
+      color: #ffffff !important;
+    }
+
+    #map .map-filters-overlay {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+
+    @media (max-width: 900px) {
+      #map .browse-filters {
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -5542,12 +5590,18 @@ function initMap() {
   });
 
   L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
+    attribution: '',
     maxZoom: 19,
     subdomains: 'abc'
   }).addTo(map);
 
   L.control.zoom({ position: 'topright' }).addTo(map);
+
+  function stripMapAttribution() {
+    map.getContainer()?.querySelectorAll('.leaflet-control-attribution').forEach((el) => el.remove());
+  }
+  stripMapAttribution();
+  map.on('layeradd', stripMapAttribution);
 
   markerClusterLayer = L.markerClusterGroup({
     disableClusteringAtZoom: 9,
