@@ -131,7 +131,7 @@
 
     .splash-name {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(2.05rem, 5.5vw, 2.7rem);
+      font-size: clamp(3.075rem, 8.25vw, 4.05rem);
       font-weight: 600;
       text-align: center;
       line-height: 1.15;
@@ -3509,7 +3509,22 @@
 
     @media (max-width: 900px) {
       #map .browse-filters {
-        background: transparent !important;
+        background: var(--map-marker-heat-gradient) !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #ffffff !important;
+        border-radius: 10px;
+      }
+      #map .browse-filters::before {
+        background: #ffffff !important;
+      }
+      #map .browse-filters:hover,
+      #map .browse-filters:active {
+        background: var(--map-brand-hover) !important;
+        border: none !important;
+      }
+      #map .browse-filters-wrap.is-open .browse-filters {
+        border: none !important;
         box-shadow: none !important;
       }
     }
