@@ -427,8 +427,9 @@
     .app-desk-header {
       display: none;
       flex-shrink: 0;
+      position: relative;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 16px;
       padding: 10px 20px;
       background: #ffffff;
@@ -473,11 +474,18 @@
       white-space: nowrap;
     }
     .app-desk-trust {
-      font-size: 12px;
-      font-weight: 500;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1;
       color: #6B1E3D;
       white-space: nowrap;
       flex-shrink: 0;
+      pointer-events: none;
     }
     .app-desk-trust-star {
       color: #C45B82;
@@ -536,28 +544,6 @@
       color: var(--text-muted);
       margin: 0;
     }
-    .mobile-build-marker {
-      display: none;
-    }
-    @media (max-width: 900px) {
-      .mobile-build-marker {
-        display: block;
-        position: fixed;
-        right: 10px;
-        top: calc(env(safe-area-inset-top, 0px) + 8px);
-        z-index: 560;
-        padding: 3px 7px;
-        border-radius: 8px;
-        border: 1px solid rgba(107, 30, 61, 0.35);
-        background: rgba(255, 255, 255, 0.92);
-        color: #6B1E3D;
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        pointer-events: none;
-      }
-    }
-
     /* Mobile jobs sheet hint */
     .map-jobs-hint {
       position: absolute;
@@ -1703,9 +1689,6 @@
         white-space: nowrap;
         color: var(--text-dark);
       }
-      .map-frame-inner .map-privacy-notice {
-        display: none !important;
-      }
       .map-disclaimer-footer {
         display: none;
       }
@@ -2351,9 +2334,9 @@
         min-width: unset;
         padding: 6px 11px;
         border-radius: 10px;
-        box-shadow: none;
         background: var(--map-marker-heat-gradient);
-        border: none;
+        border: 2px solid rgba(255, 255, 255, 0.92);
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep);
         color: #ffffff;
       }
       .map-filters-overlay .browse-filters::before {
@@ -2362,11 +2345,20 @@
       .map-filters-overlay .browse-filters:hover,
       .map-filters-overlay .browse-filters:active {
         background: var(--map-brand-hover);
-        border: none;
+        border: 2px solid rgba(255, 255, 255, 0.92);
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep);
       }
       .map-filters-overlay .browse-filters-wrap.is-open .browse-filters {
-        border: none;
-        box-shadow: none;
+        border: 2px solid rgba(255, 255, 255, 0.92);
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep);
+      }
+      #map .leaflet-control-zoom.leaflet-bar a {
+        border: 2px solid rgba(255, 255, 255, 0.92) !important;
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
+      }
+      #map .leaflet-control-zoom.leaflet-bar a:hover {
+        border: 2px solid rgba(255, 255, 255, 0.92) !important;
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
       }
     }
 
@@ -3227,26 +3219,6 @@
       background: var(--map-brand-hover) !important;
       color: #ffffff !important;
     }
-    @media (min-width: 901px) {
-      .map-privacy-notice {
-        position: absolute;
-        left: 0.75rem;
-        right: 0.75rem;
-        bottom: 1.625rem;
-        z-index: 500;
-        width: auto;
-        max-width: 14rem;
-        padding: 0.3rem 0.5rem;
-        border-radius: 0.375rem;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        background: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        font-size: 9px;
-        line-height: 1.35;
-        color: var(--text-dark);
-        pointer-events: none;
-      }
-    }
     .leaflet-control-attribution {
       display: none !important;
     }
@@ -3304,93 +3276,223 @@
     }
 
     .map-popup-card {
-      min-width: 218px;
-      max-width: 272px;
+      min-width: 0;
+      max-width: none;
+      width: 100%;
       line-height: 1.4;
       color: var(--text-dark);
     }
-    .map-popup-card .map-popup-photo-wrap {
-      display: block;
-      width: fit-content;
-      max-width: 100%;
-      margin: 0 auto 10px;
-      border-radius: 8px;
+    .map-popup-mobile {
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
       overflow: hidden;
-      border: 1px solid rgba(182, 131, 126, 0.12);
-      line-height: 0;
     }
-    .map-popup-card .map-popup-photo {
+    .map-popup-m-hero {
+      position: relative;
+      flex: 0 0 auto;
+      aspect-ratio: 4 / 3;
+      background: #f5f3f0;
+      overflow: hidden;
+    }
+    .map-popup-m-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      height: 96px;
-      width: auto;
-      max-width: 100%;
+    }
+    .map-popup-m-hero-addr {
+      position: absolute;
+      z-index: 2;
+      display: block;
       margin: 0;
-      border: none;
-      background: transparent;
+      padding: 0;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.05;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
+      pointer-events: none;
     }
-    .map-popup-card strong {
+    .map-popup-m-body {
+      background: #ffffff;
+    }
+    .map-popup-m-value-banner {
+      display: flex;
+      align-items: center;
+      background: #174D31;
+    }
+    .map-popup-m-value-icon {
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #2A7A4B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+    }
+    .map-popup-m-value-icon svg {
       display: block;
-      font-size: 12px;
-      margin-bottom: 5px;
-      letter-spacing: 0.03em;
+    }
+    .map-popup-m-value-text {
+      min-width: 0;
+    }
+    .map-popup-m-value-label {
+      display: block;
+      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.25;
     }
-    .map-popup-card .map-popup-value {
+    .map-popup-m-value-amount {
       display: block;
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 6px;
-      color: #1E6A35;
-      letter-spacing: 0.01em;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1;
     }
-    .map-popup-card .map-popup-address {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: var(--text-dark);
+    .map-popup-m-specs {
+      display: grid;
     }
-    .map-popup-card .map-popup-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
+    .map-popup-m-specs--pair {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .map-popup-m-spec {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+      background: #F0EDE8;
+    }
+    .map-popup-m-spec-val {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      color: #1C1C1E;
+      line-height: 1.15;
+    }
+    .map-popup-m-spec-lbl {
+      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #7a7268;
+      line-height: 1.2;
     }
     .map-popup-details-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      margin-top: 2px;
-      padding: 8px 12px;
       border: none;
-      border-radius: 8px;
-      background: #6B1E3D;
-      color: #FAF8F5;
       font: inherit;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, color 0.2s;
     }
-    .map-popup-details-btn:hover {
-      background: #5E1A36;
+    .map-popup-m-cta {
+      margin: 0 !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+      background: #E8E6E3 !important;
+      color: #3A3632 !important;
+    }
+    .map-popup-m-cta:hover,
+    .map-popup-m-cta:active,
+    .leaflet-popup.map-job-popup .map-popup-details-btn.map-popup-m-cta:hover {
+      background: #DAD7D3 !important;
+      color: #2A2724 !important;
     }
 
-    .map-popup-mobile {
-      display: none;
+    @media (min-width: 901px) {
+      .leaflet-popup.map-job-popup .leaflet-popup-content-wrapper {
+        padding: 0 !important;
+        border-radius: 16px !important;
+        overflow: hidden;
+        background: #ffffff !important;
+      }
+      .leaflet-popup.map-job-popup .leaflet-popup-content {
+        margin: 0 !important;
+        width: 320px !important;
+      }
+      .leaflet-popup.map-job-popup .leaflet-popup-close-button {
+        top: 10px !important;
+        right: 10px !important;
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 22px !important;
+        line-height: 28px !important;
+        color: #ffffff !important;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+        z-index: 5;
+      }
+      .leaflet-popup.map-job-popup .leaflet-popup-tip {
+        background: #E8E6E3 !important;
+      }
+      .map-popup-mobile {
+        border-radius: 16px;
+      }
+      .map-popup-m-hero {
+        min-height: 160px;
+      }
+      .map-popup-m-hero-addr {
+        left: 14px;
+        right: 44px;
+        bottom: 8px;
+        font-size: 1.5rem;
+      }
+      .map-popup-m-body {
+        padding: 14px 14px 12px;
+      }
+      .map-popup-m-value-banner {
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+      .map-popup-m-value-icon {
+        width: 36px;
+        height: 36px;
+      }
+      .map-popup-m-value-icon svg {
+        width: 18px;
+        height: 18px;
+      }
+      .map-popup-m-value-label {
+        font-size: 10px;
+        margin-bottom: 3px;
+      }
+      .map-popup-m-value-amount {
+        font-size: 1.75rem;
+      }
+      .map-popup-m-specs {
+        gap: 8px;
+      }
+      .map-popup-m-spec {
+        padding: 12px 12px;
+        border-radius: 10px;
+        min-height: 64px;
+      }
+      .map-popup-m-spec-val {
+        font-size: 1rem;
+        margin-bottom: 5px;
+      }
+      .map-popup-m-spec-lbl {
+        font-size: 10px;
+      }
+      .map-popup-m-cta {
+        border-radius: 0 0 16px 16px !important;
+        padding: 14px 16px !important;
+        font-size: 11px !important;
+      }
     }
 
     @media (max-width: 900px) {
-      .map-popup-desktop {
-        display: none !important;
-      }
       .map-popup-mobile {
-        display: flex;
-        flex-direction: column;
-        background: #ffffff;
-        overflow: hidden;
         border-radius: 23px;
       }
       .leaflet-popup.map-job-popup .leaflet-popup-content-wrapper {
@@ -3417,148 +3519,58 @@
       .leaflet-popup.map-job-popup .leaflet-popup-tip {
         background: #E8E6E3 !important;
       }
-      .map-popup-card {
-        min-width: 0;
-        max-width: none;
-        width: 100%;
-      }
       .map-popup-m-hero {
-        position: relative;
-        flex: 0 0 auto;
         min-height: 121px;
-        aspect-ratio: 4 / 3;
-        background: #f5f3f0;
-        overflow: hidden;
-      }
-      .map-popup-m-photo {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
       }
       .map-popup-m-hero-addr {
-        position: absolute;
-        z-index: 2;
-        display: block;
         left: 12px;
         right: 36px;
         bottom: 4px;
-        margin: 0;
-        padding: 0;
-        font-family: 'Cormorant Garamond', Georgia, serif;
         font-size: 1.31rem;
-        font-weight: 600;
-        color: #ffffff;
-        line-height: 1.05;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
-        pointer-events: none;
       }
       .map-popup-m-body {
         padding: 11px 11px 10px;
-        background: #ffffff;
       }
       .map-popup-m-value-banner {
-        display: flex;
-        align-items: center;
         gap: 10px;
         padding: 11px 13px;
         border-radius: 13px;
-        background: #174D31;
         margin-bottom: 8px;
       }
       .map-popup-m-value-icon {
-        flex-shrink: 0;
         width: 29px;
         height: 29px;
-        border-radius: 50%;
-        background: #2A7A4B;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #ffffff;
       }
       .map-popup-m-value-icon svg {
         width: 14px;
         height: 14px;
       }
-      .map-popup-m-value-text {
-        min-width: 0;
-      }
       .map-popup-m-value-label {
-        display: block;
-        font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
         font-size: 0.44rem;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.92);
         margin-bottom: 1px;
-        line-height: 1.25;
       }
       .map-popup-m-value-amount {
-        display: block;
-        font-family: 'Cormorant Garamond', Georgia, serif;
         font-size: 1.4rem;
-        font-weight: 600;
-        color: #ffffff;
-        line-height: 1;
       }
       .map-popup-m-specs {
-        display: grid;
         gap: 6px;
       }
-      .map-popup-m-specs--pair {
-        grid-template-columns: repeat(2, 1fr);
-      }
       .map-popup-m-spec {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        text-align: left;
         padding: 10px 11px;
         border-radius: 11px;
-        background: #F0EDE8;
         min-height: 54px;
       }
       .map-popup-m-spec-val {
-        font-family: 'Cormorant Garamond', Georgia, serif;
         font-size: 0.86rem;
-        font-weight: 600;
-        color: #1C1C1E;
-        line-height: 1.15;
         margin-bottom: 4px;
       }
       .map-popup-m-spec-lbl {
-        font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
         font-size: 0.43rem;
-        font-weight: 600;
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-        color: #7a7268;
-        line-height: 1.2;
       }
       .map-popup-m-cta {
-        margin: 0 !important;
         border-radius: 0 0 23px 23px !important;
         padding: 11px 13px !important;
         font-size: 0.54rem !important;
-        font-weight: 600 !important;
-        letter-spacing: 0.12em !important;
-        text-transform: uppercase !important;
-        background: #E8E6E3 !important;
-        color: #3A3632 !important;
-      }
-      .map-popup-m-cta:hover,
-      .map-popup-m-cta:active {
-        background: #DAD7D3 !important;
-        color: #2A2724 !important;
-      }
-      .leaflet-popup.map-job-popup .map-popup-details-btn.map-popup-m-cta:hover {
-        background: #DAD7D3 !important;
-        color: #2A2724 !important;
       }
     }
 
@@ -3706,12 +3718,37 @@
       padding: 0 !important;
     }
 
+    /* Leaflet ships `.leaflet-popup-content p { margin: 17px 0 }` — must beat it for job card address */
+    .leaflet-popup.map-job-popup .leaflet-popup-content p {
+      margin: 0 !important;
+    }
+    .leaflet-popup.map-job-popup .map-popup-m-hero {
+      position: relative !important;
+      overflow: hidden !important;
+    }
+    .leaflet-popup.map-job-popup .map-popup-m-photo {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+    .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
+      position: absolute !important;
+      z-index: 2 !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      pointer-events: none !important;
+    }
+
     @media (max-width: 900px) {
       .map-filters-overlay .browse-filters,
       .map-filters-overlay #browse-filters-btn {
         background: var(--map-marker-heat-gradient) !important;
-        border: none !important;
-        box-shadow: none !important;
+        border: 2px solid rgba(255, 255, 255, 0.92) !important;
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
         color: #ffffff !important;
         border-radius: 10px !important;
       }
@@ -3725,37 +3762,31 @@
       .map-filters-overlay .browse-filters:active,
       .map-filters-overlay .browse-filters-wrap.is-open .browse-filters {
         background: var(--map-brand-hover) !important;
-        border: none !important;
-        box-shadow: none !important;
+        border: 2px solid rgba(255, 255, 255, 0.92) !important;
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
         color: #ffffff !important;
       }
+      #map .leaflet-control-zoom.leaflet-bar a {
+        border: 2px solid rgba(255, 255, 255, 0.92) !important;
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
+      }
+      #map .leaflet-control-zoom.leaflet-bar a:hover {
+        border: 2px solid rgba(255, 255, 255, 0.92) !important;
+        box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
+      }
 
-      /* Leaflet ships `.leaflet-popup-content p { margin: 17px 0 }` — must beat it for job card address */
-      .leaflet-popup.map-job-popup .leaflet-popup-content p {
-        margin: 0 !important;
-      }
-      .leaflet-popup.map-job-popup .map-popup-m-hero {
-        position: relative !important;
-        overflow: hidden !important;
-      }
-      .leaflet-popup.map-job-popup .map-popup-m-photo {
-        position: absolute !important;
-        inset: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        display: block !important;
-      }
       .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
-        position: absolute !important;
-        z-index: 2 !important;
-        display: block !important;
         left: 12px !important;
         right: 36px !important;
         bottom: 4px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        pointer-events: none !important;
+      }
+    }
+
+    @media (min-width: 901px) {
+      .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
+        left: 14px !important;
+        right: 44px !important;
+        bottom: 8px !important;
       }
     }
   </style>
@@ -3851,9 +3882,6 @@
             </div>
             <div class="map-frame-inner">
               <div id="map"></div>
-              <p class="map-privacy-notice">
-                All locations shown are approximate. No personally identifiable information is displayed.
-              </p>
               <div class="map-filters-overlay">
                 <div class="browse-filters-toolbar">
                   <div class="browse-filters-wrap" id="browse-filters-wrap">
@@ -3975,7 +4003,6 @@
           Free Quotation
         </button>
       </nav>
-      <div class="mobile-build-marker" aria-hidden="true">MOB-1662</div>
     </div>
   </div>
 </div>
@@ -5161,23 +5188,12 @@ function parseJobCardMobileSpecs(typeStr) {
 function buildMapPopupHtml(job) {
   const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
-  const safeType = escapeHtml(job.type);
   const specs = parseJobCardMobileSpecs(job.type);
   const valueFormatted = job.valueIncrease.toLocaleString();
   const upArrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m7 10 5-5 5 5"/></svg>';
 
   return `
       <div class="map-popup-card">
-        <div class="map-popup-desktop">
-          <div class="map-popup-photo-wrap">
-            <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
-          </div>
-          <strong>Estimated Property Valuation increase</strong>
-          <span class="map-popup-value">+€${valueFormatted}</span>
-          <span class="map-popup-address">${safeAddress}</span>
-          <div class="map-popup-meta">${safeType}</div>
-          <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">View listing</button>
-        </div>
         <div class="map-popup-mobile">
           <div class="map-popup-m-hero">
             <img class="map-popup-m-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
