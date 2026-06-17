@@ -3415,7 +3415,7 @@
         z-index: 5;
       }
       .leaflet-popup.map-job-popup .leaflet-popup-tip {
-        background: #101814 !important;
+        background: #E8E6E3 !important;
       }
       .map-popup-card {
         min-width: 0;
@@ -3427,7 +3427,7 @@
         flex: 0 0 auto;
         min-height: 76px;
         aspect-ratio: 4 / 3;
-        background: linear-gradient(180deg, #f5f3f0 0%, #2a2520 100%);
+        background: #f5f3f0;
         overflow: hidden;
       }
       .map-popup-m-photo {
@@ -3439,7 +3439,7 @@
       .map-popup-m-hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, rgba(245, 243, 240, 0.15) 0%, rgba(20, 18, 16, 0.82) 72%);
+        background: transparent;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -3447,21 +3447,13 @@
         pointer-events: none;
       }
       .map-popup-m-hero-addr {
-        margin: 0 0 2px;
+        margin: 0;
         font-family: 'Cormorant Garamond', Georgia, serif;
         font-size: 0.82rem;
         font-weight: 600;
         color: #ffffff;
         line-height: 1.05;
-      }
-      .map-popup-m-hero-region {
-        margin: 0;
-        font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-        font-size: 0.34rem;
-        font-weight: 500;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.92);
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
       }
       .map-popup-m-body {
         padding: 7px 7px 6px;
@@ -3556,12 +3548,17 @@
         font-weight: 600 !important;
         letter-spacing: 0.12em !important;
         text-transform: uppercase !important;
-        background: #101814 !important;
-        color: #ffffff !important;
+        background: #E8E6E3 !important;
+        color: #3A3632 !important;
       }
       .map-popup-m-cta:hover,
       .map-popup-m-cta:active {
-        background: #0a100d !important;
+        background: #DAD7D3 !important;
+        color: #2A2724 !important;
+      }
+      .leaflet-popup.map-job-popup .map-popup-details-btn.map-popup-m-cta:hover {
+        background: #DAD7D3 !important;
+        color: #2A2724 !important;
       }
     }
 
@@ -5133,23 +5130,11 @@ function parseJobCardMobileSpecs(typeStr) {
   return { floorArea, colorName, finishLabel };
 }
 
-function getJobRegionSubtitle(areaText) {
-  const t = String(areaText || '');
-  if (/\b(D1[4689]|A94|K56)\b|Stillorgan|Sandyford|Shankill|Deansgrange|Rush|Blackrock|Dalkey/i.test(t)) {
-    return 'DUBLIN · SOUTH COUNTY';
-  }
-  if (/\bDublin\s*[3579]\b|Raheny|Killester|Marino|Drumcondra|Whitehall|Baldoyle|Howth/i.test(t)) {
-    return 'DUBLIN · NORTH COUNTY';
-  }
-  return 'DUBLIN';
-}
-
 function buildMapPopupHtml(job) {
   const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
   const specs = parseJobCardMobileSpecs(job.type);
-  const regionSubtitle = escapeHtml(getJobRegionSubtitle(job.areaText));
   const valueFormatted = job.valueIncrease.toLocaleString();
   const upArrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m7 10 5-5 5 5"/></svg>';
 
@@ -5170,7 +5155,6 @@ function buildMapPopupHtml(job) {
             <img class="map-popup-m-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
             <div class="map-popup-m-hero-overlay">
               <p class="map-popup-m-hero-addr">${safeAddress}</p>
-              <p class="map-popup-m-hero-region">${regionSubtitle}</p>
             </div>
           </div>
           <div class="map-popup-m-body">
