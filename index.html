@@ -3378,6 +3378,185 @@
       background: #5E1A36;
     }
 
+    .map-popup-mobile {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .map-popup-desktop {
+        display: none !important;
+      }
+      .map-popup-mobile {
+        display: flex;
+        flex-direction: column;
+      }
+      .leaflet-popup.map-job-popup .leaflet-popup-content-wrapper {
+        padding: 0 !important;
+        border-radius: 16px !important;
+        overflow: hidden;
+      }
+      .leaflet-popup.map-job-popup .leaflet-popup-content {
+        margin: 0 !important;
+        width: min(304px, calc(100vw - 56px)) !important;
+      }
+      .leaflet-popup.map-job-popup .leaflet-popup-close-button {
+        top: 10px !important;
+        right: 10px !important;
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 22px !important;
+        line-height: 28px !important;
+        color: #1C1C1E !important;
+        z-index: 5;
+      }
+      .map-popup-card {
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+      }
+      .map-popup-m-head {
+        padding: 14px 40px 10px 16px;
+      }
+      .map-popup-m-title {
+        margin: 0;
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #1C1C1E;
+        line-height: 1.25;
+      }
+      .map-popup-m-hero {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        min-height: 140px;
+        background: linear-gradient(180deg, #eceae7 0%, #9ca3af 100%);
+        overflow: hidden;
+      }
+      .map-popup-m-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .map-popup-m-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 35%, rgba(0, 0, 0, 0.72) 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 14px 16px;
+        pointer-events: none;
+      }
+      .map-popup-m-hero-addr {
+        margin: 0 0 4px;
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 1.55rem;
+        font-weight: 600;
+        color: #ffffff;
+        line-height: 1.1;
+      }
+      .map-popup-m-hero-region {
+        margin: 0;
+        font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .map-popup-m-body {
+        padding: 12px 12px 14px;
+      }
+      .map-popup-m-value-banner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #1E6A35;
+        margin-bottom: 10px;
+      }
+      .map-popup-m-value-icon {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #155028;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+      }
+      .map-popup-m-value-icon svg {
+        width: 18px;
+        height: 18px;
+      }
+      .map-popup-m-value-text {
+        min-width: 0;
+      }
+      .map-popup-m-value-label {
+        display: block;
+        font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2px;
+      }
+      .map-popup-m-value-amount {
+        display: block;
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 1.65rem;
+        font-weight: 600;
+        color: #ffffff;
+        line-height: 1;
+      }
+      .map-popup-m-specs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .map-popup-m-spec {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 10px 6px;
+        border-radius: 10px;
+        background: #f3f1ee;
+        min-height: 64px;
+      }
+      .map-popup-m-spec-val {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1C1C1E;
+        line-height: 1.2;
+        margin-bottom: 4px;
+      }
+      .map-popup-m-spec-lbl {
+        font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+        font-size: 0.58rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8a8178;
+      }
+      .map-popup-m-cta {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        padding: 14px 16px !important;
+        font-size: 0.72rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.14em !important;
+        text-transform: uppercase !important;
+        background: #6B1E3D !important;
+      }
+    }
+
     /* Splash transition override (keep pointer-events until .hidden so CTA clicks complete) */
     #screen-splash.out {
       opacity: 0;
@@ -4892,6 +5071,97 @@ function parseJobBedrooms(job) {
   return m ? Number(m[1]) : null;
 }
 
+function parseJobTypeSpecs(typeStr) {
+  const raw = String(typeStr || '').trim();
+  const areaMatch = raw.match(/(\d+(?:\.\d+)?)\s*m²/i);
+  const floorArea = areaMatch ? `${areaMatch[1]} m²` : '—';
+
+  let finish = '—';
+  let sheen = '—';
+  const sheenMatch = raw.match(/\b(Matt|Satin|Gloss)\b/i);
+  if (sheenMatch) {
+    sheen = sheenMatch[1].charAt(0).toUpperCase() + sheenMatch[1].slice(1).toLowerCase();
+  }
+  if (/\bacrylic\b/i.test(raw)) finish = 'Acrylic';
+  else if (/\bdash\b/i.test(raw) && /\bbrick/i.test(raw)) finish = 'Dash + Brick';
+  else if (/\bdash\b/i.test(raw)) finish = 'Dash';
+  else if (/\bbrick\s*slips?\b/i.test(raw)) finish = 'Brick Slips';
+
+  return { floorArea, finish, sheen };
+}
+
+function getJobRegionSubtitle(areaText) {
+  const t = String(areaText || '');
+  if (/\b(D1[4689]|A94|K56)\b|Stillorgan|Sandyford|Shankill|Deansgrange|Rush|Blackrock|Dalkey/i.test(t)) {
+    return 'DUBLIN · SOUTH COUNTY';
+  }
+  if (/\bDublin\s*[3579]\b|Raheny|Killester|Marino|Drumcondra|Whitehall|Baldoyle|Howth/i.test(t)) {
+    return 'DUBLIN · NORTH COUNTY';
+  }
+  return 'DUBLIN';
+}
+
+function buildMapPopupHtml(job) {
+  const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
+  const safeAddress = escapeHtml(job.areaText);
+  const safeType = escapeHtml(job.type);
+  const specs = parseJobTypeSpecs(job.type);
+  const regionSubtitle = escapeHtml(getJobRegionSubtitle(job.areaText));
+  const valueFormatted = job.valueIncrease.toLocaleString();
+  const upArrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m7 10 5-5 5 5"/></svg>';
+
+  return `
+      <div class="map-popup-card">
+        <div class="map-popup-desktop">
+          <div class="map-popup-photo-wrap">
+            <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
+          </div>
+          <strong>Estimated Property Valuation increase</strong>
+          <span class="map-popup-value">+€${valueFormatted}</span>
+          <span class="map-popup-address">${safeAddress}</span>
+          <div class="map-popup-meta">${safeType}</div>
+          <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">View listing</button>
+        </div>
+        <div class="map-popup-mobile">
+          <div class="map-popup-m-head">
+            <p class="map-popup-m-title">Property at ${safeAddress}</p>
+          </div>
+          <div class="map-popup-m-hero">
+            <img class="map-popup-m-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
+            <div class="map-popup-m-hero-overlay">
+              <p class="map-popup-m-hero-addr">${safeAddress}</p>
+              <p class="map-popup-m-hero-region">${regionSubtitle}</p>
+            </div>
+          </div>
+          <div class="map-popup-m-body">
+            <div class="map-popup-m-value-banner">
+              <span class="map-popup-m-value-icon">${upArrowSvg}</span>
+              <div class="map-popup-m-value-text">
+                <span class="map-popup-m-value-label">Estimated value increase</span>
+                <span class="map-popup-m-value-amount">+€${valueFormatted}</span>
+              </div>
+            </div>
+            <div class="map-popup-m-specs">
+              <div class="map-popup-m-spec">
+                <span class="map-popup-m-spec-val">${escapeHtml(specs.floorArea)}</span>
+                <span class="map-popup-m-spec-lbl">Floor area</span>
+              </div>
+              <div class="map-popup-m-spec">
+                <span class="map-popup-m-spec-val">${escapeHtml(specs.finish)}</span>
+                <span class="map-popup-m-spec-lbl">Finish</span>
+              </div>
+              <div class="map-popup-m-spec">
+                <span class="map-popup-m-spec-val">${escapeHtml(specs.sheen)}</span>
+                <span class="map-popup-m-spec-lbl">Sheen</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="map-popup-details-btn map-popup-m-cta" data-job-id="${job.id}">View listing →</button>
+        </div>
+      </div>
+    `;
+}
+
 function estimateJobBathrooms(job) {
   if (job.bathrooms != null && !Number.isNaN(Number(job.bathrooms))) return Number(job.bathrooms);
   const beds = parseJobBedrooms(job);
@@ -5707,13 +5977,13 @@ function initMap() {
     map.on('popupopen', (e) => {
       const el = e.popup.getElement();
       if (!el) return;
-      const btn = el.querySelector('.map-popup-details-btn[data-job-id]');
-      if (!btn) return;
-      const jid = Number(btn.dataset.jobId);
-      btn.addEventListener(
+      el.addEventListener(
         'click',
         (ev) => {
+          const btn = ev.target.closest('.map-popup-details-btn[data-job-id]');
+          if (!btn) return;
           ev.preventDefault();
+          const jid = Number(btn.dataset.jobId);
           const j = portfolioJobs.find((x) => x.id === jid);
           if (j) openPanel(j);
         },
@@ -5832,26 +6102,12 @@ function renderPins() {
       popupAnchor: [0, -22]
     });
 
-    const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
     const safeAddress = escapeHtml(job.areaText);
-    const safeType = escapeHtml(job.type);
     const tooltipHtml = `<span class="map-tip-addr">${safeAddress}</span><span class="map-tip-price">+€${job.valueIncrease.toLocaleString()} est. uplift</span>`;
-
-    const popupHtml = `
-      <div class="map-popup-card">
-        <div class="map-popup-photo-wrap">
-          <img class="map-popup-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
-        </div>
-        <strong>Estimated Property Valuation increase</strong>
-        <span class="map-popup-value">+€${job.valueIncrease.toLocaleString()}</span>
-        <span class="map-popup-address">${safeAddress}</span>
-        <div class="map-popup-meta">${safeType}</div>
-        <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">View listing</button>
-      </div>
-    `;
+    const popupHtml = buildMapPopupHtml(job);
 
     const marker = L.marker([job.lat, job.lng], { icon });
-    marker.bindPopup(popupHtml, { autoClose: true, closeButton: true, autoPan: false });
+    marker.bindPopup(popupHtml, { autoClose: true, closeButton: true, autoPan: false, className: 'map-job-popup' });
     marker.bindTooltip(tooltipHtml, {
       direction: 'top',
       opacity: 1,
