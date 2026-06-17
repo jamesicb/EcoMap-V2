@@ -2352,9 +2352,14 @@
         border: 2px solid rgba(255, 255, 255, 0.92);
         box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep);
       }
+      #map .leaflet-top.leaflet-right {
+        top: 6px !important;
+        right: 6px !important;
+      }
       #map .leaflet-control-zoom.leaflet-bar a {
         border: 2px solid rgba(255, 255, 255, 0.92) !important;
         box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
+        margin: 2px !important;
       }
       #map .leaflet-control-zoom.leaflet-bar a:hover {
         border: 2px solid rgba(255, 255, 255, 0.92) !important;
@@ -3187,8 +3192,8 @@
 
     /* Leaflet overrides */
     .leaflet-top.leaflet-right {
-      top: 16px !important;
-      right: 16px !important;
+      top: 8px !important;
+      right: 8px !important;
     }
     .leaflet-control-zoom {
       border: none !important;
@@ -3769,10 +3774,15 @@
       #map .leaflet-control-zoom.leaflet-bar a {
         border: 2px solid rgba(255, 255, 255, 0.92) !important;
         box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
+        margin: 2px !important;
       }
       #map .leaflet-control-zoom.leaflet-bar a:hover {
         border: 2px solid rgba(255, 255, 255, 0.92) !important;
         box-shadow: 0 0 0 3px var(--map-marker-heat-shadow), 0 5px 16px var(--map-marker-heat-shadow-deep) !important;
+      }
+      #map .leaflet-top.leaflet-right {
+        top: 6px !important;
+        right: 6px !important;
       }
 
       .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
