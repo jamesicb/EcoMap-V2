@@ -3441,10 +3441,12 @@
       .map-popup-m-hero-addr {
         position: absolute;
         z-index: 2;
+        display: block;
         left: 12px;
         right: 36px;
-        bottom: 3px;
+        bottom: 4px;
         margin: 0;
+        padding: 0;
         font-family: 'Cormorant Garamond', Georgia, serif;
         font-size: 1.31rem;
         font-weight: 600;
@@ -3726,6 +3728,34 @@
         border: none !important;
         box-shadow: none !important;
         color: #ffffff !important;
+      }
+
+      /* Leaflet ships `.leaflet-popup-content p { margin: 17px 0 }` — must beat it for job card address */
+      .leaflet-popup.map-job-popup .leaflet-popup-content p {
+        margin: 0 !important;
+      }
+      .leaflet-popup.map-job-popup .map-popup-m-hero {
+        position: relative !important;
+        overflow: hidden !important;
+      }
+      .leaflet-popup.map-job-popup .map-popup-m-photo {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+      }
+      .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
+        position: absolute !important;
+        z-index: 2 !important;
+        display: block !important;
+        left: 12px !important;
+        right: 36px !important;
+        bottom: 4px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        pointer-events: none !important;
       }
     }
   </style>
@@ -5151,7 +5181,7 @@ function buildMapPopupHtml(job) {
         <div class="map-popup-mobile">
           <div class="map-popup-m-hero">
             <img class="map-popup-m-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
-            <p class="map-popup-m-hero-addr">${safeAddress}</p>
+            <span class="map-popup-m-hero-addr">${safeAddress}</span>
           </div>
           <div class="map-popup-m-body">
             <div class="map-popup-m-value-banner">
