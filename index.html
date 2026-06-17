@@ -3389,47 +3389,45 @@
       .map-popup-mobile {
         display: flex;
         flex-direction: column;
+        background: #ffffff;
+        overflow: hidden;
+        border-radius: 14px;
       }
       .leaflet-popup.map-job-popup .leaflet-popup-content-wrapper {
         padding: 0 !important;
-        border-radius: 8px !important;
+        border-radius: 14px !important;
         overflow: hidden;
+        background: #ffffff !important;
       }
       .leaflet-popup.map-job-popup .leaflet-popup-content {
         margin: 0 !important;
-        width: min(152px, calc(100vw - 28px)) !important;
+        width: min(168px, calc(100vw - 32px)) !important;
       }
       .leaflet-popup.map-job-popup .leaflet-popup-close-button {
-        top: 5px !important;
-        right: 5px !important;
-        width: 14px !important;
-        height: 14px !important;
-        font-size: 11px !important;
-        line-height: 14px !important;
-        color: #1C1C1E !important;
+        top: 6px !important;
+        right: 6px !important;
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 14px !important;
+        line-height: 18px !important;
+        color: #ffffff !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
         z-index: 5;
+      }
+      .leaflet-popup.map-job-popup .leaflet-popup-tip {
+        background: #101814 !important;
       }
       .map-popup-card {
         min-width: 0;
         max-width: none;
         width: 100%;
       }
-      .map-popup-m-head {
-        padding: 7px 20px 5px 8px;
-      }
-      .map-popup-m-title {
-        margin: 0;
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: 0.525rem;
-        font-weight: 600;
-        color: #1C1C1E;
-        line-height: 1.25;
-      }
       .map-popup-m-hero {
         position: relative;
-        aspect-ratio: 16 / 10;
-        min-height: 70px;
-        background: linear-gradient(180deg, #eceae7 0%, #9ca3af 100%);
+        flex: 0 0 auto;
+        min-height: 76px;
+        aspect-ratio: 4 / 3;
+        background: linear-gradient(180deg, #f5f3f0 0%, #2a2520 100%);
         overflow: hidden;
       }
       .map-popup-m-photo {
@@ -3441,40 +3439,41 @@
       .map-popup-m-hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, transparent 35%, rgba(0, 0, 0, 0.72) 100%);
+        background: linear-gradient(180deg, rgba(245, 243, 240, 0.15) 0%, rgba(20, 18, 16, 0.82) 72%);
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        padding: 7px 8px;
+        padding: 8px 9px;
         pointer-events: none;
       }
       .map-popup-m-hero-addr {
         margin: 0 0 2px;
         font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: 0.775rem;
+        font-size: 0.82rem;
         font-weight: 600;
         color: #ffffff;
-        line-height: 1.1;
+        line-height: 1.05;
       }
       .map-popup-m-hero-region {
         margin: 0;
         font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
         font-size: 0.34rem;
         font-weight: 500;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.92);
       }
       .map-popup-m-body {
-        padding: 6px 6px 7px;
+        padding: 7px 7px 6px;
+        background: #ffffff;
       }
       .map-popup-m-value-banner {
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 7px;
-        border-radius: 6px;
-        background: #1E6A35;
+        padding: 7px 8px;
+        border-radius: 8px;
+        background: #174D31;
         margin-bottom: 5px;
       }
       .map-popup-m-value-icon {
@@ -3482,7 +3481,7 @@
         width: 18px;
         height: 18px;
         border-radius: 50%;
-        background: #155028;
+        background: #2A7A4B;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -3498,62 +3497,71 @@
       .map-popup-m-value-label {
         display: block;
         font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-        font-size: 0.31rem;
+        font-size: 0.28rem;
         font-weight: 600;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba(255, 255, 255, 0.92);
         margin-bottom: 1px;
+        line-height: 1.25;
       }
       .map-popup-m-value-amount {
         display: block;
         font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: 0.825rem;
+        font-size: 0.88rem;
         font-weight: 600;
         color: #ffffff;
         line-height: 1;
       }
       .map-popup-m-specs {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
         gap: 4px;
+      }
+      .map-popup-m-specs--pair {
+        grid-template-columns: repeat(2, 1fr);
       }
       .map-popup-m-spec {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        text-align: center;
-        padding: 5px 3px;
-        border-radius: 5px;
-        background: #f3f1ee;
-        min-height: 32px;
+        text-align: left;
+        padding: 6px 7px;
+        border-radius: 7px;
+        background: #F0EDE8;
+        min-height: 34px;
       }
       .map-popup-m-spec-val {
         font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: 0.5rem;
+        font-size: 0.54rem;
         font-weight: 600;
         color: #1C1C1E;
-        line-height: 1.2;
+        line-height: 1.15;
         margin-bottom: 2px;
       }
       .map-popup-m-spec-lbl {
         font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-        font-size: 0.29rem;
+        font-size: 0.27rem;
         font-weight: 600;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.07em;
         text-transform: uppercase;
-        color: #8a8178;
+        color: #7a7268;
+        line-height: 1.2;
       }
       .map-popup-m-cta {
         margin: 0 !important;
-        border-radius: 0 !important;
+        border-radius: 0 0 14px 14px !important;
         padding: 7px 8px !important;
-        font-size: 0.36rem !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.14em !important;
+        font-size: 0.34rem !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.12em !important;
         text-transform: uppercase !important;
-        background: #6B1E3D !important;
+        background: #101814 !important;
+        color: #ffffff !important;
+      }
+      .map-popup-m-cta:hover,
+      .map-popup-m-cta:active {
+        background: #0a100d !important;
       }
     }
 
@@ -5090,6 +5098,41 @@ function parseJobTypeSpecs(typeStr) {
   return { floorArea, finish, sheen };
 }
 
+function parseJobCardMobileSpecs(typeStr) {
+  const raw = String(typeStr || '').trim();
+  const { floorArea } = parseJobTypeSpecs(raw);
+
+  let finishLabel = '—';
+  if (/\bacrylic\b/i.test(raw)) finishLabel = 'Acrylic';
+  else if (/\bdash\b/i.test(raw) && /\bbrick/i.test(raw)) finishLabel = 'Dash + Brick';
+  else if (/\bdash\b/i.test(raw)) finishLabel = 'Dash';
+  else if (/\bbrick\s*slips?\b/i.test(raw)) finishLabel = 'Brick Slips';
+
+  let colorName = '—';
+  const detailPart = raw.includes('·') ? raw.split('·').slice(1).join('·').trim() : raw.replace(/^\d+(?:\.\d+)?\s*m²[^·]*/i, '').trim();
+  if (detailPart) {
+    let color = detailPart
+      .replace(/\s*\+\s*brick\s*slips?\s*$/i, '')
+      .replace(/\s*acrylic\s*$/i, '')
+      .replace(/\s*dash\s*$/i, '')
+      .replace(/\s*brick\s*slips?\s*$/i, '')
+      .replace(/[+,]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (color) {
+      colorName = color.split(' ').map((word, index) => {
+        const lower = word.toLowerCase();
+        if (lower === 'matt') return 'Matt';
+        if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        return lower;
+      }).join(' ');
+    }
+  }
+  if (colorName === '—' && finishLabel !== '—') colorName = finishLabel;
+
+  return { floorArea, colorName, finishLabel };
+}
+
 function getJobRegionSubtitle(areaText) {
   const t = String(areaText || '');
   if (/\b(D1[4689]|A94|K56)\b|Stillorgan|Sandyford|Shankill|Deansgrange|Rush|Blackrock|Dalkey/i.test(t)) {
@@ -5105,7 +5148,7 @@ function buildMapPopupHtml(job) {
   const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
   const safeType = escapeHtml(job.type);
-  const specs = parseJobTypeSpecs(job.type);
+  const specs = parseJobCardMobileSpecs(job.type);
   const regionSubtitle = escapeHtml(getJobRegionSubtitle(job.areaText));
   const valueFormatted = job.valueIncrease.toLocaleString();
   const upArrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m7 10 5-5 5 5"/></svg>';
@@ -5123,9 +5166,6 @@ function buildMapPopupHtml(job) {
           <button type="button" class="map-popup-details-btn" data-job-id="${job.id}">View listing</button>
         </div>
         <div class="map-popup-mobile">
-          <div class="map-popup-m-head">
-            <p class="map-popup-m-title">Property at ${safeAddress}</p>
-          </div>
           <div class="map-popup-m-hero">
             <img class="map-popup-m-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
             <div class="map-popup-m-hero-overlay">
@@ -5137,22 +5177,18 @@ function buildMapPopupHtml(job) {
             <div class="map-popup-m-value-banner">
               <span class="map-popup-m-value-icon">${upArrowSvg}</span>
               <div class="map-popup-m-value-text">
-                <span class="map-popup-m-value-label">Estimated value increase</span>
+                <span class="map-popup-m-value-label">Estimated property value increase</span>
                 <span class="map-popup-m-value-amount">+€${valueFormatted}</span>
               </div>
             </div>
-            <div class="map-popup-m-specs">
+            <div class="map-popup-m-specs map-popup-m-specs--pair">
               <div class="map-popup-m-spec">
                 <span class="map-popup-m-spec-val">${escapeHtml(specs.floorArea)}</span>
-                <span class="map-popup-m-spec-lbl">Floor area</span>
+                <span class="map-popup-m-spec-lbl">External wall insulation</span>
               </div>
               <div class="map-popup-m-spec">
-                <span class="map-popup-m-spec-val">${escapeHtml(specs.finish)}</span>
-                <span class="map-popup-m-spec-lbl">Finish</span>
-              </div>
-              <div class="map-popup-m-spec">
-                <span class="map-popup-m-spec-val">${escapeHtml(specs.sheen)}</span>
-                <span class="map-popup-m-spec-lbl">Sheen</span>
+                <span class="map-popup-m-spec-val">${escapeHtml(specs.colorName)}</span>
+                <span class="map-popup-m-spec-lbl">${escapeHtml(specs.finishLabel)}</span>
               </div>
             </div>
           </div>
