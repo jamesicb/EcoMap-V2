@@ -424,6 +424,83 @@
       color: #6B1E3D;
       letter-spacing: 0.01em;
     }
+
+    @media (max-width: 639px) {
+      /* Mobile: pin hero to top, compact layout, ~10% scale-down so trust CTA fits without scroll. */
+      #screen-splash {
+        padding: max(12px, env(safe-area-inset-top, 0px)) 22px 16px;
+      }
+      #screen-splash::before,
+      #screen-splash::after {
+        flex: 0 0 0;
+        min-height: 0;
+        display: none;
+      }
+      .splash-logo {
+        width: 79px;
+        height: 79px;
+        margin-bottom: 16px;
+      }
+      .splash-logo-sun {
+        width: 50px;
+        height: 50px;
+      }
+      #screen-splash .splash-name {
+        font-size: clamp(2.7675rem, 7.425vw, 3.645rem);
+        margin-bottom: 14px;
+      }
+      #screen-splash .splash-tagline {
+        font-size: 13.5px;
+        margin-bottom: 24px;
+        line-height: 1.45;
+      }
+      #screen-splash .splash-stats {
+        margin-bottom: 8px;
+        gap: 10px;
+      }
+      #screen-splash .splash-stats .stat-card {
+        padding: 15px 13px 14px;
+      }
+      #screen-splash .stat-number {
+        font-size: clamp(2.953125rem, 10.96875vw, 3.5859375rem);
+        margin-bottom: 7px;
+      }
+      #screen-splash .stat-label {
+        font-size: 7px;
+      }
+      .splash-trust {
+        gap: 8px;
+      }
+      .splash-trust-row {
+        gap: 8px;
+      }
+      .splash-seai-badge {
+        gap: calc(7px * 1.3 * 0.9);
+        padding: calc(10px * 1.3 * 0.9) calc(16px * 1.3 * 0.9);
+        font-size: calc(11px * 1.3 * 0.9);
+      }
+      .splash-seai-badge svg {
+        width: calc(13px * 1.3 * 0.9);
+        height: calc(13px * 1.3 * 0.9);
+      }
+      .splash-rating {
+        font-size: calc(13px * 1.3 * 0.9);
+      }
+      .splash-scroll-indicator {
+        margin-top: calc(14px * 1.3 * 0.9);
+        gap: calc(3px * 1.3 * 0.9);
+        font-size: calc(10px * 1.3 * 0.9);
+      }
+      .splash-scroll-indicator svg {
+        width: calc(16px * 1.3 * 0.9);
+        height: calc(16px * 1.3 * 0.9);
+      }
+      .splash-scroll-spacer {
+        height: 0;
+        min-height: 0;
+      }
+    }
+
     /* ══════════════════════════════════════════════════════════════
        SCREEN 2 – MAP (Uber-style sheet on mobile; desktop grid)
     ══════════════════════════════════════════════════════════════ */
