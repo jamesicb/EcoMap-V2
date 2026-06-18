@@ -4347,7 +4347,7 @@ const portfolioJobsRaw = [
     address: "Killester Park, Killester, Dublin 5",
     areaText: "Killester, Dublin 5",
     consent_to_display: true,
-    type: "End of Terrace, Acrylic",
+    type: "105m² End of Terrace · 1002-Y50R Acrylic",
     completedDate: "June 2026",
     annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/killester-park-before.png"],
@@ -5272,12 +5272,17 @@ function parseJobCardMobileSpecs(typeStr) {
       .replace(/\s+/g, ' ')
       .trim();
     if (color) {
-      colorName = color.split(' ').map((word, index) => {
-        const lower = word.toLowerCase();
-        if (lower === 'matt') return 'Matt';
-        if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-        return lower;
-      }).join(' ');
+      const ncsParts = color.match(/^(\d{4})-([A-Za-z]\d{2}[A-Za-z])$/);
+      if (ncsParts) {
+        colorName = `${ncsParts[1]}-${ncsParts[2].toUpperCase()}`;
+      } else {
+        colorName = color.split(' ').map((word, index) => {
+          const lower = word.toLowerCase();
+          if (lower === 'matt') return 'Matt';
+          if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+          return lower;
+        }).join(' ');
+      }
     }
   }
   if (colorName === '—' && finishLabel !== '—') colorName = finishLabel;
