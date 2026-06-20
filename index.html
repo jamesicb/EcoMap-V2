@@ -4634,6 +4634,11 @@ const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePubl
       .filter(j => j.consent_to_display !== false)
       .map(j => ({ ...j, areaText: j.areaText || (j.placeholder ? '' : 'Dublin area'), consentToDisplay: true }));
 
+/** Canonical desktop job card order (shared by desktop sidebar/strip and mobile jobs sheet). */
+const DESKTOP_JOB_CARD_ORDER = [
+  35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 14, 15, 17, 18
+];
+
 // ═══════════════════════════════════════════════════════════════
 // SUPABASE — customers
 // Run supabase/customers-setup.sql once in Supabase → SQL Editor (fixes quote RLS).
@@ -5579,9 +5584,19 @@ function getVisibleJobs() {
   return portfolioJobs.filter(j => jobMatchesHouseTypeFilter(j) && jobMatchesPriceBedFilter(j));
 }
 
-/** Shared job card list order for desktop strip and mobile jobs sheet (portfolioJobsRaw order). */
+function orderJobsForCardDisplay(jobs) {
+  const byId = new Map(jobs.map((job) => [job.id, job]));
+  const ordered = [];
+  for (const id of DESKTOP_JOB_CARD_ORDER) {
+    const job = byId.get(id);
+    if (job) ordered.push(job);
+  }
+  return ordered;
+}
+
+/** Shared job card list order for desktop strip and mobile jobs sheet. */
 function getJobsForCardList() {
-  return getVisibleJobs();
+  return orderJobsForCardDisplay(getVisibleJobs());
 }
 
 function getJobsInMapBounds() {
@@ -6335,8 +6350,10 @@ function renderPropertiesSidebar() {
   const list = document.getElementById('map-properties-list');
   if (!list) return;
   const jobs = getJobsForCardList();
-  const sortedSig = getVisibleJobsListSig(jobs);
-  if (lastPropertiesSidebarSig !== null && sortedSig === lastPropertiesSidebarSig) {
+  const listSig = getVisibleJobsListSig(jobs);
+  const isMobileJobsSheet = window.matchMedia('(max-width: 900px)').matches
+    && document.getElementById('map-properties-sidebar')?.classList.contains('is-jobs-sheet');
+  if (!isMobileJobsSheet && lastPropertiesSidebarSig !== null && listSig === lastPropertiesSidebarSig) {
     syncListingCardActiveStates(list);
     requestAnimationFrame(() => {
       syncSidebarListMaxHeight();
@@ -6345,7 +6362,7 @@ function renderPropertiesSidebar() {
     updateMobileJobsToggle();
     return;
   }
-  lastPropertiesSidebarSig = sortedSig;
+  lastPropertiesSidebarSig = listSig;
   list.innerHTML = jobs
     .map((job) => renderListingCardHtml(job, activeJobId === job.id))
     .join('');
@@ -7101,6 +7118,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     closePanel();
     if (window.matchMedia('(max-width: 900px)').matches) {
       setAppView('home');
+      lastPropertiesSidebarSig = null;
       openMobileJobsSheet();
       scheduleMapResize();
     } else {
