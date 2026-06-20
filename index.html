@@ -1649,8 +1649,8 @@
         display: flex;
         flex-direction: column;
         position: static;
-        flex: 0 0 12px;
-        width: 12px;
+        flex: 0 0 18px;
+        width: 18px;
         padding: 0;
         box-sizing: border-box;
         align-items: stretch;
@@ -1659,9 +1659,9 @@
         pointer-events: auto;
       }
       .map-sidebar-scroll-arrow {
-        flex: 0 0 11px;
+        flex: 0 0 17px;
         width: 100%;
-        height: 11px;
+        height: 17px;
         padding: 0;
         margin: 0;
         border: 1px solid rgba(107, 30, 61, 0.55);
@@ -1677,8 +1677,8 @@
       }
       .map-sidebar-scroll-arrow svg {
         display: block;
-        width: 7px;
-        height: 7px;
+        width: 11px;
+        height: 11px;
         pointer-events: none;
       }
       .map-sidebar-scroll-arrow:active:not(:disabled) {
@@ -5579,6 +5579,11 @@ function getVisibleJobs() {
   return portfolioJobs.filter(j => jobMatchesHouseTypeFilter(j) && jobMatchesPriceBedFilter(j));
 }
 
+/** Shared job card list order for desktop strip and mobile jobs sheet (portfolioJobsRaw order). */
+function getJobsForCardList() {
+  return getVisibleJobs();
+}
+
 function getJobsInMapBounds() {
   if (!map) return getVisibleJobs();
   const bounds = map.getBounds();
@@ -5996,7 +6001,7 @@ function initMapSidebarScrollBar() {
 }
 
 function getVisibleJobsListSig(jobs) {
-  return jobs.map(j => j.id).slice().sort((a, b) => a - b).join('|');
+  return jobs.map(j => j.id).join('|');
 }
 
 function syncListingCardActiveStates(root) {
@@ -6011,7 +6016,7 @@ function syncListingCardActiveStates(root) {
 function renderJobStrip() {
   const strip = document.getElementById('job-strip');
   if (!strip) return;
-  const list = getVisibleJobs();
+  const list = getJobsForCardList();
   const sortedSig = getVisibleJobsListSig(list);
   if (lastJobStripInViewSig !== null && sortedSig === lastJobStripInViewSig) {
     syncListingCardActiveStates(strip);
@@ -6169,6 +6174,7 @@ function openMobileJobsSheet() {
   if (railTitle) railTitle.textContent = 'Nearby Jobs - Click on job to view details';
   dismissJobsHint();
   updateMobileJobsToggle();
+  lastPropertiesSidebarSig = null;
   requestAnimationFrame(() => {
     syncSidebarListMaxHeight();
     renderPropertiesSidebar();
@@ -6328,7 +6334,7 @@ function syncSidebarListMaxHeight() {
 function renderPropertiesSidebar() {
   const list = document.getElementById('map-properties-list');
   if (!list) return;
-  const jobs = getVisibleJobs();
+  const jobs = getJobsForCardList();
   const sortedSig = getVisibleJobsListSig(jobs);
   if (lastPropertiesSidebarSig !== null && sortedSig === lastPropertiesSidebarSig) {
     syncListingCardActiveStates(list);
