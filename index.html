@@ -1441,6 +1441,13 @@
       }
     }
 
+    .map-sidebar-jobs-row {
+      display: contents;
+    }
+    .map-sidebar-scroll-wrap {
+      display: none;
+    }
+
     .map-sidebar-list {
       flex: 0 1 auto;
       overflow-y: auto;
@@ -1615,12 +1622,76 @@
       .map-properties-sidebar.is-jobs-sheet .map-sidebar-list {
         flex: 1 1 auto;
         max-height: none;
+        min-width: 0;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-right: 0;
+      }
+      .map-properties-sidebar.is-jobs-sheet .map-sidebar-list::-webkit-scrollbar {
+        display: none;
       }
       .map-properties-sidebar.is-jobs-sheet .map-sidebar-inner {
         flex: 1 1 auto;
         min-height: 0;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
+      }
+      .map-properties-sidebar.is-jobs-sheet .map-sidebar-jobs-row {
+        display: flex;
+        position: relative;
+        flex: 1 1 auto;
+        min-height: 0;
+        align-items: stretch;
+      }
+      .map-properties-sidebar.is-jobs-sheet .map-sidebar-scroll-wrap {
+        display: flex;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 12px;
+        padding: 2px 0 8px;
+        box-sizing: border-box;
+        align-items: stretch;
+        min-height: 0;
+        z-index: 2;
+        pointer-events: auto;
+      }
+      .map-sidebar-scroll-wrap--dormant .map-sidebar-scroll-thumb {
+        cursor: default;
+      }
+      .map-sidebar-scroll-track {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        border-radius: 999px;
+        background: #ECEFF3;
+        box-shadow: inset 0 0 0 1px rgba(107, 30, 61, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.08);
+        outline: none;
+      }
+      .map-sidebar-scroll-track:focus-visible {
+        box-shadow: inset 0 0 0 1px var(--border-light), 0 0 0 2px rgba(114, 14, 50, 0.35);
+      }
+      .map-sidebar-scroll-thumb {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-height: 36px;
+        height: 36px;
+        border-radius: 999px;
+        background: #6B1E3D;
+        border: 1px solid rgba(107, 30, 61, 0.55);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+        cursor: grab;
+        touch-action: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .map-sidebar-scroll-thumb.is-dragging {
+        cursor: grabbing;
       }
     }
 
@@ -4019,7 +4090,14 @@
             </div>
             <div class="map-sidebar-inner" id="map-sidebar-list-wrap">
               <div class="map-sidebar-header">Nearby jobs — click to view details</div>
-              <div class="map-sidebar-list" id="map-properties-list"></div>
+              <div class="map-sidebar-jobs-row" id="map-sidebar-jobs-row">
+                <div class="map-sidebar-list" id="map-properties-list"></div>
+                <div class="map-sidebar-scroll-wrap" id="map-sidebar-scroll-wrap" aria-hidden="true">
+                  <div class="map-sidebar-scroll-track" id="map-sidebar-scroll-track" role="scrollbar" aria-orientation="vertical" aria-controls="map-properties-list" aria-valuemin="0" tabindex="-1">
+                    <div class="map-sidebar-scroll-thumb" id="map-sidebar-scroll-thumb"></div>
+                  </div>
+                </div>
+              </div>
               <aside class="map-sidebar-quote" aria-label="Request a free quote">
                 <div class="quote-sheet-scroll" id="quote-sheet-scroll">
                   <div class="lux-brand-heading-wrap lux-brand-heading-wrap--compact job-strip-quote-brand">
@@ -4240,30 +4318,43 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
-    id: 19,
-    lat: 53.385325, lng: -6.152571,
-    address: "15 Greendale Avenue, Raheny, Dublin 5",
-    areaText: "Raheny, Dublin 5",
+    id: 35,
+    lat: 53.3013428, lng: -6.3081059,
+    address: "40 Templeville Drive, Templeogue, Dublin 6",
+    areaText: "Templeogue, Dublin 6",
     consent_to_display: true,
-    type: "117m² + Brickslips · 1002-Y50R Acrylic",
-    completedDate: "April 2026",
-    berBefore: "C2", berAfter: "B1",
-    annualSaving: 1250, valueIncrease: 21600, co2Reduction: 2.9, treesEquivalent: 201, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/15-greendale-avenue-before.png"],
-    afterPhotos: ["./assets/job-photos/15-greendale-avenue-after.png"]
+    type: "113m² Semi-detached · White Acrylic",
+    completedDate: "November 2026",
+    berBefore: "B2", berAfter: "A2",
+    annualSaving: 1250, valueIncrease: 24300, co2Reduction: 2.3, treesEquivalent: 163, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/40-templeville-drive-before.png"],
+    afterPhotos: ["./assets/job-photos/40-templeville-drive-after.png"]
   },
   {
-    id: 31,
-    lat: 53.3665569, lng: -6.2072665,
-    address: "114 Kincora Grove, Clontarf, Dublin 3",
-    areaText: "Clontarf, Dublin 3",
+    id: 34,
+    lat: 53.265575, lng: -6.209489,
+    address: "21 Glencairn View, The Gallops, D18 F381",
+    areaText: "The Gallops, D18",
     consent_to_display: true,
-    type: "140m² Semi-detached · White Dash + Brick Slips",
-    completedDate: "March 2026",
-    berBefore: "B3", berAfter: "A2",
-    annualSaving: 1800, valueIncrease: 27000, co2Reduction: 2.7, treesEquivalent: 189, seaiGrant: 7300,
-    beforePhotos: ["./assets/job-photos/114-kincora-grove-before.png"],
-    afterPhotos: ["./assets/job-photos/114-kincora-grove-after.png"]
+    type: "215m² Detached · Matt White Acrylic",
+    completedDate: "November 2026",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 1750, valueIncrease: 35000, co2Reduction: 2.5, treesEquivalent: 173, seaiGrant: 8050,
+    beforePhotos: ["./assets/job-photos/21-glencarin-view-before.png"],
+    afterPhotos: ["./assets/job-photos/21-glencarin-view-after.png"]
+  },
+  {
+    id: 33,
+    lat: 53.2999492, lng: -6.2081116,
+    address: "28 The Rise, Mount Merrion, A94 T3H4",
+    areaText: "Mount Merrion, A94",
+    consent_to_display: true,
+    type: "155m² Semi-detached · 0505-Y20R Acrylic",
+    completedDate: "November 2026",
+    berBefore: "C1", berAfter: "A3",
+    annualSaving: 1800, valueIncrease: 25900, co2Reduction: 3.1, treesEquivalent: 220, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/28-the-rise-before.png"],
+    afterPhotos: ["./assets/job-photos/28-the-rise-after.png"]
   },
   {
     id: 32,
@@ -4279,30 +4370,17 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/103-st-assams-avenue-after.png"]
   },
   {
-    id: 35,
-    lat: 53.3013428, lng: -6.3081059,
-    address: "40 Templeville Drive, Templeogue, Dublin 6",
-    areaText: "Templeogue, Dublin 6",
+    id: 31,
+    lat: 53.3665569, lng: -6.2072665,
+    address: "114 Kincora Grove, Clontarf, Dublin 3",
+    areaText: "Clontarf, Dublin 3",
     consent_to_display: true,
-    type: "113m² Semi-detached · White Acrylic",
-    completedDate: "November 2026",
-    berBefore: "B2", berAfter: "A2",
-    annualSaving: 1250, valueIncrease: 24300, co2Reduction: 2.3, treesEquivalent: 163, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/40-templeville-drive-before.png"],
-    afterPhotos: ["./assets/job-photos/40-templeville-drive-after.png"]
-  },
-  {
-    id: 33,
-    lat: 53.2999492, lng: -6.2081116,
-    address: "28 The Rise, Mount Merrion, A94 T3H4",
-    areaText: "Mount Merrion, A94",
-    consent_to_display: true,
-    type: "155m² Semi-detached · 0505-Y20R Acrylic",
-    completedDate: "November 2026",
-    berBefore: "C1", berAfter: "A3",
-    annualSaving: 1800, valueIncrease: 25900, co2Reduction: 3.1, treesEquivalent: 220, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/28-the-rise-before.png"],
-    afterPhotos: ["./assets/job-photos/28-the-rise-after.png"]
+    type: "140m² Semi-detached · White Dash + Brick Slips",
+    completedDate: "March 2026",
+    berBefore: "B3", berAfter: "A2",
+    annualSaving: 1800, valueIncrease: 27000, co2Reduction: 2.7, treesEquivalent: 189, seaiGrant: 7300,
+    beforePhotos: ["./assets/job-photos/114-kincora-grove-before.png"],
+    afterPhotos: ["./assets/job-photos/114-kincora-grove-after.png"]
   },
   {
     id: 30,
@@ -4422,17 +4500,16 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/43-ennafort-park-after.png"]
   },
   {
-    id: 15,
-    lat: 53.2827359, lng: -6.2194374,
-    address: "4 Lakelands Close, Stillorgan, A94 W586",
-    areaText: "Stillorgan, A94",
+    id: 21,
+    lat: 53.2416091, lng: -6.2209711,
+    areaText: "Sandyford, Dublin 16",
     consent_to_display: true,
-    type: "110m² Semi-detached · 1002-Y50R Acrylic, Anatolia & Med grey brick slips",
-    completedDate: "November 2025",
-    berBefore: "C1", berAfter: "A3",
-    annualSaving: 1200, valueIncrease: 23750, co2Reduction: 3.5, treesEquivalent: 248, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/4-lakelands-close-before.png"],
-    afterPhotos: ["./assets/job-photos/4-lakelands-close-after.png"]
+    type: "122m² · Bright White Acrylic",
+    completedDate: "April 2026",
+    berBefore: "C3", berAfter: "A3",
+    annualSaving: 1500, valueIncrease: 25000, co2Reduction: 2.6, treesEquivalent: 180, seaiGrant: 6000,
+    beforePhotos: ["./assets/job-photos/169-whitebeams-road-before.png"],
+    afterPhotos: ["./assets/job-photos/169-whitebeams-road-after.png"]
   },
   {
     id: 20,
@@ -4447,6 +4524,19 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/woodlawn-hands-lane-after.png"]
   },
   {
+    id: 19,
+    lat: 53.385325, lng: -6.152571,
+    address: "15 Greendale Avenue, Raheny, Dublin 5",
+    areaText: "Raheny, Dublin 5",
+    consent_to_display: true,
+    type: "117m² + Brickslips · 1002-Y50R Acrylic",
+    completedDate: "April 2026",
+    berBefore: "C2", berAfter: "B1",
+    annualSaving: 1250, valueIncrease: 21600, co2Reduction: 2.9, treesEquivalent: 201, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/15-greendale-avenue-before.png"],
+    afterPhotos: ["./assets/job-photos/15-greendale-avenue-after.png"]
+  },
+  {
     id: 14,
     lat: 53.3732, lng: -6.2048,
     address: "Killester Park, Killester, Dublin 5",
@@ -4459,29 +4549,17 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/killester-park-after.png"]
   },
   {
-    id: 34,
-    lat: 53.265575, lng: -6.209489,
-    address: "21 Glencairn View, The Gallops, D18 F381",
-    areaText: "The Gallops, D18",
+    id: 15,
+    lat: 53.2827359, lng: -6.2194374,
+    address: "4 Lakelands Close, Stillorgan, A94 W586",
+    areaText: "Stillorgan, A94",
     consent_to_display: true,
-    type: "215m² Detached · Matt White Acrylic",
-    completedDate: "November 2026",
-    berBefore: "B3", berAfter: "A3",
-    annualSaving: 1750, valueIncrease: 35000, co2Reduction: 2.5, treesEquivalent: 173, seaiGrant: 8050,
-    beforePhotos: ["./assets/job-photos/21-glencarin-view-before.png"],
-    afterPhotos: ["./assets/job-photos/21-glencarin-view-after.png"]
-  },
-  {
-    id: 21,
-    lat: 53.2416091, lng: -6.2209711,
-    areaText: "Sandyford, Dublin 16",
-    consent_to_display: true,
-    type: "122m² · Bright White Acrylic",
-    completedDate: "April 2026",
-    berBefore: "C3", berAfter: "A3",
-    annualSaving: 1500, valueIncrease: 25000, co2Reduction: 2.6, treesEquivalent: 180, seaiGrant: 6000,
-    beforePhotos: ["./assets/job-photos/169-whitebeams-road-before.png"],
-    afterPhotos: ["./assets/job-photos/169-whitebeams-road-after.png"]
+    type: "110m² Semi-detached · 1002-Y50R Acrylic, Anatolia & Med grey brick slips",
+    completedDate: "November 2025",
+    berBefore: "C1", berAfter: "A3",
+    annualSaving: 1200, valueIncrease: 23750, co2Reduction: 3.5, treesEquivalent: 248, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/4-lakelands-close-before.png"],
+    afterPhotos: ["./assets/job-photos/4-lakelands-close-after.png"]
   },
   {
     id: 17,
@@ -5737,6 +5815,124 @@ function initJobStripScrollBar() {
   });
 }
 
+let mapSidebarScrollBarInited = false;
+
+/** Fixed physical thumb size (matches `.map-sidebar-scroll-thumb`); only position changes with scroll. */
+const MAP_SIDEBAR_THUMB_H_PX = 36;
+
+function syncMapSidebarScrollBar() {
+  if (!window.matchMedia('(max-width: 900px)').matches) return;
+  const list = document.getElementById('map-properties-list');
+  const wrap = document.getElementById('map-sidebar-scroll-wrap');
+  const track = document.getElementById('map-sidebar-scroll-track');
+  const thumb = document.getElementById('map-sidebar-scroll-thumb');
+  const aside = document.getElementById('map-properties-sidebar');
+  if (!list || !wrap || !track || !thumb || !aside?.classList.contains('is-jobs-sheet')) return;
+  if (getComputedStyle(wrap).display === 'none') return;
+
+  const th = track.clientHeight;
+  const thumbH = th > 0 ? Math.min(MAP_SIDEBAR_THUMB_H_PX, th) : MAP_SIDEBAR_THUMB_H_PX;
+
+  const maxScroll = list.scrollHeight - list.clientHeight;
+  if (maxScroll <= 1) {
+    wrap.classList.add('map-sidebar-scroll-wrap--dormant');
+    wrap.setAttribute('aria-hidden', 'true');
+    track.removeAttribute('aria-valuenow');
+    track.tabIndex = -1;
+    thumb.style.height = `${thumbH}px`;
+    thumb.style.top = '0px';
+    return;
+  }
+  wrap.classList.remove('map-sidebar-scroll-wrap--dormant');
+  wrap.setAttribute('aria-hidden', 'false');
+  track.tabIndex = 0;
+  const maxThumbTop = Math.max(0, th - thumbH);
+  const scrollRatio = maxScroll > 0 ? list.scrollTop / maxScroll : 0;
+  const top = Math.round(scrollRatio * maxThumbTop);
+  thumb.style.height = `${thumbH}px`;
+  thumb.style.top = `${top}px`;
+  const pct = Math.round(scrollRatio * 100);
+  track.setAttribute('aria-valuenow', String(pct));
+  track.setAttribute('aria-valuemax', '100');
+}
+
+function initMapSidebarScrollBar() {
+  if (mapSidebarScrollBarInited) return;
+  const list = document.getElementById('map-properties-list');
+  const wrap = document.getElementById('map-sidebar-scroll-wrap');
+  const track = document.getElementById('map-sidebar-scroll-track');
+  const thumb = document.getElementById('map-sidebar-scroll-thumb');
+  if (!list || !wrap || !track || !thumb) return;
+  mapSidebarScrollBarInited = true;
+
+  list.addEventListener('scroll', () => syncMapSidebarScrollBar(), { passive: true });
+
+  try {
+    const ro = new ResizeObserver(() => syncMapSidebarScrollBar());
+    ro.observe(list);
+  } catch (_) { /* ResizeObserver unavailable */ }
+
+  thumb.addEventListener('pointerdown', e => {
+    const maxScroll = list.scrollHeight - list.clientHeight;
+    e.stopPropagation();
+    if (maxScroll <= 1) {
+      e.preventDefault();
+      return;
+    }
+    e.preventDefault();
+    const startY = e.clientY;
+    const startScroll = list.scrollTop;
+    thumb.classList.add('is-dragging');
+    function onMove(ev) {
+      const maxScroll = list.scrollHeight - list.clientHeight;
+      const maxThumbTop = track.clientHeight - thumb.offsetHeight;
+      if (maxThumbTop <= 0 || maxScroll <= 0) return;
+      const dy = ev.clientY - startY;
+      list.scrollTop = Math.max(0, Math.min(maxScroll, startScroll + (dy / maxThumbTop) * maxScroll));
+    }
+    function onUp(ev) {
+      thumb.classList.remove('is-dragging');
+      thumb.removeEventListener('pointermove', onMove);
+      thumb.removeEventListener('pointerup', onUp);
+      thumb.removeEventListener('pointercancel', onUp);
+      try {
+        thumb.releasePointerCapture(ev.pointerId);
+      } catch (_) { /* noop */ }
+    }
+    thumb.setPointerCapture(e.pointerId);
+    thumb.addEventListener('pointermove', onMove);
+    thumb.addEventListener('pointerup', onUp);
+    thumb.addEventListener('pointercancel', onUp);
+  });
+
+  track.addEventListener('pointerdown', e => {
+    if (e.target !== track) return;
+    e.stopPropagation();
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const maxScroll = list.scrollHeight - list.clientHeight;
+    if (maxScroll <= 0) return;
+    const rect = track.getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    const thumbH = thumb.offsetHeight;
+    const maxThumbTop = track.clientHeight - thumbH;
+    const ratio = maxThumbTop > 0
+      ? Math.max(0, Math.min(1, (y - thumbH / 2) / maxThumbTop))
+      : 0;
+    list.scrollTop = ratio * maxScroll;
+    syncMapSidebarScrollBar();
+  });
+
+  track.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+    e.preventDefault();
+    const maxScroll = list.scrollHeight - list.clientHeight;
+    if (maxScroll <= 0) return;
+    const step = Math.max(72, Math.round(list.clientHeight * 0.35));
+    list.scrollTop = Math.max(0, Math.min(maxScroll, list.scrollTop + (e.key === 'ArrowDown' ? step : -step)));
+    syncMapSidebarScrollBar();
+  });
+}
+
 function getVisibleJobsListSig(jobs) {
   return jobs.map(j => j.id).slice().sort((a, b) => a - b).join('|');
 }
@@ -5914,6 +6110,7 @@ function openMobileJobsSheet() {
   requestAnimationFrame(() => {
     syncSidebarListMaxHeight();
     renderPropertiesSidebar();
+    requestAnimationFrame(() => syncMapSidebarScrollBar());
   });
 }
 
@@ -6063,6 +6260,7 @@ function syncSidebarListMaxHeight() {
   if (cardSize > 0) {
     list.style.maxHeight = `${(cardSize * SIDEBAR_VISIBLE_JOB_CARDS) + SIDEBAR_LIST_CARD_GAP}px`;
   }
+  requestAnimationFrame(() => syncMapSidebarScrollBar());
 }
 
 function renderPropertiesSidebar() {
@@ -6072,7 +6270,10 @@ function renderPropertiesSidebar() {
   const sortedSig = getVisibleJobsListSig(jobs);
   if (lastPropertiesSidebarSig !== null && sortedSig === lastPropertiesSidebarSig) {
     syncListingCardActiveStates(list);
-    requestAnimationFrame(syncSidebarListMaxHeight);
+    requestAnimationFrame(() => {
+      syncSidebarListMaxHeight();
+      syncMapSidebarScrollBar();
+    });
     updateMobileJobsToggle();
     return;
   }
@@ -6089,7 +6290,10 @@ function renderPropertiesSidebar() {
     });
   });
   initListingCardBASliders(list);
-  requestAnimationFrame(syncSidebarListMaxHeight);
+  requestAnimationFrame(() => {
+    syncSidebarListMaxHeight();
+    requestAnimationFrame(() => syncMapSidebarScrollBar());
+  });
   updateMobileJobsToggle();
 }
 
@@ -6180,6 +6384,7 @@ function initPropertiesSidebar() {
     new ResizeObserver(() => syncSidebarListMaxHeight()).observe(sidebarInner);
     window.addEventListener('resize', syncSidebarListMaxHeight);
   }
+  initMapSidebarScrollBar();
 }
 
 function resetMapContainer() {
