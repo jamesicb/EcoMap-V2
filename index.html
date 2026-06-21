@@ -378,6 +378,8 @@
       width: calc(13px * 1.3);
       height: calc(13px * 1.3);
       display: block;
+      flex-shrink: 0;
+      color: #D4AF37;
     }
     .splash-scroll-indicator {
       margin-top: calc(14px * 1.3);
@@ -418,11 +420,34 @@
       50% { transform: translateY(calc(4px * 1.3)); opacity: 1; }
     }
     .splash-rating {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
       font-size: calc(13px * 1.3);
       font-weight: 400;
-      color: #6B1E3D;
       letter-spacing: 0.01em;
+    }
+    .splash-rating-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      color: #D4AF37;
+    }
+    .splash-rating-stars svg {
+      width: calc(14px * 1.3);
+      height: calc(14px * 1.3);
+      display: block;
+    }
+    .splash-rating-score {
+      font-weight: 600;
+      color: #6B1E3D;
+    }
+    .splash-rating-label {
+      color: #8B7355;
+      font-weight: 400;
     }
 
     @media (max-width: 639px) {
@@ -485,6 +510,11 @@
       }
       .splash-rating {
         font-size: calc(13px * 1.3 * 0.9);
+        gap: 5px;
+      }
+      .splash-rating-stars svg {
+        width: calc(14px * 1.3 * 0.9);
+        height: calc(14px * 1.3 * 0.9);
       }
       .splash-scroll-indicator {
         margin-top: calc(14px * 1.3 * 0.9);
@@ -567,18 +597,37 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
       line-height: 1;
-      color: #6B1E3D;
       white-space: nowrap;
       flex-shrink: 0;
       pointer-events: none;
     }
-    .app-desk-trust-star {
-      color: #C45B82;
+    .app-desk-trust-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      color: #D4AF37;
+    }
+    .app-desk-trust-stars svg {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+    .app-desk-trust-score {
+      font-weight: 600;
+      color: #6B1E3D;
+    }
+    .app-desk-trust-label {
+      color: #8B7355;
+      font-weight: 400;
     }
 
     /* Filter chips — desktop only */
@@ -1612,6 +1661,7 @@
         font-size: 0.936rem;
         line-height: 1.25;
         padding-right: 8px;
+        color: #6B1E3D;
       }
       .map-properties-sidebar.is-quote-sheet .map-sidebar-sheet-title {
         font-size: 1.38rem;
@@ -4044,7 +4094,11 @@
     <div class="splash-trust-row">
       <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5.5 6v5.2c0 4.5 2.7 8.6 6.5 10.8 3.8-2.2 6.5-6.3 6.5-10.8V6L12 3Z"/><path d="m9.1 12.1 1.9 1.9 3.9-3.9"/></svg>SEAI-registered contractor</span>
     </div>
-    <div class="splash-rating" aria-label="Customer rating 4.76 out of 5">★ 4.76 Google Reviews</div>
+    <div class="splash-rating" aria-label="Customer rating 4.76 out of 5">
+      <span class="splash-rating-stars" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg></span>
+      <span class="splash-rating-score">4.76</span>
+      <span class="splash-rating-label">Google Reviews</span>
+    </div>
     <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View map">
       <span>Scroll for map</span>
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 5 5 5-5"/></svg>
@@ -4065,7 +4119,9 @@
       <span class="app-desk-brand-name">Absolute Acrylics</span>
     </button>
     <div class="app-desk-trust" aria-label="Customer rating 4.76 out of 5">
-      <span class="app-desk-trust-star">★</span> 4.76 Google Reviews
+      <span class="app-desk-trust-stars" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg></span>
+      <span class="app-desk-trust-score">4.76</span>
+      <span class="app-desk-trust-label">Google Reviews</span>
     </div>
   </header>
   <div class="browse-shell">
