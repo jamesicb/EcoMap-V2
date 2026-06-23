@@ -100,17 +100,19 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
+      touch-action: pan-y;
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
       --hero-display-font: 'Fraunces', Georgia, serif;
       --splash-tagline-color: #525256;
       --splash-brand: #6B1E3D;
     }
-    /* Flex spacers: vertically center when content fits; allow normal scroll when it overflows */
+    /* Flex spacers: small top/bottom padding only — must not grow or scroll never exceeds viewport */
     #screen-splash::before,
     #screen-splash::after {
       content: '';
-      flex: 1 0 24px;
-      min-height: 24px;
+      flex: 0 0 auto;
+      height: clamp(12px, 3vh, 28px);
+      min-height: 0;
       width: 100%;
       pointer-events: none;
     }
@@ -420,12 +422,12 @@
       height: calc(16px * 1.3);
       display: block;
     }
-    /* Gives the splash room to scroll on short viewports so scroll/swipe can reveal the map */
+    /* Gives the splash room to scroll so scroll/swipe can reveal the map */
     .splash-scroll-spacer {
       flex-shrink: 0;
       width: 100%;
-      height: min(32vh, 220px);
-      min-height: 80px;
+      height: min(42vh, 260px);
+      min-height: 140px;
       pointer-events: none;
     }
     @keyframes splash-scroll-bob {
@@ -539,8 +541,8 @@
         height: calc(16px * 1.3 * 0.9);
       }
       .splash-scroll-spacer {
-        height: 0;
-        min-height: 0;
+        height: min(46vh, 280px);
+        min-height: 160px;
       }
     }
 
@@ -4504,6 +4506,45 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/76-stillorgan-wood-after.png"]
   },
   {
+    id: 36,
+    lat: 53.2839831, lng: -6.1763130,
+    address: "42 Pine Court, Newtown Park Avenue, Blackrock, A94 TP49",
+    areaText: "Blackrock, A94",
+    consent_to_display: true,
+    type: "105m² Detached · Matt White Acrylic + Drylining",
+    completedDate: "November 2026",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 1100, valueIncrease: 31500, co2Reduction: 2.5, treesEquivalent: 174, seaiGrant: 8050,
+    beforePhotos: ["./assets/job-photos/42-pine-court-before.png"],
+    afterPhotos: ["./assets/job-photos/42-pine-court-after.png"]
+  },
+  {
+    id: 37,
+    lat: 53.4922764, lng: -6.1378634,
+    address: "Lynders Farm, Portrane Road, Donabate, K36 DH97",
+    areaText: "Donabate, K36",
+    consent_to_display: true,
+    type: "147m² Detached · 1002-B Acrylic",
+    completedDate: "October 2026",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 1550, valueIncrease: 26950, co2Reduction: 3.5, treesEquivalent: 245, seaiGrant: 8050,
+    beforePhotos: ["./assets/job-photos/lynders-farm-before.png"],
+    afterPhotos: ["./assets/job-photos/lynders-farm-after.png"]
+  },
+  {
+    id: 38,
+    lat: 53.3754720, lng: -6.2097435,
+    address: "127 Killester Avenue, Killester, D05 V261",
+    areaText: "Killester, D05",
+    consent_to_display: true,
+    type: "69m² Mid-Terrace · 0505-Y30R Acrylic",
+    completedDate: "October 2026",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 600, valueIncrease: 18000, co2Reduction: 1.5, treesEquivalent: 106, seaiGrant: 3550,
+    beforePhotos: ["./assets/job-photos/127-killester-avenue-before.png"],
+    afterPhotos: ["./assets/job-photos/127-killester-avenue-after.png"]
+  },
+  {
     id: 29,
     lat: 53.3041877, lng: -6.2807651,
     address: "1 Dodder Park Road, Rathfarnham, D14 EP46",
@@ -4708,7 +4749,7 @@ const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePubl
 
 /** Canonical desktop job card order (shared by desktop sidebar/strip and mobile jobs sheet). */
 const DESKTOP_JOB_CARD_ORDER = [
-  19, 31, 32, 35, 33, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
+  19, 31, 32, 35, 33, 30, 36, 37, 38, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -5426,49 +5467,91 @@ function showMapScreen() {
 }
 
 document.getElementById('btn-explore')?.addEventListener('click', showMapScreen);
-document.getElementById('splash-scroll-cta')?.addEventListener('click', e => {
+const splashScrollCta = document.getElementById('splash-scroll-cta');
+splashScrollCta?.addEventListener('click', e => {
+  e.preventDefault();
+  showMapScreen();
+});
+splashScrollCta?.addEventListener('touchend', e => {
   e.preventDefault();
   showMapScreen();
 });
 
-const splashScreenEl = document.getElementById('screen-splash');
-if (splashScreenEl) {
-  let touchStartY = null;
-  let touchSwipeDelta = 0;
+function bindSplashRevealGestures() {
+  const splash = document.getElementById('screen-splash');
+  if (!splash) return;
 
-  function handleSplashScrollIntent() {
+  let pointerStartY = null;
+  let pointerSwipeDelta = 0;
+
+  function revealFromSplash() {
     if (!isSplashVisible() || splashTransitioning) return;
     showMapScreen();
   }
 
-  splashScreenEl.addEventListener('wheel', e => {
+  splash.addEventListener('wheel', e => {
     if (!isSplashVisible()) return;
-    if (e.deltaY > 0) handleSplashScrollIntent();
+    if (e.deltaY > 0) revealFromSplash();
   }, { passive: true });
 
-  splashScreenEl.addEventListener('touchstart', e => {
-    touchStartY = e.touches?.[0]?.clientY ?? null;
-    touchSwipeDelta = 0;
+  splash.addEventListener('pointerdown', e => {
+    if (!isSplashVisible()) return;
+    pointerStartY = e.clientY;
+    pointerSwipeDelta = 0;
   }, { passive: true });
 
-  splashScreenEl.addEventListener('touchmove', e => {
-    if (touchStartY == null) return;
-    const currentY = e.touches?.[0]?.clientY ?? touchStartY;
-    touchSwipeDelta = touchStartY - currentY;
-    if (touchSwipeDelta > 18) handleSplashScrollIntent();
-    if (splashScreenEl.scrollTop > 12) handleSplashScrollIntent();
+  splash.addEventListener('pointermove', e => {
+    if (!isSplashVisible() || pointerStartY == null) return;
+    pointerSwipeDelta = pointerStartY - e.clientY;
+    if (pointerSwipeDelta > 4) revealFromSplash();
   }, { passive: true });
 
-  splashScreenEl.addEventListener('touchend', () => {
-    if (touchSwipeDelta > 12) handleSplashScrollIntent();
-    touchStartY = null;
-    touchSwipeDelta = 0;
+  splash.addEventListener('pointerup', () => {
+    if (pointerSwipeDelta > 2) revealFromSplash();
+    pointerStartY = null;
+    pointerSwipeDelta = 0;
   }, { passive: true });
 
-  splashScreenEl.addEventListener('scroll', () => {
-    if (splashScreenEl.scrollTop > 12) handleSplashScrollIntent();
+  splash.addEventListener('pointercancel', () => {
+    pointerStartY = null;
+    pointerSwipeDelta = 0;
   }, { passive: true });
+
+  splash.addEventListener('touchstart', e => {
+    if (!isSplashVisible()) return;
+    pointerStartY = e.touches?.[0]?.clientY ?? null;
+    pointerSwipeDelta = 0;
+  }, { passive: true });
+
+  splash.addEventListener('touchmove', e => {
+    if (!isSplashVisible() || pointerStartY == null) return;
+    const currentY = e.touches?.[0]?.clientY ?? pointerStartY;
+    pointerSwipeDelta = pointerStartY - currentY;
+    if (pointerSwipeDelta > 4) revealFromSplash();
+    if (splash.scrollTop > 4) revealFromSplash();
+  }, { passive: true });
+
+  splash.addEventListener('touchend', () => {
+    if (pointerSwipeDelta > 2) revealFromSplash();
+    pointerStartY = null;
+    pointerSwipeDelta = 0;
+  }, { passive: true });
+
+  splash.addEventListener('scroll', () => {
+    if (!isSplashVisible()) return;
+    if (splash.scrollTop > 4) revealFromSplash();
+  }, { passive: true });
+
+  window.addEventListener('keydown', e => {
+    if (!isSplashVisible()) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      revealFromSplash();
+    }
+  });
 }
+
+bindSplashRevealGestures();
 
 // ─────────────────────────────────────────────
 // MAP INIT
@@ -5576,7 +5659,7 @@ function parseJobCardMobileSpecs(typeStr) {
       .replace(/\s*acrylic\s*$/i, '')
       .replace(/\s*dash\s*$/i, '')
       .replace(/\s*brick\s*slips?\s*$/i, '')
-      .replace(/[+,]/g, ' ')
+      .replace(/,/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
     if (color) {
@@ -5584,12 +5667,13 @@ function parseJobCardMobileSpecs(typeStr) {
       if (ncsParts) {
         colorName = `${ncsParts[1]}-${ncsParts[2].toUpperCase()}`;
       } else {
-        colorName = color.split(' ').map((word, index) => {
-          const lower = word.toLowerCase();
-          if (lower === 'matt') return 'Matt';
-          if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-          return lower;
-        }).join(' ');
+        colorName = color.split(/\s*\+\s*/).map(part =>
+          part.trim().split(/\s+/).filter(Boolean).map(word => {
+            const lower = word.toLowerCase();
+            if (lower === 'matt') return 'Matt';
+            return lower.charAt(0).toUpperCase() + lower.slice(1);
+          }).join(' ')
+        ).join(' + ');
       }
     }
   }
