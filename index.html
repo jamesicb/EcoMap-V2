@@ -55,9 +55,12 @@
       --map-marker-location-shadow-deep: rgba(37, 99, 235, 0.32);
       --map-marker-location-pulse: rgba(59, 130, 246, 0.36);
       --scrollbar-track-grey: rgba(0, 0, 0, 0.12);
-      --benefit-maroon: #5E1D2D;
-      --benefit-gold: #A78336;
+      --benefit-maroon: #174D31;
+      --benefit-gold: #2A7A4B;
       --benefit-gradient: linear-gradient(to right, #5E1D2D, #A78336);
+      --benefit-card-gradient: linear-gradient(to right, #174D31, #2A7A4B);
+      --benefit-green-light: rgba(23, 77, 49, 0.1);
+      --benefit-green-border: rgba(23, 77, 49, 0.15);
       --stat-number-color: #A78336;
     }
 
@@ -3241,7 +3244,7 @@
       position: relative;
       overflow: hidden;
       background: #ffffff;
-      border: 1px solid rgba(94, 29, 45, 0.12);
+      border: 1px solid var(--benefit-green-border);
       border-radius: var(--radius-card);
       padding: 13px 10px 10px;
       display: flex;
@@ -3255,20 +3258,20 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: var(--benefit-gradient);
+      background: var(--benefit-card-gradient);
     }
     .job-info {
       --panel-card-height: 74px;
     }
     .benefit-card.highlight {
-      background: rgba(94, 29, 45, 0.06);
-      border-color: rgba(167, 131, 54, 0.35);
+      background: var(--benefit-green-light);
+      border-color: rgba(42, 122, 75, 0.35);
     }
     .benefit-icon {
       width: 28px;
       height: 28px;
       flex-shrink: 0;
-      color: var(--text-dark);
+      color: var(--benefit-gold);
       border-radius: 999px;
       display: inline-flex;
       align-items: center;
@@ -3278,7 +3281,7 @@
       width: 16px;
       height: 16px;
       display: block;
-      color: #000;
+      color: currentColor;
     }
     .benefit-value {
       font-size: 18px;
@@ -3298,7 +3301,7 @@
     .benefit-card.grant .benefit-icon,
     .benefit-card.warmth .benefit-icon,
     .benefit-card.carbon .benefit-icon {
-      background: #f3f4f6;
+      background: var(--benefit-green-light);
     }
     .benefit-desc {
       font-size: 12px;
@@ -4545,6 +4548,97 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/127-killester-avenue-after.png"]
   },
   {
+    id: 39,
+    lat: 53.3781581, lng: -6.3524745,
+    address: "11 Phoenix Gardens, Castleknock, Dublin 15",
+    areaText: "Castleknock, D15",
+    consent_to_display: true,
+    type: "100m² Semi-detached · 0505-Y20R Acrylic",
+    completedDate: "October 2026",
+    berBefore: "B2", berAfter: "A3",
+    annualSaving: 650, valueIncrease: 21500, co2Reduction: 1.1, treesEquivalent: 76, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/11-phoenix-gardens-before.png"],
+    afterPhotos: ["./assets/job-photos/11-phoenix-gardens-after.png"]
+  },
+  {
+    id: 40,
+    lat: 53.3405256, lng: -6.3721826,
+    address: "14 Orchard Lawns, Ballyfermot, Dublin 10",
+    areaText: "Ballyfermot, D10",
+    consent_to_display: true,
+    type: "127m² Semi-detached · 2010-Y40R Acrylic + Dash",
+    completedDate: "June 2025",
+    berBefore: "C2", berAfter: "B1",
+    annualSaving: 1600, valueIncrease: 24000, co2Reduction: 2.3, treesEquivalent: 159, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/14-orchard-lawns-before.png"],
+    afterPhotos: ["./assets/job-photos/14-orchard-lawns-after.png"]
+  },
+  {
+    id: 41,
+    lat: 53.3994019, lng: -6.4051207,
+    address: "149 Briarwood Avenue, Dublin 15",
+    areaText: "Briarwood Avenue, D15",
+    consent_to_display: true,
+    type: "111m² Semi-detached · 1000-N Acrylic + Stone",
+    completedDate: "October 2025",
+    berBefore: "B2", berAfter: "A2",
+    annualSaving: 1150, valueIncrease: 22300, co2Reduction: 1.6, treesEquivalent: 109, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/149-briarwood-avenue-before.png"],
+    afterPhotos: ["./assets/job-photos/149-briarwood-avenue-after.png"]
+  },
+  {
+    id: 42,
+    lat: 53.3850830, lng: -6.1765370,
+    address: "107 Woodbine Park, Raheny, Dublin 5",
+    areaText: "Raheny, Dublin 5",
+    consent_to_display: true,
+    type: "121m² Semi-detached · Matt White Acrylic",
+    completedDate: "October 2025",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 1250, valueIncrease: 34050, co2Reduction: 1.6, treesEquivalent: 110, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/107-woodbine-park-before.png"],
+    afterPhotos: ["./assets/job-photos/107-woodbine-park-after.png"]
+  },
+  {
+    id: 43,
+    lat: 53.1944132, lng: -6.1260203,
+    address: "120 Killarney Heights, Bray, Co. Wicklow, A98 WN36",
+    areaText: "Bray, A98",
+    consent_to_display: true,
+    type: "124m² Semi-detached · Cavity Pumping",
+    completedDate: "October 2025",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 1150, valueIncrease: 30300, co2Reduction: 2, treesEquivalent: 142, seaiGrant: 7350,
+    beforePhotos: ["./assets/job-photos/120-killarney-heights-before.png"],
+    afterPhotos: ["./assets/job-photos/120-killarney-heights-after.png"]
+  },
+  {
+    id: 44,
+    lat: 53.3134289, lng: -6.3124972,
+    address: "34 Shelton Park, Kimmage, Dublin 12",
+    areaText: "Kimmage, D12",
+    consent_to_display: true,
+    type: "115m² Detached · 2010-G30Y Acrylic",
+    completedDate: "July 2025",
+    berBefore: "C2", berAfter: "B1",
+    annualSaving: 1400, valueIncrease: 22000, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 8050,
+    beforePhotos: ["./assets/job-photos/34-shelton-park-before.png"],
+    afterPhotos: ["./assets/job-photos/34-shelton-park-after.png"]
+  },
+  {
+    id: 45,
+    lat: 53.2331111, lng: -6.6496869,
+    address: "5 Dun Na Riogh Rise, Naas, Co. Kildare, W91 YA8P",
+    areaText: "Naas, W91",
+    consent_to_display: true,
+    type: "130m² Semi-detached · 0505-Y20R Acrylic",
+    completedDate: "July 2025",
+    berBefore: "B2", berAfter: "A3",
+    annualSaving: 1100, valueIncrease: 33700, co2Reduction: 1.6, treesEquivalent: 112, seaiGrant: 7350,
+    beforePhotos: ["./assets/job-photos/5-dun-na-riogh-rise-before.png"],
+    afterPhotos: ["./assets/job-photos/5-dun-na-riogh-rise-after.png"]
+  },
+  {
     id: 29,
     lat: 53.3041877, lng: -6.2807651,
     address: "1 Dodder Park Road, Rathfarnham, D14 EP46",
@@ -4749,7 +4843,7 @@ const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePubl
 
 /** Canonical desktop job card order (shared by desktop sidebar/strip and mobile jobs sheet). */
 const DESKTOP_JOB_CARD_ORDER = [
-  19, 31, 32, 35, 33, 30, 36, 37, 38, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
+  19, 31, 32, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -5644,9 +5738,11 @@ function parseJobTypeSpecs(typeStr) {
 function parseJobCardMobileSpecs(typeStr) {
   const raw = String(typeStr || '').trim();
   const { floorArea } = parseJobTypeSpecs(raw);
+  const hasAcrylicDash = /\bacrylic\b/i.test(raw) && /\bdash\b/i.test(raw) && !/\bbrick\s*slips?\b/i.test(raw);
 
   let finishLabel = '—';
-  if (/\bacrylic\b/i.test(raw)) finishLabel = 'Acrylic';
+  if (hasAcrylicDash) finishLabel = 'Acrylic + Dash';
+  else if (/\bacrylic\b/i.test(raw)) finishLabel = 'Acrylic';
   else if (/\bdash\b/i.test(raw) && /\bbrick/i.test(raw)) finishLabel = 'Dash + Brick';
   else if (/\bdash\b/i.test(raw)) finishLabel = 'Dash';
   else if (/\bbrick\s*slips?\b/i.test(raw)) finishLabel = 'Brick Slips';
@@ -5654,26 +5750,41 @@ function parseJobCardMobileSpecs(typeStr) {
   let colorName = '—';
   const detailPart = raw.includes('·') ? raw.split('·').slice(1).join('·').trim() : raw.replace(/^\d+(?:\.\d+)?\s*m²[^·]*/i, '').trim();
   if (detailPart) {
-    let color = detailPart
-      .replace(/\s*\+\s*brick\s*slips?\s*$/i, '')
-      .replace(/\s*acrylic\s*$/i, '')
-      .replace(/\s*dash\s*$/i, '')
-      .replace(/\s*brick\s*slips?\s*$/i, '')
-      .replace(/,/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    if (color) {
-      const ncsParts = color.match(/^(\d{4})-([A-Za-z]\d{2}[A-Za-z])$/);
+    const acrylicDashMatch = detailPart.match(/^(.+?)\s+acrylic\s*\+\s*dash\s*$/i);
+    if (acrylicDashMatch) {
+      const codePart = acrylicDashMatch[1].trim();
+      const ncsParts = codePart.match(/^(\d{4})-([A-Za-z]\d{2}[A-Za-z])$/);
       if (ncsParts) {
         colorName = `${ncsParts[1]}-${ncsParts[2].toUpperCase()}`;
       } else {
-        colorName = color.split(/\s*\+\s*/).map(part =>
-          part.trim().split(/\s+/).filter(Boolean).map(word => {
-            const lower = word.toLowerCase();
-            if (lower === 'matt') return 'Matt';
-            return lower.charAt(0).toUpperCase() + lower.slice(1);
-          }).join(' ')
-        ).join(' + ');
+        colorName = codePart.split(/\s+/).filter(Boolean).map(word => {
+          const lower = word.toLowerCase();
+          if (lower === 'matt') return 'Matt';
+          return lower.charAt(0).toUpperCase() + lower.slice(1);
+        }).join(' ');
+      }
+    } else {
+      let color = detailPart
+        .replace(/\s*\+\s*brick\s*slips?\s*$/i, '')
+        .replace(/\s*acrylic\s*$/i, '')
+        .replace(/\s*dash\s*$/i, '')
+        .replace(/\s*brick\s*slips?\s*$/i, '')
+        .replace(/,/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (color) {
+        const ncsParts = color.match(/^(\d{4})-([A-Za-z]\d{2}[A-Za-z])$/);
+        if (ncsParts) {
+          colorName = `${ncsParts[1]}-${ncsParts[2].toUpperCase()}`;
+        } else {
+          colorName = color.split(/\s*\+\s*/).map(part =>
+            part.trim().split(/\s+/).filter(Boolean).map(word => {
+              const lower = word.toLowerCase();
+              if (lower === 'matt') return 'Matt';
+              return lower.charAt(0).toUpperCase() + lower.slice(1);
+            }).join(' ')
+          ).join(' + ');
+        }
       }
     }
   }
