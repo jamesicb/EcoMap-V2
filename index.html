@@ -710,7 +710,7 @@
     .map-jobs-hint {
       position: absolute;
       left: 50%;
-      bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+      bottom: var(--app-tab-bar-clearance, calc(106px + env(safe-area-inset-bottom, 0px)));
       transform: translateX(-50%);
       z-index: 516;
       display: flex;
@@ -1294,6 +1294,10 @@
     }
 
     @media (max-width: 900px) {
+      :root {
+        /* Tab bar stack: 10px margin + 10px pad + 64px tabs + 14px pad + 8px gap */
+        --app-tab-bar-clearance: calc(106px + env(safe-area-inset-bottom, 0px));
+      }
       .map-map-section {
         order: 2;
       }
@@ -1401,7 +1405,7 @@
         position: fixed;
         left: 12px;
         right: 12px;
-        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+        bottom: var(--app-tab-bar-clearance);
         z-index: 530;
         flex-direction: column;
         max-height: min(46dvh, 360px);
@@ -1415,7 +1419,7 @@
       }
       .map-properties-sidebar.is-sheet-open {
         top: calc(env(safe-area-inset-top, 0px) + 26px);
-        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+        bottom: var(--app-tab-bar-clearance);
         max-height: none;
         height: auto;
         transform: translateY(0);
@@ -2247,7 +2251,7 @@
       .map-properties-sidebar {
         left: 8px;
         right: 8px;
-        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+        bottom: var(--app-tab-bar-clearance);
         max-height: min(44svh, 330px);
         transform: translateY(100%);
         visibility: hidden;
@@ -2255,7 +2259,7 @@
       }
       .map-properties-sidebar.is-sheet-open {
         top: calc(env(safe-area-inset-top, 0px) + 26px);
-        bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+        bottom: var(--app-tab-bar-clearance);
         max-height: none;
         height: auto;
         transform: translateY(0);
