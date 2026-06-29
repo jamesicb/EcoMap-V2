@@ -471,7 +471,7 @@
     @media (max-width: 639px) {
       /* Mobile: pin hero to top, compact layout, ~10% scale-down so trust CTA fits without scroll. */
       #screen-splash {
-        padding: max(12px, env(safe-area-inset-top, 0px)) 22px 16px;
+        padding: max(12px, env(safe-area-inset-top, 0px)) 22px max(20px, calc(10px + env(safe-area-inset-bottom, 0px)));
       }
       #screen-splash::before,
       #screen-splash::after {
@@ -512,7 +512,7 @@
         font-size: 7px;
       }
       .splash-trust {
-        gap: 8px;
+        gap: 6px;
       }
       .splash-trust-row {
         gap: 8px;
@@ -535,13 +535,18 @@
         height: calc(14px * 1.3 * 0.9);
       }
       .splash-scroll-indicator {
-        margin-top: calc(14px * 1.3 * 0.9);
+        margin-top: 8px;
         gap: calc(3px * 1.3 * 0.9);
         font-size: calc(10px * 1.3 * 0.9);
+        animation: splash-scroll-bob-mobile 1.6s ease-in-out infinite;
       }
       .splash-scroll-indicator svg {
         width: calc(16px * 1.3 * 0.9);
         height: calc(16px * 1.3 * 0.9);
+      }
+      @keyframes splash-scroll-bob-mobile {
+        0%, 100% { transform: translateY(0); opacity: 0.72; }
+        50% { transform: translateY(-3px); opacity: 1; }
       }
       .splash-scroll-spacer {
         height: min(46vh, 280px);
@@ -4906,9 +4911,12 @@ const portfolioJobs = (window.EcoMapPrivacy && window.EcoMapPrivacy.sanitizePubl
       .filter(j => j.consent_to_display !== false)
       .map(j => ({ ...j, areaText: j.areaText || (j.placeholder ? '' : 'Dublin area'), consentToDisplay: true }));
 
-/** Canonical desktop job card order (shared by desktop sidebar/strip and mobile jobs sheet). */
+/** Always shown first on the job card panel (desktop strip + mobile sheet). */
+const PINNED_JOB_CARD_IDS = [19, 31, 32];
+
+/** Remaining job card order after pinned cards (new jobs: append id here). */
 const DESKTOP_JOB_CARD_ORDER = [
-  50, 49, 19, 31, 32, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
+  50, 49, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -5919,10 +5927,29 @@ function getVisibleJobs() {
 function orderJobsForCardDisplay(jobs) {
   const byId = new Map(jobs.map((job) => [job.id, job]));
   const ordered = [];
-  for (const id of DESKTOP_JOB_CARD_ORDER) {
+  const used = new Set();
+
+  for (const id of PINNED_JOB_CARD_IDS) {
     const job = byId.get(id);
-    if (job) ordered.push(job);
+    if (job) {
+      ordered.push(job);
+      used.add(id);
+    }
   }
+
+  for (const id of DESKTOP_JOB_CARD_ORDER) {
+    if (used.has(id)) continue;
+    const job = byId.get(id);
+    if (job) {
+      ordered.push(job);
+      used.add(id);
+    }
+  }
+
+  for (const job of jobs) {
+    if (!used.has(job.id)) ordered.push(job);
+  }
+
   return ordered;
 }
 
