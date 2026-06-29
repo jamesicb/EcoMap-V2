@@ -4532,7 +4532,7 @@ const portfolioJobsRaw = [
     address: "76 Stillorgan Wood, Stillorgan, A94 PP97",
     areaText: "Stillorgan, A94",
     consent_to_display: true,
-    type: "204m² Detached · Bright White Acrylic",
+    type: "204m² Detached · Bright White Acrylic + Brick Slips",
     completedDate: "February 2026",
     berBefore: "C2", berAfter: "A3",
     annualSaving: 3000, valueIncrease: 42950, co2Reduction: 4.6, treesEquivalent: 325, seaiGrant: 8000,
@@ -4584,7 +4584,7 @@ const portfolioJobsRaw = [
     address: "11 Phoenix Gardens, Castleknock, Dublin 15",
     areaText: "Castleknock, D15",
     consent_to_display: true,
-    type: "100m² Semi-detached · 0505-Y20R Acrylic",
+    type: "100m² Semi-detached · 0505-Y20R Acrylic + Brick Slips",
     completedDate: "October 2026",
     berBefore: "B2", berAfter: "A3",
     annualSaving: 650, valueIncrease: 21500, co2Reduction: 1.1, treesEquivalent: 76, seaiGrant: 6050,
@@ -4662,7 +4662,7 @@ const portfolioJobsRaw = [
     address: "5 Dun Na Riogh Rise, Naas, Co. Kildare, W91 YA8P",
     areaText: "Naas, W91",
     consent_to_display: true,
-    type: "130m² Semi-detached · 0505-Y20R Acrylic",
+    type: "130m² Semi-detached · 0505-Y20R Acrylic + Brick Slips",
     completedDate: "July 2025",
     berBefore: "B2", berAfter: "A3",
     annualSaving: 1100, valueIncrease: 33700, co2Reduction: 1.6, treesEquivalent: 112, seaiGrant: 7350,
@@ -4727,7 +4727,7 @@ const portfolioJobsRaw = [
     address: "85 The Dale, Tallaght, D24 Y77C",
     areaText: "Tallaght, D24",
     consent_to_display: true,
-    type: "118m² Semi-detached · 1000-N Acrylic",
+    type: "118m² Semi-detached · 1000-N Acrylic + Stone",
     completedDate: "March 2026",
     berBefore: "C1", berAfter: "B1",
     annualSaving: 700, valueIncrease: 25850, co2Reduction: 1.9, treesEquivalent: 132, seaiGrant: 6050,
@@ -4766,7 +4766,7 @@ const portfolioJobsRaw = [
     address: "24 Hazelwood, Shankill, Dublin 18",
     areaText: "Shankill, Dublin 18",
     consent_to_display: true,
-    type: "148m² Detached · 0907-Y30R Acrylic",
+    type: "148m² Detached · 0907-Y30R Acrylic + Brick Slips",
     completedDate: "April 2026",
     berBefore: "B3", berAfter: "A2",
     annualSaving: 800, valueIncrease: 36550, co2Reduction: 2.4, treesEquivalent: 170, seaiGrant: 8050,
@@ -4779,7 +4779,7 @@ const portfolioJobsRaw = [
     address: "157 Shantalla Road, Whitehall, Dublin 9",
     areaText: "Whitehall, Dublin 9",
     consent_to_display: true,
-    type: "150m² Semi-detached · White Dash - 10% Barley Corn",
+    type: "150m² Semi-detached · White Dash - 10% Barley Corn + Brick Slips",
     completedDate: "March 2026",
     berBefore: "F1", berAfter: "A3",
     annualSaving: 3000, valueIncrease: 33850, co2Reduction: 7, treesEquivalent: 494, seaiGrant: 6050,
@@ -4792,7 +4792,7 @@ const portfolioJobsRaw = [
     address: "368 Griffith Ave, Drumcondra, Dublin 9",
     areaText: "Drumcondra, Dublin 9",
     consent_to_display: true,
-    type: "165m² · Dash + Brick Slips",
+    type: "165m² · White Dash + Brick Slips",
     completedDate: "March 2026",
     berBefore: "D1", berAfter: "B1",
     annualSaving: 2800, valueIncrease: 35300, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 6050,
@@ -4880,7 +4880,7 @@ const portfolioJobsRaw = [
     address: "69 Woodbine Park, Raheny, Dublin 5",
     areaText: "Raheny, Dublin 5",
     consent_to_display: true,
-    type: "120m² · Dash White 10% Black",
+    type: "120m² · Dash White 10% Black + Brick Slips + Cavity Pumping",
     berBefore: "C3", berAfter: "B1",
     annualSaving: 1550, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/69-woodbine-park-before.png"],
@@ -5811,14 +5811,28 @@ function parseJobTypeSpecs(typeStr) {
 function parseJobCardMobileSpecs(typeStr) {
   const raw = String(typeStr || '').trim();
   const { floorArea } = parseJobTypeSpecs(raw);
-  const hasAcrylicDash = /\bacrylic\b/i.test(raw) && /\bdash\b/i.test(raw) && !/\bbrick\s*slips?\b/i.test(raw);
+  const hasAcrylic = /\bacrylic\b/i.test(raw);
+  const hasDash = /\bdash\b/i.test(raw);
+  const hasBrickSlips = /\bbrick\s*slips?\b/i.test(raw);
+  const hasDrylining = /\bdrylining\b/i.test(raw);
+  const hasStone = /\bstone\b/i.test(raw);
+  const hasBrickCavityPumping = /\bbrick\s*cavity\s*pumping\b/i.test(raw);
+  const hasCavityPumping = /\bcavity\s*pumping\b/i.test(raw);
+  const hasAcrylicDash = hasAcrylic && hasDash && !hasBrickSlips;
 
   let finishLabel = '—';
-  if (hasAcrylicDash) finishLabel = 'Acrylic + Dash';
-  else if (/\bacrylic\b/i.test(raw)) finishLabel = 'Acrylic';
-  else if (/\bdash\b/i.test(raw) && /\bbrick/i.test(raw)) finishLabel = 'Dash + Brick';
-  else if (/\bdash\b/i.test(raw)) finishLabel = 'Dash';
-  else if (/\bbrick\s*slips?\b/i.test(raw)) finishLabel = 'Brick Slips';
+  if (hasAcrylic && hasDash && hasBrickSlips) finishLabel = 'Acrylic + Dash + Brick Slips';
+  else if (hasAcrylic && hasBrickSlips) finishLabel = 'Acrylic + Brick Slips';
+  else if (hasAcrylic && hasBrickCavityPumping) finishLabel = 'Acrylic + Brick Cavity Pumping';
+  else if (hasAcrylic && hasDrylining) finishLabel = 'Acrylic + Drylining';
+  else if (hasAcrylic && hasStone) finishLabel = 'Acrylic + Stone';
+  else if (hasAcrylicDash) finishLabel = 'Acrylic + Dash';
+  else if (hasAcrylic) finishLabel = 'Acrylic';
+  else if (hasDash && hasBrickSlips && hasCavityPumping) finishLabel = 'Dash + Brick Slips + Cavity Pumping';
+  else if (hasDash && hasBrickSlips) finishLabel = 'Dash + Brick Slips';
+  else if (hasDash && /\bbrick/i.test(raw)) finishLabel = 'Dash + Brick';
+  else if (hasDash) finishLabel = 'Dash';
+  else if (hasBrickSlips) finishLabel = 'Brick Slips';
 
   let colorName = '—';
   const detailPart = raw.includes('·') ? raw.split('·').slice(1).join('·').trim() : raw.replace(/^\d+(?:\.\d+)?\s*m²[^·]*/i, '').trim();
@@ -5838,7 +5852,12 @@ function parseJobCardMobileSpecs(typeStr) {
       }
     } else {
       let color = detailPart
+        .replace(/\s*\+\s*brick\s*slips?\s*\+\s*cavity\s*pumping\s*$/i, '')
         .replace(/\s*\+\s*brick\s*slips?\s*$/i, '')
+        .replace(/\s*\+\s*cavity\s*pumping\s*$/i, '')
+        .replace(/\s*acrylic\s*\+\s*drylining\s*$/i, '')
+        .replace(/\s*acrylic\s*\+\s*brick\s*cavity\s*pumping\s*$/i, '')
+        .replace(/\s*acrylic\s*\+\s*stone\s*$/i, '')
         .replace(/\s*acrylic\s*$/i, '')
         .replace(/\s*dash\s*$/i, '')
         .replace(/\s*brick\s*slips?\s*$/i, '')
@@ -5850,6 +5869,10 @@ function parseJobCardMobileSpecs(typeStr) {
         if (ncsParts) {
           colorName = `${ncsParts[1]}-${ncsParts[2].toUpperCase()}`;
         } else {
+          const ncsShort = color.match(/^(\d{4})-([A-Za-z])$/);
+          if (ncsShort) {
+            colorName = `${ncsShort[1]}-${ncsShort[2].toUpperCase()}`;
+          } else {
           colorName = color.split(/\s*\+\s*/).map(part =>
             part.trim().split(/\s+/).filter(Boolean).map(word => {
               const lower = word.toLowerCase();
@@ -5857,6 +5880,7 @@ function parseJobCardMobileSpecs(typeStr) {
               return lower.charAt(0).toUpperCase() + lower.slice(1);
             }).join(' ')
           ).join(' + ');
+          }
         }
       }
     }
