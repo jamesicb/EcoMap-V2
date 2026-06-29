@@ -471,7 +471,7 @@
     @media (max-width: 639px) {
       /* Mobile: pin hero to top, compact layout, ~10% scale-down so trust CTA fits without scroll. */
       #screen-splash {
-        padding: max(12px, env(safe-area-inset-top, 0px)) 22px max(20px, calc(10px + env(safe-area-inset-bottom, 0px)));
+        padding: max(12px, env(safe-area-inset-top, 0px)) 22px max(32px, calc(18px + env(safe-area-inset-bottom, 0px)));
       }
       #screen-splash::before,
       #screen-splash::after {
@@ -494,11 +494,11 @@
       }
       #screen-splash .splash-tagline {
         font-size: 13.5px;
-        margin-bottom: 24px;
+        margin-bottom: 20px;
         line-height: 1.45;
       }
       #screen-splash .splash-stats {
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         gap: 10px;
       }
       #screen-splash .splash-stats .stat-card {
@@ -535,7 +535,7 @@
         height: calc(14px * 1.3 * 0.9);
       }
       .splash-scroll-indicator {
-        margin-top: 8px;
+        margin-top: 4px;
         gap: calc(3px * 1.3 * 0.9);
         font-size: calc(10px * 1.3 * 0.9);
         animation: splash-scroll-bob-mobile 1.6s ease-in-out infinite;
@@ -545,8 +545,8 @@
         height: calc(16px * 1.3 * 0.9);
       }
       @keyframes splash-scroll-bob-mobile {
-        0%, 100% { transform: translateY(0); opacity: 0.72; }
-        50% { transform: translateY(-3px); opacity: 1; }
+        0%, 100% { transform: translateY(-6px); opacity: 0.72; }
+        50% { transform: translateY(-10px); opacity: 1; }
       }
       .splash-scroll-spacer {
         height: min(46vh, 280px);
