@@ -1673,7 +1673,7 @@
       .map-properties-sidebar.is-quote-sheet .quote-feedback {
         flex: 0 0 auto;
         margin: 14px 4px 0;
-        padding-bottom: 28px;
+        padding-bottom: 0;
         font-size: 15px;
         font-weight: 400;
         line-height: 1.45;
@@ -2166,6 +2166,135 @@
     }
     .quote-feedback[hidden] {
       display: none !important;
+    }
+
+    /* Swipe-to-reveal discount box */
+    .swipe-discount {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      height: 120px;
+      margin: 14px auto 16px;
+      flex: 0 0 auto;
+      border-radius: 13px;
+      overflow: hidden;
+      background: #F8F5F0;
+      box-shadow: 0 4px 18px rgba(107, 31, 58, 0.1);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    @media (min-width: 901px) {
+      .swipe-discount {
+        height: 130px;
+      }
+    }
+    .swipe-discount__reveal {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 16px;
+      text-align: center;
+      z-index: 1;
+    }
+    .swipe-discount__code {
+      font-family: inherit;
+      font-size: clamp(1.35rem, 4.5vw, 1.65rem);
+      font-weight: 700;
+      color: #6B1E3D;
+      line-height: 1.15;
+    }
+    .swipe-discount__note {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+    .swipe-discount__cover {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px 0 72px;
+      background: #EAD4CF;
+      z-index: 2;
+      transition: opacity 0.28s ease;
+      will-change: opacity;
+    }
+    .swipe-discount__hint {
+      font-family: inherit;
+      font-size: clamp(13px, 3.4vw, 15px);
+      font-weight: 500;
+      color: #6B1E3D;
+      text-align: center;
+      line-height: 1.35;
+      pointer-events: none;
+    }
+    .swipe-discount__handle {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      z-index: 3;
+      width: 52px;
+      height: 52px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: #6B1E3D;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      box-shadow: 0 3px 12px rgba(107, 30, 61, 0.32);
+      transform: translateY(-50%);
+      transition: left 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .swipe-discount__handle svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+    }
+    .swipe-discount:not(.is-revealed):not(.is-dragging):not(.is-touched) .swipe-discount__handle {
+      animation: swipe-discount-nudge 1.85s ease-in-out infinite;
+    }
+    @keyframes swipe-discount-nudge {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      50% { transform: translateY(-50%) translateX(5px); }
+    }
+    .swipe-discount.is-dragging .swipe-discount__handle {
+      cursor: grabbing;
+      animation: none;
+      transition: none;
+    }
+    .swipe-discount.is-dragging .swipe-discount__cover {
+      transition: none;
+    }
+    .swipe-discount.is-revealed .swipe-discount__cover {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .swipe-discount.is-revealed .swipe-discount__handle {
+      opacity: 0;
+      pointer-events: none;
+    }
+    @media (max-width: 900px) {
+      .map-properties-sidebar.is-quote-sheet .swipe-discount {
+        margin: 12px 4px 16px;
+      }
     }
 
     @media (max-width: 900px) {
@@ -4235,6 +4364,18 @@
                     <button type="submit" class="contact-above-map-submit">Enquire for FREE QUOTE</button>
                   </form>
                   <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
+                  <div class="swipe-discount" id="swipe-discount" aria-label="Swipe to reveal discount code">
+                    <div class="swipe-discount__reveal" aria-hidden="true">
+                      <span class="swipe-discount__code">Discount 500</span>
+                      <span class="swipe-discount__note">(Enter into Brief message box)</span>
+                    </div>
+                    <div class="swipe-discount__cover">
+                      <span class="swipe-discount__hint">Swipe right to reveal discount code</span>
+                    </div>
+                    <button type="button" class="swipe-discount__handle" aria-label="Swipe right to reveal discount code">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12"/><path d="m13 7 5 5-5 5"/></svg>
+                    </button>
+                  </div>
                 </div>
               </aside>
             </div>
@@ -7387,6 +7528,117 @@ function initBASlider() {
 document.getElementById('job-panel').addEventListener('touchmove', e => {
   e.stopPropagation();
 }, { passive: true });
+
+(function initSwipeDiscount() {
+  const root = document.getElementById('swipe-discount');
+  if (!root) return;
+
+  const handle = root.querySelector('.swipe-discount__handle');
+  const cover = root.querySelector('.swipe-discount__cover');
+  const reveal = root.querySelector('.swipe-discount__reveal');
+  const STORAGE_KEY = 'ecomap_discount_revealed';
+  const THRESHOLD = 0.85;
+  const HANDLE_PAD = 8;
+
+  if (!handle || !cover) return;
+
+  function markRevealed() {
+    root.classList.add('is-revealed');
+    cover.style.opacity = '0';
+    handle.style.opacity = '0';
+    if (reveal) reveal.removeAttribute('aria-hidden');
+    try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (_) { /* no-op */ }
+  }
+
+  try {
+    if (sessionStorage.getItem(STORAGE_KEY)) {
+      markRevealed();
+      return;
+    }
+  } catch (_) { /* no-op */ }
+
+  let dragging = false;
+  let dragOffset = 0;
+  let startPointerX = 0;
+  let startOffset = 0;
+
+  function getMaxDrag() {
+    return Math.max(0, root.clientWidth - handle.offsetWidth - HANDLE_PAD * 2);
+  }
+
+  function getProgress(offset) {
+    const max = getMaxDrag();
+    return max > 0 ? offset / max : 0;
+  }
+
+  function applyDrag(offset, animate) {
+    const max = getMaxDrag();
+    const x = Math.max(0, Math.min(max, offset));
+    dragOffset = x;
+    handle.style.left = `${HANDLE_PAD + x}px`;
+    cover.style.opacity = String(1 - getProgress(x));
+    if (!animate) {
+      handle.style.transition = 'none';
+      cover.style.transition = 'none';
+    }
+  }
+
+  function snapBack() {
+    handle.style.transition = 'left 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease';
+    cover.style.transition = 'opacity 0.28s ease';
+    applyDrag(0, true);
+    window.setTimeout(() => {
+      handle.style.transition = '';
+      cover.style.transition = '';
+    }, 300);
+  }
+
+  function completeReveal() {
+    const max = getMaxDrag();
+    handle.style.transition = 'left 0.22s ease, opacity 0.28s ease';
+    cover.style.transition = 'opacity 0.28s ease';
+    applyDrag(max, true);
+    window.setTimeout(markRevealed, 260);
+  }
+
+  function clientXFromEvent(e) {
+    if (e.touches && e.touches.length) return e.touches[0].clientX;
+    if (e.changedTouches && e.changedTouches.length) return e.changedTouches[0].clientX;
+    return e.clientX;
+  }
+
+  function onDragStart(e) {
+    if (root.classList.contains('is-revealed')) return;
+    dragging = true;
+    root.classList.add('is-dragging', 'is-touched');
+    startPointerX = clientXFromEvent(e);
+    startOffset = dragOffset;
+    e.preventDefault();
+  }
+
+  function onDragMove(e) {
+    if (!dragging) return;
+    const delta = clientXFromEvent(e) - startPointerX;
+    applyDrag(startOffset + delta, false);
+    e.preventDefault();
+  }
+
+  function onDragEnd() {
+    if (!dragging) return;
+    dragging = false;
+    root.classList.remove('is-dragging');
+    if (getProgress(dragOffset) >= THRESHOLD) completeReveal();
+    else snapBack();
+  }
+
+  handle.addEventListener('mousedown', onDragStart);
+  handle.addEventListener('touchstart', onDragStart, { passive: false });
+  window.addEventListener('mousemove', onDragMove);
+  window.addEventListener('touchmove', onDragMove, { passive: false });
+  window.addEventListener('mouseup', onDragEnd);
+  window.addEventListener('touchend', onDragEnd);
+  window.addEventListener('touchcancel', onDragEnd);
+})();
 
 (function initQuoteRequestForm() {
   const form = document.getElementById('quote-request-form');
