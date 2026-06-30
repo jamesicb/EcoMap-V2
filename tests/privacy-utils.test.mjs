@@ -49,6 +49,21 @@ test('public sanitization drops non-consented jobs and identifiers', () => {
   assert.equal(Object.hasOwn(result[0], 'owner_phone'), false);
 });
 
+test('public sanitization works without raw address when areaText is set', () => {
+  const rows = [{
+    id: 7,
+    lat: 53.34,
+    lng: -6.26,
+    areaText: 'Raheny, Dublin 5',
+    type: 'semi-detached',
+    consent_to_display: true
+  }];
+  const result = privacy.sanitizePublicJobs(rows);
+  assert.equal(result.length, 1);
+  assert.equal(result[0].areaText, 'Raheny, Dublin 5');
+  assert.equal(Object.hasOwn(result[0], 'address'), false);
+});
+
 test('areaFromAddress returns neighbourhood and postal district only', () => {
   assert.equal(
     privacy.areaFromAddress('Killester Park, Killester, Dublin 5'),

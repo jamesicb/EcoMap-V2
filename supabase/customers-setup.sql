@@ -1,68 +1,77 @@
--- EcoMap: customers table + RLS for the browser app (publishable / anon key).
--- Run once in Supabase Dashboard → SQL Editor → New query → paste → Run.
+-- EcoMap V2 — quote intake migration (replaces the old insecure customers-setup.sql)
+-- Run once in Supabase Dashboard → SQL Editor.
+-- For a fresh project, run security_hardening.sql instead (it includes everything below).
 
--- Optional column for quote form messages
-ALTER TABLE public.customers
-  ADD COLUMN IF NOT EXISTS message text;
+begin;
 
-ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
+-- Ensure quote_requests exists (public enquiries — anon insert only).
+create table if not exists public.quote_requests (
+  id uuid primary key default gen_random_uuid(),
+  name text not null check (char_length(trim(name)) between 2 and 80),
+  email text check (email is null or char_length(email) <= 320),
+  phone text check (phone is null or char_length(phone) <= 40),
+  message text check (message is null or char_length(message) <= 2000),
+  created_at timestamptz not null default now()
+);
 
-GRANT USAGE ON SCHEMA public TO anon, authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.customers TO anon, authenticated;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+alter table public.quote_requests enable row level security;
 
--- Public quote form: controlled insert (bypasses table RLS via SECURITY DEFINER)
-CREATE OR REPLACE FUNCTION public.submit_quote_enquiry(
+grant usage on schema public to anon, authenticated;
+grant insert on table public.quote_requests to anon;
+grant select on table public.quote_requests to authenticated;
+
+-- Remove legacy permissive anon access to CRM customers table.
+revoke select, insert, update, delete on table public.customers from anon;
+
+drop policy if exists "customers_anon_select" on public.customers;
+drop policy if exists "customers_anon_insert" on public.customers;
+drop policy if exists "customers_anon_update" on public.customers;
+drop policy if exists "customers_anon_delete" on public.customers;
+
+drop policy if exists "Allow anon inserts quote_requests" on public.quote_requests;
+create policy "Allow anon inserts quote_requests"
+  on public.quote_requests for insert to anon with check (true);
+
+drop policy if exists "Authenticated reads quote_requests" on public.quote_requests;
+create policy "Authenticated reads quote_requests"
+  on public.quote_requests for select to authenticated using (true);
+
+-- Public quote form: controlled insert into quote_requests (not customers).
+create or replace function public.submit_quote_enquiry(
   p_name text,
-  p_email text DEFAULT NULL,
-  p_phone text DEFAULT NULL,
-  p_message text DEFAULT NULL
+  p_email text default null,
+  p_phone text default null,
+  p_message text default null
 )
-RETURNS uuid
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-DECLARE
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
   new_id uuid;
-BEGIN
-  IF coalesce(trim(p_name), '') = '' THEN
-    RAISE EXCEPTION 'Name is required';
-  END IF;
+begin
+  if coalesce(trim(p_name), '') = '' then
+    raise exception 'Name is required';
+  end if;
 
-  INSERT INTO public.customers (name, email, phone, message)
-  VALUES (
+  insert into public.quote_requests (name, email, phone, message)
+  values (
     trim(p_name),
     nullif(trim(coalesce(p_email, '')), ''),
     nullif(trim(coalesce(p_phone, '')), ''),
     nullif(trim(coalesce(p_message, '')), '')
   )
-  RETURNING id INTO new_id;
+  returning id into new_id;
 
-  RETURN new_id;
-END;
+  return new_id;
+end;
 $$;
 
-REVOKE ALL ON FUNCTION public.submit_quote_enquiry(text, text, text, text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION public.submit_quote_enquiry(text, text, text, text) TO anon, authenticated;
+revoke all on function public.submit_quote_enquiry(text, text, text, text) from public;
+grant execute on function public.submit_quote_enquiry(text, text, text, text) to anon, authenticated;
 
--- CRM + direct REST access (same anon key as the public site)
-DROP POLICY IF EXISTS "customers_anon_select" ON public.customers;
-CREATE POLICY "customers_anon_select"
-  ON public.customers FOR SELECT TO anon USING (true);
+create index if not exists quote_requests_created_at_idx
+  on public.quote_requests (created_at desc);
 
-DROP POLICY IF EXISTS "customers_anon_insert" ON public.customers;
-CREATE POLICY "customers_anon_insert"
-  ON public.customers FOR INSERT TO anon WITH CHECK (true);
-
-DROP POLICY IF EXISTS "customers_anon_update" ON public.customers;
-CREATE POLICY "customers_anon_update"
-  ON public.customers FOR UPDATE TO anon USING (true) WITH CHECK (true);
-
-DROP POLICY IF EXISTS "customers_anon_delete" ON public.customers;
-CREATE POLICY "customers_anon_delete"
-  ON public.customers FOR DELETE TO anon USING (true);
-
-DROP POLICY IF EXISTS "customers_authenticated_all" ON public.customers;
-CREATE POLICY "customers_authenticated_all"
-  ON public.customers FOR ALL TO authenticated USING (true) WITH CHECK (true);
+commit;

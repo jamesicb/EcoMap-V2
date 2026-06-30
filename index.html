@@ -2168,6 +2168,54 @@
       display: none !important;
     }
 
+    .quote-privacy-notice {
+      margin: 8px 0 0;
+      font-size: 10px;
+      line-height: 1.35;
+      color: var(--text-muted);
+    }
+    .quote-privacy-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 10px 0 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .quote-privacy-consent input {
+      margin-top: 3px;
+      flex-shrink: 0;
+      accent-color: #6B1E3D;
+    }
+    .quote-privacy-link {
+      padding: 0;
+      border: none;
+      background: none;
+      color: #6B1E3D;
+      font: inherit;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .quote-privacy-link:focus-visible {
+      outline: 2px solid rgba(107, 30, 61, 0.35);
+      outline-offset: 2px;
+    }
+    @media (max-width: 900px) {
+      .map-sidebar-quote .quote-privacy-notice {
+        margin: 5px 4px 0;
+        font-size: 8.5px;
+        line-height: 1.28;
+      }
+      .map-properties-sidebar.is-quote-sheet .quote-privacy-consent {
+        margin-inline: 4px;
+        font-size: 10px;
+        line-height: 1.35;
+      }
+    }
+
     /* Swipe-to-reveal discount box */
     .swipe-discount {
       position: relative;
@@ -2440,7 +2488,7 @@
         box-shadow: 0 4px 16px rgba(107, 31, 58, 0.08);
       }
       #tab-customers {
-        display: none;
+        display: none !important;
       }
       .app-tab-btn {
         max-width: none;
@@ -4361,6 +4409,13 @@
                       <input class="contact-above-map-input" type="tel" id="quote-phone" name="phone" placeholder="Phone number" autocomplete="tel" inputmode="tel" required aria-label="Phone">
                     </div>
                     <textarea class="contact-above-map-input quote-message-input" id="quote-message" name="message" placeholder="Brief Message (Optional)" autocomplete="off" aria-label="Brief message (optional)"></textarea>
+                    <p class="quote-privacy-notice">
+                      We use your name and contact details only to respond to this enquiry. Data is stored securely via our database provider (Supabase, EU region where configured). You may request access or deletion by emailing info@absoluteacrylics.ie.
+                    </p>
+                    <label class="quote-privacy-consent">
+                      <input type="checkbox" id="quote-privacy-consent" name="privacyConsent" required>
+                      <span>I have read the <button type="button" class="quote-privacy-link" id="quote-privacy-open">privacy notice</button> and agree to my details being used to respond to this enquiry.</span>
+                    </label>
                     <button type="submit" class="contact-above-map-submit">Enquire for FREE QUOTE</button>
                   </form>
                   <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
@@ -4571,6 +4626,21 @@
 
 <p id="supabase-banner-error" class="fixed left-1/2 -translate-x-1/2 top-[env(safe-area-inset-top,12px)] z-[100] max-w-[min(92vw,420px)] px-3 py-2 rounded-md border border-red-500/50 bg-[var(--charcoal-mid)] text-red-700 text-sm text-center hidden shadow-lg" role="alert"></p>
 
+<dialog id="dialog-privacy" class="crm-modal" aria-labelledby="dialog-privacy-title">
+  <div class="crm-modal-inner">
+    <h3 id="dialog-privacy-title" class="text-base font-semibold text-[var(--text-dark)] mb-3">Privacy notice</h3>
+    <div class="text-sm text-[var(--text-muted)] flex flex-col gap-3 leading-relaxed">
+      <p><strong class="text-[var(--text-dark)]">Who we are.</strong> Absolute Acrylics (Warmliving Ireland Ltd) is the data controller for enquiries submitted through this site.</p>
+      <p><strong class="text-[var(--text-dark)]">What we collect.</strong> Quote form: name, email, phone, and optional message. Map “locate me” (only if you tap the button): your device location stays on your device and is not sent to our servers.</p>
+      <p><strong class="text-[var(--text-dark)]">Why we use it.</strong> To respond to your enquiry and provide a quotation (legitimate interest / pre-contract steps).</p>
+      <p><strong class="text-[var(--text-dark)]">How long we keep it.</strong> Enquiry records are kept only as long as needed to handle your request and our business records, then deleted or anonymised.</p>
+      <p><strong class="text-[var(--text-dark)]">Your rights.</strong> You may request access, correction, or erasure of your personal data, or object to processing, by contacting info@absoluteacrylics.ie. You may lodge a complaint with the Irish Data Protection Commission.</p>
+      <p><strong class="text-[var(--text-dark)]">Public map.</strong> Completed job locations are shown at approximate positions only, with homeowner consent. No exact addresses are published on the map.</p>
+    </div>
+    <button type="button" class="contact-above-map-submit w-full mt-4" id="dialog-privacy-close">Close</button>
+  </div>
+</dialog>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="./env.js"></script>
@@ -4583,7 +4653,6 @@ const portfolioJobsRaw = [
   {
     id: 50,
     lat: 53.2876520, lng: -6.2096037,
-    address: "17 Marsham Court, Stillorgan, Co. Dublin, A94",
     areaText: "Stillorgan, A94",
     consent_to_display: true,
     type: "145m² Semi-detached · White Acrylic",
@@ -4596,7 +4665,6 @@ const portfolioJobsRaw = [
   {
     id: 49,
     lat: 53.3986, lng: -6.1618,
-    address: "41 Greenwood Avenue, Donaghmede, Dublin 13",
     areaText: "Donaghmede, D13",
     consent_to_display: true,
     type: "70m² Semi-detached · Acrylic + Dash (White w/ 10% Black) + Brick Slips",
@@ -4609,7 +4677,6 @@ const portfolioJobsRaw = [
   {
     id: 19,
     lat: 53.385325, lng: -6.152571,
-    address: "15 Greendale Avenue, Raheny, Dublin 5",
     areaText: "Raheny, Dublin 5",
     consent_to_display: true,
     type: "117m² + Brickslips · 1002-Y50R Acrylic",
@@ -4622,7 +4689,6 @@ const portfolioJobsRaw = [
   {
     id: 31,
     lat: 53.3665569, lng: -6.2072665,
-    address: "114 Kincora Grove, Clontarf, Dublin 3",
     areaText: "Clontarf, Dublin 3",
     consent_to_display: true,
     type: "140m² Semi-detached · White Dash + Brick Slips",
@@ -4635,7 +4701,6 @@ const portfolioJobsRaw = [
   {
     id: 32,
     lat: 53.3808214, lng: -6.1684881,
-    address: "103 St Assam's Avenue, Raheny, Dublin 5",
     areaText: "Raheny, Dublin 5",
     consent_to_display: true,
     type: "118m² Semi-detached · White - 5% Red & 5% Black Dash + Slip Bricks",
@@ -4648,7 +4713,6 @@ const portfolioJobsRaw = [
   {
     id: 35,
     lat: 53.3013428, lng: -6.3081059,
-    address: "40 Templeville Drive, Templeogue, Dublin 6",
     areaText: "Templeogue, Dublin 6",
     consent_to_display: true,
     type: "113m² Semi-detached · White Acrylic",
@@ -4661,7 +4725,6 @@ const portfolioJobsRaw = [
   {
     id: 33,
     lat: 53.2999492, lng: -6.2081116,
-    address: "28 The Rise, Mount Merrion, A94 T3H4",
     areaText: "Mount Merrion, A94",
     consent_to_display: true,
     type: "155m² Semi-detached · 0505-Y20R Acrylic",
@@ -4674,7 +4737,6 @@ const portfolioJobsRaw = [
   {
     id: 30,
     lat: 53.2816577, lng: -6.2124389,
-    address: "76 Stillorgan Wood, Stillorgan, A94 PP97",
     areaText: "Stillorgan, A94",
     consent_to_display: true,
     type: "204m² Detached · Bright White Acrylic + Brick Slips",
@@ -4687,7 +4749,6 @@ const portfolioJobsRaw = [
   {
     id: 36,
     lat: 53.2839831, lng: -6.1763130,
-    address: "42 Pine Court, Newtown Park Avenue, Blackrock, A94 TP49",
     areaText: "Blackrock, A94",
     consent_to_display: true,
     type: "105m² Detached · Matt White Acrylic + Drylining",
@@ -4700,7 +4761,6 @@ const portfolioJobsRaw = [
   {
     id: 37,
     lat: 53.4922764, lng: -6.1378634,
-    address: "Lynders Farm, Portrane Road, Donabate, K36 DH97",
     areaText: "Donabate, K36",
     consent_to_display: true,
     type: "147m² Detached · 1002-B Acrylic",
@@ -4713,7 +4773,6 @@ const portfolioJobsRaw = [
   {
     id: 38,
     lat: 53.3754720, lng: -6.2097435,
-    address: "127 Killester Avenue, Killester, D05 V261",
     areaText: "Killester, D05",
     consent_to_display: true,
     type: "69m² Mid-Terrace · 0505-Y30R Acrylic",
@@ -4726,7 +4785,6 @@ const portfolioJobsRaw = [
   {
     id: 39,
     lat: 53.3781581, lng: -6.3524745,
-    address: "11 Phoenix Gardens, Castleknock, Dublin 15",
     areaText: "Castleknock, D15",
     consent_to_display: true,
     type: "100m² Semi-detached · 0505-Y20R Acrylic + Brick Slips",
@@ -4739,7 +4797,6 @@ const portfolioJobsRaw = [
   {
     id: 40,
     lat: 53.3405256, lng: -6.3721826,
-    address: "14 Orchard Lawns, Ballyfermot, Dublin 10",
     areaText: "Ballyfermot, D10",
     consent_to_display: true,
     type: "127m² Semi-detached · 2010-Y40R Acrylic + Dash",
@@ -4752,7 +4809,6 @@ const portfolioJobsRaw = [
   {
     id: 41,
     lat: 53.3994019, lng: -6.4051207,
-    address: "149 Briarwood Avenue, Dublin 15",
     areaText: "Briarwood Avenue, D15",
     consent_to_display: true,
     type: "111m² Semi-detached · 1000-N Acrylic + Stone",
@@ -4765,7 +4821,6 @@ const portfolioJobsRaw = [
   {
     id: 42,
     lat: 53.3850830, lng: -6.1765370,
-    address: "107 Woodbine Park, Raheny, Dublin 5",
     areaText: "Raheny, Dublin 5",
     consent_to_display: true,
     type: "121m² Semi-detached · Matt White Acrylic",
@@ -4778,7 +4833,6 @@ const portfolioJobsRaw = [
   {
     id: 43,
     lat: 53.1944132, lng: -6.1260203,
-    address: "120 Killarney Heights, Bray, Co. Wicklow, A98 WN36",
     areaText: "Bray, A98",
     consent_to_display: true,
     type: "124m² Semi-detached · Cavity Pumping",
@@ -4791,7 +4845,6 @@ const portfolioJobsRaw = [
   {
     id: 44,
     lat: 53.3134289, lng: -6.3124972,
-    address: "34 Shelton Park, Kimmage, Dublin 12",
     areaText: "Kimmage, D12",
     consent_to_display: true,
     type: "115m² Detached · 2010-G30Y Acrylic",
@@ -4804,7 +4857,6 @@ const portfolioJobsRaw = [
   {
     id: 45,
     lat: 53.2331111, lng: -6.6496869,
-    address: "5 Dun Na Riogh Rise, Naas, Co. Kildare, W91 YA8P",
     areaText: "Naas, W91",
     consent_to_display: true,
     type: "130m² Semi-detached · 0505-Y20R Acrylic + Brick Slips",
@@ -4817,7 +4869,6 @@ const portfolioJobsRaw = [
   {
     id: 46,
     lat: 53.3864000, lng: -6.1447300,
-    address: "13 Sarto Road, Baldoyle, Dublin 13",
     areaText: "Baldoyle, D13",
     consent_to_display: true,
     type: "147m² Detached · Matt White Acrylic + Brick Cavity Pumping",
@@ -4830,7 +4881,6 @@ const portfolioJobsRaw = [
   {
     id: 47,
     lat: 53.3216133, lng: -6.3301177,
-    address: "76 Beechfield Road, Walkinstown, Dublin 10",
     areaText: "Walkinstown, D10",
     consent_to_display: true,
     type: "120m² Semi-detached · 1002-Y50R Acrylic",
@@ -4843,7 +4893,6 @@ const portfolioJobsRaw = [
   {
     id: 48,
     lat: 53.2730380, lng: -6.1213628,
-    address: "29 Killiney Rd, Dalkey, Co. Dublin, A96 EA0O",
     areaText: "Dalkey, A96",
     consent_to_display: true,
     type: "129m² Semi-detached · 0603-R80B Acrylic + Brick Slips",
@@ -4856,7 +4905,6 @@ const portfolioJobsRaw = [
   {
     id: 29,
     lat: 53.3041877, lng: -6.2807651,
-    address: "1 Dodder Park Road, Rathfarnham, D14 EP46",
     areaText: "Rathfarnham, D14",
     consent_to_display: true,
     type: "145m² Semi-detached · Bright White Acrylic",
@@ -4869,7 +4917,6 @@ const portfolioJobsRaw = [
   {
     id: 28,
     lat: 53.3039451, lng: -6.3709242,
-    address: "85 The Dale, Tallaght, D24 Y77C",
     areaText: "Tallaght, D24",
     consent_to_display: true,
     type: "118m² Semi-detached · 1000-N Acrylic + Stone",
@@ -4882,7 +4929,6 @@ const portfolioJobsRaw = [
   {
     id: 27,
     lat: 53.2871327, lng: -6.1479731,
-    address: "18 Glandore Pk Lower, Mount Town, Dun Laoghaire",
     areaText: "Mount Town, Dun Laoghaire",
     consent_to_display: true,
     type: "156m² Detached · 1000-N Acrylic",
@@ -4895,7 +4941,6 @@ const portfolioJobsRaw = [
   {
     id: 26,
     lat: 53.3652181, lng: -6.2378075,
-    address: "4 Shelmartin Ave, Marino, Dublin 3",
     areaText: "Marino, Dublin 3",
     consent_to_display: true,
     type: "105m² Semi-detached · White with Ivory Receiver Dash",
@@ -4908,7 +4953,6 @@ const portfolioJobsRaw = [
   {
     id: 25,
     lat: 53.2389969, lng: -6.1241782,
-    address: "24 Hazelwood, Shankill, Dublin 18",
     areaText: "Shankill, Dublin 18",
     consent_to_display: true,
     type: "148m² Detached · 0907-Y30R Acrylic + Brick Slips",
@@ -4921,7 +4965,6 @@ const portfolioJobsRaw = [
   {
     id: 24,
     lat: 53.3868375, lng: -6.2344676,
-    address: "157 Shantalla Road, Whitehall, Dublin 9",
     areaText: "Whitehall, Dublin 9",
     consent_to_display: true,
     type: "150m² Semi-detached · White Dash - 10% Barley Corn + Brick Slips",
@@ -4934,7 +4977,6 @@ const portfolioJobsRaw = [
   {
     id: 23,
     lat: 53.3774064, lng: -6.2600045,
-    address: "368 Griffith Ave, Drumcondra, Dublin 9",
     areaText: "Drumcondra, Dublin 9",
     consent_to_display: true,
     type: "165m² · White Dash + Brick Slips",
@@ -4947,7 +4989,6 @@ const portfolioJobsRaw = [
   {
     id: 22,
     lat: 53.3787336, lng: -6.1859623,
-    address: "43 Ennafort Park, Raheny, Dublin 5",
     areaText: "Raheny, Dublin 5",
     consent_to_display: true,
     type: "135m² · Dash White 10% Barley corn",
@@ -4984,7 +5025,6 @@ const portfolioJobsRaw = [
   {
     id: 14,
     lat: 53.3732, lng: -6.2048,
-    address: "Killester Park, Killester, Dublin 5",
     areaText: "Killester, Dublin 5",
     consent_to_display: true,
     type: "105m² End of Terrace · 1002-Y50R Acrylic",
@@ -4996,7 +5036,6 @@ const portfolioJobsRaw = [
   {
     id: 34,
     lat: 53.265575, lng: -6.209489,
-    address: "21 Glencairn View, The Gallops, D18 F381",
     areaText: "The Gallops, D18",
     consent_to_display: true,
     type: "215m² Detached · Matt White Acrylic",
@@ -5009,7 +5048,6 @@ const portfolioJobsRaw = [
   {
     id: 15,
     lat: 53.2827359, lng: -6.2194374,
-    address: "4 Lakelands Close, Stillorgan, A94 W586",
     areaText: "Stillorgan, A94",
     consent_to_display: true,
     type: "110m² Semi-detached · 1002-Y50R Acrylic, Anatolia & Med grey brick slips",
@@ -5022,7 +5060,6 @@ const portfolioJobsRaw = [
   {
     id: 17,
     lat: 53.3854210, lng: -6.1757110,
-    address: "69 Woodbine Park, Raheny, Dublin 5",
     areaText: "Raheny, Dublin 5",
     consent_to_display: true,
     type: "120m² · Dash White 10% Black + Brick Slips + Cavity Pumping",
@@ -5034,7 +5071,6 @@ const portfolioJobsRaw = [
   {
     id: 18,
     lat: 53.2703576, lng: -6.1634957,
-    address: "64 South Park, Deansgrange, D18 DX32",
     areaText: "Deansgrange, D18",
     consent_to_display: true,
     type: "214m² · Matt White Acrylic",
@@ -5064,9 +5100,8 @@ const DESKTOP_JOB_CARD_ORDER = [
   50, 49, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
 ];
 
-// ═══════════════════════════════════════════════════════════════
 // SUPABASE — customers
-// Run supabase/customers-setup.sql once in Supabase → SQL Editor (fixes quote RLS).
+// Run supabase/security_hardening.sql once in Supabase → SQL Editor (GDPR-safe RLS).
 // ═══════════════════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════════════
@@ -5075,6 +5110,8 @@ const DESKTOP_JOB_CARD_ORDER = [
 const runtimeEnv = (typeof window !== 'undefined' && window.ECOMAP_ENV) ? window.ECOMAP_ENV : {};
 const SUPABASE_URL = runtimeEnv.SUPABASE_URL || 'https://tfnjbqnagdfrexoegbdi.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = runtimeEnv.SUPABASE_PUBLISHABLE_KEY || '';
+/** Set ECOMAP_ENV.CRM_ENABLED = true only on trusted admin devices (never on the public site). */
+const CRM_ENABLED = runtimeEnv.CRM_ENABLED === true;
 const CUSTOMER_TABLE = 'customers';
 const QUOTE_REQUEST_TABLE = 'quote_requests';
 
@@ -5185,7 +5222,7 @@ function isMissingQuoteRpcError(error) {
     || msg.includes('could not find the function');
 }
 
-/** Save a quote enquiry via RPC (preferred) or direct insert. */
+/** Save a quote enquiry via RPC (preferred) or direct insert into quote_requests only. */
 async function insertCustomerEnquiry(row) {
   const directPayload = {
     name: row.name,
@@ -5201,7 +5238,7 @@ async function insertCustomerEnquiry(row) {
   });
   if (!rpcError) return { error: null };
   if (!isMissingQuoteRpcError(rpcError)) return { error: rpcError };
-  return supabaseClient.from('customers').insert(directPayload);
+  return supabaseClient.from(QUOTE_REQUEST_TABLE).insert(directPayload);
 }
 
 async function flushPendingQuotes() {
@@ -5284,6 +5321,7 @@ function isValidName(raw) {
 }
 
 async function fetchCustomers() {
+  if (!CRM_ENABLED) return;
   const listErr = document.getElementById('crm-customers-error');
   if (listErr) listErr.classList.add('hidden');
   if (!supabaseClient) {
@@ -5662,6 +5700,9 @@ async function deleteCustomer(id) {
 let appView = 'home';
 
 async function setAppView(view) {
+  if ((view === 'jobs' || view === 'customers') && !CRM_ENABLED) {
+    view = 'home';
+  }
   appView = view;
   const hideEls = document.querySelectorAll('[data-hide-on-subview]');
   const vJobs = document.getElementById('crm-view-jobs');
@@ -7148,11 +7189,7 @@ function initMap() {
   }
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      pos => updateLiveUserLocation(pos.coords, false),
-      () => { /* permission denied — no nearest highlight */ }
-    );
-    startLiveUserLocationTracking();
+    /* Location is only requested when the user taps the locate button (GDPR opt-in). */
   }
 
   const locateBtn = document.getElementById('map-locate-btn');
@@ -7161,7 +7198,10 @@ function initMap() {
     locateBtn.addEventListener('click', () => {
       if (!map || !navigator.geolocation) return;
       navigator.geolocation.getCurrentPosition(
-        pos => updateLiveUserLocation(pos.coords, true),
+        pos => {
+          updateLiveUserLocation(pos.coords, true);
+          startLiveUserLocationTracking();
+        },
         () => {},
         { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
       );
@@ -7704,8 +7744,8 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
       console.error('Quote insert failed:', error);
       queuePendingQuote({ name, email: email || null, phone: phone || null, message: message || null });
       if (isRlsPolicyError(error) || isMissingQuoteRpcError(error)) {
-        showSupabaseBanner('Quote save blocked — run supabase/customers-setup.sql in Supabase SQL Editor.');
-        feedback.textContent = 'Could not save your enquiry yet. Your admin needs to run supabase/customers-setup.sql once in the Supabase dashboard.';
+        showSupabaseBanner('Quote save blocked — run supabase/security_hardening.sql in Supabase SQL Editor.');
+        feedback.textContent = 'Could not save your enquiry yet. Your admin needs to run supabase/security_hardening.sql once in the Supabase dashboard.';
       } else {
         const detail = formatSupabaseError(error);
         showSupabaseBanner('Could not save enquiry right now.');
@@ -7714,7 +7754,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
       return;
     }
 
-    await fetchCustomers();
+    if (CRM_ENABLED) await fetchCustomers();
     markQuoteSubmittedNow();
     feedback.textContent = successMsg;
     form.reset();
@@ -7761,11 +7801,13 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
       openMobileJobsSheet();
       scheduleMapResize();
     } else {
-      setAppView('jobs');
+      if (CRM_ENABLED) setAppView('jobs');
+      else setAppView('home');
     }
   });
 
   tabCustomers.addEventListener('click', () => {
+    if (!CRM_ENABLED) return;
     setTab(tabCustomers);
     setAppView('customers');
     closePanel();
@@ -7774,6 +7816,22 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
   tabEnquire.addEventListener('click', () => {
     openQuoteEnquire();
     setTab(tabEnquire);
+  });
+})();
+
+(function initGdprUi() {
+  if (CRM_ENABLED) {
+    document.body.classList.add('crm-enabled');
+  }
+  const privacyDlg = document.getElementById('dialog-privacy');
+  document.getElementById('quote-privacy-open')?.addEventListener('click', () => {
+    privacyDlg?.showModal();
+  });
+  document.getElementById('dialog-privacy-close')?.addEventListener('click', () => {
+    privacyDlg?.close();
+  });
+  privacyDlg?.addEventListener('click', (e) => {
+    if (e.target === privacyDlg) privacyDlg.close();
   });
 })();
 

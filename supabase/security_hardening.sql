@@ -89,6 +89,48 @@ create policy "Authenticated reads quote_requests"
 create index if not exists quote_requests_created_at_idx
   on public.quote_requests (created_at desc);
 
+-- Public quote form: controlled insert into quote_requests (never public customers table).
+create or replace function public.submit_quote_enquiry(
+  p_name text,
+  p_email text default null,
+  p_phone text default null,
+  p_message text default null
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  new_id uuid;
+begin
+  if coalesce(trim(p_name), '') = '' then
+    raise exception 'Name is required';
+  end if;
+
+  insert into public.quote_requests (name, email, phone, message)
+  values (
+    trim(p_name),
+    nullif(trim(coalesce(p_email, '')), ''),
+    nullif(trim(coalesce(p_phone, '')), ''),
+    nullif(trim(coalesce(p_message, '')), '')
+  )
+  returning id into new_id;
+
+  return new_id;
+end;
+$$;
+
+revoke all on function public.submit_quote_enquiry(text, text, text, text) from public;
+grant execute on function public.submit_quote_enquiry(text, text, text, text) to anon, authenticated;
+
+-- Revoke any legacy anon CRM access.
+revoke select, insert, update, delete on table public.customers from anon;
+drop policy if exists "customers_anon_select" on public.customers;
+drop policy if exists "customers_anon_insert" on public.customers;
+drop policy if exists "customers_anon_update" on public.customers;
+drop policy if exists "customers_anon_delete" on public.customers;
+
 -- Jobs table hardening for public map use-cases.
 create table if not exists public.jobs (
   id uuid primary key default gen_random_uuid(),
