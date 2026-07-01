@@ -2231,10 +2231,41 @@
       user-select: none;
       -webkit-user-select: none;
       touch-action: none;
+      --swipe-handle-pad: 8px;
     }
     @media (min-width: 901px) {
       .swipe-discount {
-        height: 130px;
+        height: 87.75px;
+        margin: 9.45px auto 10.8px;
+        border-radius: 8.775px;
+        box-shadow: 0 2.7px 12.15px rgba(107, 31, 58, 0.1);
+        --swipe-handle-pad: 5.4px;
+      }
+      .swipe-discount__reveal {
+        gap: 4.05px;
+        padding: 8.1px 10.8px;
+      }
+      .swipe-discount__code {
+        font-size: clamp(0.91rem, 3.06vw, 1.12rem);
+      }
+      .swipe-discount__note {
+        font-size: 8.1px;
+      }
+      .swipe-discount__cover {
+        padding: 0 13.5px 0 48.6px;
+      }
+      .swipe-discount__hint {
+        font-size: clamp(9px, 2.3vw, 10.125px);
+      }
+      .swipe-discount__handle {
+        left: 5.4px;
+        width: 35.1px;
+        height: 35.1px;
+        box-shadow: 0 2.025px 8.1px rgba(107, 30, 61, 0.32);
+      }
+      .swipe-discount__handle svg {
+        width: 14.85px;
+        height: 14.85px;
       }
     }
     .swipe-discount__reveal {
@@ -4651,6 +4682,54 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
+    id: 54,
+    lat: 53.2801919, lng: -6.2262049,
+    areaText: "Dundrum, D16",
+    consent_to_display: true,
+    type: "108m² Semi-detached · Dash & Fern Stone",
+    completedDate: "September 2025",
+    berBefore: "C2", berAfter: "A3",
+    annualSaving: 1700, valueIncrease: 25900, co2Reduction: 2.3, treesEquivalent: 160, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/174-balally-drive-before.png"],
+    afterPhotos: ["./assets/job-photos/174-balally-drive-after.png"]
+  },
+  {
+    id: 53,
+    lat: 53.3299263, lng: -6.3236515,
+    areaText: "Drimnagh, D12",
+    consent_to_display: true,
+    type: "110m² End of Terrace · White Dash",
+    completedDate: "August 2025",
+    berBefore: "C2", berAfter: "B2",
+    annualSaving: 1200, valueIncrease: 23500, co2Reduction: 1.7, treesEquivalent: 120, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/30-dromand-road-before.png"],
+    afterPhotos: ["./assets/job-photos/30-dromand-road-after.png"]
+  },
+  {
+    id: 52,
+    lat: 53.5928129, lng: -6.3198181,
+    areaText: "Clonalvy, A42",
+    consent_to_display: true,
+    type: "174m² Detached · 2005-Y70R Acrylic",
+    completedDate: "September 2025",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 1900, valueIncrease: 29000, co2Reduction: 6.1, treesEquivalent: 433, seaiGrant: 8050,
+    beforePhotos: ["./assets/job-photos/droeiln-tankerstown-clonalvy-before.png"],
+    afterPhotos: ["./assets/job-photos/droeiln-tankerstown-clonalvy-after.png"]
+  },
+  {
+    id: 51,
+    lat: 53.3849500, lng: -6.1712500,
+    areaText: "Raheny, Dublin 5",
+    consent_to_display: true,
+    type: "50m² Mid-Terrace · 1010-Y20R Acrylic",
+    completedDate: "September 2025",
+    berBefore: "B3", berAfter: "A3",
+    annualSaving: 500, valueIncrease: 13050, co2Reduction: 1.5, treesEquivalent: 106, seaiGrant: 3550,
+    beforePhotos: ["./assets/job-photos/45-belmont-park-before.png"],
+    afterPhotos: ["./assets/job-photos/45-belmont-park-after.png"]
+  },
+  {
     id: 50,
     lat: 53.2876520, lng: -6.2096037,
     areaText: "Stillorgan, A94",
@@ -5097,7 +5176,7 @@ const PINNED_JOB_CARD_IDS = [19, 31, 32];
 
 /** Remaining job card order after pinned cards (new jobs: append id here). */
 const DESKTOP_JOB_CARD_ORDER = [
-  50, 49, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
+  54, 53, 52, 51, 50, 49, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
 ];
 
 // SUPABASE — customers
@@ -7578,9 +7657,13 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
   const reveal = root.querySelector('.swipe-discount__reveal');
   const STORAGE_KEY = 'ecomap_discount_revealed';
   const THRESHOLD = 0.85;
-  const HANDLE_PAD = 8;
 
   if (!handle || !cover) return;
+
+  function getHandlePad() {
+    const pad = parseFloat(getComputedStyle(root).getPropertyValue('--swipe-handle-pad'));
+    return Number.isFinite(pad) ? pad : 8;
+  }
 
   function markRevealed() {
     root.classList.add('is-revealed');
@@ -7603,7 +7686,8 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
   let startOffset = 0;
 
   function getMaxDrag() {
-    return Math.max(0, root.clientWidth - handle.offsetWidth - HANDLE_PAD * 2);
+    const pad = getHandlePad();
+    return Math.max(0, root.clientWidth - handle.offsetWidth - pad * 2);
   }
 
   function getProgress(offset) {
@@ -7615,7 +7699,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     const max = getMaxDrag();
     const x = Math.max(0, Math.min(max, offset));
     dragOffset = x;
-    handle.style.left = `${HANDLE_PAD + x}px`;
+    handle.style.left = `${getHandlePad() + x}px`;
     cover.style.opacity = String(1 - getProgress(x));
     if (!animate) {
       handle.style.transition = 'none';
