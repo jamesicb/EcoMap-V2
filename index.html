@@ -1588,6 +1588,199 @@
       margin-top: 2px;
       margin-bottom: 2px;
     }
+    @media (min-width: 901px) {
+      .map-properties-sidebar {
+        height: 100%;
+      }
+      .map-sidebar-inner {
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+      }
+      .map-sidebar-jobs-row {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 42%;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .map-sidebar-header {
+        flex: 0 0 auto;
+        font-size: 0.82rem;
+        margin-bottom: 4px;
+        line-height: 1.15;
+      }
+      .map-sidebar-list {
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: none;
+        overflow-y: auto;
+      }
+      .map-sidebar-quote {
+        flex: 1 1 58%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding-top: 10px;
+      }
+      .map-sidebar-quote .quote-sheet-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        gap: clamp(5px, 0.9vh, 9px);
+      }
+      .map-sidebar-quote .job-strip-quote-brand {
+        order: 1;
+        margin-bottom: 0;
+        flex: 0 0 auto;
+        min-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(6px, 1.2vh, 12px) 0 clamp(2px, 0.5vh, 6px);
+      }
+      .map-sidebar-quote .lux-brand-heading-wrap--compact .lux-brand-above-form--row {
+        font-size: clamp(1.15rem, 2.8vh, 1.55rem);
+        line-height: 1;
+      }
+      .map-sidebar-quote .js-quote-form {
+        order: 2;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        margin-bottom: 0;
+      }
+      .map-sidebar-quote .contact-above-map.contact-above-map--stacked {
+        gap: clamp(5px, 0.9vh, 9px);
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      .map-sidebar-quote .contact-above-map.contact-above-map--stacked > .contact-above-map-input:not(.quote-message-input),
+      .map-sidebar-quote .contact-above-map.contact-above-map--stacked .contact-above-map-inline-pair,
+      .map-sidebar-quote .contact-above-map.contact-above-map--stacked > .quote-message-input {
+        flex: 0 0 auto;
+        min-height: 0;
+        height: auto;
+      }
+      .map-sidebar-quote .contact-above-map-submit {
+        flex: 1 1 0;
+        min-height: 0;
+      }
+      .map-sidebar-quote .contact-above-map-input {
+        font-size: clamp(11px, 1.25vh, 13px);
+        padding: clamp(5px, 0.85vh, 9px) clamp(8px, 1vh, 11px);
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .map-sidebar-quote .contact-above-map.contact-above-map--stacked > .contact-above-map-input:not(.quote-message-input),
+      .map-sidebar-quote .contact-above-map-inline-pair .contact-above-map-input {
+        height: auto;
+      }
+      .map-sidebar-quote .contact-above-map-inline-pair {
+        gap: clamp(5px, 0.9vh, 9px);
+        display: flex;
+        align-items: stretch;
+      }
+      .map-sidebar-quote .contact-above-map-inline-pair .contact-above-map-input {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+      .map-sidebar-quote .quote-message-input {
+        height: auto;
+        min-height: 0;
+        max-height: 2.4em;
+        resize: none;
+        line-height: 1.25;
+        overflow-y: auto;
+      }
+      .map-sidebar-quote .quote-privacy-notice {
+        display: block;
+        flex: 0 0 auto;
+        margin: 0;
+        font-size: clamp(8.5px, 1vh, 10px);
+        line-height: 1.3;
+        overflow: visible;
+      }
+      .map-sidebar-quote .quote-privacy-consent {
+        flex: 0 0 auto;
+        margin: 0;
+        font-size: clamp(9px, 1.05vh, 11px);
+        line-height: 1.3;
+        gap: clamp(5px, 0.7vh, 7px);
+        align-items: flex-start;
+      }
+      .map-sidebar-quote .quote-privacy-consent input {
+        margin-top: 2px;
+        width: clamp(12px, 1.3vh, 14px);
+        height: clamp(12px, 1.3vh, 14px);
+        flex-shrink: 0;
+      }
+      .map-sidebar-quote .quote-feedback {
+        order: 4;
+        flex: 0 0 auto;
+        margin: 0;
+      }
+      .map-sidebar-quote .swipe-discount {
+        order: 3;
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: none;
+        height: clamp(52px, 7vh, 64px);
+        min-height: 52px;
+        margin: 0;
+        position: relative;
+        overflow: hidden;
+        --swipe-handle-pad: clamp(4px, 0.6vh, 6px);
+      }
+      .map-sidebar-quote .contact-above-map-submit {
+        flex: 1 1 0;
+        min-height: 0;
+        padding: clamp(5px, 0.85vh, 9px) clamp(8px, 1vh, 12px);
+        font-size: clamp(10px, 1.1vh, 12px);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .map-sidebar-quote .swipe-discount__reveal {
+        gap: clamp(2px, 0.4vh, 4px);
+        padding: clamp(4px, 0.7vh, 8px) clamp(6px, 0.9vh, 10px);
+      }
+      .map-sidebar-quote .swipe-discount__code {
+        font-size: clamp(0.8rem, 1.6vh, 1rem);
+      }
+      .map-sidebar-quote .swipe-discount__note {
+        font-size: clamp(7px, 0.85vh, 9px);
+      }
+      .map-sidebar-quote .swipe-discount__cover {
+        padding: 0 clamp(8px, 1vh, 12px) 0 clamp(34px, 5vh, 44px);
+        opacity: 1;
+      }
+      .map-sidebar-quote .swipe-discount__hint {
+        font-size: clamp(8px, 0.95vh, 10px);
+      }
+      .map-sidebar-quote .swipe-discount__handle {
+        left: var(--swipe-handle-pad);
+        width: clamp(24px, 4.5vh, 34px);
+        height: clamp(24px, 4.5vh, 34px);
+        opacity: 1;
+      }
+      .map-sidebar-quote .swipe-discount__handle svg {
+        width: clamp(11px, 1.4vh, 14px);
+        height: clamp(11px, 1.4vh, 14px);
+      }
+      .map-sidebar-quote .swipe-discount.is-revealed .swipe-discount__cover,
+      .map-sidebar-quote .swipe-discount.is-revealed .swipe-discount__handle {
+        opacity: 0;
+      }
+    }
     @media (max-width: 900px) {
       .map-sidebar-list {
         min-height: 0;
@@ -1602,8 +1795,7 @@
       .map-properties-sidebar.is-quote-sheet {
         max-height: none;
       }
-      .map-properties-sidebar.is-quote-sheet .map-sidebar-list,
-      .map-properties-sidebar.is-quote-sheet .map-sidebar-header {
+      .map-properties-sidebar.is-quote-sheet .map-sidebar-jobs-row {
         display: none !important;
       }
       .map-properties-sidebar.is-quote-sheet .map-sidebar-quote {
@@ -4413,8 +4605,8 @@
               <button type="button" class="map-sidebar-sheet-close" id="map-sidebar-sheet-close" aria-label="Close panel">×</button>
             </div>
             <div class="map-sidebar-inner" id="map-sidebar-list-wrap">
-              <div class="map-sidebar-header">Nearby jobs — click to view details</div>
               <div class="map-sidebar-jobs-row" id="map-sidebar-jobs-row">
+                <div class="map-sidebar-header">Nearby jobs — click to view details</div>
                 <div class="map-sidebar-list" id="map-properties-list"></div>
                 <div class="map-sidebar-scroll-wrap" id="map-sidebar-scroll-wrap" aria-hidden="true">
                   <button type="button" class="map-sidebar-scroll-arrow map-sidebar-scroll-arrow--up" id="map-sidebar-scroll-up" aria-label="Scroll up">
@@ -6044,7 +6236,8 @@ function jobMatchesHouseTypeFilter(job) {
     return t.includes('end-of-terrace') || t.includes('end of terrace');
   }
   if (houseTypeFilter === 'mid-terrace') {
-    return t.includes('terraced') && !t.includes('end-of-terrace') && !t.includes('end of terrace');
+    return (t.includes('mid-terrace') || t.includes('mid terrace'))
+      && !t.includes('end-of-terrace') && !t.includes('end of terrace');
   }
   return true;
 }
@@ -7655,7 +7848,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
   const handle = root.querySelector('.swipe-discount__handle');
   const cover = root.querySelector('.swipe-discount__cover');
   const reveal = root.querySelector('.swipe-discount__reveal');
-  const STORAGE_KEY = 'ecomap_discount_revealed';
+  const STORAGE_KEY = 'ecomap_discount_revealed_v2';
   const THRESHOLD = 0.85;
 
   if (!handle || !cover) return;
@@ -7673,12 +7866,24 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (_) { /* no-op */ }
   }
 
+  function resetCover() {
+    root.classList.remove('is-revealed', 'is-dragging');
+    cover.style.opacity = '';
+    handle.style.opacity = '';
+    handle.style.left = '';
+    handle.style.transition = '';
+    cover.style.transition = '';
+    if (reveal) reveal.setAttribute('aria-hidden', 'true');
+  }
+
   try {
     if (sessionStorage.getItem(STORAGE_KEY)) {
       markRevealed();
       return;
     }
   } catch (_) { /* no-op */ }
+
+  resetCover();
 
   let dragging = false;
   let dragOffset = 0;
