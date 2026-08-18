@@ -86,3 +86,22 @@ test('areaFromAddress returns neighbourhood and postal district only', () => {
     'Dublin 5'
   );
 });
+
+test('warm-build fields pass through public sanitization', () => {
+  const result = privacy.sanitizePublicJobs([{
+    id: 55,
+    lat: 53.34,
+    lng: -6.26,
+    areaText: 'Dublin',
+    type: 'Warm Build Cabin · White Dash',
+    cardType: 'warm-build',
+    finishType: 'White Dash',
+    buildTitle: 'Stand Alone Warm Build',
+    consent_to_display: true
+  }]);
+  assert.equal(result.length, 1);
+  assert.equal(result[0].cardType, 'warm-build');
+  assert.equal(result[0].finishType, 'White Dash');
+  assert.equal(result[0].buildTitle, 'Stand Alone Warm Build');
+  assert.equal(Object.hasOwn(result[0], 'address'), false);
+});

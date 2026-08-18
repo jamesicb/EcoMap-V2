@@ -124,7 +124,15 @@
       bathrooms: rawJob.bathrooms == null ? null : normalizeNumber(rawJob.bathrooms, null),
       beforePhotos: Array.isArray(rawJob.beforePhotos) ? rawJob.beforePhotos.slice() : [],
       afterPhotos: Array.isArray(rawJob.afterPhotos) ? rawJob.afterPhotos.slice() : [],
-      consentToDisplay: true
+      consentToDisplay: true,
+      cardType: rawJob.cardType === 'warm-build' ? 'warm-build' : undefined,
+      buildPrice: normalizeNumber(rawJob.buildPrice, 0) || undefined,
+      cabinSize: normalizeNumber(rawJob.cabinSize, 0) || undefined,
+      weeksToCompletion: normalizeNumber(rawJob.weeksToCompletion, 0) || undefined,
+      finishType: rawJob.finishType ? String(rawJob.finishType) : undefined,
+      buildTitle: rawJob.buildTitle ? String(rawJob.buildTitle) : undefined,
+      buildSubtitle: rawJob.buildSubtitle ? String(rawJob.buildSubtitle) : undefined,
+      buildDescription: rawJob.buildDescription ? String(rawJob.buildDescription) : undefined
     };
   }
 
