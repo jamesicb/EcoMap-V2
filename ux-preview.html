@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>EcoMap UX preview — Absolute Acrylics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --canvas: #f7f7f7;
+      --surface: #ffffff;
+      --text: #222222;
+      --muted: #6a6a6a;
+      --line: #ebebeb;
+      --brand: #6b1e3d;
+      --brand-deep: #5e1a36;
+      --sun: #f5d97a;
+      --radius-card: 20px;
+      --radius-btn: 12px;
+      --phone-w: 390px;
+      --phone-h: 844px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: #e8e6e3;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .stage {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px 16px 32px;
+    }
+    .stage-note {
+      max-width: var(--phone-w);
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #5c5c5c;
+    }
+    .stage-note strong { color: var(--text); font-weight: 600; }
+
+    .phone {
+      width: min(100%, var(--phone-w));
+      height: min(90vh, var(--phone-h));
+      background: var(--surface);
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #d9d6d2;
+    }
+
+    .screen { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--surface); }
+    .screen.is-on { display: flex; }
+
+    .status {
+      flex: 0 0 auto;
+      height: 48px;
+      padding: 14px 22px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    /* Splash */
+    #splash { background: var(--surface); padding: 0 24px 28px; }
+    .splash-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      text-align: center;
+    }
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--brand);
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+    }
+    .logo svg { width: 42px; height: 42px; display: block; }
+    .wordmark {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    .tagline {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 28px;
+    }
+    .proof {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+    .proof span { white-space: nowrap; }
+    .proof .dot { color: #c1c1c1; }
+    .cta {
+      width: 100%;
+      border: 0;
+      background: var(--brand);
+      color: #fff;
+      font: 500 15px/1.2 Inter, system-ui, sans-serif;
+      padding: 16px 18px;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+    }
+    .cta:active { background: var(--brand-deep); }
+    .cta:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; }
+    .fine {
+      margin-top: 16px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Map */
+    #map-screen { background: var(--canvas); }
+    .map-top {
+      position: absolute;
+      top: 52px;
+      left: 14px;
+      right: 14px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-pill {
+      flex: 1;
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 10px 14px 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px, rgba(0,0,0,0.1) 0 4px 8px;
+    }
+    .search-pill b { display: block; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+    .search-pill small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 0;
+      background: var(--surface);
+      box-shadow: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.16) 0 2px 4px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--text);
+    }
+
+    .map-art {
+      flex: 1;
+      min-height: 0;
+      background:
+        linear-gradient(#eef1ea, #eef1ea),
+        repeating-linear-gradient(90deg, transparent 0 46px, #e4e7e0 46px 47px),
+        repeating-linear-gradient(0deg, transparent 0 38px, #e4e7e0 38px 39px);
+      background-blend-mode: multiply;
+      position: relative;
+    }
+    .park {
+      position: absolute;
+      background: #dce8d4;
+      border-radius: 40% 60% 50% 50%;
+    }
+    .pin {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      color: var(--text);
+      border: 0;
+      border-radius: 20px;
+      padding: 6px 10px;
+      font: 600 12px/1 Inter, system-ui, sans-serif;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      box-shadow: rgba(0,0,0,0.12) 0 2px 6px;
+    }
+    .pin.is-on { background: var(--brand); color: #fff; }
+
+    .sheet {
+      flex: 0 0 auto;
+      background: var(--surface);
+      border-radius: 20px 20px 0 0;
+      padding: 8px 16px 0;
+      max-height: 46%;
+      display: flex;
+      flex-direction: column;
+    }
+    .grabber {
+      width: 36px;
+      height: 4px;
+      border-radius: 4px;
+      background: #ddd;
+      margin: 4px auto 10px;
+    }
+    .sheet h2 {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .cards {
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .listing {
+      border: 0;
+      background: transparent;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      width: 100%;
+    }
+    .listing-photo {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      background: #ddd;
+    }
+    .listing-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #fff;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 5px 9px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .listing-meta { padding: 10px 2px 0; }
+    .listing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .listing-row h3 { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+    .listing-row .ber { font-size: 12px; font-weight: 600; }
+    .listing-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .listing-save { font-size: 14px; font-weight: 600; margin-top: 4px; }
+
+    .tabbar {
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--line);
+      background: var(--surface);
+      padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
+    }
+    .tab {
+      border: 0;
+      background: transparent;
+      font: 500 11px Inter, system-ui, sans-serif;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 6px;
+      cursor: pointer;
+    }
+    .tab.is-on { color: var(--brand); font-weight: 600; }
+    .tab svg { width: 22px; height: 22px; }
+
+    /* Detail */
+    #detail { background: var(--surface); }
+    .detail-scroll { flex: 1; overflow: auto; min-height: 0; }
+    .detail-nav {
+      position: absolute;
+      top: 52px;
+      left: 12px;
+      right: 12px;
+      z-index: 4;
+      display: flex;
+      justify-content: space-between;
+    }
+    .ba {
+      position: relative;
+      height: 42%;
+      min-height: 240px;
+      background: #ddd;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+    .ba img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .ba-before { z-index: 1; }
+    .ba-after { z-index: 2; clip-path: inset(0 0 0 52%); }
+    .ba-line {
+      position: absolute;
+      top: 0; bottom: 0; left: 52%;
+      width: 2px;
+      background: #fff;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .ba-handle {
+      position: absolute;
+      top: 50%;
+      left: 52%;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      font-size: 12px;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .ba-label {
+      position: absolute;
+      bottom: 12px;
+      z-index: 2;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+    .ba-label.before { left: 12px; }
+    .ba-label.after { right: 12px; }
+
+    .detail-body { padding: 18px 20px 12px; }
+    .detail-kicker { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .detail-body h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .detail-sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+    .ber-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .ber-old { font-size: 28px; font-weight: 600; color: var(--muted); letter-spacing: -0.03em; }
+    .ber-arrow { color: var(--muted); }
+    .ber-new { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; }
+    .ber-cap { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .metrics b { display: block; font-size: 22px; font-weight: 600; letter-spacing: -0.03em; }
+    .metrics span { display: block; font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.35; }
+    .footnote { font-size: 11px; color: var(--muted); line-height: 1.45; margin-bottom: 14px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .reserve {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .reserve small { display: block; font-size: 12px; color: var(--muted); }
+    .reserve b { font-size: 13px; }
+    .reserve .cta { width: auto; padding: 12px 16px; font-size: 14px; }
+
+    .toast {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 84px;
+      background: var(--text);
+      color: #fff;
+      font-size: 13px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      display: none;
+      z-index: 8;
+    }
+    .toast.is-on { display: block; }
+
+    @media (max-width: 480px) {
+      .stage { padding: 0; justify-content: stretch; }
+      .phone {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        border: 0;
+      }
+      .stage-note { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <p class="stage-note"><strong>Interactive preview</strong> — locked direction from the UX audit. Real job photos. Not the live app.</p>
+    <div class="phone" id="phone">
+      <section class="screen is-on" id="splash" aria-label="Splash">
+        <div class="status"><span>9:41</span><span>LTE</span></div>
+        <div class="splash-body">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="28" fill="#F5D97A"/>
+              <circle cx="50" cy="50" r="10" fill="#6B1E3D"/>
+            </svg>
+          </div>
+          <div class="wordmark">Absolute Acrylics</div>
+          <p class="tagline">See insulated homes near you.</p>
+          <div class="proof">
+            <span>340 Dublin homes</span>
+            <span class="dot">·</span>
+            <span>★ 4.76 Google</span>
+            <span class="dot">·</span>
+            <span>SEAI-registered</span>
+          </div>
+          <button class="cta" type="button" id="go-map">See completed jobs near you</button>
+          <p class="fine">Locations are approximate to protect homeowners.</p>
+        </div>
+      </section>
+
+      <section class="screen" id="map-screen" aria-label="Map">
+        <div class="status"><span>9:41</span><span>LTE</span></div>
+        <div class="map-top">
+          <div class="search-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <div>
+              <b>Homes near you</b>
+              <small>Dublin · All house types</small>
+            </div>
+          </div>
+          <button class="icon-btn" type="button" aria-label="Filters">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M7 12h10M10 17h4"/></svg>
+          </button>
+        </div>
+        <div class="map-art" aria-hidden="true">
+          <div class="park" style="width:90px;height:70px;left:18%;top:28%"></div>
+          <div class="park" style="width:120px;height:80px;right:8%;top:18%;border-radius:50%"></div>
+          <button class="pin" type="button" data-job="dundrum" style="left:38%;top:42%">A3</button>
+          <button class="pin" type="button" data-job="templeogue" style="left:62%;top:36%">A2</button>
+          <button class="pin is-on" type="button" data-job="dundrum" style="left:48%;top:58%">€1,700</button>
+          <button class="pin" type="button" data-job="drimnagh" style="left:28%;top:62%">B2</button>
+        </div>
+        <div class="sheet">
+          <div class="grabber"></div>
+          <h2>3 homes nearby</h2>
+          <div class="cards" id="cards"></div>
+        </div>
+        <nav class="tabbar" aria-label="Main">
+          <button class="tab is-on" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 4l9 6.5V20H3z"/></svg>
+            Map
+          </button>
+          <button class="tab" type="button" id="tab-quote">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Quote
+          </button>
+        </nav>
+      </section>
+
+      <section class="screen" id="detail" aria-label="Job detail">
+        <div class="status"><span>9:41</span><span>LTE</span></div>
+        <div class="detail-nav">
+          <button class="icon-btn" type="button" id="close-detail" aria-label="Close">✕</button>
+        </div>
+        <div class="detail-scroll">
+          <div class="ba" id="ba">
+            <img class="ba-before" id="ba-before" alt="Before retrofit" />
+            <img class="ba-after" id="ba-after" alt="After retrofit" />
+            <div class="ba-line" id="ba-line"></div>
+            <div class="ba-handle" id="ba-handle">&lt; &gt;</div>
+            <span class="ba-label before">Before</span>
+            <span class="ba-label after">After</span>
+          </div>
+          <div class="detail-body">
+            <div class="detail-kicker" id="d-date"></div>
+            <h2 id="d-area"></h2>
+            <p class="detail-sub">External wall insulation</p>
+            <div class="ber-row">
+              <span class="ber-old" id="d-ber-before"></span>
+              <span class="ber-arrow">→</span>
+              <span class="ber-new" id="d-ber-after"></span>
+            </div>
+            <p class="ber-cap">BER from registered assessment</p>
+            <div class="metrics">
+              <div>
+                <b id="d-save"></b>
+                <span>Typical annual energy saving</span>
+              </div>
+              <div>
+                <b id="d-value"></b>
+                <span>Estimated value increase</span>
+              </div>
+            </div>
+            <p class="footnote">Typical for a similar house type in this area. Not a quote.</p>
+            <div class="chips">
+              <span class="chip" id="d-grant"></span>
+              <span class="chip" id="d-co2"></span>
+            </div>
+          </div>
+        </div>
+        <div class="reserve">
+          <div>
+            <small>Free, no obligation</small>
+            <b>Talk to Absolute Acrylics</b>
+          </div>
+          <button class="cta" type="button" id="quote-btn">Get a free quote</button>
+        </div>
+      </section>
+
+      <div class="toast" id="toast" role="status">Thanks — this preview does not send an enquiry.</div>
+    </div>
+  </div>
+
+  <script>
+    const JOBS = [
+      {
+        id: "dundrum",
+        area: "Dundrum, Dublin 16",
+        date: "Completed September 2025",
+        berBefore: "C2",
+        berAfter: "A3",
+        save: 1700,
+        value: 25900,
+        grant: 6050,
+        co2: 2.3,
+        badge: "SEAI grant",
+        before: "./assets/job-photos/174-balally-drive-before.png",
+        after: "./assets/job-photos/174-balally-drive-after.png"
+      },
+      {
+        id: "templeogue",
+        area: "Templeogue, Dublin 6W",
+        date: "Completed November 2025",
+        berBefore: "B2",
+        berAfter: "A2",
+        save: 1250,
+        value: 24300,
+        grant: 6050,
+        co2: 2.3,
+        badge: "SEAI grant",
+        before: "./assets/job-photos/40-templeville-drive-before.png",
+        after: "./assets/job-photos/40-templeville-drive-after.png"
+      },
+      {
+        id: "drimnagh",
+        area: "Drimnagh, Dublin 12",
+        date: "Completed August 2025",
+        berBefore: "C2",
+        berAfter: "B2",
+        save: 1200,
+        value: 23500,
+        grant: 6050,
+        co2: 1.7,
+        badge: "Verified BER",
+        before: "./assets/job-photos/30-dromand-road-before.png",
+        after: "./assets/job-photos/30-dromand-road-after.png"
+      }
+    ];
+
+    const splash = document.getElementById("splash");
+    const mapScreen = document.getElementById("map-screen");
+    const detail = document.getElementById("detail");
+    const cards = document.getElementById("cards");
+    const toast = document.getElementById("toast");
+    let euro = new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+
+    function show(el) {
+      [splash, mapScreen, detail].forEach((s) => s.classList.toggle("is-on", s === el));
+    }
+
+    function euroAmt(n) {
+      return euro.format(n).replace("€", "€");
+    }
+
+    JOBS.forEach((job) => {
+      const btn = document.createElement("button");
+      btn.className = "listing";
+      btn.type = "button";
+      btn.innerHTML = `
+        <div class="listing-photo">
+          <img src="${job.after}" alt="${job.area} after insulation" />
+          <span class="badge">${job.badge}</span>
+        </div>
+        <div class="listing-meta">
+          <div class="listing-row">
+            <h3>${job.area}</h3>
+            <span class="ber">${job.berAfter}</span>
+          </div>
+          <p class="listing-sub">External wall insulation · ${job.berBefore} → ${job.berAfter}</p>
+          <p class="listing-save">${euroAmt(job.save)} / yr saved</p>
+        </div>`;
+      btn.addEventListener("click", () => openJob(job.id));
+      cards.appendChild(btn);
+    });
+
+    document.querySelectorAll(".pin").forEach((pin) => {
+      pin.addEventListener("click", () => {
+        document.querySelectorAll(".pin").forEach((p) => p.classList.remove("is-on"));
+        pin.classList.add("is-on");
+        openJob(pin.dataset.job);
+      });
+    });
+
+    function openJob(id) {
+      const job = JOBS.find((j) => j.id === id);
+      if (!job) return;
+      document.getElementById("d-date").textContent = job.date;
+      document.getElementById("d-area").textContent = job.area;
+      document.getElementById("d-ber-before").textContent = job.berBefore;
+      document.getElementById("d-ber-after").textContent = job.berAfter;
+      document.getElementById("d-save").textContent = euroAmt(job.save);
+      document.getElementById("d-value").textContent = euroAmt(job.value);
+      document.getElementById("d-grant").textContent = "SEAI grant " + euroAmt(job.grant);
+      document.getElementById("d-co2").textContent = "−" + job.co2 + "t CO₂ / yr";
+      document.getElementById("ba-before").src = job.before;
+      document.getElementById("ba-after").src = job.after;
+      setSplit(52);
+      show(detail);
+    }
+
+    function setSplit(pct) {
+      const clamped = Math.max(8, Math.min(92, pct));
+      document.getElementById("ba-after").style.clipPath = "inset(0 0 0 " + clamped + "%)";
+      document.getElementById("ba-line").style.left = clamped + "%";
+      document.getElementById("ba-handle").style.left = clamped + "%";
+    }
+
+    const ba = document.getElementById("ba");
+    function pctFromEvent(e) {
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const r = ba.getBoundingClientRect();
+      return ((x - r.left) / r.width) * 100;
+    }
+    ba.addEventListener("pointerdown", (e) => {
+      ba.setPointerCapture(e.pointerId);
+      setSplit(pctFromEvent(e));
+    });
+    ba.addEventListener("pointermove", (e) => {
+      if (!ba.hasPointerCapture(e.pointerId)) return;
+      setSplit(pctFromEvent(e));
+    });
+
+    document.getElementById("go-map").addEventListener("click", () => show(mapScreen));
+    document.getElementById("close-detail").addEventListener("click", () => show(mapScreen));
+    document.getElementById("tab-quote").addEventListener("click", () => {
+      toast.textContent = "Quote sits after a job, not on the map. Open a home first.";
+      toast.classList.add("is-on");
+      setTimeout(() => toast.classList.remove("is-on"), 2800);
+    });
+    document.getElementById("quote-btn").addEventListener("click", () => {
+      toast.textContent = "Thanks — this preview does not send an enquiry.";
+      toast.classList.add("is-on");
+      setTimeout(() => toast.classList.remove("is-on"), 2800);
+    });
+  </script>
+</body>
+</html>
