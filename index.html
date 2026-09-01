@@ -89,328 +89,350 @@
     #screen-map    { z-index: 10; }
 
     /* ══════════════════════════════════════════════════════════════
-       SCREEN 1 – SPLASH
+       SCREEN 1 – SPLASH (Editorial Estate — Refero: Miranda 3f6e3076,
+       Aboard 7b083729, Dash Digital 6036b661; brand tokens preserved)
     ══════════════════════════════════════════════════════════════ */
     #screen-splash {
-      background: #ffffff;
-      background-color: #ffffff;
+      --hero-display-font: 'Fraunces', Georgia, serif;
+      --splash-serif-accent: 'Cormorant Garamond', Georgia, serif;
+      --splash-canvas: #FAF7F2;
+      --splash-canvas-deep: #F3EDE4;
+      --splash-ink: #3D2A2E;
+      --splash-brand: #6B1E3D;
+      --splash-gold: #A78336;
+      --splash-gold-bright: #D4AF37;
+      --splash-tagline-color: #5C534C;
+      --splash-rule: rgba(107, 30, 61, 0.14);
+      --splash-stat-surface: rgba(255, 255, 255, 0.62);
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       justify-content: flex-start;
-      padding: 42px 24px 48px;
+      padding: 0;
       gap: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       touch-action: pan-y;
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      --hero-display-font: 'Fraunces', Georgia, serif;
-      --splash-tagline-color: #525256;
-      --splash-brand: #6B1E3D;
+      color: var(--splash-ink);
+      background-color: var(--splash-canvas);
+      background-image:
+        radial-gradient(ellipse 90% 55% at 12% -8%, rgba(212, 175, 55, 0.11), transparent 58%),
+        radial-gradient(ellipse 70% 45% at 100% 0%, rgba(107, 30, 61, 0.06), transparent 52%),
+        linear-gradient(180deg, var(--splash-canvas) 0%, var(--splash-canvas-deep) 100%);
     }
-    /* Flex spacers: small top/bottom padding only — must not grow or scroll never exceeds viewport */
-    #screen-splash::before,
+    #screen-splash::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
     #screen-splash::after {
       content: '';
       flex: 0 0 auto;
-      height: clamp(12px, 3vh, 28px);
-      min-height: 0;
+      height: clamp(10px, 2.5vh, 22px);
       width: 100%;
       pointer-events: none;
     }
     #screen-splash.hidden {
-      transform: scale(0.96);
+      transform: scale(0.98);
     }
 
+    .splash-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(28px, 5vh, 48px) clamp(22px, 5vw, 40px) 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      animation: splash-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes splash-enter {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .splash-hero {
+      width: 100%;
+      margin-bottom: clamp(22px, 4vh, 32px);
+    }
+    .splash-mark-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
     .splash-logo {
-      width: 88px;
-      height: 88px;
-      background: #6B1E3D;
-      border: 1px solid rgba(107, 30, 61, 0.22);
+      width: 64px;
+      height: 64px;
+      background: var(--splash-brand);
+      border: 1px solid rgba(107, 30, 61, 0.28);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 20px;
       flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(107, 30, 61, 0.14);
     }
     .splash-logo-sun {
-      width: 56px;
-      height: 56px;
+      width: 40px;
+      height: 40px;
       display: block;
+    }
+    .splash-eyebrow {
+      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--splash-gold);
+      line-height: 1.3;
     }
 
     #screen-splash .splash-name {
       font-family: var(--hero-display-font);
       font-optical-sizing: auto;
-      font-size: clamp(3.075rem, 8.25vw, 4.05rem);
+      font-size: clamp(2.5rem, 7.5vw, 3.65rem);
       font-weight: 600;
-      text-align: center;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      background: linear-gradient(
-        90deg,
-        #6B1E3D 0%,
-        #6B1E3D 38%,
-        #c4849e 44%,
-        #ffffff 50%,
-        #c4849e 56%,
-        #6B1E3D 62%,
-        #6B1E3D 100%
-      );
-      background-size: 280% 100%;
-      background-position: 100% center;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: splash-name-shine 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s 1 forwards;
-    }
-    @keyframes splash-name-shine {
-      0% {
-        background-position: 100% center;
-      }
-      100% {
-        background-position: 0% center;
-      }
+      text-align: left;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin: 0 0 14px;
+      color: var(--splash-brand);
+      max-width: 14ch;
     }
 
     #screen-splash .splash-tagline {
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-size: 15px;
-      font-weight: 400;
+      font-family: var(--splash-serif-accent);
+      font-size: clamp(1.125rem, 2.8vw, 1.35rem);
+      font-weight: 500;
+      font-style: italic;
       color: var(--splash-tagline-color);
-      text-align: center;
-      line-height: 1.55;
-      max-width: 480px;
-      margin-bottom: 34px;
+      text-align: left;
+      line-height: 1.45;
+      max-width: 36ch;
+      margin: 0;
     }
 
     #screen-splash .splash-stats {
       width: 100%;
-      max-width: 528px;
-      margin-bottom: 10px;
-      perspective: 520px;
+      margin-bottom: clamp(18px, 3vh, 26px);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      border-top: 1px solid var(--splash-rule);
+      border-bottom: 1px solid var(--splash-rule);
     }
 
     #screen-splash .splash-stats .stat-card {
       container-type: inline-size;
       position: relative;
-      overflow: hidden;
-      background: #ffffff;
-      border: 1px solid rgba(94, 29, 45, 0.12);
-      border-radius: var(--radius-card);
-      padding: 20px 14px 15px;
+      background: var(--splash-stat-surface);
+      border: none;
+      border-right: 1px solid var(--splash-rule);
+      border-radius: 0;
+      padding: clamp(16px, 3vw, 22px) clamp(10px, 2vw, 14px) clamp(14px, 2.5vw, 18px);
       text-align: center;
-      transform-origin: center center;
-      transform-style: preserve-3d;
-      transition:
-        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.18s ease,
-        border-color 0.2s ease;
-      animation: stat-card-pop 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transition: background 0.2s ease;
+      animation: splash-stat-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    #screen-splash .splash-stats .stat-card:last-child {
+      border-right: none;
     }
     #screen-splash .splash-stats .stat-card::before {
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--benefit-gradient);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 2px;
+      background: var(--splash-gold);
     }
-    #screen-splash .splash-stats .stat-card:nth-child(1) {
-      animation-delay: 0.15s;
-    }
-    #screen-splash .splash-stats .stat-card:nth-child(2) {
-      animation-delay: 0.22s;
-    }
-    #screen-splash .splash-stats .stat-card:nth-child(3) {
-      animation-delay: 0.29s;
-    }
-    @keyframes stat-card-pop {
-      0% {
-        opacity: 0;
-        transform: translate3d(0, 0.55rem, -0.45rem) scale(0.9);
-      }
-      58% {
-        opacity: 1;
-        transform: translate3d(0, -0.12rem, 0.28rem) scale(1.05);
-      }
-      100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
+    #screen-splash .splash-stats .stat-card:nth-child(1) { animation-delay: 0.12s; }
+    #screen-splash .splash-stats .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    #screen-splash .splash-stats .stat-card:nth-child(3) { animation-delay: 0.28s; }
+    @keyframes splash-stat-rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     @media (hover: hover) and (pointer: fine) {
       #screen-splash .splash-stats .stat-card:hover {
-        transform: translate3d(0, -4px, 3px) scale(1.03);
-        box-shadow: 0 14px 32px rgba(94, 29, 45, 0.12);
-        border-color: rgba(167, 131, 54, 0.28);
+        background: rgba(255, 255, 255, 0.88);
       }
     }
-    #screen-splash .splash-stats .stat-card:active {
-      transform: translate3d(0, -1px, 0) scale(0.99);
-      box-shadow: 0 6px 16px rgba(94, 29, 45, 0.08);
-    }
+
     #screen-splash .stat-number {
       font-family: var(--hero-display-font);
       font-optical-sizing: auto;
-      font-size: clamp(3.28125rem, 12.1875vw, 3.984375rem);
+      font-size: clamp(1.65rem, 5.5vw, 2.35rem);
       font-weight: 600;
-      color: var(--stat-number-color);
+      color: var(--splash-brand);
       line-height: 1;
       margin-bottom: 8px;
       white-space: nowrap;
       max-width: 100%;
     }
-    @container (max-width: 220px) {
+    @container (max-width: 120px) {
       #screen-splash .stat-number {
-        font-size: clamp(1.875rem, 21.5625cqi, 2.53125rem);
+        font-size: clamp(1.25rem, 18cqi, 1.65rem);
       }
     }
     #screen-splash .stat-label {
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-size: 8px;
+      font-size: 9px;
       font-weight: 500;
       color: var(--text-muted);
       line-height: 1.35;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
+    }
+
+    .splash-trust {
+      width: 100%;
+      margin-bottom: clamp(16px, 3vh, 22px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .splash-trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px;
+    }
+    .splash-seai-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid rgba(107, 30, 61, 0.32);
+      font-size: 10px;
+      font-weight: 600;
+      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+      letter-spacing: 0.1em;
+      color: var(--splash-brand);
+      text-transform: uppercase;
+    }
+    .splash-seai-badge svg {
+      width: 13px;
+      height: 13px;
+      display: block;
+      flex-shrink: 0;
+      color: var(--splash-gold-bright);
+    }
+    .splash-rating {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      padding-left: 16px;
+      border-left: 1px solid var(--splash-rule);
+    }
+    .splash-rating-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      color: var(--splash-gold-bright);
+    }
+    .splash-rating-stars svg {
+      width: 13px;
+      height: 13px;
+      display: block;
+    }
+    .splash-rating-score {
+      font-weight: 600;
+      color: var(--splash-brand);
+    }
+    .splash-rating-label {
+      color: #8B7355;
+      font-weight: 400;
+    }
+
+    .splash-actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
     }
 
     .btn-cta {
       width: 100%;
-      max-width: 480px;
-      padding: 16px 24px;
-      background: #6B1E3D;
+      max-width: 360px;
+      padding: 15px 22px;
+      background: var(--splash-brand);
       color: #FAF8F5;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      border: 1px solid #6B1E3D;
-      border-radius: 6px;
+      border: 1px solid var(--splash-brand);
+      border-radius: 4px;
       cursor: pointer;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      box-shadow: none;
-      transition: transform 0.15s, background 0.2s;
+      box-shadow: 0 10px 28px rgba(107, 30, 61, 0.18);
+      transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
       -webkit-tap-highlight-color: transparent;
     }
     .btn-cta:hover {
       background: #5E1A36;
       border-color: #5E1A36;
+      box-shadow: 0 12px 32px rgba(107, 30, 61, 0.22);
     }
     .btn-cta:active {
       transform: scale(0.98);
     }
     .btn-cta:focus-visible {
-      outline: 2px solid #F5D97A;
+      outline: 2px solid var(--splash-gold-bright);
       outline-offset: 3px;
     }
 
     .btn-cta--letterpop {
-      --cta-letterpop-base: 0.95s; /* after last stat-card (0.29s + 0.58s) + ~80ms gap */
+      --cta-letterpop-base: 0.45s;
       perspective: 420px;
       transform-style: preserve-3d;
     }
     .btn-cta--letterpop .cta-letter {
       display: inline-block;
       transform-origin: center center;
-      transform-style: preserve-3d;
-      animation: cta-letter-pop 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
-      animation-delay: calc(var(--cta-letterpop-base) + var(--i) * 42ms);
+      animation: cta-letter-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(var(--cta-letterpop-base) + var(--i) * 38ms);
     }
     @keyframes cta-letter-pop {
-      0% {
-        opacity: 0;
-        transform: translate3d(0, 0.12em, -0.55em) scale(0.72);
-      }
-      58% {
-        opacity: 1;
-        transform: translate3d(0, -0.02em, 0.42em) scale(1.14);
-      }
-      100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .btn-cta--letterpop .cta-letter {
-        animation: none;
-        opacity: 1;
-        transform: none;
-      }
-      #screen-splash .splash-stats .stat-card {
-        animation: none;
-        opacity: 1;
-        transform: none;
-        transition: border-color 0.2s ease;
-      }
-      #screen-splash .splash-stats .stat-card:hover,
-      #screen-splash .splash-stats .stat-card:active {
-        transform: none;
-        box-shadow: none;
-      }
-      #screen-splash .splash-name {
-        animation: none;
-        background: none;
-        color: #6B1E3D;
-      }
+      from { opacity: 0; transform: translateY(0.35em); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .splash-trust {
-      margin-top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      max-width: 480px;
-      width: 100%;
-    }
-    .splash-trust-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .splash-seai-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: calc(7px * 1.3);
-      padding: calc(10px * 1.3) calc(16px * 1.3);
-      border-radius: 999px;
-      background: #6B1E3D;
-      border: 1px solid #6B1E3D;
-      font-size: calc(11px * 1.3);
-      font-weight: 600;
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      letter-spacing: 0.05em;
-      color: #F7F1EB;
-      text-transform: uppercase;
-      box-shadow: 0 6px 16px rgba(107, 30, 61, 0.16);
-    }
-    .splash-seai-badge svg {
-      width: calc(13px * 1.3);
-      height: calc(13px * 1.3);
-      display: block;
-      flex-shrink: 0;
-      color: #D4AF37;
-    }
     .splash-scroll-indicator {
-      margin-top: calc(14px * 1.3);
       display: inline-flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: calc(3px * 1.3);
-      color: #6B1E3D;
-      font-size: calc(10px * 1.3);
-      letter-spacing: 0.08em;
+      gap: 8px;
+      color: var(--splash-brand);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      opacity: 0.72;
-      animation: splash-scroll-bob 1.6s ease-in-out infinite;
+      opacity: 0.7;
+      animation: splash-scroll-bob 1.8s ease-in-out infinite;
       border: none;
       background: transparent;
       cursor: pointer;
@@ -419,138 +441,119 @@
       z-index: 1;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
+      padding: 4px 0;
     }
     .splash-scroll-indicator svg {
-      width: calc(16px * 1.3);
-      height: calc(16px * 1.3);
+      width: 14px;
+      height: 14px;
       display: block;
     }
-    /* Gives the splash room to scroll so scroll/swipe can reveal the map */
     .splash-scroll-spacer {
       flex-shrink: 0;
       width: 100%;
       height: min(42vh, 260px);
       min-height: 140px;
       pointer-events: none;
+      position: relative;
+      z-index: 1;
     }
     @keyframes splash-scroll-bob {
-      0%, 100% { transform: translateY(0); opacity: 0.72; }
-      50% { transform: translateY(calc(4px * 1.3)); opacity: 1; }
+      0%, 100% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(4px); opacity: 1; }
     }
-    .splash-rating {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-size: calc(13px * 1.3);
-      font-weight: 400;
-      letter-spacing: 0.01em;
-    }
-    .splash-rating-stars {
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
-      color: #D4AF37;
-    }
-    .splash-rating-stars svg {
-      width: calc(14px * 1.3);
-      height: calc(14px * 1.3);
-      display: block;
-    }
-    .splash-rating-score {
-      font-weight: 600;
-      color: #6B1E3D;
-    }
-    .splash-rating-label {
-      color: #8B7355;
-      font-weight: 400;
+
+    @media (prefers-reduced-motion: reduce) {
+      .splash-inner,
+      #screen-splash .splash-stats .stat-card,
+      .btn-cta--letterpop .cta-letter {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+      .splash-scroll-indicator {
+        animation: none;
+        opacity: 0.85;
+      }
     }
 
     @media (max-width: 639px) {
-      /* Mobile: pin hero to top, compact layout, ~10% scale-down so trust CTA fits without scroll. */
-      #screen-splash {
-        padding: max(12px, env(safe-area-inset-top, 0px)) 22px max(32px, calc(18px + env(safe-area-inset-bottom, 0px)));
+      .splash-inner {
+        padding: max(16px, env(safe-area-inset-top, 0px)) 20px 16px;
+        align-items: center;
+        text-align: center;
       }
-      #screen-splash::before,
-      #screen-splash::after {
-        flex: 0 0 0;
-        min-height: 0;
-        display: none;
+      .splash-hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 18px;
       }
-      .splash-logo {
-        width: 79px;
-        height: 79px;
-        margin-bottom: 16px;
-      }
-      .splash-logo-sun {
-        width: 50px;
-        height: 50px;
-      }
-      #screen-splash .splash-name {
-        font-size: clamp(2.7675rem, 7.425vw, 3.645rem);
+      .splash-mark-row {
+        flex-direction: column;
+        gap: 10px;
         margin-bottom: 14px;
       }
+      #screen-splash .splash-name {
+        text-align: center;
+        max-width: none;
+        font-size: clamp(2.15rem, 9vw, 2.75rem);
+      }
       #screen-splash .splash-tagline {
-        font-size: 13.5px;
-        margin-bottom: 20px;
-        line-height: 1.45;
+        text-align: center;
+        font-size: 1.05rem;
+        max-width: 32ch;
       }
       #screen-splash .splash-stats {
-        margin-bottom: 4px;
-        gap: 10px;
+        grid-template-columns: 1fr;
+        border-left: 1px solid var(--splash-rule);
+        border-right: 1px solid var(--splash-rule);
       }
       #screen-splash .splash-stats .stat-card {
-        padding: 18px 13px 14px;
+        border-right: none;
+        border-bottom: 1px solid var(--splash-rule);
+        padding: 16px 14px;
+      }
+      #screen-splash .splash-stats .stat-card:last-child {
+        border-bottom: none;
       }
       #screen-splash .stat-number {
-        font-size: clamp(2.953125rem, 10.96875vw, 3.5859375rem);
-        margin-bottom: 7px;
+        font-size: clamp(1.85rem, 8vw, 2.25rem);
       }
       #screen-splash .stat-label {
-        font-size: 7px;
+        font-size: 8px;
       }
       .splash-trust {
-        gap: 6px;
+        align-items: center;
       }
       .splash-trust-row {
-        gap: 8px;
-      }
-      .splash-seai-badge {
-        gap: calc(7px * 1.3 * 0.9);
-        padding: calc(10px * 1.3 * 0.9) calc(16px * 1.3 * 0.9);
-        font-size: calc(11px * 1.3 * 0.9);
-      }
-      .splash-seai-badge svg {
-        width: calc(13px * 1.3 * 0.9);
-        height: calc(13px * 1.3 * 0.9);
+        flex-direction: column;
+        gap: 10px;
       }
       .splash-rating {
-        font-size: calc(13px * 1.3 * 0.9);
-        gap: 5px;
+        padding-left: 0;
+        border-left: none;
+        justify-content: center;
       }
-      .splash-rating-stars svg {
-        width: calc(14px * 1.3 * 0.9);
-        height: calc(14px * 1.3 * 0.9);
+      .splash-actions {
+        align-items: center;
       }
-      .splash-scroll-indicator {
-        margin-top: 4px;
-        gap: calc(3px * 1.3 * 0.9);
-        font-size: calc(10px * 1.3 * 0.9);
-        animation: splash-scroll-bob-mobile 1.6s ease-in-out infinite;
-      }
-      .splash-scroll-indicator svg {
-        width: calc(16px * 1.3 * 0.9);
-        height: calc(16px * 1.3 * 0.9);
-      }
-      @keyframes splash-scroll-bob-mobile {
-        0%, 100% { transform: translateY(-6px); opacity: 0.72; }
-        50% { transform: translateY(-10px); opacity: 1; }
+      .btn-cta {
+        max-width: 100%;
       }
       .splash-scroll-spacer {
         height: min(46vh, 280px);
         min-height: 160px;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .splash-logo {
+        width: 72px;
+        height: 72px;
+      }
+      .splash-logo-sun {
+        width: 46px;
+        height: 46px;
       }
     }
 
@@ -4805,61 +4808,72 @@
      SCREEN 1 – SPLASH
 ═══════════════════════════════════════════ -->
 <div id="screen-splash" class="screen">
-  <div class="splash-logo">
-    <svg class="splash-logo-sun" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-      <circle cx="50" cy="50" r="46" fill="#F5D97A"/>
-      <g fill="#6B1E3D">
-        <polygon points="50.00,6.00 48.78,36.05 51.22,36.05"/>
-        <polygon points="61.10,23.21 54.21,36.65 56.46,37.58"/>
-        <polygon points="81.11,18.89 59.00,39.28 60.72,41.00"/>
-        <polygon points="76.79,38.90 62.42,43.54 63.35,45.79"/>
-        <polygon points="94.00,50.00 63.95,48.78 63.95,51.22"/>
-        <polygon points="76.79,61.10 63.35,54.21 62.42,56.46"/>
-        <polygon points="81.11,81.11 60.72,59.00 59.00,60.72"/>
-        <polygon points="61.10,76.79 56.46,62.42 54.21,63.35"/>
-        <polygon points="50.00,94.00 51.22,63.95 48.78,63.95"/>
-        <polygon points="38.90,76.79 45.79,63.35 43.54,62.42"/>
-        <polygon points="18.89,81.11 41.00,60.72 39.28,59.00"/>
-        <polygon points="23.21,61.10 37.58,56.46 36.65,54.21"/>
-        <polygon points="6.00,50.00 36.05,51.22 36.05,48.78"/>
-        <polygon points="23.21,38.90 36.65,45.79 37.58,43.54"/>
-        <polygon points="18.89,18.89 39.28,41.00 41.00,39.28"/>
-        <polygon points="38.90,23.21 43.54,37.58 45.79,36.65"/>
-      </g>
-      <circle cx="50" cy="50" r="14" fill="#6B1E3D"/>
-    </svg>
-  </div>
-  <div class="splash-name">Absolute Acrylics</div>
-  <p class="splash-tagline">Dublin's leading Insulation Specialists - See how we have transformed homes near you.</p>
+  <div class="splash-inner">
+    <header class="splash-hero">
+      <div class="splash-mark-row">
+        <div class="splash-logo" aria-hidden="true">
+          <svg class="splash-logo-sun" viewBox="0 0 100 100" focusable="false">
+            <circle cx="50" cy="50" r="46" fill="#F5D97A"/>
+            <g fill="#6B1E3D">
+              <polygon points="50.00,6.00 48.78,36.05 51.22,36.05"/>
+              <polygon points="61.10,23.21 54.21,36.65 56.46,37.58"/>
+              <polygon points="81.11,18.89 59.00,39.28 60.72,41.00"/>
+              <polygon points="76.79,38.90 62.42,43.54 63.35,45.79"/>
+              <polygon points="94.00,50.00 63.95,48.78 63.95,51.22"/>
+              <polygon points="76.79,61.10 63.35,54.21 62.42,56.46"/>
+              <polygon points="81.11,81.11 60.72,59.00 59.00,60.72"/>
+              <polygon points="61.10,76.79 56.46,62.42 54.21,63.35"/>
+              <polygon points="50.00,94.00 51.22,63.95 48.78,63.95"/>
+              <polygon points="38.90,76.79 45.79,63.35 43.54,62.42"/>
+              <polygon points="18.89,81.11 41.00,60.72 39.28,59.00"/>
+              <polygon points="23.21,61.10 37.58,56.46 36.65,54.21"/>
+              <polygon points="6.00,50.00 36.05,51.22 36.05,48.78"/>
+              <polygon points="23.21,38.90 36.65,45.79 37.58,43.54"/>
+              <polygon points="18.89,18.89 39.28,41.00 41.00,39.28"/>
+              <polygon points="38.90,23.21 43.54,37.58 45.79,36.65"/>
+            </g>
+            <circle cx="50" cy="50" r="14" fill="#6B1E3D"/>
+          </svg>
+        </div>
+        <p class="splash-eyebrow">Dublin insulation specialists</p>
+      </div>
+      <h1 class="splash-name">Absolute Acrylics</h1>
+      <p class="splash-tagline">See how we have transformed homes near you — real projects, real savings, real value.</p>
+    </header>
 
-  <div class="splash-stats flex flex-col gap-3 sm:flex-row sm:gap-3">
-    <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+340</div>
-      <div class="stat-label">Dublin homes insulated</div>
+    <div class="splash-stats" role="list" aria-label="Company results">
+      <div class="stat-card" role="listitem">
+        <div class="stat-number">+340</div>
+        <div class="stat-label">Dublin homes insulated</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-number">+€1,300</div>
+        <div class="stat-label">Avg. annual savings increase</div>
+      </div>
+      <div class="stat-card" role="listitem">
+        <div class="stat-number">+€27,750</div>
+        <div class="stat-label">Avg. property value increase</div>
+      </div>
     </div>
-    <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€1,300</div>
-      <div class="stat-label">Avg. Annual Savings Increase</div>
-    </div>
-    <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€27,750</div>
-      <div class="stat-label">Avg. Property Value Increase</div>
-    </div>
-  </div>
 
-  <div class="splash-trust">
-    <div class="splash-trust-row">
-      <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5.5 6v5.2c0 4.5 2.7 8.6 6.5 10.8 3.8-2.2 6.5-6.3 6.5-10.8V6L12 3Z"/><path d="m9.1 12.1 1.9 1.9 3.9-3.9"/></svg>SEAI-registered contractor</span>
+    <div class="splash-trust">
+      <div class="splash-trust-row">
+        <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5.5 6v5.2c0 4.5 2.7 8.6 6.5 10.8 3.8-2.2 6.5-6.3 6.5-10.8V6L12 3Z"/><path d="m9.1 12.1 1.9 1.9 3.9-3.9"/></svg>SEAI-registered contractor</span>
+        <div class="splash-rating" aria-label="Customer rating 4.76 out of 5">
+          <span class="splash-rating-stars" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg></span>
+          <span class="splash-rating-score">4.76</span>
+          <span class="splash-rating-label">Google Reviews</span>
+        </div>
+      </div>
     </div>
-    <div class="splash-rating" aria-label="Customer rating 4.76 out of 5">
-      <span class="splash-rating-stars" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg></span>
-      <span class="splash-rating-score">4.76</span>
-      <span class="splash-rating-label">Google Reviews</span>
+
+    <div class="splash-actions">
+      <button type="button" class="btn-cta" id="btn-explore">Explore transformed homes</button>
+      <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View map">
+        <span>Scroll for map</span>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 7 5 5 5-5"/></svg>
+      </button>
     </div>
-    <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View map">
-      <span>Scroll for map</span>
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 5 5 5-5"/></svg>
-    </button>
   </div>
   <div class="splash-scroll-spacer" aria-hidden="true"></div>
 </div>
