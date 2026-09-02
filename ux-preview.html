@@ -3,328 +3,427 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>EcoMap UX preview — Absolute Acrylics</title>
+  <title>EcoMap preview — Absolute Acrylics</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     :root {
-      --canvas: #f7f7f7;
-      --surface: #ffffff;
-      --text: #222222;
+      --canvas: #ffffff;
+      --ink: #000000;
+      --text: #2c2222;
       --muted: #6a6a6a;
-      --line: #ebebeb;
+      --stone: #b2b4b1;
+      --line: #e6e6e6;
       --brand: #6b1e3d;
-      --brand-deep: #5e1a36;
+      --brand-deep: #54172f;
       --sun: #f5d97a;
-      --radius-card: 20px;
-      --radius-btn: 12px;
-      --phone-w: 390px;
-      --phone-h: 844px;
+      --pad: 21px;
+      --panel-h: 46%;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     body {
-      font-family: Inter, system-ui, sans-serif;
-      background: #e8e6e3;
+      font-family: "DM Sans", Helvetica Neue, Arial, sans-serif;
+      background: #ececec;
       color: var(--text);
+      letter-spacing: 0.011em;
       -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; color: inherit; }
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--sun);
+      outline-offset: 3px;
     }
 
     .stage {
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 24px 16px 32px;
-    }
-    .stage-note {
-      max-width: var(--phone-w);
-      text-align: center;
-      font-size: 12px;
-      line-height: 1.45;
-      color: #5c5c5c;
-    }
-    .stage-note strong { color: var(--text); font-weight: 600; }
-
-    .phone {
-      width: min(100%, var(--phone-w));
-      height: min(90vh, var(--phone-h));
-      background: var(--surface);
-      border-radius: 28px;
-      overflow: hidden;
+      width: min(430px, 100%);
+      height: 100dvh;
+      margin: 0 auto;
+      background: var(--canvas);
       position: relative;
-      border: 1px solid #d9d6d2;
+      overflow: hidden;
+    }
+    @media (min-width: 640px) {
+      body { display: flex; align-items: center; justify-content: center; }
+      .stage {
+        height: min(844px, calc(100dvh - 32px));
+        border: 1px solid var(--line);
+      }
     }
 
-    .screen { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--surface); }
-    .screen.is-on { display: flex; }
+    .screen { display: none; height: 100%; }
+    .screen.is-on { display: flex; flex-direction: column; }
+    .screen[hidden] { display: none !important; }
 
-    .status {
-      flex: 0 0 auto;
-      height: 48px;
-      padding: 14px 22px 0;
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+    /* Splash — full-bleed house, brand and action on white */
+    #splash {
+      background: var(--canvas);
+      padding: 0;
     }
-
-    /* Splash */
-    #splash { background: var(--surface); padding: 0 24px 28px; }
-    .splash-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      text-align: center;
+    .splash-hero {
+      position: relative;
+      flex: 1.4;
+      min-height: 0;
     }
-    .logo {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: var(--brand);
-      display: grid;
-      place-items: center;
-      margin-bottom: 20px;
-    }
-    .logo svg { width: 42px; height: 42px; display: block; }
-    .wordmark {
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      margin-bottom: 10px;
-    }
-    .tagline {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.45;
-      margin-bottom: 28px;
-    }
-    .proof {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px 10px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 32px;
-    }
-    .proof span { white-space: nowrap; }
-    .proof .dot { color: #c1c1c1; }
-    .cta {
-      width: 100%;
-      border: 0;
-      background: var(--brand);
-      color: #fff;
-      font: 500 15px/1.2 Inter, system-ui, sans-serif;
-      padding: 16px 18px;
-      border-radius: var(--radius-btn);
-      cursor: pointer;
-    }
-    .cta:active { background: var(--brand-deep); }
-    .cta:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; }
-    .fine {
-      margin-top: 16px;
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    /* Map */
-    #map-screen { background: var(--canvas); }
-    .map-top {
+    .splash-shot {
       position: absolute;
-      top: 52px;
-      left: 14px;
-      right: 14px;
-      z-index: 3;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 62%;
+      background: #ddd;
     }
-    .search-pill {
-      flex: 1;
-      background: var(--surface);
-      border-radius: 20px;
-      padding: 10px 14px 10px 12px;
+    .splash-hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 88px;
+      background: linear-gradient(transparent, rgba(0,0,0,.5));
+      pointer-events: none;
+    }
+    .splash-cap {
+      position: absolute;
+      left: var(--pad);
+      bottom: 16px;
+      z-index: 1;
+      margin: 0;
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .splash-copy {
+      flex-shrink: 0;
+      padding: 22px var(--pad) calc(22px + env(safe-area-inset-bottom));
+    }
+    .splash-top {
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px, rgba(0,0,0,0.1) 0 4px 8px;
+      margin-bottom: 14px;
     }
-    .search-pill b { display: block; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
-    .search-pill small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
-    .icon-btn {
-      width: 40px;
-      height: 40px;
+    .splash-logo {
+      width: 36px;
+      height: 36px;
+      background: var(--brand);
       border-radius: 50%;
-      border: 0;
-      background: var(--surface);
-      box-shadow: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.16) 0 2px 4px;
-      cursor: pointer;
       display: grid;
       place-items: center;
-      color: var(--text);
+      flex-shrink: 0;
     }
-
-    .map-art {
-      flex: 1;
-      min-height: 0;
-      background:
-        linear-gradient(#eef1ea, #eef1ea),
-        repeating-linear-gradient(90deg, transparent 0 46px, #e4e7e0 46px 47px),
-        repeating-linear-gradient(0deg, transparent 0 38px, #e4e7e0 38px 39px);
-      background-blend-mode: multiply;
-      position: relative;
-    }
-    .park {
-      position: absolute;
-      background: #dce8d4;
-      border-radius: 40% 60% 50% 50%;
-    }
-    .pin {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      color: var(--text);
-      border: 0;
-      border-radius: 20px;
-      padding: 6px 10px;
-      font: 600 12px/1 Inter, system-ui, sans-serif;
-      letter-spacing: -0.02em;
-      cursor: pointer;
-      box-shadow: rgba(0,0,0,0.12) 0 2px 6px;
-    }
-    .pin.is-on { background: var(--brand); color: #fff; }
-
-    .sheet {
-      flex: 0 0 auto;
-      background: var(--surface);
-      border-radius: 20px 20px 0 0;
-      padding: 8px 16px 0;
-      max-height: 46%;
-      display: flex;
-      flex-direction: column;
-    }
-    .grabber {
-      width: 36px;
-      height: 4px;
-      border-radius: 4px;
-      background: #ddd;
-      margin: 4px auto 10px;
-    }
-    .sheet h2 {
-      text-align: center;
-      font-size: 13px;
+    .splash-logo svg { width: 22px; height: 22px; display: block; }
+    .splash-name {
+      font-family: Fraunces, Georgia, serif;
+      font-size: 20px;
       font-weight: 600;
-      margin-bottom: 10px;
+      color: var(--brand);
+      letter-spacing: 0.01em;
+      line-height: 1.1;
     }
-    .cards {
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      padding-bottom: 12px;
-      -webkit-overflow-scrolling: touch;
+    .splash-copy h1 {
+      font-size: clamp(26px, 7vw, 32px);
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: 0.011em;
+      line-height: 1.12;
+      margin-bottom: 18px;
     }
-    .listing {
+    .splash-trust {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin-top: 14px;
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border: 0;
-      background: transparent;
-      text-align: left;
-      font: inherit;
-      color: inherit;
-      cursor: pointer;
+      background: var(--brand);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 17px 21px;
       width: 100%;
+      cursor: pointer;
     }
-    .listing-photo {
+    .cta:active { background: var(--brand-deep); }
+    .fine {
+      font-size: 12px;
+      color: var(--stone);
+      line-height: 1.4;
+      margin-top: 12px;
+    }
+
+    /* Map — upper half map, lower half navigation panel */
+    #map-screen { position: relative; height: 100%; background: #ececec; overflow: hidden; }
+    .map-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+    .map-bar b {
+      font-family: Fraunces, Georgia, serif;
+      font-weight: 600;
+      color: var(--brand);
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    .map-bar span { color: var(--muted); }
+    #map {
+      flex: 1 1 54%;
+      min-height: 0;
       position: relative;
-      aspect-ratio: 16 / 10;
-      border-radius: var(--radius-card);
+      z-index: 0;
+      background: #ececec;
+    }
+    .leaflet-container { font: inherit; background: #ececec; }
+    .leaflet-tile-pane { filter: grayscale(16%) saturate(0.78) contrast(1.06) brightness(1.03); }
+    .leaflet-control-attribution {
+      font-size: 10px !important;
+      background: rgba(255,255,255,.7) !important;
+    }
+    .leaflet-control-zoom { display: none !important; }
+
+    .photo-pin { background: none !important; border: 0 !important; }
+    .photo-pin__face {
+      display: block;
+      width: 60px;
+      height: 60px;
+      border: 2px solid #fff;
+      border-radius: 50%;
       overflow: hidden;
       background: #ddd;
+      box-shadow: 0 2px 10px rgba(0,0,0,.32);
     }
-    .listing-photo img {
+    .photo-pin__face img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
-    .badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: #fff;
-      color: var(--text);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      padding: 5px 9px;
-      border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    .photo-pin.is-on .photo-pin__face {
+      width: 78px;
+      height: 78px;
+      border-width: 3px;
+      border-color: var(--brand);
     }
-    .listing-meta { padding: 10px 2px 0; }
-    .listing-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-    }
-    .listing-row h3 { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
-    .listing-row .ber { font-size: 12px; font-weight: 600; }
-    .listing-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .listing-save { font-size: 14px; font-weight: 600; margin-top: 4px; }
 
-    .tabbar {
-      flex: 0 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-top: 1px solid var(--line);
-      background: var(--surface);
-      padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
-    }
-    .tab {
-      border: 0;
-      background: transparent;
-      font: 500 11px Inter, system-ui, sans-serif;
-      color: var(--muted);
+    .panel {
+      flex: 0 0 46%;
+      z-index: 2;
+      background: var(--canvas);
       display: flex;
       flex-direction: column;
-      align-items: center;
+      min-height: 0;
+      padding: 0 0 calc(8px + env(safe-area-inset-bottom));
+    }
+    .panel-body {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .idle,
+    .picked {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+    }
+    .picked { display: none; }
+    .panel.is-picked .idle { display: none; }
+    .panel.is-picked .picked { display: block; }
+    .idle-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
       gap: 2px;
-      padding: 6px;
+      height: 100%;
+    }
+    .idle-strip button {
+      border: 0;
+      padding: 0;
+      min-height: 0;
+      background: #ddd;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .idle-strip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .35s ease;
+    }
+    .idle-strip button:active img { transform: scale(1.03); }
+    .idle-cap,
+    .picked-copy {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      padding: 36px var(--pad) 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,.72));
+      pointer-events: none;
+    }
+    .picked-copy { pointer-events: auto; }
+    .picked-hero {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #ddd;
+    }
+    .panel h2 {
+      font-size: 22px;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+    }
+    .panel .meta {
+      font-size: 13px;
+      color: rgba(255,255,255,.84);
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+    .panel .open-job {
+      margin-top: 14px;
+      width: 100%;
+      border: 0;
+      background: var(--brand);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 14px 18px;
       cursor: pointer;
     }
-    .tab.is-on { color: var(--brand); font-weight: 600; }
-    .tab svg { width: 22px; height: 22px; }
+    .panel .open-job:active { background: var(--brand-deep); }
 
-    /* Detail */
-    #detail { background: var(--surface); }
-    .detail-scroll { flex: 1; overflow: auto; min-height: 0; }
-    .detail-nav {
-      position: absolute;
-      top: 52px;
-      left: 12px;
-      right: 12px;
-      z-index: 4;
+    .nav-row {
+      flex-shrink: 0;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      padding: 12px var(--pad) 8px;
+      border-top: 1px solid var(--line);
+      background: var(--canvas);
+    }
+    .nav-row button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 8px 0 6px;
+      cursor: pointer;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .nav-row button.is-on {
+      color: var(--brand);
+      box-shadow: inset 0 -2px 0 var(--brand);
+    }
+
+    #quote { background: var(--canvas); height: 100%; }
+    .quote-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 28px var(--pad) 16px;
+    }
+    .quote-body h1 {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: 0.011em;
+      margin-bottom: 8px;
+    }
+    .quote-body > p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 28px;
+    }
+    .quote-body label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+    .quote-body input,
+    .quote-body textarea {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+      font: inherit;
+      font-size: 16px;
+      padding: 10px 0 12px;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .quote-body textarea { min-height: 88px; resize: vertical; }
+    .quote-body input:focus-visible,
+    .quote-body textarea:focus-visible {
+      outline: none;
+      border-bottom-color: var(--brand);
+    }
+    .quote-body .cta { width: 100%; min-width: 0; margin-top: 8px; }
+    .quote-body .opt { font-weight: 400; }
+    .quote-body .fine { margin-top: 14px; }
+    .quote-foot {
+      flex-shrink: 0;
+      padding: 0 0 calc(8px + env(safe-area-inset-bottom));
+    }
+
+    /* Detail */
+    #detail { background: var(--canvas); height: 100%; }
+    .detail-scroll { flex: 1; min-height: 0; overflow: auto; }
+    .detail-nav {
+      position: absolute;
+      top: calc(12px + env(safe-area-inset-top));
+      left: 12px;
+      z-index: 4;
+    }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      background: #fff;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
     }
     .ba {
       position: relative;
-      height: 42%;
-      min-height: 240px;
+      height: min(42dvh, 360px);
       background: #ddd;
       overflow: hidden;
-      user-select: none;
       touch-action: none;
+      user-select: none;
     }
     .ba img {
       position: absolute;
@@ -343,6 +442,7 @@
       background: #fff;
       transform: translateX(-50%);
       pointer-events: none;
+      z-index: 3;
     }
     .ba-handle {
       position: absolute;
@@ -352,58 +452,99 @@
       height: 36px;
       border-radius: 50%;
       background: #fff;
-      color: var(--text);
+      color: var(--ink);
       display: grid;
       place-items: center;
       transform: translate(-50%, -50%);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 500;
       pointer-events: none;
+      z-index: 3;
     }
     .ba-label {
       position: absolute;
-      bottom: 12px;
-      z-index: 2;
+      bottom: 14px;
+      z-index: 3;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #fff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+      text-shadow: 0 1px 2px rgba(0,0,0,.7);
     }
-    .ba-label.before { left: 12px; }
-    .ba-label.after { right: 12px; }
+    .ba-label.before { left: 14px; }
+    .ba-label.after { right: 14px; }
 
-    .detail-body { padding: 18px 20px 12px; }
-    .detail-kicker { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-    .detail-body h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .detail-sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+    .detail-body { padding: 22px var(--pad) 16px; }
+    .detail-kicker {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .detail-body h2 {
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: 0.011em;
+      line-height: 1.12;
+      margin-bottom: 6px;
+    }
+    .detail-sub {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
     .ber-row {
       display: flex;
       align-items: baseline;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 6px;
     }
-    .ber-old { font-size: 28px; font-weight: 600; color: var(--muted); letter-spacing: -0.03em; }
-    .ber-arrow { color: var(--muted); }
-    .ber-new { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; }
-    .ber-cap { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .ber-old {
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--stone);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .ber-arrow { color: var(--stone); font-size: 22px; }
+    .ber-new {
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .ber-cap {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
     .metrics {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 10px;
+      gap: 21px;
+      margin-bottom: 12px;
     }
-    .metrics b { display: block; font-size: 22px; font-weight: 600; letter-spacing: -0.03em; }
-    .metrics span { display: block; font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.35; }
-    .footnote { font-size: 11px; color: var(--muted); line-height: 1.45; margin-bottom: 14px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
+    .metrics b {
+      display: block;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .metrics span {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+    .footnote {
       font-size: 12px;
-      color: var(--text);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 6px 10px;
+      color: var(--muted);
+      line-height: 1.45;
     }
 
     .reserve {
@@ -412,262 +553,333 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      padding: 12px var(--pad) calc(12px + env(safe-area-inset-bottom));
       border-top: 1px solid var(--line);
-      background: var(--surface);
+      background: var(--canvas);
     }
     .reserve small { display: block; font-size: 12px; color: var(--muted); }
-    .reserve b { font-size: 13px; }
-    .reserve .cta { width: auto; padding: 12px 16px; font-size: 14px; }
+    .reserve b { display: block; font-size: 14px; font-weight: 500; color: var(--ink); }
+    .reserve .cta { width: auto; min-width: 0; padding: 12px 18px; font-size: 14px; }
 
     .toast {
       position: absolute;
-      left: 16px;
-      right: 16px;
-      bottom: 84px;
-      background: var(--text);
+      left: 21px;
+      right: 21px;
+      bottom: 24px;
+      background: var(--ink);
       color: #fff;
-      font-size: 13px;
+      font-size: 14px;
       padding: 12px 14px;
-      border-radius: 12px;
       display: none;
-      z-index: 8;
+      z-index: 900;
     }
     .toast.is-on { display: block; }
-
-    @media (max-width: 480px) {
-      .stage { padding: 0; justify-content: stretch; }
-      .phone {
-        width: 100%;
-        height: 100%;
-        border-radius: 0;
-        border: 0;
-      }
-      .stage-note { display: none; }
-    }
   </style>
 </head>
 <body>
   <div class="stage">
-    <p class="stage-note"><strong>Interactive preview</strong> — locked direction from the UX audit. Real job photos. Not the live app.</p>
-    <div class="phone" id="phone">
-      <section class="screen is-on" id="splash" aria-label="Splash">
-        <div class="status"><span>9:41</span><span>LTE</span></div>
-        <div class="splash-body">
-          <div class="logo" aria-hidden="true">
-            <svg viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="28" fill="#F5D97A"/>
-              <circle cx="50" cy="50" r="10" fill="#6B1E3D"/>
-            </svg>
-          </div>
-          <div class="wordmark">Absolute Acrylics</div>
-          <p class="tagline">See insulated homes near you.</p>
-          <div class="proof">
-            <span>340 Dublin homes</span>
-            <span class="dot">·</span>
-            <span>★ 4.76 Google</span>
-            <span class="dot">·</span>
-            <span>SEAI-registered</span>
-          </div>
-          <button class="cta" type="button" id="go-map">See completed jobs near you</button>
-          <p class="fine">Locations are approximate to protect homeowners.</p>
-        </div>
-      </section>
-
-      <section class="screen" id="map-screen" aria-label="Map">
-        <div class="status"><span>9:41</span><span>LTE</span></div>
-        <div class="map-top">
-          <div class="search-pill">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-            <div>
-              <b>Homes near you</b>
-              <small>Dublin · All house types</small>
-            </div>
-          </div>
-          <button class="icon-btn" type="button" aria-label="Filters">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M7 12h10M10 17h4"/></svg>
-          </button>
-        </div>
-        <div class="map-art" aria-hidden="true">
-          <div class="park" style="width:90px;height:70px;left:18%;top:28%"></div>
-          <div class="park" style="width:120px;height:80px;right:8%;top:18%;border-radius:50%"></div>
-          <button class="pin" type="button" data-job="dundrum" style="left:38%;top:42%">A3</button>
-          <button class="pin" type="button" data-job="templeogue" style="left:62%;top:36%">A2</button>
-          <button class="pin is-on" type="button" data-job="dundrum" style="left:48%;top:58%">€1,700</button>
-          <button class="pin" type="button" data-job="drimnagh" style="left:28%;top:62%">B2</button>
-        </div>
-        <div class="sheet">
-          <div class="grabber"></div>
-          <h2>3 homes nearby</h2>
-          <div class="cards" id="cards"></div>
-        </div>
-        <nav class="tabbar" aria-label="Main">
-          <button class="tab is-on" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 4l9 6.5V20H3z"/></svg>
-            Map
-          </button>
-          <button class="tab" type="button" id="tab-quote">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Quote
-          </button>
-        </nav>
-      </section>
-
-      <section class="screen" id="detail" aria-label="Job detail">
-        <div class="status"><span>9:41</span><span>LTE</span></div>
-        <div class="detail-nav">
-          <button class="icon-btn" type="button" id="close-detail" aria-label="Close">✕</button>
-        </div>
-        <div class="detail-scroll">
-          <div class="ba" id="ba">
-            <img class="ba-before" id="ba-before" alt="Before retrofit" />
-            <img class="ba-after" id="ba-after" alt="After retrofit" />
-            <div class="ba-line" id="ba-line"></div>
-            <div class="ba-handle" id="ba-handle">&lt; &gt;</div>
-            <span class="ba-label before">Before</span>
-            <span class="ba-label after">After</span>
-          </div>
-          <div class="detail-body">
-            <div class="detail-kicker" id="d-date"></div>
-            <h2 id="d-area"></h2>
-            <p class="detail-sub">External wall insulation</p>
-            <div class="ber-row">
-              <span class="ber-old" id="d-ber-before"></span>
-              <span class="ber-arrow">→</span>
-              <span class="ber-new" id="d-ber-after"></span>
-            </div>
-            <p class="ber-cap">BER from registered assessment</p>
-            <div class="metrics">
-              <div>
-                <b id="d-save"></b>
-                <span>Typical annual energy saving</span>
-              </div>
-              <div>
-                <b id="d-value"></b>
-                <span>Estimated value increase</span>
-              </div>
-            </div>
-            <p class="footnote">Typical for a similar house type in this area. Not a quote.</p>
-            <div class="chips">
-              <span class="chip" id="d-grant"></span>
-              <span class="chip" id="d-co2"></span>
-            </div>
-          </div>
-        </div>
-        <div class="reserve">
-          <div>
-            <small>Free, no obligation</small>
-            <b>Talk to Absolute Acrylics</b>
-          </div>
-          <button class="cta" type="button" id="quote-btn">Get a free quote</button>
-        </div>
-      </section>
-
-      <div class="toast" id="toast" role="status">Thanks — this preview does not send an enquiry.</div>
+  <section class="screen is-on" id="splash" aria-label="Welcome">
+    <div class="splash-hero">
+      <img
+        class="splash-shot"
+        src="./assets/job-photos/174-balally-drive-after.png"
+        alt="Finished external wall insulation on a house in Dundrum"
+      />
+      <p class="splash-cap">Dundrum, D16 · after</p>
     </div>
+    <div class="splash-copy">
+      <div class="splash-top">
+        <div class="splash-logo" aria-hidden="true">
+          <svg viewBox="0 0 100 100" focusable="false">
+            <circle cx="50" cy="50" r="46" fill="#F5D97A"/>
+            <g fill="#6B1E3D">
+              <polygon points="50.00,6.00 48.78,36.05 51.22,36.05"/>
+              <polygon points="61.10,23.21 54.21,36.65 56.46,37.58"/>
+              <polygon points="81.11,18.89 59.00,39.28 60.72,41.00"/>
+              <polygon points="76.79,38.90 62.42,43.54 63.35,45.79"/>
+              <polygon points="94.00,50.00 63.95,48.78 63.95,51.22"/>
+              <polygon points="76.79,61.10 63.35,54.21 62.42,56.46"/>
+              <polygon points="81.11,81.11 60.72,59.00 59.00,60.72"/>
+              <polygon points="61.10,76.79 56.46,62.42 54.21,63.35"/>
+              <polygon points="50.00,94.00 51.22,63.95 48.78,63.95"/>
+              <polygon points="38.90,76.79 45.79,63.35 43.54,62.42"/>
+              <polygon points="18.89,81.11 41.00,60.72 39.28,59.00"/>
+              <polygon points="23.21,61.10 37.58,56.46 36.65,54.21"/>
+              <polygon points="6.00,50.00 36.05,51.22 36.05,48.78"/>
+              <polygon points="23.21,38.90 36.65,45.79 37.58,43.54"/>
+              <polygon points="18.89,18.89 39.28,41.00 41.00,39.28"/>
+              <polygon points="38.90,23.21 43.54,37.58 45.79,36.65"/>
+            </g>
+          </svg>
+        </div>
+        <p class="splash-name">Absolute Acrylics</p>
+      </div>
+      <h1>Completed insulation on a Dublin map.</h1>
+      <button class="cta" type="button" id="go-map">View jobs</button>
+      <p class="splash-trust">340 Dublin homes · 4.76 on Google · SEAI-registered</p>
+      <p class="fine">Pins are approximate so homeowners stay private.</p>
+    </div>
+  </section>
+
+  <section class="screen" id="map-screen" hidden aria-label="Map of completed jobs">
+    <div class="map-bar">
+      <b>Absolute Acrylics</b>
+      <span>4.76 on Google</span>
+    </div>
+    <div id="map" role="application" aria-label="Dublin completed jobs"></div>
+    <aside class="panel" id="sheet" aria-live="polite">
+      <div class="panel-body">
+        <div class="idle" id="idle">
+          <div class="idle-strip" id="idle-strip"></div>
+          <div class="idle-cap">
+            <h2 id="s-idle-title">8 completed jobs</h2>
+            <p class="meta">Tap a house on the map, or a photo here.</p>
+          </div>
+        </div>
+        <div class="picked">
+          <img class="picked-hero" id="s-hero" alt="" />
+          <div class="picked-copy">
+            <h2 id="s-area">8 completed jobs</h2>
+            <p class="meta" id="s-meta">Tap a house photo. Addresses stay private.</p>
+            <button class="open-job" type="button" id="open-job">See this job</button>
+          </div>
+        </div>
+      </div>
+      <nav class="nav-row" aria-label="Main">
+        <button type="button" data-nav="home">Home</button>
+        <button type="button" data-nav="jobs" class="is-on" aria-current="page">Jobs</button>
+        <button type="button" data-nav="quote">Free quotation</button>
+      </nav>
+    </aside>
+  </section>
+
+  <section class="screen" id="detail" hidden aria-label="Job detail">
+    <div class="detail-nav">
+      <button class="icon-btn" type="button" id="close-detail" aria-label="Back to map">←</button>
+    </div>
+    <div class="detail-scroll">
+      <div class="ba" id="ba" role="slider" aria-label="Before and after comparison" aria-valuemin="8" aria-valuemax="92" aria-valuenow="52">
+        <img class="ba-before" id="ba-before" alt="House before insulation" />
+        <img class="ba-after" id="ba-after" alt="House after insulation" />
+        <div class="ba-line" id="ba-line"></div>
+        <div class="ba-handle" id="ba-handle" aria-hidden="true">⟨ ⟩</div>
+        <span class="ba-label before">Before</span>
+        <span class="ba-label after">After</span>
+      </div>
+      <div class="detail-body">
+        <p class="detail-kicker" id="d-date"></p>
+        <h2 id="d-area"></h2>
+        <p class="detail-sub">External wall insulation</p>
+        <div class="ber-row">
+          <span class="ber-old" id="d-ber-before"></span>
+          <span class="ber-arrow" aria-hidden="true">→</span>
+          <span class="ber-new" id="d-ber-after"></span>
+        </div>
+        <p class="ber-cap">BER from a registered assessment</p>
+        <div class="metrics">
+          <div>
+            <b id="d-save"></b>
+            <span>Typical annual energy saving</span>
+          </div>
+          <div>
+            <b id="d-value"></b>
+            <span>Estimated value increase</span>
+          </div>
+        </div>
+        <p class="footnote" id="d-note"></p>
+      </div>
+    </div>
+    <div class="reserve">
+      <div>
+        <small>Free, no obligation</small>
+        <b>Ask Absolute Acrylics</b>
+      </div>
+      <button class="cta" type="button" id="quote-btn">Ask for a quote</button>
+    </div>
+  </section>
+
+  <section class="screen" id="quote" hidden aria-label="Free quotation">
+    <div class="quote-body">
+      <h1>Free quotation</h1>
+      <p>Name, email, and phone. We only use this to reply about insulation on your house.</p>
+      <form id="quote-form">
+        <label for="q-name">Name</label>
+        <input id="q-name" name="name" type="text" autocomplete="name" required />
+        <label for="q-email">Email</label>
+        <input id="q-email" name="email" type="email" autocomplete="email" inputmode="email" required />
+        <label for="q-phone">Phone</label>
+        <input id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+        <label for="q-message">Brief message <span class="opt">(optional)</span></label>
+        <textarea id="q-message" name="message" autocomplete="off"></textarea>
+        <button class="cta" type="submit">Request a quote</button>
+      </form>
+      <p class="fine">This preview does not send an enquiry.</p>
+    </div>
+    <div class="quote-foot">
+      <nav class="nav-row" aria-label="Main">
+        <button type="button" data-nav="home">Home</button>
+        <button type="button" data-nav="jobs">Jobs</button>
+        <button type="button" data-nav="quote" class="is-on" aria-current="page">Free quotation</button>
+      </nav>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status">This preview does not send an enquiry.</div>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const JOBS = [
-      {
-        id: "dundrum",
-        area: "Dundrum, Dublin 16",
-        date: "Completed September 2025",
-        berBefore: "C2",
-        berAfter: "A3",
-        save: 1700,
-        value: 25900,
-        grant: 6050,
-        co2: 2.3,
-        badge: "SEAI grant",
-        before: "./assets/job-photos/174-balally-drive-before.png",
-        after: "./assets/job-photos/174-balally-drive-after.png"
-      },
-      {
-        id: "templeogue",
-        area: "Templeogue, Dublin 6W",
-        date: "Completed November 2025",
-        berBefore: "B2",
-        berAfter: "A2",
-        save: 1250,
-        value: 24300,
-        grant: 6050,
-        co2: 2.3,
-        badge: "SEAI grant",
-        before: "./assets/job-photos/40-templeville-drive-before.png",
-        after: "./assets/job-photos/40-templeville-drive-after.png"
-      },
-      {
-        id: "drimnagh",
-        area: "Drimnagh, Dublin 12",
-        date: "Completed August 2025",
-        berBefore: "C2",
-        berAfter: "B2",
-        save: 1200,
-        value: 23500,
-        grant: 6050,
-        co2: 1.7,
-        badge: "Verified BER",
-        before: "./assets/job-photos/30-dromand-road-before.png",
-        after: "./assets/job-photos/30-dromand-road-after.png"
-      }
+      { id: "dundrum", lat: 53.2801919, lng: -6.2262049, area: "Dundrum, D16", date: "September 2025", type: "108m² semi-detached", berBefore: "C2", berAfter: "A3", save: 1700, value: 25900, grant: 6050, before: "./assets/job-photos/174-balally-drive-before.png", after: "./assets/job-photos/174-balally-drive-after.png" },
+      { id: "templeogue", lat: 53.3013428, lng: -6.3081059, area: "Templeogue, D6W", date: "November 2025", type: "113m² semi-detached", berBefore: "B2", berAfter: "A2", save: 1250, value: 24300, grant: 6050, before: "./assets/job-photos/40-templeville-drive-before.png", after: "./assets/job-photos/40-templeville-drive-after.png" },
+      { id: "drimnagh", lat: 53.3299263, lng: -6.3236515, area: "Drimnagh, D12", date: "August 2025", type: "110m² end of terrace", berBefore: "C2", berAfter: "B2", save: 1200, value: 23500, grant: 6050, before: "./assets/job-photos/30-dromand-road-before.png", after: "./assets/job-photos/30-dromand-road-after.png" },
+      { id: "clontarf", lat: 53.3665569, lng: -6.2072665, area: "Clontarf, D3", date: "March 2026", type: "140m² semi-detached", berBefore: "B3", berAfter: "A2", save: 1800, value: 27000, grant: 7300, before: "./assets/job-photos/114-kincora-grove-before.png", after: "./assets/job-photos/114-kincora-grove-after.png" },
+      { id: "raheny", lat: 53.3849500, lng: -6.1712500, area: "Raheny, D5", date: "September 2025", type: "50m² mid-terrace", berBefore: "B3", berAfter: "A3", save: 500, value: 13050, grant: 3550, before: "./assets/job-photos/45-belmont-park-before.png", after: "./assets/job-photos/45-belmont-park-after.png" },
+      { id: "stillorgan", lat: 53.2816577, lng: -6.2124389, area: "Stillorgan, A94", date: "February 2026", type: "204m² detached", berBefore: "C2", berAfter: "A3", save: 3000, value: 42950, grant: 8000, before: "./assets/job-photos/76-stillorgan-wood-before.png", after: "./assets/job-photos/76-stillorgan-wood-after.png" },
+      { id: "merrion", lat: 53.2999492, lng: -6.2081116, area: "Mount Merrion, A94", date: "November 2025", type: "155m² semi-detached", berBefore: "C1", berAfter: "A3", save: 1800, value: 25900, grant: 6050, before: "./assets/job-photos/28-the-rise-before.png", after: "./assets/job-photos/28-the-rise-after.png" },
+      { id: "blackrock", lat: 53.2839831, lng: -6.1763130, area: "Blackrock, A94", date: "November 2025", type: "105m² detached", berBefore: "B3", berAfter: "A3", save: 1100, value: 31500, grant: 8050, before: "./assets/job-photos/42-pine-court-before.png", after: "./assets/job-photos/42-pine-court-after.png" }
     ];
 
+    const euro = new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
     const splash = document.getElementById("splash");
     const mapScreen = document.getElementById("map-screen");
     const detail = document.getElementById("detail");
-    const cards = document.getElementById("cards");
+    const quote = document.getElementById("quote");
+    const sheet = document.getElementById("sheet");
+    const openJobBtn = document.getElementById("open-job");
     const toast = document.getElementById("toast");
-    let euro = new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const quoteMessage = document.getElementById("q-message");
+    const hero = document.getElementById("s-hero");
+
+    let map, selectedId = null, markers = {};
 
     function show(el) {
-      [splash, mapScreen, detail].forEach((s) => s.classList.toggle("is-on", s === el));
-    }
-
-    function euroAmt(n) {
-      return euro.format(n).replace("€", "€");
-    }
-
-    JOBS.forEach((job) => {
-      const btn = document.createElement("button");
-      btn.className = "listing";
-      btn.type = "button";
-      btn.innerHTML = `
-        <div class="listing-photo">
-          <img src="${job.after}" alt="${job.area} after insulation" />
-          <span class="badge">${job.badge}</span>
-        </div>
-        <div class="listing-meta">
-          <div class="listing-row">
-            <h3>${job.area}</h3>
-            <span class="ber">${job.berAfter}</span>
-          </div>
-          <p class="listing-sub">External wall insulation · ${job.berBefore} → ${job.berAfter}</p>
-          <p class="listing-save">${euroAmt(job.save)} / yr saved</p>
-        </div>`;
-      btn.addEventListener("click", () => openJob(job.id));
-      cards.appendChild(btn);
-    });
-
-    document.querySelectorAll(".pin").forEach((pin) => {
-      pin.addEventListener("click", () => {
-        document.querySelectorAll(".pin").forEach((p) => p.classList.remove("is-on"));
-        pin.classList.add("is-on");
-        openJob(pin.dataset.job);
+      [splash, mapScreen, detail, quote].forEach((s) => {
+        const on = s === el;
+        s.classList.toggle("is-on", on);
+        s.hidden = !on;
+        s.setAttribute("aria-hidden", on ? "false" : "true");
       });
-    });
+    }
 
-    function openJob(id) {
+    function setNav(active) {
+      document.querySelectorAll("[data-nav]").forEach((btn) => {
+        const on = btn.dataset.nav === active;
+        btn.classList.toggle("is-on", on);
+        if (on) btn.setAttribute("aria-current", "page");
+        else btn.removeAttribute("aria-current");
+      });
+    }
+
+    function goHome() {
+      clearSelect();
+      show(splash);
+    }
+
+    function goJobs() {
+      show(mapScreen);
+      setNav("jobs");
+      initMap();
+    }
+
+    function goQuote() {
+      if (selectedId && !quoteMessage.value) {
+        const job = JOBS.find((j) => j.id === selectedId);
+        if (job) quoteMessage.value = "About the job in " + job.area;
+      }
+      show(quote);
+      setNav("quote");
+    }
+
+    function pinIcon(job, on) {
+      return L.divIcon({
+        className: "photo-pin" + (on ? " is-on" : ""),
+        html: "<span class='photo-pin__face'><img src='" + job.after + "' alt=''></span>",
+        iconSize: on ? [78, 78] : [60, 60],
+        iconAnchor: on ? [39, 39] : [30, 30]
+      });
+    }
+
+    function selectJob(id, pan) {
       const job = JOBS.find((j) => j.id === id);
       if (!job) return;
-      document.getElementById("d-date").textContent = job.date;
+      selectedId = id;
+      Object.entries(markers).forEach(([mid, marker]) => {
+        marker.setIcon(pinIcon(JOBS.find((j) => j.id === mid), mid === id));
+        marker.setZIndexOffset(mid === id ? 1000 : 0);
+      });
+      document.getElementById("s-area").textContent = job.area;
+      document.getElementById("s-meta").textContent =
+        job.type + " · " + job.berBefore + " → " + job.berAfter + " · " + euro.format(job.save) + " / yr typical";
+      hero.src = job.after;
+      hero.alt = "Finished house in " + job.area;
+      sheet.classList.add("is-picked");
+      if (pan && map) map.panTo([job.lat, job.lng], { animate: true });
+    }
+
+    function clearSelect() {
+      selectedId = null;
+      Object.entries(markers).forEach(([mid, marker]) => {
+        marker.setIcon(pinIcon(JOBS.find((j) => j.id === mid), false));
+      });
+      document.getElementById("s-area").textContent = JOBS.length + " completed jobs";
+      document.getElementById("s-meta").textContent = "Tap a house photo. Addresses stay private.";
+      hero.removeAttribute("src");
+      hero.alt = "";
+      sheet.classList.remove("is-picked");
+    }
+
+    function refreshMap() {
+      if (!map) return;
+      requestAnimationFrame(() => {
+        map.invalidateSize();
+        map.setView(map.getCenter(), map.getZoom(), { animate: false });
+      });
+    }
+
+    function initMap() {
+      if (map) {
+        refreshMap();
+        return;
+      }
+      map = L.map("map", {
+        zoomControl: false,
+        attributionControl: true,
+        scrollWheelZoom: true
+      }).setView([53.32, -6.23], 12);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap",
+        maxZoom: 19
+      }).addTo(map);
+
+      JOBS.forEach((job) => {
+        const marker = L.marker([job.lat, job.lng], {
+          icon: pinIcon(job, false),
+          keyboard: true,
+          title: job.area
+        }).addTo(map);
+        marker.on("click", () => selectJob(job.id, false));
+        markers[job.id] = marker;
+      });
+
+      map.on("click", () => clearSelect());
+
+      window.addEventListener("resize", refreshMap);
+      setTimeout(refreshMap, 80);
+    }
+
+    function openDetail(id) {
+      const job = JOBS.find((j) => j.id === id);
+      if (!job) return;
+      document.getElementById("d-date").textContent = "Completed " + job.date;
       document.getElementById("d-area").textContent = job.area;
       document.getElementById("d-ber-before").textContent = job.berBefore;
       document.getElementById("d-ber-after").textContent = job.berAfter;
-      document.getElementById("d-save").textContent = euroAmt(job.save);
-      document.getElementById("d-value").textContent = euroAmt(job.value);
-      document.getElementById("d-grant").textContent = "SEAI grant " + euroAmt(job.grant);
-      document.getElementById("d-co2").textContent = "−" + job.co2 + "t CO₂ / yr";
+      document.getElementById("d-save").textContent = euro.format(job.save);
+      document.getElementById("d-value").textContent = euro.format(job.value);
+      document.getElementById("d-note").textContent =
+        "Typical for this house type. SEAI grant on this job " + euro.format(job.grant) + ". Not a quote.";
       document.getElementById("ba-before").src = job.before;
       document.getElementById("ba-after").src = job.after;
       setSplit(52);
@@ -679,6 +891,7 @@
       document.getElementById("ba-after").style.clipPath = "inset(0 0 0 " + clamped + "%)";
       document.getElementById("ba-line").style.left = clamped + "%";
       document.getElementById("ba-handle").style.left = clamped + "%";
+      document.getElementById("ba").setAttribute("aria-valuenow", String(Math.round(clamped)));
     }
 
     const ba = document.getElementById("ba");
@@ -696,17 +909,44 @@
       setSplit(pctFromEvent(e));
     });
 
-    document.getElementById("go-map").addEventListener("click", () => show(mapScreen));
-    document.getElementById("close-detail").addEventListener("click", () => show(mapScreen));
-    document.getElementById("tab-quote").addEventListener("click", () => {
-      toast.textContent = "Quote sits after a job, not on the map. Open a home first.";
+    function flash(msg) {
+      toast.textContent = msg;
       toast.classList.add("is-on");
-      setTimeout(() => toast.classList.remove("is-on"), 2800);
+      setTimeout(() => toast.classList.remove("is-on"), 2600);
+    }
+
+    document.getElementById("s-idle-title").textContent = JOBS.length + " completed jobs";
+    const strip = document.getElementById("idle-strip");
+    const stripJobs = [JOBS[0], JOBS[3], JOBS[5], JOBS[7]];
+    stripJobs.forEach((job) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.setAttribute("aria-label", job.area);
+      btn.innerHTML = "<img src='" + job.after + "' alt=''>";
+      btn.addEventListener("click", () => {
+        goJobs();
+        selectJob(job.id, true);
+      });
+      strip.appendChild(btn);
     });
-    document.getElementById("quote-btn").addEventListener("click", () => {
-      toast.textContent = "Thanks — this preview does not send an enquiry.";
-      toast.classList.add("is-on");
-      setTimeout(() => toast.classList.remove("is-on"), 2800);
+
+    document.getElementById("go-map").addEventListener("click", goJobs);
+    openJobBtn.addEventListener("click", () => {
+      if (selectedId) openDetail(selectedId);
+    });
+    document.getElementById("close-detail").addEventListener("click", goJobs);
+    document.getElementById("quote-btn").addEventListener("click", goQuote);
+    document.getElementById("quote-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      flash("This preview does not send an enquiry.");
+    });
+    document.querySelectorAll("[data-nav]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const dest = btn.dataset.nav;
+        if (dest === "home") goHome();
+        else if (dest === "jobs") goJobs();
+        else if (dest === "quote") goQuote();
+      });
     });
   </script>
 </body>
