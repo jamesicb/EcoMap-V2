@@ -89,327 +89,256 @@
     #screen-map    { z-index: 10; }
 
     /* ══════════════════════════════════════════════════════════════
-       SCREEN 1 – SPLASH
+       SCREEN 1 – SPLASH (mobile-first thermal comparison)
     ══════════════════════════════════════════════════════════════ */
     #screen-splash {
+      --hero-display-font: 'Fraunces', Georgia, serif;
+      --splash-ink: #111111;
+      --splash-muted: #737373;
+      --splash-tagline-color: #6B6B70;
+      --splash-gold: #E8B423;
+      --splash-heat: #E11D2A;
+      --splash-cool: #1E6FE8;
+      --splash-ber-old: #E24B2A;
+      --splash-ber-new: #2B7FFF;
       background: #ffffff;
       background-color: #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 42px 24px 48px;
+      padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(10px, env(safe-area-inset-bottom, 0px));
       gap: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       touch-action: pan-y;
       font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      --hero-display-font: 'Fraunces', Georgia, serif;
-      --splash-tagline-color: #525256;
-      --splash-brand: #6B1E3D;
-    }
-    /* Flex spacers: small top/bottom padding only — must not grow or scroll never exceeds viewport */
-    #screen-splash::before,
-    #screen-splash::after {
-      content: '';
-      flex: 0 0 auto;
-      height: clamp(12px, 3vh, 28px);
-      min-height: 0;
-      width: 100%;
-      pointer-events: none;
+      color: var(--splash-ink);
     }
     #screen-splash.hidden {
       transform: scale(0.96);
     }
 
-    .splash-logo {
-      width: 88px;
-      height: 88px;
-      background: #6B1E3D;
-      border: 1px solid rgba(107, 30, 61, 0.22);
-      border-radius: 50%;
+    .splash-hero {
+      flex: 0 0 auto;
+      width: 100%;
+      min-height: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      flex-shrink: 0;
-    }
-    .splash-logo-sun {
-      width: 56px;
-      height: 56px;
-      display: block;
     }
 
+    .splash-brand {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 645px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
     #screen-splash .splash-name {
       font-family: var(--hero-display-font);
       font-optical-sizing: auto;
-      font-size: clamp(3.075rem, 8.25vw, 4.05rem);
       font-weight: 600;
       text-align: center;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      background: linear-gradient(
-        90deg,
-        #6B1E3D 0%,
-        #6B1E3D 38%,
-        #c4849e 44%,
-        #ffffff 50%,
-        #c4849e 56%,
-        #6B1E3D 62%,
-        #6B1E3D 100%
-      );
-      background-size: 280% 100%;
-      background-position: 100% center;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: splash-name-shine 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s 1 forwards;
+      line-height: 1;
+      color: var(--splash-ink);
+      width: 100%;
+      margin: 0 0 15px;
     }
-    @keyframes splash-name-shine {
-      0% {
-        background-position: 100% center;
-      }
-      100% {
-        background-position: 0% center;
-      }
+    #screen-splash .splash-name svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    #screen-splash .splash-name text {
+      font-family: var(--hero-display-font);
+      font-weight: 600;
+      fill: var(--splash-ink);
+    }
+    .splash-rating {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+    .splash-rating-stars {
+      display: flex;
+      align-items: center;
+      width: 67%;
+      gap: clamp(6px, 1.4vw, 10px);
+      color: var(--splash-gold);
+    }
+    .splash-rating-stars svg {
+      flex: 1 1 0;
+      width: auto;
+      height: auto;
+      aspect-ratio: 1;
+      display: block;
+      min-width: 0;
+      transform: none;
+    }
+    .splash-rating-copy {
+      font-size: 21px;
+      font-weight: 400;
+      color: var(--splash-muted);
+      letter-spacing: 0.01em;
     }
 
     #screen-splash .splash-tagline {
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-size: 15px;
+      flex: 0 0 auto;
+      width: 80%;
+      max-width: 516px;
+      margin: 14px 0 12px;
+      font-size: 18px;
       font-weight: 400;
       color: var(--splash-tagline-color);
       text-align: center;
-      line-height: 1.55;
-      max-width: 480px;
-      margin-bottom: 34px;
+      line-height: 1.45;
+      text-wrap: pretty;
     }
 
-    #screen-splash .splash-stats {
+    .splash-compare {
       width: 100%;
-      max-width: 528px;
-      margin-bottom: 10px;
-      perspective: 520px;
-    }
-
-    #screen-splash .splash-stats .stat-card {
-      container-type: inline-size;
-      position: relative;
-      overflow: hidden;
+      max-width: 645px;
+      flex: 0 0 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
       background: #ffffff;
-      border: 1px solid rgba(94, 29, 45, 0.12);
-      border-radius: var(--radius-card);
-      padding: 20px 14px 15px;
-      text-align: center;
-      transform-origin: center center;
-      transform-style: preserve-3d;
-      transition:
-        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.18s ease,
-        border-color 0.2s ease;
-      animation: stat-card-pop 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+      border: 1px solid #e3e3e3;
+      border-radius: 24px;
+      box-shadow: 0 12px 42px rgba(17, 17, 17, 0.07);
+      padding: 14px 14px 10px;
     }
-    #screen-splash .splash-stats .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--benefit-gradient);
+    .compare-legend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
     }
-    #screen-splash .splash-stats .stat-card:nth-child(1) {
-      animation-delay: 0.15s;
-    }
-    #screen-splash .splash-stats .stat-card:nth-child(2) {
-      animation-delay: 0.22s;
-    }
-    #screen-splash .splash-stats .stat-card:nth-child(3) {
-      animation-delay: 0.29s;
-    }
-    @keyframes stat-card-pop {
-      0% {
-        opacity: 0;
-        transform: translate3d(0, 0.55rem, -0.45rem) scale(0.9);
-      }
-      58% {
-        opacity: 1;
-        transform: translate3d(0, -0.12rem, 0.28rem) scale(1.05);
-      }
-      100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-    }
-    @media (hover: hover) and (pointer: fine) {
-      #screen-splash .splash-stats .stat-card:hover {
-        transform: translate3d(0, -4px, 3px) scale(1.03);
-        box-shadow: 0 14px 32px rgba(94, 29, 45, 0.12);
-        border-color: rgba(167, 131, 54, 0.28);
-      }
-    }
-    #screen-splash .splash-stats .stat-card:active {
-      transform: translate3d(0, -1px, 0) scale(0.99);
-      box-shadow: 0 6px 16px rgba(94, 29, 45, 0.08);
-    }
-    #screen-splash .stat-number {
-      font-family: var(--hero-display-font);
-      font-optical-sizing: auto;
-      font-size: clamp(3.28125rem, 12.1875vw, 3.984375rem);
-      font-weight: 600;
-      color: var(--stat-number-color);
-      line-height: 1;
-      margin-bottom: 8px;
-      white-space: nowrap;
-      max-width: 100%;
-    }
-    @container (max-width: 220px) {
-      #screen-splash .stat-number {
-        font-size: clamp(1.875rem, 21.5625cqi, 2.53125rem);
-      }
-    }
-    #screen-splash .stat-label {
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-size: 8px;
-      font-weight: 500;
-      color: var(--text-muted);
-      line-height: 1.35;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .btn-cta {
-      width: 100%;
-      max-width: 480px;
-      padding: 16px 24px;
-      background: #6B1E3D;
-      color: #FAF8F5;
-      font-size: 13px;
-      font-weight: 500;
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      border: 1px solid #6B1E3D;
-      border-radius: 6px;
-      cursor: pointer;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      box-shadow: none;
-      transition: transform 0.15s, background 0.2s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-cta:hover {
-      background: #5E1A36;
-      border-color: #5E1A36;
-    }
-    .btn-cta:active {
-      transform: scale(0.98);
-    }
-    .btn-cta:focus-visible {
-      outline: 2px solid #F5D97A;
-      outline-offset: 3px;
-    }
-
-    .btn-cta--letterpop {
-      --cta-letterpop-base: 0.95s; /* after last stat-card (0.29s + 0.58s) + ~80ms gap */
-      perspective: 420px;
-      transform-style: preserve-3d;
-    }
-    .btn-cta--letterpop .cta-letter {
-      display: inline-block;
-      transform-origin: center center;
-      transform-style: preserve-3d;
-      animation: cta-letter-pop 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
-      animation-delay: calc(var(--cta-letterpop-base) + var(--i) * 42ms);
-    }
-    @keyframes cta-letter-pop {
-      0% {
-        opacity: 0;
-        transform: translate3d(0, 0.12em, -0.55em) scale(0.72);
-      }
-      58% {
-        opacity: 1;
-        transform: translate3d(0, -0.02em, 0.42em) scale(1.14);
-      }
-      100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .btn-cta--letterpop .cta-letter {
-        animation: none;
-        opacity: 1;
-        transform: none;
-      }
-      #screen-splash .splash-stats .stat-card {
-        animation: none;
-        opacity: 1;
-        transform: none;
-        transition: border-color 0.2s ease;
-      }
-      #screen-splash .splash-stats .stat-card:hover,
-      #screen-splash .splash-stats .stat-card:active {
-        transform: none;
-        box-shadow: none;
-      }
-      #screen-splash .splash-name {
-        animation: none;
-        background: none;
-        color: #6B1E3D;
-      }
-    }
-
-    .splash-trust {
-      margin-top: 0;
+    .compare-legend-lost,
+    .compare-legend-saved {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      max-width: 480px;
-      width: 100%;
+      gap: 4.5px;
     }
-    .splash-trust-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    .compare-legend-lost { align-items: flex-start; }
+    .compare-legend-saved { align-items: flex-end; text-align: right; }
+    .compare-legend-lost strong,
+    .compare-legend-saved strong {
+      font-size: 19.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.15;
     }
-    .splash-seai-badge {
+    .compare-legend-lost strong { color: var(--splash-heat); }
+    .compare-legend-saved strong { color: var(--splash-cool); }
+    .compare-legend span {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: calc(7px * 1.3);
-      padding: calc(10px * 1.3) calc(16px * 1.3);
-      border-radius: 999px;
-      background: #6B1E3D;
-      border: 1px solid #6B1E3D;
-      font-size: calc(11px * 1.3);
+      gap: 7.5px;
+      font-size: 13.5px;
       font-weight: 600;
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      letter-spacing: 0.05em;
-      color: #F7F1EB;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      box-shadow: 0 6px 16px rgba(107, 30, 61, 0.16);
     }
-    .splash-seai-badge svg {
-      width: calc(13px * 1.3);
-      height: calc(13px * 1.3);
-      display: block;
+    .compare-legend-lost span { color: var(--splash-heat); }
+    .compare-legend-saved span { color: var(--splash-cool); }
+    .compare-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 1.5px;
       flex-shrink: 0;
-      color: #D4AF37;
     }
+    .compare-legend-lost .compare-swatch { background: var(--splash-heat); }
+    .compare-legend-saved .compare-swatch { background: var(--splash-cool); }
+    .compare-scale {
+      height: 10.5px;
+      border-radius: 999px;
+      margin: 3px 0 18px;
+      background: linear-gradient(90deg, #E11D2A 0%, #F97316 22%, #FACC15 42%, #22C55E 68%, #1E6FE8 100%);
+    }
+    .compare-frames {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      flex: 0 0 auto;
+      min-height: 0;
+    }
+    .compare-frame {
+      position: relative;
+      margin: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 2px solid #8E8E93;
+      min-height: 0;
+      line-height: 0;
+    }
+    .compare-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      object-position: center bottom;
+      vertical-align: bottom;
+    }
+    .compare-tag {
+      position: absolute;
+      top: auto;
+      bottom: 12px;
+      left: 12px;
+      margin: 0;
+      padding: 4.5px 12px;
+      background: #ffffff;
+      color: var(--splash-ink);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    }
+    .compare-ber {
+      margin: 18px 0 6px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .compare-ber .ber-old { color: var(--splash-ber-old); }
+    .compare-ber .ber-arrow {
+      color: var(--splash-ink);
+      font-size: 1.75em;
+      font-weight: 700;
+      line-height: 1;
+      margin: 0 12px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .compare-ber .ber-new { color: var(--splash-ber-new); }
+    .compare-note {
+      margin: 0;
+      font-size: 13.5px;
+      color: #b0b0b4;
+      line-height: 1.3;
+    }
+
     .splash-scroll-indicator {
-      margin-top: calc(14px * 1.3);
+      margin: auto auto 2px;
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-      gap: calc(3px * 1.3);
-      color: #6B1E3D;
-      font-size: calc(10px * 1.3);
-      letter-spacing: 0.08em;
+      gap: 6px;
+      color: var(--splash-ink);
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      opacity: 0.72;
       animation: splash-scroll-bob 1.6s ease-in-out infinite;
       border: none;
       background: transparent;
@@ -420,137 +349,41 @@
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
+    .splash-scroll-indicator:focus-visible {
+      outline: 2px solid var(--splash-ink);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
     .splash-scroll-indicator svg {
-      width: calc(16px * 1.3);
-      height: calc(16px * 1.3);
+      width: 54px;
+      height: 54px;
       display: block;
     }
-    /* Gives the splash room to scroll so scroll/swipe can reveal the map */
     .splash-scroll-spacer {
       flex-shrink: 0;
       width: 100%;
-      height: min(42vh, 260px);
-      min-height: 140px;
+      height: min(46vh, 280px);
+      min-height: 160px;
       pointer-events: none;
     }
     @keyframes splash-scroll-bob {
-      0%, 100% { transform: translateY(0); opacity: 0.72; }
-      50% { transform: translateY(calc(4px * 1.3)); opacity: 1; }
+      0%, 100% { transform: translateY(0); opacity: 0.78; }
+      50% { transform: translateY(5px); opacity: 1; }
     }
-    .splash-rating {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-size: calc(13px * 1.3);
-      font-weight: 400;
-      letter-spacing: 0.01em;
-    }
-    .splash-rating-stars {
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
-      color: #D4AF37;
-    }
-    .splash-rating-stars svg {
-      width: calc(14px * 1.3);
-      height: calc(14px * 1.3);
-      display: block;
-    }
-    .splash-rating-score {
-      font-weight: 600;
-      color: #6B1E3D;
-    }
-    .splash-rating-label {
-      color: #8B7355;
-      font-weight: 400;
+    @media (prefers-reduced-motion: reduce) {
+      .splash-scroll-indicator {
+        animation: none;
+        opacity: 1;
+      }
     }
 
-    @media (max-width: 639px) {
-      /* Mobile: pin hero to top, compact layout, ~10% scale-down so trust CTA fits without scroll. */
+    @media (min-width: 640px) {
       #screen-splash {
-        padding: max(12px, env(safe-area-inset-top, 0px)) 22px max(32px, calc(18px + env(safe-area-inset-bottom, 0px)));
+        padding: 54px 36px 36px;
       }
-      #screen-splash::before,
-      #screen-splash::after {
-        flex: 0 0 0;
-        min-height: 0;
-        display: none;
-      }
-      .splash-logo {
-        width: 79px;
-        height: 79px;
-        margin-bottom: 16px;
-      }
-      .splash-logo-sun {
-        width: 50px;
-        height: 50px;
-      }
-      #screen-splash .splash-name {
-        font-size: clamp(2.7675rem, 7.425vw, 3.645rem);
-        margin-bottom: 14px;
-      }
-      #screen-splash .splash-tagline {
-        font-size: 13.5px;
-        margin-bottom: 20px;
-        line-height: 1.45;
-      }
-      #screen-splash .splash-stats {
-        margin-bottom: 4px;
-        gap: 10px;
-      }
-      #screen-splash .splash-stats .stat-card {
-        padding: 18px 13px 14px;
-      }
-      #screen-splash .stat-number {
-        font-size: clamp(2.953125rem, 10.96875vw, 3.5859375rem);
-        margin-bottom: 7px;
-      }
-      #screen-splash .stat-label {
-        font-size: 7px;
-      }
-      .splash-trust {
-        gap: 6px;
-      }
-      .splash-trust-row {
-        gap: 8px;
-      }
-      .splash-seai-badge {
-        gap: calc(7px * 1.3 * 0.9);
-        padding: calc(10px * 1.3 * 0.9) calc(16px * 1.3 * 0.9);
-        font-size: calc(11px * 1.3 * 0.9);
-      }
-      .splash-seai-badge svg {
-        width: calc(13px * 1.3 * 0.9);
-        height: calc(13px * 1.3 * 0.9);
-      }
-      .splash-rating {
-        font-size: calc(13px * 1.3 * 0.9);
-        gap: 5px;
-      }
-      .splash-rating-stars svg {
-        width: calc(14px * 1.3 * 0.9);
-        height: calc(14px * 1.3 * 0.9);
-      }
-      .splash-scroll-indicator {
-        margin-top: 4px;
-        gap: calc(3px * 1.3 * 0.9);
-        font-size: calc(10px * 1.3 * 0.9);
-        animation: splash-scroll-bob-mobile 1.6s ease-in-out infinite;
-      }
-      .splash-scroll-indicator svg {
-        width: calc(16px * 1.3 * 0.9);
-        height: calc(16px * 1.3 * 0.9);
-      }
-      @keyframes splash-scroll-bob-mobile {
-        0%, 100% { transform: translateY(-6px); opacity: 0.72; }
-        50% { transform: translateY(-10px); opacity: 1; }
-      }
-      .splash-scroll-spacer {
-        height: min(46vh, 280px);
-        min-height: 160px;
+      .splash-compare {
+        padding: 27px 27px 18px;
+        max-width: 645px;
       }
     }
 
@@ -2038,7 +1871,6 @@
         margin: 0;
       }
       .map-sidebar-quote .swipe-discount {
-        order: 3;
         flex: 0 0 auto;
         width: 100%;
         max-width: none;
@@ -4805,61 +4637,57 @@
      SCREEN 1 – SPLASH
 ═══════════════════════════════════════════ -->
 <div id="screen-splash" class="screen">
-  <div class="splash-logo">
-    <svg class="splash-logo-sun" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-      <circle cx="50" cy="50" r="46" fill="#F5D97A"/>
-      <g fill="#6B1E3D">
-        <polygon points="50.00,6.00 48.78,36.05 51.22,36.05"/>
-        <polygon points="61.10,23.21 54.21,36.65 56.46,37.58"/>
-        <polygon points="81.11,18.89 59.00,39.28 60.72,41.00"/>
-        <polygon points="76.79,38.90 62.42,43.54 63.35,45.79"/>
-        <polygon points="94.00,50.00 63.95,48.78 63.95,51.22"/>
-        <polygon points="76.79,61.10 63.35,54.21 62.42,56.46"/>
-        <polygon points="81.11,81.11 60.72,59.00 59.00,60.72"/>
-        <polygon points="61.10,76.79 56.46,62.42 54.21,63.35"/>
-        <polygon points="50.00,94.00 51.22,63.95 48.78,63.95"/>
-        <polygon points="38.90,76.79 45.79,63.35 43.54,62.42"/>
-        <polygon points="18.89,81.11 41.00,60.72 39.28,59.00"/>
-        <polygon points="23.21,61.10 37.58,56.46 36.65,54.21"/>
-        <polygon points="6.00,50.00 36.05,51.22 36.05,48.78"/>
-        <polygon points="23.21,38.90 36.65,45.79 37.58,43.54"/>
-        <polygon points="18.89,18.89 39.28,41.00 41.00,39.28"/>
-        <polygon points="38.90,23.21 43.54,37.58 45.79,36.65"/>
-      </g>
-      <circle cx="50" cy="50" r="14" fill="#6B1E3D"/>
-    </svg>
-  </div>
-  <div class="splash-name">Absolute Acrylics</div>
-  <p class="splash-tagline">Dublin's leading Insulation Specialists - See how we have transformed homes near you.</p>
+  <div class="splash-hero">
+  <header class="splash-brand">
+    <h1 class="splash-name">
+      <svg viewBox="0 0 200 32" role="img" aria-label="Absolute Acrylics" preserveAspectRatio="xMidYMid meet">
+        <text x="0" y="25" font-size="24" textLength="200" lengthAdjust="spacingAndGlyphs">Absolute Acrylics</text>
+      </svg>
+    </h1>
+    <div class="splash-rating" aria-label="Customer rating 4.76 out of 5 on Google">
+      <span class="splash-rating-stars" aria-hidden="true">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+      </span>
+      <p class="splash-rating-copy">4.76 Google Reviews</p>
+    </div>
+  </header>
 
-  <div class="splash-stats flex flex-col gap-3 sm:flex-row sm:gap-3">
-    <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+340</div>
-      <div class="stat-label">Dublin homes insulated</div>
+  <section class="splash-compare" aria-label="Heat loss before and after insulation">
+    <div class="compare-legend">
+      <div class="compare-legend-lost">
+        <strong>Money lost</strong>
+        <span><i class="compare-swatch" aria-hidden="true"></i> Red = heat loss</span>
+      </div>
+      <div class="compare-legend-saved">
+        <strong>Money saved</strong>
+        <span><i class="compare-swatch" aria-hidden="true"></i> Blue = heat retention</span>
+      </div>
     </div>
-    <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€1,300</div>
-      <div class="stat-label">Avg. Annual Savings Increase</div>
+    <div class="compare-scale" aria-hidden="true"></div>
+    <div class="compare-frames">
+      <figure class="compare-frame">
+        <img src="assets/thermal-before.jpg" alt="Illustrated thermal view of a house before insulation, showing heat loss in red and orange" width="1536" height="1024" />
+        <figcaption class="compare-tag">Before</figcaption>
+      </figure>
+      <figure class="compare-frame">
+        <img src="assets/thermal-after.jpg" alt="Illustrated thermal view of the same house after insulation, showing heat retention in blue" width="900" height="590" />
+        <figcaption class="compare-tag">After</figcaption>
+      </figure>
     </div>
-    <div class="stat-card w-full min-w-0 sm:flex-1">
-      <div class="stat-number">+€27,750</div>
-      <div class="stat-label">Avg. Property Value Increase</div>
-    </div>
-  </div>
+    <p class="compare-ber"><span class="ber-old">BER B3</span><span class="ber-arrow" aria-hidden="true">→</span><span class="ber-new">BER B1</span></p>
+    <p class="compare-note">Illustration only — not actual thermal camera images.</p>
+  </section>
 
-  <div class="splash-trust">
-    <div class="splash-trust-row">
-      <span class="splash-seai-badge" title="SEAI — Sustainable Energy Authority of Ireland"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5.5 6v5.2c0 4.5 2.7 8.6 6.5 10.8 3.8-2.2 6.5-6.3 6.5-10.8V6L12 3Z"/><path d="m9.1 12.1 1.9 1.9 3.9-3.9"/></svg>SEAI-registered contractor</span>
-    </div>
-    <div class="splash-rating" aria-label="Customer rating 4.76 out of 5">
-      <span class="splash-rating-stars" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg></span>
-      <span class="splash-rating-score">4.76</span>
-      <span class="splash-rating-label">Google Reviews</span>
-    </div>
-    <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View map">
-      <span>Scroll for map</span>
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 5 5 5-5"/></svg>
-    </button>
+  <p class="splash-tagline">Dublin's leading Insulation Specialists – See how we have transformed homes near you.</p>
+
+  <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View map">
+    <span>Scroll for map</span>
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 7 5 5 5-5"/></svg>
+  </button>
   </div>
   <div class="splash-scroll-spacer" aria-hidden="true"></div>
 </div>
@@ -4968,21 +4796,21 @@
                       <input type="checkbox" id="quote-privacy-consent" name="privacyConsent" required>
                       <span>I have read the <button type="button" class="quote-privacy-link" id="quote-privacy-open">privacy notice</button> and agree to my details being used to respond to this enquiry.</span>
                     </label>
+                    <div class="swipe-discount" id="swipe-discount" aria-label="Swipe to reveal discount code">
+                      <div class="swipe-discount__reveal" aria-hidden="true">
+                        <span class="swipe-discount__code">Discount 500</span>
+                        <span class="swipe-discount__note">(Enter into Brief message box)</span>
+                      </div>
+                      <div class="swipe-discount__cover">
+                        <span class="swipe-discount__hint">Swipe right to reveal discount code</span>
+                      </div>
+                      <button type="button" class="swipe-discount__handle" aria-label="Swipe right to reveal discount code">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12"/><path d="m13 7 5 5-5 5"/></svg>
+                      </button>
+                    </div>
                     <button type="submit" class="contact-above-map-submit">Enquire for FREE QUOTE</button>
                   </form>
                   <p class="quote-feedback" id="quote-feedback" hidden role="status" aria-live="polite"></p>
-                  <div class="swipe-discount" id="swipe-discount" aria-label="Swipe to reveal discount code">
-                    <div class="swipe-discount__reveal" aria-hidden="true">
-                      <span class="swipe-discount__code">Discount 500</span>
-                      <span class="swipe-discount__note">(Enter into Brief message box)</span>
-                    </div>
-                    <div class="swipe-discount__cover">
-                      <span class="swipe-discount__hint">Swipe right to reveal discount code</span>
-                    </div>
-                    <button type="button" class="swipe-discount__handle" aria-label="Swipe right to reveal discount code">
-                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12"/><path d="m13 7 5 5-5 5"/></svg>
-                    </button>
-                  </div>
                 </div>
               </aside>
             </div>
