@@ -144,7 +144,7 @@
       line-height: 1;
       color: var(--splash-ink);
       width: 100%;
-      margin: 0 0 15px;
+      margin: 0;
     }
     #screen-splash .splash-name svg {
       display: block;
@@ -155,21 +155,32 @@
     #screen-splash .splash-name text {
       font-family: var(--hero-display-font);
       font-weight: 600;
-      fill: var(--splash-ink);
+      fill: url(#splash-name-shine);
+    }
+    #splash-name-shine {
+      transform: translateX(-72px);
+      animation: splash-name-shine 2.24s cubic-bezier(0.4, 0, 0.2, 1) 0.18s both;
+    }
+    @keyframes splash-name-shine {
+      from { transform: translateX(-72px); }
+      to { transform: translateX(200px); }
     }
     .splash-rating {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       width: 100%;
+      margin: 0 0 15px;
+      overflow: visible;
     }
     .splash-rating-stars {
       display: flex;
       align-items: center;
-      width: 67%;
-      gap: clamp(6px, 1.4vw, 10px);
+      width: 44.6%;
+      gap: clamp(4px, 0.93vw, 6.65px);
       color: var(--splash-gold);
+      overflow: visible;
     }
     .splash-rating-stars svg {
       flex: 1 1 0;
@@ -178,10 +189,34 @@
       aspect-ratio: 1;
       display: block;
       min-width: 0;
-      transform: none;
+      transform-origin: center;
+      animation: splash-stars-pop 1.44s cubic-bezier(0.22, 1.28, 0.36, 1) both;
+    }
+    .splash-rating-stars svg:nth-child(1) { animation-delay: 2.42s; }
+    .splash-rating-stars svg:nth-child(2) { animation-delay: 2.97s; }
+    .splash-rating-stars svg:nth-child(3) { animation-delay: 3.52s; }
+    .splash-rating-stars svg:nth-child(4) { animation-delay: 4.07s; }
+    .splash-rating-stars svg:nth-child(5) { animation-delay: 4.62s; }
+    @keyframes splash-stars-pop {
+      0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(232, 180, 35, 0));
+      }
+      38% {
+        transform: scale(1.34);
+        filter: drop-shadow(0 10px 8px rgba(232, 180, 35, 0.38));
+      }
+      68% {
+        transform: scale(0.96);
+        filter: drop-shadow(0 2px 2px rgba(232, 180, 35, 0.12));
+      }
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(232, 180, 35, 0));
+      }
     }
     .splash-rating-copy {
-      font-size: 21px;
+      font-size: 13.965px;
       font-weight: 400;
       color: var(--splash-muted);
       letter-spacing: 0.01em;
@@ -189,15 +224,24 @@
 
     #screen-splash .splash-tagline {
       flex: 0 0 auto;
-      width: 80%;
-      max-width: 516px;
-      margin: 14px 0 12px;
-      font-size: 18px;
+      width: max-content;
+      max-width: 100%;
+      margin: 18px 0 16px;
+      font-size: 9.375px;
       font-weight: 400;
       color: var(--splash-tagline-color);
       text-align: center;
-      line-height: 1.45;
-      text-wrap: pretty;
+      line-height: 1.4;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+      text-decoration: underline;
+      text-underline-offset: 0.22em;
+      text-decoration-thickness: 0.06em;
+      transform: scaleY(1.5);
+      transform-origin: center;
+    }
+    #screen-splash .splash-tagline strong {
+      font-weight: 700;
     }
 
     .splash-compare {
@@ -214,9 +258,10 @@
       padding: 14px 14px 10px;
     }
     .compare-legend {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
       margin-bottom: 12px;
     }
     .compare-legend-lost,
@@ -224,6 +269,8 @@
       display: flex;
       flex-direction: column;
       gap: 4.5px;
+      flex: 0 1 auto;
+      min-width: 0;
     }
     .compare-legend-lost { align-items: flex-start; }
     .compare-legend-saved { align-items: flex-end; text-align: right; }
@@ -240,17 +287,18 @@
     .compare-legend span {
       display: inline-flex;
       align-items: center;
-      gap: 7.5px;
-      font-size: 13.5px;
+      gap: 5px;
+      font-size: clamp(10px, 3.1vw, 13.5px);
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
     .compare-legend-lost span { color: var(--splash-heat); }
     .compare-legend-saved span { color: var(--splash-cool); }
     .compare-swatch {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 1.5px;
       flex-shrink: 0;
     }
@@ -268,6 +316,7 @@
       gap: 12px;
       flex: 0 0 auto;
       min-height: 0;
+      align-items: stretch;
     }
     .compare-frame {
       position: relative;
@@ -278,30 +327,32 @@
       border: 2px solid #8E8E93;
       min-height: 0;
       line-height: 0;
+      aspect-ratio: 3 / 2;
     }
     .compare-frame img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
       object-fit: contain;
-      object-position: center bottom;
+      object-position: center;
       vertical-align: bottom;
     }
     .compare-tag {
       position: absolute;
-      top: auto;
-      bottom: 12px;
-      left: 12px;
+      top: 12px;
+      right: 12px;
+      bottom: auto;
+      left: auto;
       margin: 0;
-      padding: 4.5px 12px;
-      background: #ffffff;
+      padding: 0;
+      background: transparent;
       color: var(--splash-ink);
       font-size: 13.5px;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      border-radius: 6px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      border-radius: 0;
+      box-shadow: none;
     }
     .compare-ber {
       margin: 18px 0 6px;
@@ -312,7 +363,7 @@
     }
     .compare-ber .ber-old { color: var(--splash-ber-old); }
     .compare-ber .ber-arrow {
-      color: var(--splash-ink);
+      color: var(--splash-muted);
       font-size: 1.75em;
       font-weight: 700;
       line-height: 1;
@@ -323,13 +374,13 @@
     .compare-ber .ber-new { color: var(--splash-ber-new); }
     .compare-note {
       margin: 0;
-      font-size: 13.5px;
+      font-size: 9.045px;
       color: #b0b0b4;
       line-height: 1.3;
     }
 
     .splash-scroll-indicator {
-      margin: auto auto 2px;
+      margin: auto auto calc(2px + 10vh);
       display: inline-flex;
       flex-direction: column;
       align-items: center;
@@ -375,15 +426,41 @@
         animation: none;
         opacity: 1;
       }
+      #splash-name-shine {
+        animation: none;
+      }
+      #screen-splash .splash-name text {
+        fill: var(--splash-ink);
+      }
+      .splash-rating-stars,
+      .splash-rating-stars svg {
+        animation: none;
+        transform: none;
+        filter: none;
+      }
     }
 
     @media (min-width: 640px) {
       #screen-splash {
         padding: 54px 36px 36px;
       }
+      #screen-splash .splash-tagline {
+        font-size: 14.0625px;
+        letter-spacing: 0;
+        line-height: 1.45;
+      }
       .splash-compare {
         padding: 27px 27px 18px;
         max-width: 645px;
+      }
+      .compare-legend span {
+        font-size: 13.5px;
+        letter-spacing: 0.04em;
+        gap: 7.5px;
+      }
+      .compare-swatch {
+        width: 12px;
+        height: 12px;
       }
     }
 
@@ -4639,11 +4716,6 @@
 <div id="screen-splash" class="screen">
   <div class="splash-hero">
   <header class="splash-brand">
-    <h1 class="splash-name">
-      <svg viewBox="0 0 200 32" role="img" aria-label="Absolute Acrylics" preserveAspectRatio="xMidYMid meet">
-        <text x="0" y="25" font-size="24" textLength="200" lengthAdjust="spacingAndGlyphs">Absolute Acrylics</text>
-      </svg>
-    </h1>
     <div class="splash-rating" aria-label="Customer rating 4.76 out of 5 on Google">
       <span class="splash-rating-stars" aria-hidden="true">
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
@@ -4654,6 +4726,20 @@
       </span>
       <p class="splash-rating-copy">4.76 Google Reviews</p>
     </div>
+    <h1 class="splash-name">
+      <svg viewBox="0 0 200 32" role="img" aria-label="Absolute Acrylics" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="splash-name-shine" gradientUnits="userSpaceOnUse" x1="0" y1="4" x2="56" y2="20">
+            <stop offset="0" stop-color="#111111"/>
+            <stop offset="0.42" stop-color="#111111"/>
+            <stop offset="0.5" stop-color="#ffffff"/>
+            <stop offset="0.58" stop-color="#111111"/>
+            <stop offset="1" stop-color="#111111"/>
+          </linearGradient>
+        </defs>
+        <text x="0" y="25" font-size="24" textLength="200" lengthAdjust="spacingAndGlyphs">Absolute Acrylics</text>
+      </svg>
+    </h1>
   </header>
 
   <section class="splash-compare" aria-label="Heat loss before and after insulation">
@@ -4682,10 +4768,10 @@
     <p class="compare-note">Illustration only — not actual thermal camera images.</p>
   </section>
 
-  <p class="splash-tagline">Dublin's leading Insulation Specialists – See how we have transformed homes near you.</p>
+  <p class="splash-tagline">Dublins leading insulation specialists, see how we have transformed homes <strong>NEAR YOU!</strong></p>
 
-  <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View map">
-    <span>Scroll for map</span>
+  <button type="button" class="splash-scroll-indicator" id="splash-scroll-cta" aria-label="View EcoMap">
+    <span>Scroll for<br>EcoMap</span>
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 7 5 5 5-5"/></svg>
   </button>
   </div>
