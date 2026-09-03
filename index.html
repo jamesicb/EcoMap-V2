@@ -157,14 +157,6 @@
       font-weight: 600;
       fill: url(#splash-name-shine);
     }
-    #splash-name-shine {
-      transform: translateX(-72px);
-      animation: splash-name-shine 2.24s cubic-bezier(0.4, 0, 0.2, 1) 0.18s both;
-    }
-    @keyframes splash-name-shine {
-      from { transform: translateX(-72px); }
-      to { transform: translateX(200px); }
-    }
     .splash-rating {
       display: flex;
       flex-direction: column;
@@ -339,20 +331,22 @@
     }
     .compare-tag {
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: 2px;
+      right: 2px;
       bottom: auto;
       left: auto;
+      z-index: 1;
       margin: 0;
       padding: 0;
       background: transparent;
       color: var(--splash-ink);
-      font-size: 13.5px;
+      font-size: 6.75px;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       border-radius: 0;
       box-shadow: none;
+      line-height: 1;
     }
     .compare-ber {
       margin: 18px 0 6px;
@@ -425,9 +419,6 @@
       .splash-scroll-indicator {
         animation: none;
         opacity: 1;
-      }
-      #splash-name-shine {
-        animation: none;
       }
       #screen-splash .splash-name text {
         fill: var(--splash-ink);
@@ -4729,12 +4720,14 @@
     <h1 class="splash-name">
       <svg viewBox="0 0 200 32" role="img" aria-label="Absolute Acrylics" preserveAspectRatio="xMidYMid meet">
         <defs>
-          <linearGradient id="splash-name-shine" gradientUnits="userSpaceOnUse" x1="0" y1="4" x2="56" y2="20">
+          <linearGradient id="splash-name-shine" gradientUnits="userSpaceOnUse" x1="-72" y1="4" x2="-16" y2="20">
             <stop offset="0" stop-color="#111111"/>
             <stop offset="0.42" stop-color="#111111"/>
             <stop offset="0.5" stop-color="#ffffff"/>
             <stop offset="0.58" stop-color="#111111"/>
             <stop offset="1" stop-color="#111111"/>
+            <animate attributeName="x1" from="-72" to="200" dur="2.24s" begin="0.18s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
+            <animate attributeName="x2" from="-16" to="256" dur="2.24s" begin="0.18s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
           </linearGradient>
         </defs>
         <text x="0" y="25" font-size="24" textLength="200" lengthAdjust="spacingAndGlyphs">Absolute Acrylics</text>
