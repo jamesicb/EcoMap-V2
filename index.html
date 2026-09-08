@@ -8,7 +8,7 @@
   <title>See insulation jobs near you – Absolute Acrylics, Dublin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
@@ -97,7 +97,7 @@
       --lp-muted: #3F3F46;
       --lp-line: #D7D2CB;
       --lp-cream: #F8F5F0;
-      --lp-gold: #E8B423;
+      --lp-gold: #B8860B;
       --lp-cta: #720e32;
       --lp-cta-hover: #5a0b28;
       --lp-focus: #111111;
@@ -119,6 +119,8 @@
     .lp {
       width: 100%;
       min-height: 100%;
+      display: flex;
+      flex-direction: column;
       text-align: left;
     }
 
@@ -129,8 +131,9 @@
 
     .lp-bar {
       width: 100%;
-      background: var(--lp-cream);
-      padding: max(12px, env(safe-area-inset-top, 0px)) 0 8px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--lp-line);
+      padding: max(12px, env(safe-area-inset-top, 0px)) 0 12px;
     }
     .lp-bar-inner {
       width: min(1120px, calc(100% - 32px));
@@ -143,8 +146,8 @@
       font-family: var(--hero-display-font);
       font-optical-sizing: auto;
       font-weight: 600;
-      font-size: 1.05rem;
-      letter-spacing: -0.02em;
+      font-size: 1.25rem;
+      letter-spacing: 0.01em;
       line-height: 1.2;
       color: var(--lp-ink);
     }
@@ -173,15 +176,18 @@
     }
 
     .lp-hero {
-      padding: 8px 0 24px;
+      background: #ffffff;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0 0;
     }
-    .lp-hero-grid {
-      display: grid;
-      gap: 28px;
-      align-items: start;
+    .lp-stack {
+      max-width: 36rem;
     }
     .lp-hero-copy {
       position: relative;
+      padding-bottom: 28px;
     }
     .lp-hero h1 {
       font-family: var(--hero-display-font);
@@ -191,26 +197,8 @@
       letter-spacing: -0.03em;
       line-height: 1.12;
       color: var(--lp-ink);
-      margin: 0 0 44px;
+      margin: 0 0 20px;
       text-wrap: balance;
-    }
-    .lp-arrow-e,
-    .lp-arrow-m {
-      position: relative;
-    }
-    .lp-houses-arrow {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: visible;
-      color: var(--lp-cta);
-      z-index: 1;
-    }
-    .lp-hero-copy .lp-cta {
-      position: relative;
-      z-index: 2;
     }
     .lp-cta {
       display: inline-flex;
@@ -225,7 +213,7 @@
       color: #ffffff;
       font-family: inherit;
       font-size: 1.0625rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.01em;
       cursor: pointer;
       touch-action: manipulation;
@@ -241,11 +229,11 @@
       outline: 2px solid var(--lp-focus);
       outline-offset: 3px;
     }
-    .lp-reassure {
-      margin: 10px 0 0;
-      font-size: 0.625rem;
-      line-height: 1.4;
-      color: var(--lp-muted);
+    .lp-close {
+      margin-top: auto;
+      width: 100%;
+      border-top: 1px solid var(--lp-line);
+      padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
     }
 
     .lp-job {
@@ -258,7 +246,7 @@
     .lp-job-kicker {
       margin: 0 0 8px;
       font-size: 0.8125rem;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--lp-muted);
     }
     .lp-job-photos {
@@ -317,7 +305,7 @@
     }
     .lp-ber-arrow {
       color: var(--lp-muted);
-      font-weight: 700;
+      font-weight: 500;
     }
     .lp-est {
       list-style: none;
@@ -341,11 +329,14 @@
     }
     .lp-est-value {
       color: #15803D;
-      font-weight: 700;
+      font-weight: 500;
+      white-space: nowrap;
+      text-align: right;
+    }
+    .lp-est-value--lead {
       background: var(--lp-cream);
       border-radius: 999px;
       padding: 3px 10px;
-      white-space: nowrap;
     }
     .lp-est-note {
       margin: 10px 0 0;
@@ -354,94 +345,23 @@
       color: var(--lp-muted);
     }
 
-    .lp-band {
-      width: 100%;
-    }
-    .lp-band--cream {
+    .lp-proof {
       background: var(--lp-cream);
-    }
-    .lp-band-inner {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 16px 0 max(36px, env(safe-area-inset-bottom, 0px));
-    }
-    .lp-band h2 {
-      font-family: var(--hero-display-font);
-      font-optical-sizing: auto;
-      font-weight: 600;
-      font-size: clamp(1.45rem, 4.2vw, 2rem);
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      margin: 0 0 12px;
-      text-wrap: balance;
-    }
-    .lp-lead {
-      margin: 0 0 16px;
-      font-size: 1.0625rem;
-      line-height: 1.45;
-      color: var(--lp-muted);
-      max-width: 40rem;
-    }
-    .lp-steps {
-      list-style: none;
-      margin: 0 0 16px;
-      padding: 0;
-      display: grid;
-      gap: 14px;
-    }
-    .lp-steps li {
-      display: grid;
-      grid-template-columns: 2.25rem 1fr;
-      gap: 12px;
-      align-items: start;
-    }
-    .lp-step-num {
-      font-family: var(--hero-display-font);
-      font-weight: 600;
-      font-size: 1.5rem;
-      line-height: 1;
-      color: var(--lp-cta);
-    }
-    .lp-steps h3 {
-      margin: 0 0 4px;
-      font-size: 1.0625rem;
-      font-weight: 700;
-    }
-    .lp-steps p {
-      margin: 0;
-      font-size: 0.9875rem;
-      line-height: 1.45;
-      color: var(--lp-muted);
-    }
-
-    @media (min-width: 640px) {
-      .lp-hero .lp-cta {
-        width: auto;
-        min-width: 240px;
-      }
+      padding: 20px 0 24px;
     }
 
     @media (min-width: 900px) {
       .lp-bar {
-        padding: max(18px, env(safe-area-inset-top, 0px)) 0 8px;
+        padding: max(18px, env(safe-area-inset-top, 0px)) 0 14px;
+      }
+      .lp-proof {
+        padding: 28px 0 32px;
       }
       .lp-hero {
-        padding: 20px 0 28px;
+        padding: 28px 0 0;
       }
-      .lp-hero-grid {
-        grid-template-columns: var(--lp-job-col, minmax(0, 0.72fr)) minmax(0, 1fr);
-        gap: 0;
-        align-items: start;
-      }
-      .lp-hero-copy {
-        padding-right: 20px;
-      }
-      .lp-band-inner {
-        padding: 20px 0 40px;
-      }
-      .lp-steps {
-        grid-template-columns: 1fr;
-        gap: 16px;
+      .lp-close {
+        padding-bottom: 32px;
       }
     }
 
@@ -4719,24 +4639,14 @@
           <span class="lp-trust-dot" aria-hidden="true">·</span>
           <span>SEAI-registered</span>
           <span class="lp-trust-dot" aria-hidden="true">·</span>
-          <span>40+ completed Dublin job<span class="lp-align-s">s</span></span>
+          <span>40+ completed Dublin jobs</span>
         </p>
       </div>
     </header>
 
-    <section class="lp-hero" aria-labelledby="lp-hero-title">
-      <div class="lp-inner lp-hero-grid">
-        <div class="lp-hero-copy">
-          <h1 id="lp-hero-title">See the benefits of insulation for hous<span class="lp-arrow-e">e</span>s near your ho<span class="lp-arrow-m">m</span>e</h1>
-          <button type="button" class="lp-cta js-open-map" aria-describedby="lp-hero-reassure">See jobs near you</button>
-          <p class="lp-reassure" id="lp-hero-reassure">Pins are approximate, not exact addresses.</p>
-          <svg class="lp-houses-arrow" aria-hidden="true">
-            <path class="lp-houses-arrow-line" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
-            <path class="lp-houses-arrow-head" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </div>
-
-        <article class="lp-job" aria-labelledby="lp-hero-job-title">
+    <section class="lp-proof" aria-labelledby="lp-hero-job-title">
+      <div class="lp-inner lp-stack">
+        <article class="lp-job">
           <p class="lp-job-kicker" id="lp-hero-job-title">Dundrum, D16 · 108m² semi-detached</p>
           <div class="lp-job-photos">
             <figure class="lp-job-photo">
@@ -4754,7 +4664,7 @@
             <span>After BER <strong class="lp-ber-new">A3</strong></span>
           </p>
           <ul class="lp-est">
-            <li><span class="lp-est-label">Heating bills savings</span><span class="lp-est-value">+€1,700 / year</span></li>
+            <li><span class="lp-est-label">Heating bills savings</span><span class="lp-est-value lp-est-value--lead">+€1,700 / year</span></li>
             <li><span class="lp-est-label">Property value increase</span><span class="lp-est-value">+€25,900</span></li>
             <li><span class="lp-est-label">CO₂ emissions reduction</span><span class="lp-est-value">+2.3 t / year</span></li>
           </ul>
@@ -4763,34 +4673,14 @@
       </div>
     </section>
 
-    <section class="lp-band lp-band--cream" aria-labelledby="lp-how-title">
-      <div class="lp-band-inner">
-        <h2 id="lp-how-title">How the map works</h2>
-        <p class="lp-lead">You are looking at completed jobs, not a brochure. Nothing is sent to us until you ask for a quote.</p>
-        <ol class="lp-steps">
-          <li>
-            <span class="lp-step-num" aria-hidden="true">1</span>
-            <div>
-              <h3>Open the map</h3>
-              <p>See insulation jobs we have finished across Dublin.</p>
-            </div>
-          </li>
-          <li>
-            <span class="lp-step-num" aria-hidden="true">2</span>
-            <div>
-              <h3>Find a house like yours</h3>
-              <p>Area, house type, photos, and the BER rating before and after.</p>
-            </div>
-          </li>
-          <li>
-            <span class="lp-step-num" aria-hidden="true">3</span>
-            <div>
-              <h3>Ask for a quote only if you want one</h3>
-              <p>The map does not collect your phone number.</p>
-            </div>
-          </li>
-        </ol>
+    <section class="lp-hero" aria-labelledby="lp-hero-title">
+      <div class="lp-inner lp-stack">
+        <div class="lp-hero-copy">
+          <h1 id="lp-hero-title">See the benefits of insulation for houses near your home</h1>
+          <button type="button" class="lp-cta js-open-map">See jobs near you</button>
+        </div>
       </div>
+      <div class="lp-close" aria-hidden="true"></div>
     </section>
   </div>
 </div>
@@ -4815,7 +4705,7 @@
   <div class="browse-shell">
     <div class="map-screen-layout">
       <div class="map-map-section" data-hide-on-subview>
-        <p class="map-mobile-disclaimer">All locations shown are approximate. No personally identifiable information is displayed.</p>
+        <p class="map-mobile-disclaimer">Pins are approximate, not exact addresses. No personally identifiable information is displayed.</p>
         <div class="map-split">
           <div class="map-frame">
             <div class="map-filter-chips" id="map-filter-chips" role="group" aria-label="Property type filters">
@@ -4961,7 +4851,7 @@
       </div>
 
       <footer class="map-disclaimer-footer">
-        <p>All locations shown are approximate. No personally identifiable information is displayed.</p>
+        <p>Pins are approximate, not exact addresses. No personally identifiable information is displayed.</p>
       </footer>
 
       <nav class="app-tab-bar" aria-label="Main">
@@ -6374,81 +6264,6 @@ document.querySelectorAll('.js-open-map').forEach(btn => {
     showMapScreen();
   });
 });
-
-function layoutHousesArrow() {
-  const root = document.querySelector('.lp-hero-copy');
-  const from = root?.querySelector('.lp-arrow-e');
-  const align = root?.querySelector('.lp-arrow-m');
-  const to = root?.querySelector('.lp-cta');
-  const svg = root?.querySelector('.lp-houses-arrow');
-  const line = root?.querySelector('.lp-houses-arrow-line');
-  const head = root?.querySelector('.lp-houses-arrow-head');
-  if (!root || !from || !align || !to || !svg || !line || !head) return;
-
-  const r = root.getBoundingClientRect();
-  const a = from.getBoundingClientRect();
-  const m = align.getBoundingClientRect();
-  const b = to.getBoundingClientRect();
-  const w = Math.max(1, r.width);
-  const h = Math.max(1, r.height);
-  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-
-  const x1 = a.left + a.width * 0.5 - r.left;
-  const y1 = a.bottom - r.top + 1;
-  const x2 = m.left + m.width * 0.5 - r.left;
-  const yElbow = b.top - r.top + b.height * 0.5;
-  const radius = Math.min(10, Math.abs(x1 - x2) / 2, Math.abs(yElbow - y1) / 2);
-  const turn = x2 < x1 ? -radius : radius;
-  line.setAttribute(
-    'd',
-    `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x1.toFixed(1)} ${(yElbow - radius).toFixed(1)} Q ${x1.toFixed(1)} ${yElbow.toFixed(1)} ${(x1 + turn).toFixed(1)} ${yElbow.toFixed(1)} L ${x2.toFixed(1)} ${yElbow.toFixed(1)}`
-  );
-
-  const angle = x2 < x1 ? Math.PI : 0;
-  const len = 11;
-  const wing = 0.55;
-  const hx1 = x2 - len * Math.cos(angle - wing);
-  const hy1 = yElbow - len * Math.sin(angle - wing);
-  const hx2 = x2 - len * Math.cos(angle + wing);
-  const hy2 = yElbow - len * Math.sin(angle + wing);
-  head.setAttribute('d', `M ${hx1.toFixed(1)} ${hy1.toFixed(1)} L ${x2.toFixed(1)} ${yElbow.toFixed(1)} L ${hx2.toFixed(1)} ${hy2.toFixed(1)}`);
-}
-
-function alignJobCardToTrust() {
-  const grid = document.querySelector('.lp-hero-grid');
-  const mark = document.querySelector('.lp-align-s');
-  if (!grid || !mark) return;
-  if (!window.matchMedia('(min-width: 900px)').matches) {
-    grid.style.removeProperty('--lp-job-col');
-    return;
-  }
-  const g = grid.getBoundingClientRect();
-  const s = mark.getBoundingClientRect();
-  const left = Math.max(280, Math.round(s.left - g.left));
-  grid.style.setProperty('--lp-job-col', `${left}px`);
-}
-
-function layoutLandingHero() {
-  alignJobCardToTrust();
-  layoutHousesArrow();
-}
-
-function bindHousesArrow() {
-  const root = document.querySelector('.lp-hero-copy');
-  if (!root) return;
-  const run = () => layoutLandingHero();
-  run();
-  window.addEventListener('resize', run);
-  if (document.fonts?.ready) document.fonts.ready.then(run);
-  if (typeof ResizeObserver === 'function') {
-    const ro = new ResizeObserver(run);
-    ro.observe(root);
-    const bar = document.querySelector('.lp-bar-inner');
-    if (bar) ro.observe(bar);
-  }
-}
-
-bindHousesArrow();
 
 // ─────────────────────────────────────────────
 // MAP INIT
