@@ -271,6 +271,7 @@
       min-width: 0;
     }
     .lp-job {
+      --lp-job-pair-gap: 8px;
       background: var(--lp-card);
       border: 1px solid var(--lp-line);
       border-radius: 12px;
@@ -294,15 +295,19 @@
       color: var(--lp-muted);
       line-height: 1.35;
     }
-    .lp-job-photos {
+    .lp-job-photos,
+    .lp-job-outcomes {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--lp-job-pair-gap);
+      justify-items: stretch;
       margin: 0 0 12px;
     }
     .lp-job-photo {
       position: relative;
       margin: 0;
+      width: 100%;
+      min-width: 0;
       aspect-ratio: 4 / 3;
       border-radius: 12px;
       overflow: hidden;
@@ -333,16 +338,11 @@
       border-radius: 6px;
       line-height: 1.2;
     }
-    .lp-job-outcomes {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin: 0 0 12px;
-    }
     .lp-outcome {
       background: var(--lp-sage);
       border-radius: 12px;
       padding: 12px 12px 11px;
+      width: 100%;
       min-width: 0;
     }
     .lp-outcome-value {
@@ -516,6 +516,7 @@
         height: 13px;
       }
       .lp-job {
+        --lp-job-pair-gap: 6px;
         padding: var(--lp-job-pad);
       }
       .lp-job-title {
@@ -527,13 +528,12 @@
         font-size: 0.8125rem;
       }
       .lp-job-photos {
-        gap: 6px;
         margin: 0 0 10px;
       }
       .lp-job-photo {
-        aspect-ratio: 3 / 4;
-        height: auto;
-        max-height: min(13.25rem, 24svh);
+        aspect-ratio: auto;
+        width: 100%;
+        height: min(13.25rem, 24svh);
         border-radius: 10px;
       }
       .lp-job-photo img {
@@ -546,8 +546,6 @@
         font-size: 0.6875rem;
       }
       .lp-job-outcomes {
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
         margin: 0 0 8px;
       }
       .lp-outcome {
@@ -590,7 +588,7 @@
 
     @media (max-width: 767px) and (max-height: 540px) {
       .lp-job-photo {
-        max-height: min(6.5rem, 30svh);
+        height: min(6.5rem, 30svh);
       }
     }
 
