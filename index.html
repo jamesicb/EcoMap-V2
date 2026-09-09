@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://nominatim.openstreetmap.org; font-src 'self' https://fonts.gstatic.com data:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://nominatim.openstreetmap.org https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self' https://fonts.gstatic.com data:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>See insulation jobs near you – Absolute Acrylics, Dublin</title>
+  <title>Could your home be warmer for less? – EcoMap by Absolute Acrylics</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
@@ -92,16 +92,19 @@
        SCREEN 1 – LANDING (scrolls; map opens from CTA only)
     ══════════════════════════════════════════════════════════════ */
     #screen-splash {
-      --hero-display-font: 'Fraunces', Georgia, serif;
-      --lp-ink: #111111;
-      --lp-muted: #3F3F46;
-      --lp-line: #D7D2CB;
-      --lp-cream: #F8F5F0;
-      --lp-gold: #B8860B;
-      --lp-cta: #720e32;
-      --lp-cta-hover: #5a0b28;
-      --lp-focus: #111111;
-      background: #ffffff;
+      --lp-ivory: #F7F8F2;
+      --lp-forest: #173F35;
+      --lp-forest-hover: #102E27;
+      --lp-body: #26332E;
+      --lp-muted: #4A5A54;
+      --lp-sage: #E7EFE5;
+      --lp-card: #FFFFFF;
+      --lp-line: #D5DDD0;
+      --lp-focus: #173F35;
+      --lp-on-forest: #F7F8F2;
+      --lp-max: 1240px;
+      --lp-gutter: 20px;
+      background: var(--lp-ivory);
       display: block;
       padding: 0;
       overflow-y: auto;
@@ -109,8 +112,8 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       touch-action: pan-y;
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      color: var(--lp-ink);
+      font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+      color: var(--lp-body);
     }
     #screen-splash.hidden {
       transform: scale(0.96);
@@ -118,109 +121,113 @@
 
     .lp {
       width: 100%;
+      max-width: 100%;
       min-height: 100%;
       display: flex;
       flex-direction: column;
       text-align: left;
     }
 
-    .lp-inner {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
+    .lp-shell {
+      width: 100%;
+      max-width: var(--lp-max);
+      margin-inline: auto;
+      padding-inline: var(--lp-gutter);
+      box-sizing: border-box;
+      min-width: 0;
     }
 
     .lp-bar {
       width: 100%;
-      background: #ffffff;
+      background: var(--lp-ivory);
       border-bottom: 1px solid var(--lp-line);
-      padding: max(12px, env(safe-area-inset-top, 0px)) 0 12px;
-    }
-    .lp-bar-inner {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      padding: max(14px, env(safe-area-inset-top, 0px)) 0 14px;
     }
     .lp-wordmark {
-      font-family: var(--hero-display-font);
-      font-optical-sizing: auto;
-      font-weight: 600;
-      font-size: 1.25rem;
-      letter-spacing: 0.01em;
-      line-height: 1.2;
-      color: var(--lp-ink);
-    }
-    .lp-trust {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
-      gap: 6px 10px;
-      font-size: 0.875rem;
+      align-items: baseline;
+      gap: 0.3em 0.55em;
+      margin: 0;
+      font-weight: 800;
+      font-size: 1.125rem;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--lp-forest);
+    }
+    .lp-wordmark-by {
+      font-size: 0.8125rem;
       font-weight: 500;
+      letter-spacing: 0;
       color: var(--lp-muted);
-      line-height: 1.35;
-    }
-    .lp-trust-stars {
-      display: inline-flex;
-      gap: 2px;
-      color: var(--lp-gold);
-    }
-    .lp-trust-stars svg {
-      width: 14px;
-      height: 14px;
-      display: block;
-    }
-    .lp-trust-dot {
-      color: #8A8580;
     }
 
-    .lp-hero {
-      background: #ffffff;
+    .lp-main {
+      background: var(--lp-ivory);
       flex: 1 1 auto;
+      padding: 24px 0 max(28px, env(safe-area-inset-bottom, 0px));
+    }
+    .lp-hero-grid {
       display: flex;
       flex-direction: column;
-      padding: 20px 0 0;
+      gap: 28px;
     }
-    .lp-stack {
-      max-width: 36rem;
+    .lp-hero {
+      background: transparent;
+      padding: 0;
+      min-width: 0;
     }
     .lp-hero-copy {
       position: relative;
-      padding-bottom: 28px;
+      max-width: none;
     }
     .lp-hero h1 {
-      font-family: var(--hero-display-font);
-      font-optical-sizing: auto;
-      font-weight: 600;
-      font-size: clamp(1.85rem, 7.4vw, 2.85rem);
-      letter-spacing: -0.03em;
-      line-height: 1.12;
-      color: var(--lp-ink);
+      font-weight: 800;
+      font-size: clamp(2rem, 7.2vw, 2.375rem);
+      letter-spacing: -0.045em;
+      line-height: 1.08;
+      color: var(--lp-forest);
+      margin: 0 0 14px;
+    }
+    .lp-lede {
       margin: 0 0 20px;
-      text-wrap: balance;
+      max-width: 32rem;
+      font-size: 1.0625rem;
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--lp-body);
+      text-wrap: pretty;
     }
     .lp-cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 48px;
-      padding: 12px 22px;
+      gap: 10px;
+      min-height: 52px;
+      padding: 14px 24px;
       width: 100%;
       border: none;
-      border-radius: 10px;
-      background: var(--lp-cta);
-      color: #ffffff;
+      border-radius: 12px;
+      background: var(--lp-forest);
+      color: var(--lp-on-forest);
       font-family: inherit;
       font-size: 1.0625rem;
       font-weight: 700;
-      letter-spacing: 0.01em;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      text-align: center;
       cursor: pointer;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 1px 2px rgba(23, 63, 53, 0.12);
+    }
+    .lp-cta svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
     }
     .lp-cta:hover {
-      background: var(--lp-cta-hover);
+      background: var(--lp-forest-hover);
     }
     .lp-cta:focus {
       outline: none;
@@ -228,140 +235,312 @@
     .lp-cta:focus-visible {
       outline: 2px solid var(--lp-focus);
       outline-offset: 3px;
+      box-shadow: 0 0 0 2px var(--lp-ivory), 0 0 0 4px var(--lp-forest);
     }
-    .lp-close {
-      margin-top: auto;
-      width: 100%;
-      border-top: 1px solid var(--lp-line);
-      padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
+    .lp-cta:active {
+      background: var(--lp-forest-hover);
+    }
+    .lp-trust {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 10px;
+      margin: 18px 0 0;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--lp-muted);
+      line-height: 1.4;
+    }
+    .lp-trust-stars {
+      display: inline-flex;
+      gap: 2px;
+      color: var(--lp-forest);
+    }
+    .lp-trust-stars svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+    .lp-trust-dot {
+      color: #8A958F;
     }
 
-    .lp-job {
-      background: #ffffff;
-      border: 1px solid var(--lp-line);
-      border-radius: 16px;
-      box-shadow: 0 12px 36px rgba(17, 17, 17, 0.07);
-      padding: 12px;
+    .lp-proof {
+      background: transparent;
+      padding: 0;
+      min-width: 0;
     }
-    .lp-job-kicker {
-      margin: 0 0 8px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: var(--lp-muted);
+    .lp-job {
+      background: var(--lp-card);
+      border: 1px solid var(--lp-line);
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(23, 63, 53, 0.06), 0 10px 28px rgba(23, 63, 53, 0.06);
+      padding: 14px;
+      width: 100%;
+    }
+    .lp-job-place {
+      margin: 0 0 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--lp-forest);
+      line-height: 1.35;
+    }
+    .lp-job-title {
+      margin: 0 0 12px;
+      font-size: 1.1875rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--lp-forest);
     }
     .lp-job-photos {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
+      margin: 0 0 12px;
     }
     .lp-job-photo {
       position: relative;
       margin: 0;
       aspect-ratio: 4 / 3;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
-      background: #ece8e2;
+      background: var(--lp-sage);
     }
     .lp-job-photo img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
+      object-position: 50% 42%;
+    }
+    .lp-job-photo:last-child img {
+      object-position: 50% 18%;
     }
     .lp-job-label {
       position: absolute;
       left: 8px;
       bottom: 8px;
       margin: 0;
-      padding: 4px 8px;
-      background: #111111;
-      color: #ffffff;
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      padding: 5px 9px;
+      background: var(--lp-forest);
+      color: var(--lp-on-forest);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      border-radius: 4px;
+      border-radius: 6px;
       line-height: 1.2;
     }
-    .lp-ber {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 8px 12px;
-      margin: 12px 0 10px;
-      color: var(--lp-ink);
-      font-size: 1rem;
-      font-weight: 500;
-    }
-    .lp-ber strong {
-      font-weight: 700;
-    }
-    .lp-ber-old {
-      color: #E11D2A;
-    }
-    .lp-ber-new {
-      color: #15803D;
-    }
-    .lp-ber-arrow {
-      color: var(--lp-muted);
-      font-weight: 500;
-    }
-    .lp-est {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    .lp-job-outcomes {
       display: grid;
-      gap: 6px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 0 12px;
     }
-    .lp-est li {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 4px 12px;
-      font-size: 0.9375rem;
-      line-height: 1.35;
-      color: var(--lp-ink);
+    .lp-outcome {
+      background: var(--lp-sage);
+      border-radius: 12px;
+      padding: 12px 12px 11px;
+      min-width: 0;
     }
-    .lp-est-label {
+    .lp-outcome-value {
+      display: block;
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--lp-forest);
+    }
+    .lp-outcome-label {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.3;
       color: var(--lp-muted);
     }
-    .lp-est-value {
-      color: #15803D;
+    .lp-job-meta {
+      margin: 0 0 8px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--lp-body);
+    }
+    .lp-job-note {
+      margin: 0 0 10px;
+      font-size: 0.8125rem;
       font-weight: 500;
-      white-space: nowrap;
-      text-align: right;
-    }
-    .lp-est-value--lead {
-      background: var(--lp-cream);
-      border-radius: 999px;
-      padding: 3px 10px;
-    }
-    .lp-est-note {
-      margin: 10px 0 0;
-      font-size: 0.875rem;
       line-height: 1.45;
       color: var(--lp-muted);
     }
-
-    .lp-proof {
-      background: var(--lp-cream);
-      padding: 20px 0 24px;
+    .lp-job-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+    .lp-job-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 0;
+      border: none;
+      background: none;
+      color: var(--lp-forest);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      touch-action: manipulation;
+    }
+    .lp-job-link:hover {
+      color: var(--lp-forest-hover);
+    }
+    .lp-job-link:focus {
+      outline: none;
+    }
+    .lp-job-link:focus-visible {
+      outline: 2px solid var(--lp-focus);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .lp-job-more {
+      margin: 0;
+      border: none;
+      padding: 0;
+      width: 100%;
+      min-width: 0;
+    }
+    .lp-job-more summary {
+      cursor: pointer;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--lp-muted);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      list-style: none;
+    }
+    .lp-job-more summary::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      flex: 0 0 auto;
+      margin-right: 4px;
+    }
+    .lp-job-more[open] summary::after {
+      transform: rotate(-135deg);
+      margin-top: 4px;
+    }
+    .lp-job-more summary::-webkit-details-marker {
+      display: none;
+    }
+    .lp-job-more summary:focus {
+      outline: none;
+    }
+    .lp-job-more summary:focus-visible {
+      outline: 2px solid var(--lp-focus);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .lp-job-more-body {
+      display: grid;
+      gap: 8px;
+      padding: 0 0 6px;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      color: var(--lp-muted);
     }
 
-    @media (min-width: 900px) {
+    @media (max-width: 359px) {
+      .lp-job-photos {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .lp-job-outcomes {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 768px) {
+      #screen-splash {
+        --lp-gutter: 32px;
+      }
+      .lp-lede {
+        font-size: 1.125rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
       .lp-bar {
-        padding: max(18px, env(safe-area-inset-top, 0px)) 0 14px;
+        padding: max(18px, env(safe-area-inset-top, 0px)) 0 16px;
+      }
+      .lp-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px 0 48px;
+      }
+      .lp-hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+        column-gap: 56px;
+        row-gap: 0;
+        align-items: center;
+      }
+      .lp-hero h1 {
+        font-size: clamp(2.5rem, 2.8vw, 3.05rem);
+        line-height: 1.06;
+        margin: 0 0 16px;
+      }
+      .lp-hero-copy {
+        max-width: 34rem;
+      }
+      .lp-cta {
+        width: auto;
+        min-width: 17.5rem;
+        padding: 14px 28px;
       }
       .lp-proof {
-        padding: 28px 0 32px;
+        width: 100%;
+        max-width: 40.5rem;
+        justify-self: end;
       }
-      .lp-hero {
-        padding: 28px 0 0;
+      .lp-job {
+        padding: 16px;
+        max-width: 40.5rem;
       }
-      .lp-close {
-        padding-bottom: 32px;
+      .lp-outcome-value {
+        font-size: 1.25rem;
+      }
+    }
+
+    @media (min-width: 1024px) and (max-height: 800px) {
+      .lp-main {
+        justify-content: flex-start;
+        padding: 20px 0 28px;
+      }
+      .lp-hero-grid {
+        align-items: start;
+      }
+      .lp-hero h1 {
+        font-size: clamp(2.25rem, 2.4vw, 2.75rem);
+      }
+      .lp-job-photo {
+        aspect-ratio: 16 / 11;
       }
     }
 
@@ -4625,70 +4804,86 @@
 <div id="screen-splash" class="screen">
   <div class="lp">
     <header class="lp-bar">
-      <div class="lp-bar-inner">
-        <p class="lp-wordmark">Absolute Acrylics</p>
-        <p class="lp-trust" aria-label="Customer rating 4.8 out of 5 on Google. SEAI-registered. 40 or more completed Dublin jobs.">
-          <span class="lp-trust-stars" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
-          </span>
-          <span>4.8 on Google</span>
-          <span class="lp-trust-dot" aria-hidden="true">·</span>
-          <span>SEAI-registered</span>
-          <span class="lp-trust-dot" aria-hidden="true">·</span>
-          <span>40+ completed Dublin jobs</span>
+      <div class="lp-shell">
+        <p class="lp-wordmark">
+          <span>EcoMap</span>
+          <span class="lp-wordmark-by">by Absolute Acrylics</span>
         </p>
       </div>
     </header>
 
-    <section class="lp-proof" aria-labelledby="lp-hero-job-title">
-      <div class="lp-inner lp-stack">
-        <article class="lp-job">
-          <p class="lp-job-kicker" id="lp-hero-job-title">Dundrum, D16 · 108m² semi-detached</p>
-          <div class="lp-job-photos">
-            <figure class="lp-job-photo">
-              <img src="./assets/job-photos/174-balally-drive-before.png" width="800" height="600" alt="Dundrum semi-detached before external wall insulation" />
-              <figcaption class="lp-job-label">Before</figcaption>
-            </figure>
-            <figure class="lp-job-photo">
-              <img src="./assets/job-photos/174-balally-drive-after.png" width="800" height="600" alt="Dundrum semi-detached after external wall insulation" />
-              <figcaption class="lp-job-label">After</figcaption>
-            </figure>
+    <main class="lp-main">
+      <div class="lp-shell lp-hero-grid">
+        <section class="lp-hero" aria-labelledby="lp-hero-title">
+          <div class="lp-hero-copy">
+            <h1 id="lp-hero-title">Could your home<br>be warmer for less?</h1>
+            <p class="lp-lede">Explore insulation projects near you. See the transformations, BER improvements and estimated heating savings.</p>
+            <button type="button" class="lp-cta js-open-map">
+              Explore nearby projects
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            </button>
+            <p class="lp-trust" aria-label="Customer rating 4.76 out of 5 on Google. 40 or more completed Dublin jobs.">
+              <span class="lp-trust-stars" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+              </span>
+              <span>4.76 on Google</span>
+              <span class="lp-trust-dot" aria-hidden="true">·</span>
+              <span>40+ completed Dublin jobs</span>
+            </p>
           </div>
-          <p class="lp-ber">
-            <span>Before BER <strong class="lp-ber-old">C2</strong></span>
-            <span class="lp-ber-arrow" aria-hidden="true">→</span>
-            <span>After BER <strong class="lp-ber-new">A3</strong></span>
-          </p>
-          <ul class="lp-est">
-            <li><span class="lp-est-label">Heating bills savings</span><span class="lp-est-value lp-est-value--lead">+€1,700 / year</span></li>
-            <li><span class="lp-est-label">Property value increase</span><span class="lp-est-value">+€25,900</span></li>
-            <li><span class="lp-est-label">CO₂ emissions reduction</span><span class="lp-est-value">+2.3 t / year</span></li>
-          </ul>
-          <p class="lp-est-note">Estimates modelled from this job’s BER and fabric. Not a quote for your house.</p>
-        </article>
-      </div>
-    </section>
+        </section>
 
-    <section class="lp-hero" aria-labelledby="lp-hero-title">
-      <div class="lp-inner lp-stack">
-        <div class="lp-hero-copy">
-          <h1 id="lp-hero-title">See the benefits of insulation for houses near your home</h1>
-          <button type="button" class="lp-cta js-open-map">See jobs near you</button>
-        </div>
+        <section class="lp-proof" aria-labelledby="lp-hero-job-title">
+          <article class="lp-job">
+            <p class="lp-job-place">Dundrum, Dublin 16</p>
+            <h2 class="lp-job-title" id="lp-hero-job-title">A warmer semi-detached home</h2>
+            <div class="lp-job-photos">
+              <figure class="lp-job-photo">
+                <img src="./assets/job-photos/174-balally-drive-before.png" width="800" height="600" alt="Dundrum semi-detached house before external wall insulation" />
+                <figcaption class="lp-job-label">Before</figcaption>
+              </figure>
+              <figure class="lp-job-photo">
+                <img src="./assets/job-photos/174-balally-drive-after.png" width="800" height="600" alt="Dundrum semi-detached house after external wall insulation" />
+                <figcaption class="lp-job-label">After</figcaption>
+              </figure>
+            </div>
+            <div class="lp-job-outcomes">
+              <p class="lp-outcome">
+                <span class="lp-outcome-value">C2 → A3</span>
+                <span class="lp-outcome-label">Certified BER improvement</span>
+              </p>
+              <p class="lp-outcome">
+                <span class="lp-outcome-value">€1,700/year</span>
+                <span class="lp-outcome-label">Estimated heating savings</span>
+              </p>
+            </div>
+            <p class="lp-job-meta">External wall insulation · 108 m² semi-detached</p>
+            <p class="lp-job-note">Certified BER for the completed home. Other upgrades from the same works may be included. Heating savings are a property-specific estimate — your results will vary.</p>
+            <div class="lp-job-actions">
+              <button type="button" class="lp-job-link" data-open-job="54">View project details</button>
+              <details class="lp-job-more">
+                <summary>How these figures were estimated</summary>
+                <div class="lp-job-more-body">
+                  <p>Estimated CO₂ reduction: 2.3 tonnes/year.</p>
+                  <p>Estimates are modelled from this property’s BER and insulation details.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </section>
       </div>
-      <div class="lp-close" aria-hidden="true"></div>
-    </section>
+    </main>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════
      SCREEN 2 – MAP FOCUS
 ═══════════════════════════════════════════ -->
-<div id="screen-map" class="screen hidden">
+<div id="screen-map" class="screen hidden" inert>
   <header class="app-desk-header" aria-label="Site navigation">
     <button type="button" class="app-desk-brand" id="nav-desk-brand" aria-label="Absolute Acrylics – Home">
       <span class="app-desk-brand-logo" aria-hidden="true">
@@ -5004,8 +5199,8 @@
     <h3 id="dialog-privacy-title" class="text-base font-semibold text-[var(--text-dark)] mb-3">Privacy notice</h3>
     <div class="text-sm text-[var(--text-muted)] flex flex-col gap-3 leading-relaxed">
       <p><strong class="text-[var(--text-dark)]">Who we are.</strong> Absolute Acrylics (Warmliving Ireland Ltd) is the data controller for enquiries submitted through this site.</p>
-      <p><strong class="text-[var(--text-dark)]">What we collect.</strong> Quote form: name, email, phone, and optional message. Map “locate me” (only if you tap the button): your device location stays on your device and is not sent to our servers.</p>
-      <p><strong class="text-[var(--text-dark)]">Why we use it.</strong> To respond to your enquiry and provide a quotation (legitimate interest / pre-contract steps).</p>
+      <p><strong class="text-[var(--text-dark)]">What we collect.</strong> Quote form: name, email, phone, and optional message. Map “locate me” (only if you tap the button): your device location stays on your device and is not sent to our servers. When Google Analytics is configured, we also send anonymous events for landing-page views, exploring nearby projects, and completed quote enquiries. We do not send your name, email, phone, or message to analytics.</p>
+      <p><strong class="text-[var(--text-dark)]">Why we use it.</strong> To respond to your enquiry and provide a quotation (legitimate interest / pre-contract steps). Anonymous usage events are used only to understand how many visitors explore nearby projects and complete an enquiry.</p>
       <p><strong class="text-[var(--text-dark)]">How long we keep it.</strong> Enquiry records are kept only as long as needed to handle your request and our business records, then deleted or anonymised.</p>
       <p><strong class="text-[var(--text-dark)]">Your rights.</strong> You may request access, correction, or erasure of your personal data, or object to processing, by contacting info@absoluteacrylics.ie. You may lodge a complaint with the Irish Data Protection Commission.</p>
       <p><strong class="text-[var(--text-dark)]">Public map.</strong> Completed job locations are shown at approximate positions only, with homeowner consent. No exact addresses are published on the map.</p>
@@ -5553,8 +5748,67 @@ const SUPABASE_URL = runtimeEnv.SUPABASE_URL || 'https://tfnjbqnagdfrexoegbdi.su
 const SUPABASE_PUBLISHABLE_KEY = runtimeEnv.SUPABASE_PUBLISHABLE_KEY || '';
 /** Set ECOMAP_ENV.CRM_ENABLED = true only on trusted admin devices (never on the public site). */
 const CRM_ENABLED = runtimeEnv.CRM_ENABLED === true;
+const GA_MEASUREMENT_ID = String(runtimeEnv.GA_MEASUREMENT_ID || '').trim();
+const ANALYTICS_FROM_LANDING_KEY = 'ecomap_from_landing';
 const CUSTOMER_TABLE = 'customers';
 const QUOTE_REQUEST_TABLE = 'quote_requests';
+
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
+
+function analyticsSafeParams(extra) {
+  let fromLanding = false;
+  try {
+    fromLanding = sessionStorage.getItem(ANALYTICS_FROM_LANDING_KEY) === '1';
+  } catch (err) {
+    fromLanding = false;
+  }
+  const params = { from_landing: fromLanding };
+  if (extra && typeof extra === 'object') {
+    Object.keys(extra).forEach((key) => {
+      if (key === 'name' || key === 'email' || key === 'phone' || key === 'message') return;
+      params[key] = extra[key];
+    });
+  }
+  return params;
+}
+
+function trackEcoMapEvent(name, extra) {
+  if (!name) return;
+  const params = analyticsSafeParams(extra);
+  window.dataLayer.push(Object.assign({ event: name }, params));
+  if (/^G-[A-Z0-9]+$/i.test(GA_MEASUREMENT_ID)) {
+    window.gtag('event', name, params);
+  }
+}
+
+function initEcoMapAnalytics() {
+  if (/^G-[A-Z0-9]+$/i.test(GA_MEASUREMENT_ID)) {
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      anonymize_ip: true,
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      send_page_view: false
+    });
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_MEASUREMENT_ID);
+    document.head.appendChild(script);
+  }
+
+  const splash = document.getElementById('screen-splash');
+  if (splash && !splash.classList.contains('hidden')) {
+    try {
+      sessionStorage.setItem(ANALYTICS_FROM_LANDING_KEY, '1');
+    } catch (err) {
+      /* sessionStorage may be unavailable */
+    }
+    trackEcoMapEvent('landing_page_view');
+  }
+}
+
+initEcoMapAnalytics();
 
 const supabaseClient = (typeof supabase !== 'undefined' && supabase.createClient && SUPABASE_PUBLISHABLE_KEY)
   ? supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
@@ -6224,19 +6478,27 @@ function closeQuoteSheet() {
   }
 }
 
-function showMapScreen() {
+function showMapScreen(opts) {
   if (splashTransitioning) return;
   const splash = document.getElementById('screen-splash');
   const mapScreen = document.getElementById('screen-map');
   if (!splash || !mapScreen || splash.classList.contains('hidden')) return;
   splashTransitioning = true;
+  const jobId = opts && opts.jobId != null && opts.jobId !== '' ? Number(opts.jobId) : NaN;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hideDelay = reduceMotion ? 0 : 380;
 
-  requestAnimationFrame(() => splash.classList.add('out'));
+  if (!reduceMotion) {
+    requestAnimationFrame(() => splash.classList.add('out'));
+  }
   setTimeout(() => {
     try {
       splash.classList.add('hidden');
       splash.classList.remove('out');
+      splash.setAttribute('inert', '');
       mapScreen.classList.remove('hidden');
+      mapScreen.removeAttribute('inert');
+      trackEcoMapEvent('explore_nearby_projects');
       if (!mapInitialised) {
         initMap();
         mapInitialised = true;
@@ -6246,15 +6508,26 @@ function showMapScreen() {
       setTimeout(() => scheduleMapResize(), 900);
       mapScreen.setAttribute('tabindex', '-1');
       mapScreen.focus({ preventScroll: true });
+      if (Number.isFinite(jobId)) {
+        const job = portfolioJobs.find((j) => j.id === jobId);
+        if (job) {
+          setTimeout(() => {
+            activateJobOnMap(job);
+            openPanel(job);
+          }, reduceMotion ? 0 : 220);
+        }
+      }
     } catch (err) {
       console.error('Map init failed', err);
       resetMapContainer();
       splash.classList.remove('out', 'hidden');
+      splash.removeAttribute('inert');
       mapScreen.classList.add('hidden');
+      mapScreen.setAttribute('inert', '');
     } finally {
       splashTransitioning = false;
     }
-  }, 380);
+  }, hideDelay);
 }
 
 document.getElementById('btn-explore')?.addEventListener('click', showMapScreen);
@@ -6262,6 +6535,12 @@ document.querySelectorAll('.js-open-map').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
     showMapScreen();
+  });
+});
+document.querySelectorAll('[data-open-job]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    showMapScreen({ jobId: btn.getAttribute('data-open-job') });
   });
 });
 
@@ -7864,8 +8143,8 @@ function buildPanelHTML(job) {
   const checkSvg = `<svg class="job-badge-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8 3 3 7-7"/></svg>`;
   const navLeftSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 3-5 5 5 5"/></svg>`;
   const navRightSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>`;
-  const berBeforeDisplay = clampBerBadgeValue(job.berBefore);
-  const berAfterDisplay = clampBerBadgeValue(job.berAfter);
+  const berBeforeDisplay = escapeHtml(String(job.berBefore || '').trim().toUpperCase());
+  const berAfterDisplay = escapeHtml(String(job.berAfter || '').trim().toUpperCase());
   const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
   const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
   const safeAddress = escapeHtml(job.areaText);
@@ -7887,9 +8166,9 @@ function buildPanelHTML(job) {
   return `
     <div class="panel-ber-hero" aria-label="BER improvement for this project">
       <div class="panel-ber-hero-grades">
-        <div class="panel-ber-hero-grade old">${berBeforeDisplay || 'B3'}</div>
+        <div class="panel-ber-hero-grade old">${berBeforeDisplay || '—'}</div>
         <span class="panel-ber-hero-arrow" aria-hidden="true">${arrowSvg}</span>
-        <div class="panel-ber-hero-grade new">${berAfterDisplay || 'A2'}</div>
+        <div class="panel-ber-hero-grade new">${berAfterDisplay || '—'}</div>
       </div>
       <div class="panel-ber-hero-caption">BER Improvement</div>
     </div>
@@ -8326,6 +8605,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
 
     if (CRM_ENABLED) await fetchCustomers();
     markQuoteSubmittedNow();
+    trackEcoMapEvent('quote_enquiry_completed');
     feedback.textContent = successMsg;
     form.reset();
     if (window.matchMedia('(max-width: 900px)').matches) {
