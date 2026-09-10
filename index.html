@@ -369,10 +369,32 @@
       color: var(--lp-body);
     }
     .lp-job-note {
-      margin: 0 0 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      margin: 0 0 4px;
       font-size: 0.8125rem;
       font-weight: 500;
       line-height: 1.45;
+      color: var(--lp-body);
+    }
+    .lp-job-fact {
+      white-space: nowrap;
+    }
+    .lp-job-figure {
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--lp-forest);
+    }
+    .lp-job-sep {
+      margin: 0 0.4em;
+      color: var(--lp-muted);
+    }
+    .lp-job-disclaimer {
+      margin: 0 0 10px;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      line-height: 1.35;
       color: var(--lp-muted);
     }
     .lp-job-actions {
@@ -562,9 +584,19 @@
         line-height: 1.25;
       }
       .lp-job-note {
-        margin: 0 0 4px;
+        display: grid;
+        gap: 2px;
+        margin: 0 0 3px;
         font-size: 0.75rem;
         line-height: 1.4;
+      }
+      .lp-job-sep {
+        display: none;
+      }
+      .lp-job-disclaimer {
+        margin: 0 0 4px;
+        font-size: 0.625rem;
+        line-height: 1.35;
       }
       .lp-job-actions {
         flex-direction: row;
@@ -4971,10 +5003,11 @@
               </p>
               <p class="lp-outcome">
                 <span class="lp-outcome-value">€1,700/year</span>
-                <span class="lp-outcome-label">Estimated annual savings</span>
+                <span class="lp-outcome-label">SAVED</span>
               </p>
             </div>
-            <p class="lp-job-note">Certified BER for this completed home. Estimated savings for this property. Your results will vary.</p>
+            <p class="lp-job-note"><span class="lp-job-fact"><span class="lp-job-figure">€6,050</span> SEAI Grant</span><span class="lp-job-sep" aria-hidden="true">·</span><span class="lp-job-fact"><span class="lp-job-figure">€25,900</span> Increase in property value</span></p>
+            <p class="lp-job-disclaimer">All values are approximate based on each individual house.</p>
             <div class="lp-job-actions">
               <button type="button" class="lp-job-link" data-open-job="54">View project</button>
               <details class="lp-job-more">
