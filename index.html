@@ -513,6 +513,9 @@
         font-weight: 500;
         gap: 4px 6px;
       }
+      .lp-proof {
+        margin-top: 10svh;
+      }
       .lp-trust-stars svg {
         width: 13px;
         height: 13px;
@@ -2222,6 +2225,11 @@
       .map-properties-sidebar.is-quote-sheet {
         max-height: none;
       }
+      .map-properties-sidebar.is-quote-sheet.is-sheet-open {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
       .map-properties-sidebar.is-quote-sheet .map-sidebar-jobs-row {
         display: none !important;
       }
@@ -2237,57 +2245,74 @@
       .map-properties-sidebar.is-quote-sheet .map-sidebar-inner {
         flex: 1 1 auto;
         min-height: 0;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 12px;
+        overflow: hidden;
+        padding-bottom: 6px;
+        display: flex;
+        flex-direction: column;
       }
       .map-properties-sidebar.is-quote-sheet .quote-sheet-scroll {
         flex: 1 1 auto;
         display: flex;
         flex-direction: column;
-        padding: 10px 6px 20px;
+        padding: 4px 6px 8px;
         background: #ffffff;
         border-radius: 10px;
         min-height: 0;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
+        gap: 6px;
       }
       .map-properties-sidebar.is-quote-sheet .js-quote-form {
-        flex: 0 0 auto;
+        flex: 1 1 auto;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         min-height: 0;
+        overflow: hidden;
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map-input {
-        font-size: 18px;
-        padding: 14px 16px;
+        font-size: 16px;
+        padding: 10px 12px;
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map-input::placeholder {
-        font-size: 18px;
+        font-size: 16px;
       }
       .map-properties-sidebar.is-quote-sheet .quote-message-input {
-        min-height: 88px;
-        max-height: 88px;
+        min-height: 48px;
+        max-height: 48px;
         resize: none;
       }
       .map-properties-sidebar.is-quote-sheet .job-strip-quote-brand {
-        margin-bottom: 10px;
+        margin-bottom: 4px;
       }
       .map-properties-sidebar.is-quote-sheet .lux-brand-heading-wrap--compact .lux-brand-above-form--row {
-        font-size: clamp(1.35rem, 5.4vw, 1.75rem);
+        font-size: clamp(1.15rem, 4.6vw, 1.45rem);
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map.contact-above-map--stacked {
-        gap: 14px;
+        gap: 8px;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+      }
+      .map-properties-sidebar.is-quote-sheet .swipe-discount {
         flex: 0 0 auto;
+        width: 100%;
+        max-width: none;
+        height: 64px;
+        min-height: 64px;
+        margin: auto 0 8px;
       }
       .map-properties-sidebar.is-quote-sheet .contact-above-map-submit {
         width: 100%;
-        padding: 18px 20px;
-        font-size: 20px;
+        height: 64px;
+        min-height: 64px;
+        padding: 0 16px;
+        font-size: 14px;
         letter-spacing: 0.06em;
         flex: 0 0 auto;
-        margin-bottom: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .map-properties-sidebar.is-quote-sheet .quote-feedback {
         flex: 0 0 auto;
@@ -2991,7 +3016,7 @@
     }
     @media (max-width: 900px) {
       .map-properties-sidebar.is-quote-sheet .swipe-discount {
-        margin: 12px 4px 16px;
+        margin: auto 0 8px;
       }
     }
 
@@ -5178,6 +5203,23 @@
       }
       #screen-map .map-sidebar-sheet-title {
         color: #617C75;
+      }
+      #screen-map .map-properties-sidebar.is-quote-sheet .swipe-discount__cover {
+        background: #B7CFC3;
+      }
+      #screen-map .map-properties-sidebar.is-quote-sheet .swipe-discount__code,
+      #screen-map .map-properties-sidebar.is-quote-sheet .swipe-discount__hint {
+        color: #173F35;
+      }
+      #screen-map .map-properties-sidebar.is-quote-sheet .swipe-discount__handle,
+      #screen-map .map-properties-sidebar.is-quote-sheet .contact-above-map-submit {
+        background: #173F35;
+        color: #F7F8F2;
+        border-color: #173F35;
+        box-shadow: 0 3px 12px rgba(23, 63, 53, 0.28);
+      }
+      #screen-map .map-properties-sidebar.is-quote-sheet .contact-above-map-submit:hover {
+        background: #102E27;
       }
     }
   </style>
