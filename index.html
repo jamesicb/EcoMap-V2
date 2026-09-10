@@ -712,20 +712,6 @@
       text-align: left;
       -webkit-tap-highlight-color: transparent;
     }
-    .app-desk-brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #6B1E3D;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .app-desk-brand-logo svg {
-      width: 22px;
-      height: 22px;
-    }
     .app-desk-brand-name {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 1.25rem;
@@ -2052,15 +2038,16 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        padding-top: 10px;
+        padding-top: 4px;
       }
       .map-sidebar-quote .quote-sheet-scroll {
         flex: 1 1 auto;
         min-height: 0;
         display: flex;
         flex-direction: column;
+        justify-content: flex-start;
         overflow: hidden;
-        gap: clamp(5px, 0.9vh, 9px);
+        gap: 6px;
       }
       .map-sidebar-quote .job-strip-quote-brand {
         order: 1;
@@ -2070,7 +2057,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: clamp(6px, 1.2vh, 12px) 0 clamp(2px, 0.5vh, 6px);
+        padding: 2px 0 0;
       }
       .map-sidebar-quote .lux-brand-heading-wrap--compact .lux-brand-above-form--row {
         font-size: clamp(1.15rem, 2.8vh, 1.55rem);
@@ -2086,7 +2073,7 @@
         margin-bottom: 0;
       }
       .map-sidebar-quote .contact-above-map.contact-above-map--stacked {
-        gap: clamp(5px, 0.9vh, 9px);
+        gap: 6px;
         flex: 1 1 auto;
         min-height: 0;
         height: 100%;
@@ -2100,8 +2087,11 @@
         height: auto;
       }
       .map-sidebar-quote .contact-above-map-submit {
-        flex: 1 1 0;
-        min-height: 0;
+        flex: 0 0 auto;
+        width: 100%;
+        height: clamp(65px, 8.75vh, 80px);
+        min-height: 65px;
+        box-sizing: border-box;
       }
       .map-sidebar-quote .contact-above-map-input {
         font-size: clamp(11px, 1.25vh, 13px);
@@ -2161,22 +2151,26 @@
         flex: 0 0 auto;
         width: 100%;
         max-width: none;
-        height: clamp(52px, 7vh, 64px);
-        min-height: 52px;
-        margin: 0;
+        height: clamp(65px, 8.75vh, 80px);
+        min-height: 65px;
+        margin: auto 0 0;
         position: relative;
         overflow: hidden;
         --swipe-handle-pad: clamp(4px, 0.6vh, 6px);
       }
       .map-sidebar-quote .contact-above-map-submit {
-        flex: 1 1 0;
-        min-height: 0;
-        padding: clamp(5px, 0.85vh, 9px) clamp(8px, 1vh, 12px);
+        flex: 0 0 auto;
+        width: 100%;
+        height: clamp(65px, 8.75vh, 80px);
+        min-height: 65px;
+        box-sizing: border-box;
+        padding: 0 clamp(8px, 1vh, 12px);
         font-size: clamp(10px, 1.1vh, 12px);
         margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 8.775px;
       }
       .map-sidebar-quote .swipe-discount__reveal {
         gap: clamp(2px, 0.4vh, 4px);
@@ -4852,9 +4846,6 @@
         border-bottom: 1px solid #D5DDD0;
         box-shadow: none;
       }
-      #screen-map .app-desk-brand-logo {
-        background: transparent;
-      }
       #screen-map .app-desk-brand-name,
       #screen-map .app-desk-trust-score,
       #screen-map .lux-logo,
@@ -5359,9 +5350,6 @@
 <div id="screen-map" class="screen hidden" inert>
   <header class="app-desk-header" aria-label="Site navigation">
     <button type="button" class="app-desk-brand" id="nav-desk-brand" aria-label="Absolute Acrylics – Home">
-      <span class="app-desk-brand-logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#F5D97A"/><circle cx="12" cy="12" r="4" fill="#6B1E3D"/></svg>
-      </span>
       <span class="app-desk-brand-name">Absolute Acrylics</span>
     </button>
     <div class="app-desk-trust" aria-label="Customer rating 4.76 out of 5">
@@ -5451,7 +5439,7 @@
                     </div>
                     <textarea class="contact-above-map-input quote-message-input" id="quote-message" name="message" placeholder="Brief Message (Optional)" autocomplete="off" aria-label="Brief message (optional)"></textarea>
                     <p class="quote-privacy-notice">
-                      We use your name and contact details only to respond to this enquiry. Data is stored securely via our database provider (Supabase, EU region where configured). You may request access or deletion by emailing info@absoluteacrylics.ie.
+                      We use your name and contact details only to respond to this enquiry. Data is stored securely via our database provider (Supabase, EU region where configured).
                     </p>
                     <label class="quote-privacy-consent">
                       <input type="checkbox" id="quote-privacy-consent" name="privacyConsent" required>
@@ -8881,7 +8869,6 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
   const handle = root.querySelector('.swipe-discount__handle');
   const cover = root.querySelector('.swipe-discount__cover');
   const reveal = root.querySelector('.swipe-discount__reveal');
-  const STORAGE_KEY = 'ecomap_discount_revealed_v2';
   const THRESHOLD = 0.85;
 
   if (!handle || !cover) return;
@@ -8896,7 +8883,6 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     cover.style.opacity = '0';
     handle.style.opacity = '0';
     if (reveal) reveal.removeAttribute('aria-hidden');
-    try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (_) { /* no-op */ }
   }
 
   function resetCover() {
@@ -8909,12 +8895,7 @@ document.getElementById('job-panel').addEventListener('touchmove', e => {
     if (reveal) reveal.setAttribute('aria-hidden', 'true');
   }
 
-  try {
-    if (sessionStorage.getItem(STORAGE_KEY)) {
-      markRevealed();
-      return;
-    }
-  } catch (_) { /* no-op */ }
+  try { sessionStorage.removeItem('ecomap_discount_revealed_v2'); } catch (_) { /* no-op */ }
 
   resetCover();
 
