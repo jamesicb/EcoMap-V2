@@ -4797,6 +4797,344 @@
         font-size: 16px;
       }
     }
+
+    /*
+      Desktop map + enquiry palette — match landing tokens.
+      Mobile/tablet (max-width: 900px) keep the existing burgundy/tan chrome.
+    */
+    @media (min-width: 901px) {
+      #screen-map {
+        --lp-ivory: #F7F8F2;
+        --lp-forest: #617C75;
+        --lp-forest-hover: #5D716C;
+        --lp-body: #26332E;
+        --lp-muted: #4A5A54;
+        --lp-sage: #E7EFE5;
+        --lp-card: #FFFFFF;
+        --lp-line: #D5DDD0;
+        --lp-focus: #617C75;
+        --lp-on-forest: #F7F8F2;
+        --charcoal: #F7F8F2;
+        --charcoal-mid: #F7F8F2;
+        --charcoal-light: #E7EFE5;
+        --gold: #617C75;
+        --gold-light: #617C75;
+        --gold-pale: #E7EFE5;
+        --cream: #F7F8F2;
+        --text-light: #26332E;
+        --text-muted: #4A5A54;
+        --text-dark: #26332E;
+        --border-gold: #D5DDD0;
+        --border-light: #D5DDD0;
+        --green-dark: #617C75;
+        --green-splash: #F7F8F2;
+        --green-mid: #617C75;
+        --green-light: #E7EFE5;
+        --green-border: #D5DDD0;
+        --green-btn: #617C75;
+        --orange: #617C75;
+        --ui-stroke: #D5DDD0;
+        --map-page-bg: #F7F8F2;
+        --map-brand: #617C75;
+        --map-brand-hover: #5D716C;
+        --map-brand-soft: #E7EFE5;
+        --map-marker-heat-gradient: #617C75;
+        --map-marker-heat-shadow: rgba(97, 124, 117, 0.22);
+        --map-marker-heat-shadow-deep: rgba(93, 113, 108, 0.32);
+        --map-marker-heat-pulse: rgba(97, 124, 117, 0.36);
+        background: #F7F8F2;
+        background-color: #F7F8F2;
+        color: #26332E;
+      }
+
+      #screen-map .app-desk-header {
+        background: #F7F8F2;
+        border-bottom: 1px solid #D5DDD0;
+        box-shadow: none;
+      }
+      #screen-map .app-desk-brand-logo {
+        background: transparent;
+      }
+      #screen-map .app-desk-brand-name,
+      #screen-map .app-desk-trust-score,
+      #screen-map .lux-logo,
+      #screen-map .map-sidebar-header {
+        color: #617C75;
+      }
+      #screen-map .app-desk-trust-stars {
+        color: #D4AF37;
+      }
+      #screen-map .app-desk-trust-label {
+        color: #4A5A54;
+      }
+
+      #screen-map .map-filter-chips {
+        background: #F7F8F2;
+        border-bottom: 1px solid #D5DDD0;
+      }
+      #screen-map .map-filter-chip {
+        background: #FFFFFF;
+        border: 1px solid #D5DDD0;
+        color: #617C75;
+      }
+      #screen-map .map-filter-chip:hover {
+        background: #E7EFE5;
+        border-color: #D5DDD0;
+        color: #617C75;
+      }
+      #screen-map .map-filter-chip.is-active,
+      #screen-map .map-filter-chip--warm-build.is-active {
+        background: #617C75;
+        border-color: #617C75;
+        color: #F7F8F2;
+      }
+      #screen-map .map-filter-chip--warm-build {
+        border-color: #D5DDD0;
+        color: #617C75;
+      }
+      #screen-map .map-filter-chip--warm-build:hover {
+        background: #E7EFE5;
+        border-color: #D5DDD0;
+        color: #617C75;
+      }
+
+      #screen-map .browse-shell,
+      #screen-map .map-screen-layout,
+      #screen-map .map-disclaimer-footer {
+        background: #F7F8F2;
+      }
+      #screen-map .map-split {
+        background: #F7F8F2;
+      }
+
+      #screen-map .map-frame {
+        border: 1px solid #D5DDD0;
+        box-shadow: 0 6px 20px rgba(97, 124, 117, 0.06);
+        background: #F7F8F2;
+      }
+      #screen-map .map-frame-inner {
+        background: #F7F8F2;
+      }
+      #screen-map .map-frame-inner::before {
+        background-image:
+          linear-gradient(rgba(97, 124, 117, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(97, 124, 117, 0.05) 1px, transparent 1px);
+      }
+
+      #screen-map .map-properties-sidebar {
+        background: #FFFFFF;
+        border: 2px solid #617C75;
+        box-shadow: 0 6px 22px rgba(97, 124, 117, 0.06);
+      }
+      #screen-map .map-sidebar-quote {
+        border-top: 2px solid #617C75;
+      }
+      #screen-map .map-sidebar-item {
+        border: 1px solid #D5DDD0;
+        background: #FFFFFF;
+      }
+      #screen-map .map-sidebar-item:hover,
+      #screen-map .map-sidebar-item:focus-visible {
+        border-color: #617C75;
+        box-shadow: 0 4px 12px rgba(97, 124, 117, 0.08);
+      }
+      #screen-map .map-sidebar-item.is-active {
+        border-color: #617C75;
+        box-shadow: 0 0 0 2px rgba(97, 124, 117, 0.12);
+        background: #E7EFE5;
+      }
+
+      #screen-map .listing-card {
+        border: 1px solid #D5DDD0;
+        border-left: 1px solid #D5DDD0;
+        box-shadow: 0 2px 8px rgba(97, 124, 117, 0.05);
+      }
+      #screen-map .listing-card:hover,
+      #screen-map .listing-card:focus-visible {
+        border-color: #617C75;
+        box-shadow: 0 6px 14px rgba(97, 124, 117, 0.1);
+      }
+      #screen-map .listing-card.is-active {
+        border-color: #617C75;
+        box-shadow: 0 8px 18px rgba(97, 124, 117, 0.12);
+      }
+      #screen-map .listing-card.is-hovered:not(.is-active) {
+        border-color: #617C75;
+        box-shadow: 0 4px 12px rgba(97, 124, 117, 0.08);
+      }
+      #screen-map .listing-card .tag {
+        background: #E7EFE5;
+        color: #617C75;
+        border-color: #D5DDD0;
+      }
+      #screen-map .listing-card.listing-card--warm-build {
+        background: #FFFFFF;
+        border: 1px solid #D5DDD0;
+        box-shadow: 0 4px 16px rgba(97, 124, 117, 0.06);
+      }
+      #screen-map .listing-card.listing-card--warm-build:hover,
+      #screen-map .listing-card.listing-card--warm-build:focus-visible,
+      #screen-map .listing-card.listing-card--warm-build.is-active {
+        border-color: #617C75;
+        box-shadow: 0 8px 20px rgba(97, 124, 117, 0.12);
+      }
+      #screen-map .wb-map-face {
+        background: #FFFFFF;
+        color: #26332E;
+      }
+      #screen-map .wb-map-face-loc {
+        color: #617C75;
+      }
+      #screen-map .wb-map-face-price {
+        background: #617C75;
+        color: #F7F8F2;
+      }
+      #screen-map .wb-map-face-spec-lbl {
+        color: #4A5A54;
+      }
+      #screen-map .wb-map-face-cta {
+        background: #E7EFE5;
+        color: #617C75;
+      }
+
+      #screen-map .contact-above-map-input {
+        border: 1px solid #D5DDD0;
+        background: #FFFFFF;
+        color: #26332E;
+      }
+      #screen-map .contact-above-map-input:hover {
+        border-color: #617C75;
+        background: #FFFFFF;
+      }
+      #screen-map .contact-above-map-input:focus {
+        border-color: #617C75;
+        box-shadow: 0 0 0 3px rgba(97, 124, 117, 0.16);
+      }
+      #screen-map .contact-above-map-submit {
+        color: #F7F8F2;
+        background: #617C75;
+        border: 1px solid #617C75;
+      }
+      #screen-map .contact-above-map-submit:hover {
+        background: #5D716C;
+        box-shadow: 0 3px 12px rgba(97, 124, 117, 0.2);
+      }
+      #screen-map .contact-above-map-submit:focus-visible {
+        outline: 2px solid #617C75;
+        outline-offset: 2px;
+      }
+      #screen-map .quote-privacy-consent input {
+        accent-color: #617C75;
+      }
+      #screen-map .quote-privacy-link {
+        color: #617C75;
+      }
+      #screen-map .quote-privacy-link:focus-visible {
+        outline: 2px solid #617C75;
+      }
+
+      #screen-map .swipe-discount {
+        background: #FFFFFF;
+        box-shadow: 0 4px 18px rgba(97, 124, 117, 0.08);
+      }
+      #screen-map .swipe-discount__cover {
+        background: #E7EFE5;
+      }
+      #screen-map .swipe-discount__code,
+      #screen-map .swipe-discount__hint {
+        color: #617C75;
+      }
+      #screen-map .swipe-discount__handle {
+        background: #617C75;
+        color: #F7F8F2;
+        box-shadow: 0 3px 12px rgba(97, 124, 117, 0.28);
+      }
+
+      #screen-map .job-strip-panel {
+        border-top: 1px solid #D5DDD0;
+      }
+      #screen-map .job-strip-quote-aside {
+        background: #FFFFFF;
+        border-left: 1px solid #D5DDD0;
+      }
+      #screen-map .quote-sheet-scroll {
+        background: #FFFFFF;
+      }
+
+      #screen-map .map-locate-btn {
+        border: 1px solid #D5DDD0;
+        background: #FFFFFF;
+        color: #617C75;
+      }
+      #screen-map .map-locate-btn:hover {
+        background: #E7EFE5;
+      }
+      #screen-map .map-locate-btn:focus-visible {
+        outline: 2px solid #617C75;
+      }
+
+      #screen-map .browse-filters {
+        border: 1px solid #D5DDD0;
+        color: #617C75;
+      }
+      #screen-map .browse-filters:hover {
+        background: #E7EFE5;
+        border-color: #617C75;
+      }
+      #screen-map .browse-filters:active {
+        background: #E7EFE5;
+      }
+      #screen-map .browse-filters:focus-visible {
+        outline: 2px solid #617C75;
+      }
+      #screen-map .browse-filters-wrap.is-open .browse-filters {
+        border-color: #617C75;
+        box-shadow: 0 0 0 1px rgba(97, 124, 117, 0.2);
+      }
+      #screen-map .map-filter-select-option {
+        border-color: #D5DDD0;
+      }
+      #screen-map .map-filter-select-option:hover,
+      #screen-map .map-filter-select-option:focus-visible {
+        border-color: #617C75;
+      }
+      #screen-map .map-filter-field input[type="number"]:focus,
+      #screen-map .map-filter-field select:focus {
+        box-shadow: 0 0 0 3px rgba(97, 124, 117, 0.12);
+      }
+      #screen-map .map-filter-actions {
+        border-top-color: #D5DDD0;
+      }
+      #screen-map #filter-clear-btn {
+        border-color: #D5DDD0;
+      }
+
+      #screen-map .job-marker-dot,
+      #screen-map .cluster-marker {
+        background: #617C75;
+        color: #F7F8F2;
+        border: 2px solid #F7F8F2;
+        box-shadow: 0 0 0 2px rgba(97, 124, 117, 0.18), 0 5px 16px rgba(93, 113, 108, 0.28);
+      }
+      #screen-map .job-marker-dot.nearest {
+        border: 2px solid #F7F8F2;
+        box-shadow: 0 0 0 3px #E7EFE5, 0 4px 16px rgba(93, 113, 108, 0.28);
+      }
+      #screen-map .job-marker-dot.selected {
+        transform: scale(1.16);
+        border: 2px solid #F7F8F2;
+        box-shadow: 0 0 0 4px #E7EFE5, 0 0 0 7px #617C75, 0 8px 20px rgba(93, 113, 108, 0.32);
+      }
+      #screen-map .job-marker-dot:hover {
+        box-shadow: 0 0 0 3px rgba(97, 124, 117, 0.22), 0 8px 20px rgba(93, 113, 108, 0.3);
+      }
+
+      #screen-map .leaflet-popup-content-wrapper,
+      #screen-map .leaflet-popup-tip,
+      #screen-map .map-prop-tooltip.leaflet-tooltip {
+        border-color: #D5DDD0 !important;
+      }
+    }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <style id="map-leaflet-overrides">
@@ -4914,6 +5252,19 @@
         left: 14px !important;
         right: 44px !important;
         bottom: 8px !important;
+      }
+      #screen-map .leaflet-popup-content-wrapper,
+      #screen-map .leaflet-popup-tip,
+      #screen-map .map-prop-tooltip.leaflet-tooltip {
+        border-color: #D5DDD0 !important;
+      }
+      #map .leaflet-control-zoom.leaflet-bar a {
+        background: #617C75 !important;
+        color: #F7F8F2 !important;
+      }
+      #map .leaflet-control-zoom.leaflet-bar a:hover {
+        background: #5D716C !important;
+        color: #F7F8F2 !important;
       }
     }
   </style>
