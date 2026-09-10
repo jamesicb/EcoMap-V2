@@ -4793,11 +4793,9 @@
     }
 
     /*
-      Desktop map + enquiry palette — match landing tokens.
-      Mobile/tablet (max-width: 900px) keep the existing burgundy/tan chrome.
+      Map + enquiry palette — match landing tokens on desktop and mobile.
     */
-    @media (min-width: 901px) {
-      #screen-map {
+    #screen-map {
         --lp-ivory: #F7F8F2;
         --lp-forest: #617C75;
         --lp-forest-hover: #5D716C;
@@ -5124,6 +5122,62 @@
       #screen-map .leaflet-popup-tip,
       #screen-map .map-prop-tooltip.leaflet-tooltip {
         border-color: #D5DDD0 !important;
+      }
+
+    @media (max-width: 900px) {
+      #screen-map .app-tab-bar {
+        background: #FFFFFF;
+        border: 2px solid #617C75;
+        box-shadow: 0 4px 16px rgba(97, 124, 117, 0.08);
+      }
+      #screen-map .app-tab-btn {
+        color: #4A5A54;
+      }
+      #screen-map .app-tab-btn[aria-current="page"] {
+        color: #617C75;
+        background: #E7EFE5;
+      }
+      #screen-map .map-map-section .map-frame {
+        border: 2px solid #617C75;
+        box-shadow: inset 0 0 40px rgba(97, 124, 117, 0.05);
+      }
+      #screen-map .map-properties-sidebar {
+        border: 2px solid #617C75;
+        box-shadow: 0 -8px 32px rgba(97, 124, 117, 0.12);
+      }
+      #screen-map .map-sidebar-rail {
+        background: #F7F8F2;
+        border-bottom: 1px solid #D5DDD0;
+      }
+      #screen-map .map-sidebar-sheet-close {
+        border-color: #D5DDD0;
+        color: #617C75;
+        background: #FFFFFF;
+      }
+      #screen-map .map-sidebar-sheet-close:focus-visible {
+        outline: 2px solid #617C75;
+      }
+      #screen-map .map-sidebar-scroll-arrow {
+        background: #617C75;
+        border-color: #617C75;
+        color: #F7F8F2;
+      }
+      #screen-map .map-sidebar-scroll-arrow:active:not(:disabled) {
+        background: #5D716C;
+      }
+      #screen-map .map-sidebar-scroll-track {
+        box-shadow: inset 0 0 0 1px rgba(97, 124, 117, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.08);
+      }
+      #screen-map .map-sidebar-scroll-thumb {
+        background: #617C75;
+        border-color: #617C75;
+      }
+      #screen-map .map-jobs-hint {
+        background: #617C75;
+        box-shadow: 0 4px 20px rgba(97, 124, 117, 0.35);
+      }
+      #screen-map .map-sidebar-sheet-title {
+        color: #617C75;
       }
     }
   </style>
