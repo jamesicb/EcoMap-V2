@@ -299,6 +299,7 @@
     .lp-job-outcomes {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-auto-rows: 1fr;
       gap: var(--lp-job-pair-gap);
       justify-items: stretch;
       margin: 0 0 12px;
@@ -360,6 +361,7 @@
       font-weight: 500;
       line-height: 1.3;
       color: var(--lp-muted);
+      text-wrap: balance;
     }
     .lp-job-meta {
       margin: 0 0 8px;
@@ -367,28 +369,6 @@
       font-weight: 600;
       line-height: 1.4;
       color: var(--lp-body);
-    }
-    .lp-job-note {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      margin: 0 0 4px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      line-height: 1.45;
-      color: var(--lp-body);
-    }
-    .lp-job-fact {
-      white-space: nowrap;
-    }
-    .lp-job-figure {
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--lp-forest);
-    }
-    .lp-job-sep {
-      margin: 0 0.4em;
-      color: var(--lp-muted);
     }
     .lp-job-disclaimer {
       margin: 0 0 10px;
@@ -555,7 +535,7 @@
       .lp-job-photo {
         aspect-ratio: auto;
         width: 100%;
-        height: min(13.25rem, 24svh);
+        height: min(11.5rem, 20svh);
         border-radius: 10px;
       }
       .lp-job-photo img {
@@ -568,7 +548,7 @@
         font-size: 0.6875rem;
       }
       .lp-job-outcomes {
-        margin: 0 0 8px;
+        margin: 0 0 6px;
       }
       .lp-outcome {
         padding: 8px 10px 8px;
@@ -582,16 +562,6 @@
         font-size: 0.6875rem;
         font-weight: 500;
         line-height: 1.25;
-      }
-      .lp-job-note {
-        display: grid;
-        gap: 2px;
-        margin: 0 0 3px;
-        font-size: 0.75rem;
-        line-height: 1.4;
-      }
-      .lp-job-sep {
-        display: none;
       }
       .lp-job-disclaimer {
         margin: 0 0 4px;
@@ -5005,8 +4975,15 @@
                 <span class="lp-outcome-value">€1,700/year</span>
                 <span class="lp-outcome-label">SAVED</span>
               </p>
+              <p class="lp-outcome">
+                <span class="lp-outcome-value">€6,050</span>
+                <span class="lp-outcome-label">SEAI grant</span>
+              </p>
+              <p class="lp-outcome">
+                <span class="lp-outcome-value">€25,900</span>
+                <span class="lp-outcome-label">Increase in property value</span>
+              </p>
             </div>
-            <p class="lp-job-note"><span class="lp-job-fact"><span class="lp-job-figure">€6,050</span> SEAI Grant</span><span class="lp-job-sep" aria-hidden="true">·</span><span class="lp-job-fact"><span class="lp-job-figure">€25,900</span> Increase in property value</span></p>
             <p class="lp-job-disclaimer">All values are approximate based on each individual house.</p>
             <div class="lp-job-actions">
               <button type="button" class="lp-job-link" data-open-job="54">View project</button>
