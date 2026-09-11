@@ -3663,26 +3663,46 @@
        SCREEN 3 – JOB DETAIL PANEL
     ══════════════════════════════════════════════════════════════ */
     #job-panel {
+      --jp-ivory: #F7F8F2;
+      --jp-forest: #173F35;
+      --jp-forest-hover: #102E27;
+      --jp-body: #26332E;
+      --jp-muted: #4A5A54;
+      --jp-sage: #E7EFE5;
+      --jp-card: #FFFFFF;
+      --jp-line: #D5DDD0;
+      --jp-on-forest: #F7F8F2;
+      --jp-kb: 0px;
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: auto;
+      left: 0;
+      right: 0;
+      bottom: var(--jp-kb, 0px);
       z-index: 600;
       height: auto;
-      max-height: 99dvh;
+      max-height: min(92dvh, 920px);
       width: 100%;
-      padding-top: env(safe-area-inset-top, 0px);
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-top: none;
-      border-radius: 0 0 var(--radius-panel) var(--radius-panel);
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
-      transform: translateY(-100%);
+      max-width: 100%;
+      padding-top: 0;
+      background: var(--jp-ivory);
+      border: 1px solid var(--jp-line);
+      border-bottom: none;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -8px 40px rgba(23, 63, 53, 0.12);
+      transform: translateY(110%);
       transition: transform 0.38s cubic-bezier(0.32,0.72,0,1);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+      color: var(--jp-body);
+      visibility: hidden;
+      pointer-events: none;
     }
     #job-panel.open {
       transform: translateY(0);
+      visibility: visible;
+      pointer-events: auto;
     }
 
     @media (min-width: 901px) {
@@ -3691,18 +3711,18 @@
         left: 50%;
         right: auto;
         bottom: auto;
-        width: min(480px, calc(100vw - 48px));
-        max-width: 480px;
-        max-height: min(92dvh, 920px);
+        width: min(520px, calc(100vw - 48px));
+        max-width: 520px;
+        max-height: min(90dvh, 840px);
         height: auto;
         margin: 0;
-        border-radius: var(--radius-panel);
-        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        border: 1px solid var(--jp-line);
         transform: translate(-50%, calc(-50% + 28px)) scale(0.96);
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 16px 48px rgba(23, 63, 53, 0.16);
         transition:
           transform 0.38s cubic-bezier(0.32, 0.72, 0, 1),
           opacity 0.32s ease,
@@ -3717,8 +3737,18 @@
       #job-panel .panel-handle {
         display: none;
       }
+      #job-panel .panel-handle-row {
+        justify-content: flex-end;
+        padding: 8px 8px 0;
+        min-height: 52px;
+      }
+      #job-panel .panel-close {
+        position: relative;
+        right: auto;
+        top: auto;
+      }
       #job-panel .panel-scroll {
-        flex: 1 1 auto;
+        flex: 0 1 auto;
       }
       #job-panel .job-header {
         flex-direction: column;
@@ -3740,7 +3770,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 12px 16px 0;
+      padding: 8px 16px 0;
+      min-height: 52px;
       flex-shrink: 0;
       position: relative;
     }
@@ -3752,15 +3783,15 @@
     }
     .panel-close {
       position: absolute;
-      right: 16px;
+      right: 12px;
       top: 8px;
-      width: 30px;
-      height: 30px;
-      background: var(--charcoal-mid);
-      border: 1px solid var(--border-gold);
+      width: 44px;
+      height: 44px;
+      background: #FFFFFF;
+      border: 1px solid var(--jp-line, #D5DDD0);
       border-radius: 50%;
-      font-size: 15px;
-      color: var(--text-dark);
+      font-size: 18px;
+      color: var(--jp-forest, #173F35);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -3768,30 +3799,32 @@
       -webkit-tap-highlight-color: transparent;
       transition: background 0.15s;
       z-index: 2;
+      box-shadow: 0 1px 2px rgba(23, 63, 53, 0.08);
     }
-    .panel-close:active { background: #ddd; }
+    .panel-close:hover { background: var(--jp-sage, #E7EFE5); }
+    .panel-close:active { background: var(--jp-sage, #E7EFE5); }
+    .panel-close:focus { outline: none; }
+    .panel-close:focus-visible {
+      outline: 2px solid var(--jp-forest, #173F35);
+      outline-offset: 2px;
+    }
     @media (max-width: 900px) {
       .panel-close {
         right: 10px;
         top: 10px;
-        width: 40px;
-        height: 40px;
-        border: 2px solid rgba(107, 30, 61, 0.35);
-        border-radius: 10px;
-        background: #ffffff;
-        font-size: 20px;
-        line-height: 1;
       }
     }
 
     .panel-scroll {
-      flex: 0 1 auto;
+      flex: 1 1 auto;
       min-height: 0;
       overflow-y: auto;
+      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      padding: 8px 14px 10px;
-      background: #ffffff;
-      color: var(--text-light);
+      overscroll-behavior: contain;
+      padding: 8px 16px 16px;
+      background: var(--jp-ivory, #F7F8F2);
+      color: var(--jp-body, #26332E);
     }
 
     /* Badge */
@@ -4269,6 +4302,358 @@
       background: var(--charcoal-light);
     }
 
+    .jp-project {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-bottom: 4px;
+      overflow-x: hidden;
+    }
+    .jp-identity {
+      min-width: 0;
+    }
+    .jp-title {
+      margin: 0 0 4px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--jp-forest);
+      text-wrap: balance;
+    }
+    .jp-subtitle {
+      margin: 0;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--jp-body);
+    }
+    .jp-photos {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px;
+    }
+    .jp-photo {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: var(--jp-sage);
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      cursor: zoom-in;
+      min-height: 44px;
+    }
+    .jp-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .jp-photo-label {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      padding: 5px 9px;
+      background: var(--jp-forest);
+      color: var(--jp-on-forest);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      line-height: 1.2;
+    }
+    .jp-photo:focus {
+      outline: none;
+    }
+    .jp-photo:focus-visible {
+      outline: 2px solid var(--jp-forest);
+      outline-offset: 3px;
+    }
+    .jp-photos,
+    .jp-outcomes,
+    .jp-project {
+      min-width: 0;
+      max-width: 100%;
+    }
+    .jp-outcomes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .jp-outcomes:has(.jp-outcome:only-child) {
+      grid-template-columns: 1fr;
+    }
+    .jp-outcome {
+      background: var(--jp-sage);
+      border-radius: 12px;
+      padding: 12px;
+      margin: 0;
+      min-width: 0;
+    }
+    .jp-outcome-value {
+      display: block;
+      font-size: 1.0625rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--jp-forest);
+    }
+    .jp-outcome-label {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--jp-muted);
+    }
+    .jp-section-title {
+      margin: 0 0 6px;
+      font-size: 0.8125rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--jp-forest);
+    }
+    .jp-copy {
+      margin: 0 0 6px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--jp-body);
+      text-wrap: pretty;
+    }
+    .jp-meta {
+      margin: 0;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--jp-muted);
+    }
+    .jp-facts {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+    .jp-fact {
+      padding: 10px 0 0;
+      border-top: 1px solid var(--jp-line);
+    }
+    .jp-fact:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+    .jp-fact-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--jp-muted);
+      margin-bottom: 2px;
+    }
+    .jp-fact-value {
+      display: block;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--jp-forest);
+    }
+    .jp-fact-note {
+      margin: 4px 0 0;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+      color: var(--jp-muted);
+    }
+    .jp-more {
+      margin: 0;
+      border: none;
+      padding: 0;
+    }
+    .jp-more summary {
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--jp-forest);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+    .jp-more summary::-webkit-details-marker {
+      display: none;
+    }
+    .jp-more summary::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      flex: 0 0 auto;
+    }
+    .jp-more[open] summary::after {
+      transform: rotate(-135deg);
+      margin-top: 4px;
+    }
+    .jp-more summary:focus {
+      outline: none;
+    }
+    .jp-more summary:focus-visible {
+      outline: 2px solid var(--jp-forest);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .jp-more-body {
+      display: grid;
+      gap: 8px;
+      padding: 0 0 8px;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      color: var(--jp-muted);
+    }
+    .jp-footer {
+      flex-shrink: 0;
+      padding: 12px 16px max(12px, env(safe-area-inset-bottom, 0px));
+      background: var(--jp-ivory);
+      border-top: 1px solid var(--jp-line);
+    }
+    .jp-footer[hidden] {
+      display: none !important;
+    }
+    .jp-quote-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 12px;
+      background: var(--jp-forest);
+      color: var(--jp-on-forest);
+      font-family: inherit;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      touch-action: manipulation;
+      box-shadow: 0 1px 2px rgba(23, 63, 53, 0.12);
+    }
+    .jp-quote-btn:hover {
+      background: var(--jp-forest-hover);
+    }
+    .jp-quote-btn:focus {
+      outline: none;
+    }
+    .jp-quote-btn:focus-visible {
+      outline: 2px solid var(--jp-forest);
+      outline-offset: 3px;
+      box-shadow: 0 0 0 2px var(--jp-ivory), 0 0 0 4px var(--jp-forest);
+    }
+    .jp-gallery {
+      margin: auto;
+      max-width: min(92vw, 720px);
+      width: 100%;
+      padding: 0;
+      border: 1px solid var(--jp-line, #D5DDD0);
+      border-radius: 16px;
+      background: #F7F8F2;
+      color: #26332E;
+      box-shadow: 0 16px 48px rgba(23, 63, 53, 0.18);
+    }
+    .jp-gallery::backdrop {
+      background: rgba(23, 63, 53, 0.46);
+    }
+    .jp-gallery-inner {
+      position: relative;
+      padding: 16px;
+    }
+    .jp-gallery-title {
+      margin: 0 48px 12px 0;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #173F35;
+    }
+    .jp-gallery-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #D5DDD0;
+      background: #FFFFFF;
+      color: #173F35;
+      cursor: pointer;
+    }
+    .jp-gallery-close:focus {
+      outline: none;
+    }
+    .jp-gallery-close:focus-visible {
+      outline: 2px solid #173F35;
+      outline-offset: 2px;
+    }
+    .jp-gallery-figure {
+      margin: 0;
+      background: #E7EFE5;
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+    .jp-gallery-figure img {
+      display: block;
+      width: 100%;
+      max-height: min(70vh, 640px);
+      object-fit: contain;
+      background: #1C1C1E;
+    }
+    .jp-gallery-caption {
+      padding: 8px 10px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4A5A54;
+    }
+    .jp-gallery-nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .jp-gallery-nav[hidden] {
+      display: none !important;
+    }
+    .jp-gallery-nav button {
+      flex: 1;
+      min-height: 44px;
+      border-radius: 12px;
+      border: 1px solid #D5DDD0;
+      background: #FFFFFF;
+      color: #173F35;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .jp-gallery-nav button:focus {
+      outline: none;
+    }
+    .jp-gallery-nav button:focus-visible {
+      outline: 2px solid #173F35;
+      outline-offset: 2px;
+    }
+    @media (max-width: 640px) {
+      .jp-photos,
+      .jp-outcomes {
+        gap: 6px;
+      }
+      .jp-title {
+        font-size: 1.125rem;
+      }
+    }
+
     @media (max-width: 1100px) {
       .job-header {
         flex-direction: column;
@@ -4400,137 +4785,210 @@
       font-size: 11px;
     }
 
+    .map-popup-card,
+    .mp-preview,
+    .map-pin-sheet {
+      --jp-ivory: #F7F8F2;
+      --jp-forest: #173F35;
+      --jp-forest-hover: #102E27;
+      --jp-body: #26332E;
+      --jp-muted: #4A5A54;
+      --jp-sage: #E7EFE5;
+      --jp-card: #FFFFFF;
+      --jp-line: #D5DDD0;
+      --jp-on-forest: #F7F8F2;
+      font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    }
     .map-popup-card {
       min-width: 0;
       max-width: none;
       width: 100%;
       line-height: 1.4;
-      color: var(--text-dark);
+      color: var(--jp-body);
+    }
+    .mp-preview {
+      display: flex;
+      flex-direction: column;
+      background: var(--jp-card);
+      overflow: hidden;
+    }
+    .mp-photo-wrap {
+      position: relative;
+      flex: 0 0 auto;
+      aspect-ratio: 16 / 10;
+      background: var(--jp-sage);
+      overflow: hidden;
+    }
+    .mp-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .mp-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 5;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--jp-line);
+      background: var(--jp-ivory);
+      color: var(--jp-forest);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(23, 63, 53, 0.16);
+      padding: 0;
+    }
+    .mp-close svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+    .mp-close:hover {
+      background: #FFFFFF;
+    }
+    .mp-close:focus {
+      outline: none;
+    }
+    .mp-close:focus-visible {
+      outline: 2px solid var(--jp-forest);
+      outline-offset: 2px;
+    }
+    .mp-body {
+      background: var(--jp-card);
+      padding: 12px 14px 10px;
+    }
+    .mp-loc {
+      margin: 0 0 4px;
+      font-size: 1.0625rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--jp-forest);
+      text-wrap: balance;
+    }
+    .mp-desc {
+      margin: 0 0 10px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--jp-body);
+    }
+    .mp-results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .mp-results:has(.mp-result:only-child) {
+      grid-template-columns: 1fr;
+    }
+    .mp-results:empty {
+      display: none;
+    }
+    .mp-result {
+      background: var(--jp-sage);
+      border-radius: 12px;
+      padding: 10px 10px 9px;
+      min-width: 0;
+    }
+    .mp-result-value {
+      display: block;
+      font-size: 0.9375rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--jp-forest);
+    }
+    .mp-result-label {
+      display: block;
+      margin-top: 3px;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--jp-muted);
+    }
+    .map-popup-details-btn,
+    .mp-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: calc(100% - 28px);
+      margin: 0 14px 14px;
+      min-height: 48px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: var(--jp-forest);
+      color: var(--jp-on-forest);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      text-transform: none;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 1px 2px rgba(23, 63, 53, 0.12);
+      transition: background 0.15s;
+    }
+    .mp-cta:hover,
+    .map-popup-details-btn:hover,
+    .leaflet-popup.map-job-popup .map-popup-details-btn.mp-cta:hover {
+      background: var(--jp-forest-hover);
+      color: var(--jp-on-forest);
+    }
+    .mp-cta:focus,
+    .map-popup-details-btn:focus {
+      outline: none;
+    }
+    .mp-cta:focus-visible,
+    .map-popup-details-btn:focus-visible {
+      outline: 2px solid var(--jp-forest);
+      outline-offset: 3px;
+      box-shadow: 0 0 0 2px var(--jp-ivory), 0 0 0 4px var(--jp-forest);
+    }
+    .map-pin-sheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 575;
+      max-height: min(62vh, 460px);
+      background: var(--jp-card);
+      border: 1px solid var(--jp-line);
+      border-bottom: none;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -10px 32px rgba(23, 63, 53, 0.14);
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .map-pin-sheet[hidden] {
+      display: none !important;
+    }
+    .mp-close--sheet {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+    .map-pin-sheet-inner {
+      position: relative;
     }
     .map-popup-mobile {
       display: flex;
       flex-direction: column;
       background: #ffffff;
       overflow: hidden;
-    }
-    .map-popup-m-hero {
-      position: relative;
-      flex: 0 0 auto;
-      aspect-ratio: 4 / 3;
-      background: #f5f3f0;
-      overflow: hidden;
-    }
-    .map-popup-m-photo {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .map-popup-m-hero-addr {
-      position: absolute;
-      z-index: 2;
-      display: block;
-      margin: 0;
-      padding: 0;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 600;
-      color: #ffffff;
-      line-height: 1.05;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
-      pointer-events: none;
-    }
-    .map-popup-m-body {
-      background: #ffffff;
-    }
-    .map-popup-m-value-banner {
-      display: flex;
-      align-items: center;
-      background: #174D31;
-    }
-    .map-popup-m-value-icon {
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: #2A7A4B;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-    }
-    .map-popup-m-value-icon svg {
-      display: block;
-    }
-    .map-popup-m-value-text {
-      min-width: 0;
-    }
-    .map-popup-m-value-label {
-      display: block;
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.92);
-      line-height: 1.25;
-    }
-    .map-popup-m-value-amount {
-      display: block;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 600;
-      color: #ffffff;
-      line-height: 1;
-    }
-    .map-popup-m-specs {
-      display: grid;
-    }
-    .map-popup-m-specs--pair {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .map-popup-m-spec {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: left;
-      background: #F0EDE8;
-    }
-    .map-popup-m-spec-val {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 600;
-      color: #1C1C1E;
-      line-height: 1.15;
-    }
-    .map-popup-m-spec-lbl {
-      font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: #7a7268;
-      line-height: 1.2;
-    }
-    .map-popup-details-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      border: none;
-      font: inherit;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    .map-popup-m-cta {
-      margin: 0 !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.12em !important;
-      text-transform: uppercase !important;
-      background: #E8E6E3 !important;
-      color: #3A3632 !important;
-    }
-    .map-popup-m-cta:hover,
-    .map-popup-m-cta:active,
-    .leaflet-popup.map-job-popup .map-popup-details-btn.map-popup-m-cta:hover {
-      background: #DAD7D3 !important;
-      color: #2A2724 !important;
     }
     .leaflet-popup.map-job-popup .wb-map-face {
       background: #F9F8F3;
@@ -4546,169 +5004,56 @@
       font-size: 10px !important;
     }
 
+    .leaflet-popup.map-job-popup {
+      pointer-events: auto;
+    }
+    .leaflet-popup.map-job-popup .leaflet-popup-content-wrapper {
+      position: relative;
+      z-index: 1;
+      pointer-events: auto;
+    }
+    .leaflet-popup.map-job-popup .leaflet-popup-tip-container {
+      pointer-events: none;
+    }
+    .leaflet-popup.map-job-popup .leaflet-popup-close-button {
+      display: none !important;
+    }
     @media (min-width: 901px) {
+      .map-pin-sheet {
+        display: none !important;
+      }
       .leaflet-popup.map-job-popup .leaflet-popup-content-wrapper {
         padding: 0 !important;
         border-radius: 16px !important;
         overflow: hidden;
         background: #ffffff !important;
+        border: 1px solid #D5DDD0 !important;
+        box-shadow: 0 14px 30px rgba(23, 63, 53, 0.16) !important;
       }
       .leaflet-popup.map-job-popup .leaflet-popup-content {
         margin: 0 !important;
-        width: 320px !important;
-      }
-      .leaflet-popup.map-job-popup .leaflet-popup-close-button {
-        top: 10px !important;
-        right: 10px !important;
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 22px !important;
-        line-height: 28px !important;
-        color: #ffffff !important;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
-        z-index: 5;
+        width: 300px !important;
       }
       .leaflet-popup.map-job-popup .leaflet-popup-tip {
-        background: #E8E6E3 !important;
+        background: #ffffff !important;
+        border-color: #D5DDD0;
       }
-      .map-popup-mobile {
+      .mp-preview {
         border-radius: 16px;
       }
-      .map-popup-m-hero {
-        min-height: 160px;
-      }
-      .map-popup-m-hero-addr {
-        left: 14px;
-        right: 44px;
-        bottom: 8px;
-        font-size: 1.5rem;
-      }
-      .map-popup-m-body {
-        padding: 14px 14px 12px;
-      }
-      .map-popup-m-value-banner {
-        gap: 12px;
-        padding: 12px 14px;
-        border-radius: 12px;
-        margin-bottom: 10px;
-      }
-      .map-popup-m-value-icon {
-        width: 36px;
-        height: 36px;
-      }
-      .map-popup-m-value-icon svg {
-        width: 18px;
-        height: 18px;
-      }
-      .map-popup-m-value-label {
-        font-size: 10px;
-        margin-bottom: 3px;
-      }
-      .map-popup-m-value-amount {
-        font-size: 1.75rem;
-      }
-      .map-popup-m-specs {
-        gap: 8px;
-      }
-      .map-popup-m-spec {
-        padding: 12px 12px;
-        border-radius: 10px;
-        min-height: 64px;
-      }
-      .map-popup-m-spec-val {
-        font-size: 1rem;
-        margin-bottom: 5px;
-      }
-      .map-popup-m-spec-lbl {
-        font-size: 10px;
-      }
-      .map-popup-m-cta {
-        border-radius: 0 0 16px 16px !important;
-        padding: 14px 16px !important;
-        font-size: 11px !important;
-      }
     }
-
     @media (max-width: 900px) {
-      .map-popup-mobile {
-        border-radius: 23px;
+      .mp-photo-wrap {
+        aspect-ratio: 16 / 9;
+        max-height: 160px;
       }
-      .leaflet-popup.map-job-popup .leaflet-popup-content-wrapper {
-        padding: 0 !important;
-        border-radius: 23px !important;
-        overflow: hidden;
-        background: #ffffff !important;
+      .mp-loc {
+        font-size: 1rem;
       }
-      .leaflet-popup.map-job-popup .leaflet-popup-content {
-        margin: 0 !important;
-        width: min(268px, calc(100vw - 52px)) !important;
-      }
-      .leaflet-popup.map-job-popup .leaflet-popup-close-button {
-        top: 10px !important;
-        right: 10px !important;
-        width: 29px !important;
-        height: 29px !important;
-        font-size: 23px !important;
-        line-height: 29px !important;
-        color: #ffffff !important;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
-        z-index: 5;
-      }
-      .leaflet-popup.map-job-popup .leaflet-popup-tip {
-        background: #E8E6E3 !important;
-      }
-      .map-popup-m-hero {
-        min-height: 121px;
-      }
-      .map-popup-m-hero-addr {
-        left: 12px;
-        right: 36px;
-        bottom: 4px;
-        font-size: 1.31rem;
-      }
-      .map-popup-m-body {
-        padding: 11px 11px 10px;
-      }
-      .map-popup-m-value-banner {
-        gap: 10px;
-        padding: 11px 13px;
-        border-radius: 13px;
-        margin-bottom: 8px;
-      }
-      .map-popup-m-value-icon {
-        width: 29px;
-        height: 29px;
-      }
-      .map-popup-m-value-icon svg {
-        width: 14px;
-        height: 14px;
-      }
-      .map-popup-m-value-label {
-        font-size: 0.44rem;
-        margin-bottom: 1px;
-      }
-      .map-popup-m-value-amount {
-        font-size: 1.4rem;
-      }
-      .map-popup-m-specs {
-        gap: 6px;
-      }
-      .map-popup-m-spec {
-        padding: 10px 11px;
-        border-radius: 11px;
-        min-height: 54px;
-      }
-      .map-popup-m-spec-val {
-        font-size: 0.86rem;
-        margin-bottom: 4px;
-      }
-      .map-popup-m-spec-lbl {
-        font-size: 0.43rem;
-      }
-      .map-popup-m-cta {
-        border-radius: 0 0 23px 23px !important;
-        padding: 11px 13px !important;
-        font-size: 0.54rem !important;
+      .mp-cta,
+      .map-popup-details-btn.mp-cta {
+        min-height: 48px;
+        font-size: 0.9375rem;
       }
     }
 
@@ -5262,29 +5607,10 @@
       padding: 0 !important;
     }
 
-    /* Leaflet ships `.leaflet-popup-content p { margin: 17px 0 }` — must beat it for job card address */
-    .leaflet-popup.map-job-popup .leaflet-popup-content p {
+    /* Leaflet ships `.leaflet-popup-content p { margin: 17px 0 }` */
+    .leaflet-popup.map-job-popup .leaflet-popup-content p,
+    .leaflet-popup.map-job-popup .leaflet-popup-content h2 {
       margin: 0 !important;
-    }
-    .leaflet-popup.map-job-popup .map-popup-m-hero {
-      position: relative !important;
-      overflow: hidden !important;
-    }
-    .leaflet-popup.map-job-popup .map-popup-m-photo {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      display: block !important;
-    }
-    .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
-      position: absolute !important;
-      z-index: 2 !important;
-      display: block !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      pointer-events: none !important;
     }
 
     @media (max-width: 900px) {
@@ -5323,20 +5649,9 @@
         top: 6px !important;
         right: 6px !important;
       }
-
-      .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
-        left: 12px !important;
-        right: 36px !important;
-        bottom: 4px !important;
-      }
     }
 
     @media (min-width: 901px) {
-      .leaflet-popup.map-job-popup .map-popup-m-hero-addr {
-        left: 14px !important;
-        right: 44px !important;
-        bottom: 8px !important;
-      }
       #screen-map .leaflet-popup-content-wrapper,
       #screen-map .leaflet-popup-tip,
       #screen-map .map-prop-tooltip.leaflet-tooltip {
@@ -5628,18 +5943,38 @@
 <!-- OVERLAY -->
 <div id="panel-overlay"></div>
 
+<div id="map-pin-sheet" class="map-pin-sheet" hidden role="dialog" aria-modal="false" aria-label="Project preview">
+  <div class="map-pin-sheet-inner" id="map-pin-sheet-inner"></div>
+</div>
+
 <!-- ═══════════════════════════════════════════
      SCREEN 3 – JOB DETAIL PANEL
 ═══════════════════════════════════════════ -->
-<div id="job-panel">
+<div id="job-panel" role="dialog" aria-modal="true" aria-labelledby="job-panel-title" aria-hidden="true">
   <div class="panel-handle-row">
     <div class="panel-handle"></div>
-    <button class="panel-close" id="panel-close-btn">✕</button>
+    <button type="button" class="panel-close" id="panel-close-btn" aria-label="Close project details">✕</button>
   </div>
   <div class="panel-scroll" id="panel-content">
     <!-- Populated dynamically -->
   </div>
+  <div class="jp-footer" id="job-panel-footer" hidden></div>
 </div>
+
+<dialog id="dialog-job-photos" class="jp-gallery" aria-labelledby="dialog-job-photos-title">
+  <div class="jp-gallery-inner">
+    <h2 id="dialog-job-photos-title" class="jp-gallery-title">Project photographs</h2>
+    <button type="button" class="jp-gallery-close" id="dialog-job-photos-close" aria-label="Close photographs">✕</button>
+    <figure class="jp-gallery-figure">
+      <img id="dialog-job-photos-img" alt="" />
+      <figcaption class="jp-gallery-caption" id="dialog-job-photos-caption"></figcaption>
+    </figure>
+    <div class="jp-gallery-nav" id="dialog-job-photos-nav">
+      <button type="button" id="dialog-job-photos-prev">Previous photo</button>
+      <button type="button" id="dialog-job-photos-next">Next photo</button>
+    </div>
+  </div>
+</dialog>
 
 <dialog id="dialog-gallery-job" class="crm-modal" aria-labelledby="dialog-gallery-job-title">
   <div class="crm-modal-inner">
@@ -6976,7 +7311,10 @@ async function setAppView(view) {
 }
 
 function openQuoteEnquire() {
+  restorePreviewOnClose = false;
   setAppView('home');
+  hideMapPinSheet();
+  map?.closePopup();
   const tabEnquire = document.getElementById('tab-enquire');
   const tabHome = document.getElementById('tab-home');
   document.querySelectorAll('.app-tab-btn').forEach(t => t.removeAttribute('aria-current'));
@@ -6985,7 +7323,7 @@ function openQuoteEnquire() {
   } else if (tabHome) {
     tabHome.setAttribute('aria-current', 'page');
   }
-  closePanel();
+  closePanel({ skipFocusRestore: true });
   openQuoteSheet();
 }
 
@@ -7115,6 +7453,13 @@ let markerClusterLayer = null;
 const markers = {};
 let activeJobId = null;
 let mapPopupDetailsBound = false;
+let hoverPreviewJobId = null;
+let previewSticky = false;
+let hideHoverPreviewTimer = null;
+let previewCtaDelegateBound = false;
+let previewCtaLock = false;
+let overlayClickShield = null;
+let panelOpenedAt = 0;
 /** Set when job-strip DOM was last built for this ordered visible-job id list (avoids rebuild on pan/zoom/GPS when unchanged). */
 let lastJobStripInViewSig = null;
 /** Same for the map properties sidebar list on mobile. */
@@ -7278,6 +7623,107 @@ function parseJobCardMobileSpecs(typeStr) {
   return { floorArea, colorName, finishLabel };
 }
 
+function parseJobHouseTypeLabel(typeStr) {
+  const t = String(typeStr || '').toLowerCase();
+  if (t.includes('semi-detached')) return 'Semi-detached';
+  if (t.includes('end-of-terrace') || t.includes('end of terrace')) return 'End of terrace';
+  if (t.includes('mid-terrace') || t.includes('mid terrace')) return 'Mid-terrace';
+  if (t.includes('detached')) return 'Detached';
+  return '';
+}
+
+function parseJobFloorAreaLabel(typeStr) {
+  const { floorArea } = parseJobTypeSpecs(typeStr);
+  return floorArea && floorArea !== '—' ? floorArea : '';
+}
+
+function formatEuroAmount(n) {
+  const v = Number(n);
+  if (!Number.isFinite(v) || v <= 0) return '';
+  return `€${Math.round(v).toLocaleString('en-IE')}`;
+}
+
+function formatEuroPerYear(n) {
+  const formatted = formatEuroAmount(n);
+  return formatted ? `${formatted}/year` : '';
+}
+
+function jobWorkDescription(job) {
+  const area = parseJobFloorAreaLabel(job && job.type);
+  return area ? `External wall insulation · ${area}` : 'External wall insulation';
+}
+
+function jobIdentitySubtitle(job) {
+  const house = parseJobHouseTypeLabel(job && job.type);
+  const area = parseJobFloorAreaLabel(job && job.type);
+  const parts = ['External wall insulation'];
+  if (house) parts.push(house);
+  if (area) parts.push(`${area} recorded floor area`);
+  return parts.join(' · ');
+}
+
+function jobScopeCopy(job) {
+  const specs = parseJobCardMobileSpecs(job && job.type);
+  const finish = specs.finishLabel && specs.finishLabel !== '—' ? specs.finishLabel : '';
+  const color = specs.colorName && specs.colorName !== '—' && specs.colorName !== finish ? specs.colorName : '';
+  const raw = String((job && job.type) || '');
+  const extras = [];
+  if (/cavity\s*pumping/i.test(raw)) extras.push('cavity wall pumping');
+  if (/drylining/i.test(raw)) extras.push('internal drylining');
+  let installed = 'External wall insulation was installed on this home.';
+  if (finish && color) {
+    installed = `External wall insulation was installed, finished in ${finish} (${color}).`;
+  } else if (finish) {
+    installed = `External wall insulation was installed, finished in ${finish}.`;
+  } else if (color) {
+    installed = `External wall insulation was installed, finished in ${color}.`;
+  }
+  const extrasLine = extras.length
+    ? `Other recorded upgrades that may have contributed to the reported results: ${extras.join(', ')}.`
+    : '';
+  return { installed, extrasLine, finish, color };
+}
+
+function jobGrantCopy(job) {
+  const amount = Number(job && job.seaiGrant);
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  const house = parseJobHouseTypeLabel(job.type);
+  const typical = seaiGrantByType(job.type || '');
+  const formatted = formatEuroAmount(amount);
+  if (house && typical && Math.abs(amount - typical) <= 100) {
+    return {
+      value: formatted,
+      label: `Typical SEAI grant band for a ${house.toLowerCase()} home`
+    };
+  }
+  return {
+    value: formatted,
+    label: 'Estimated SEAI grant recorded for this project'
+  };
+}
+
+function jobGalleryItems(job) {
+  const loc = (job && job.areaText) || 'this project';
+  const before = (job && Array.isArray(job.beforePhotos) ? job.beforePhotos : []).filter(Boolean);
+  const after = (job && Array.isArray(job.afterPhotos) ? job.afterPhotos : []).filter(Boolean);
+  const items = [];
+  before.forEach((src, i) => {
+    items.push({
+      src: sanitizeImageSrc(src, DEFAULT_BEFORE_PHOTO),
+      label: before.length > 1 ? `Before ${i + 1}` : 'Before',
+      alt: `Home exterior in ${loc} before external wall insulation${before.length > 1 ? `, photograph ${i + 1}` : ''}`
+    });
+  });
+  after.forEach((src, i) => {
+    items.push({
+      src: sanitizeImageSrc(src, DEFAULT_AFTER_PHOTO),
+      label: after.length > 1 ? `After ${i + 1}` : 'After',
+      alt: `Finished external wall insulation in ${loc}${after.length > 1 ? `, photograph ${i + 1}` : ''}`
+    });
+  });
+  return items;
+}
+
 function formatWarmBuildPrice(job) {
   const n = Number(job && job.buildPrice);
   return Number.isFinite(n) && n > 0 ? `€${n.toLocaleString()}` : '€—';
@@ -7351,38 +7797,37 @@ function buildMapPopupHtml(job) {
     return `<div class="map-popup-card">${buildWarmBuildMapFaceHtml(job, { asListingButton: false, ctaAsButton: true })}</div>`;
   }
   const listingPhoto = sanitizeImageSrc((job.afterPhotos && job.afterPhotos[0]), DEFAULT_AFTER_PHOTO);
-  const safeAddress = escapeHtml(job.areaText);
-  const specs = parseJobCardMobileSpecs(job.type);
-  const valueFormatted = job.valueIncrease.toLocaleString();
-  const upArrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m7 10 5-5 5 5"/></svg>';
-
+  const safeAddress = escapeHtml(job.areaText || 'This project');
+  const work = escapeHtml(jobWorkDescription(job));
+  const berBefore = String(job.berBefore || '').trim().toUpperCase();
+  const berAfter = String(job.berAfter || '').trim().toUpperCase();
+  const savings = formatEuroPerYear(job.annualSaving);
+  const berHtml = (berBefore && berAfter)
+    ? `<div class="mp-result">
+         <span class="mp-result-value">${escapeHtml(berBefore)} → ${escapeHtml(berAfter)}</span>
+         <span class="mp-result-label">BER rating</span>
+       </div>`
+    : '';
+  const saveHtml = savings
+    ? `<div class="mp-result">
+         <span class="mp-result-value">${escapeHtml(savings)}</span>
+         <span class="mp-result-label">Estimated energy savings</span>
+       </div>`
+    : '';
+  const closeSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
   return `
       <div class="map-popup-card">
-        <div class="map-popup-mobile">
-          <div class="map-popup-m-hero">
-            <img class="map-popup-m-photo" src="${listingPhoto}" alt="${safeAddress} project photo" loading="lazy" />
-            <span class="map-popup-m-hero-addr">${safeAddress}</span>
+        <div class="map-popup-mobile mp-preview">
+          <div class="mp-photo-wrap">
+            <img class="mp-photo" src="${listingPhoto}" alt="Finished external wall insulation in ${safeAddress}" width="800" height="500" loading="lazy" />
+            <button type="button" class="mp-close" aria-label="Close project preview">${closeSvg}</button>
           </div>
-          <div class="map-popup-m-body">
-            <div class="map-popup-m-value-banner">
-              <span class="map-popup-m-value-icon">${upArrowSvg}</span>
-              <div class="map-popup-m-value-text">
-                <span class="map-popup-m-value-label">Estimated property value increase</span>
-                <span class="map-popup-m-value-amount">+€${valueFormatted}</span>
-              </div>
-            </div>
-            <div class="map-popup-m-specs map-popup-m-specs--pair">
-              <div class="map-popup-m-spec">
-                <span class="map-popup-m-spec-val">${escapeHtml(specs.floorArea)}</span>
-                <span class="map-popup-m-spec-lbl">External wall insulation</span>
-              </div>
-              <div class="map-popup-m-spec">
-                <span class="map-popup-m-spec-val">${escapeHtml(specs.colorName)}</span>
-                <span class="map-popup-m-spec-lbl">${escapeHtml(specs.finishLabel)}</span>
-              </div>
-            </div>
+          <div class="mp-body">
+            <h2 class="mp-loc">${safeAddress}</h2>
+            <p class="mp-desc">${work}</p>
+            <div class="mp-results">${berHtml}${saveHtml}</div>
           </div>
-          <button type="button" class="map-popup-details-btn map-popup-m-cta" data-job-id="${job.id}">View listing →</button>
+          <button type="button" class="map-popup-details-btn mp-cta" data-job-id="${job.id}">View project</button>
         </div>
       </div>
     `;
@@ -8232,6 +8677,9 @@ function renderPropertiesSidebar() {
 
 function activateJobOnMap(job) {
   activeJobId = job.id;
+  previewSticky = true;
+  cancelHideHoverPreview();
+  lastPreviewTrigger = document.querySelector(`.listing-card[data-job-id="${job.id}"]`) || lastPreviewTrigger;
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
   if (isMobile) {
     closePropertySheetMobile();
@@ -8248,7 +8696,7 @@ function activateJobOnMap(job) {
       const targetZoom = Math.max(map.getZoom(), 15);
       map.setView([job.lat, job.lng], targetZoom, { animate: true });
       map.once('moveend', () => {
-        markers[job.id]?.openPopup();
+        presentJobPreview(job);
       });
     }
     focusPropertySidebar(job.id);
@@ -8398,18 +8846,29 @@ function initMap() {
     map.on('popupopen', (e) => {
       const el = e.popup.getElement();
       if (!el) return;
-      el.addEventListener(
-        'click',
-        (ev) => {
-          const btn = ev.target.closest('.map-popup-details-btn[data-job-id]');
-          if (!btn) return;
-          ev.preventDefault();
-          const jid = Number(btn.dataset.jobId);
-          const j = portfolioJobs.find((x) => x.id === jid);
-          if (j) openPanel(j);
-        },
-        { once: true }
-      );
+      if (isMobileMapLayout()) {
+        const btn = el.querySelector('[data-job-id]');
+        const jid = btn ? Number(btn.dataset.jobId) : NaN;
+        const j = portfolioJobs.find((x) => x.id === jid);
+        map.closePopup();
+        if (j) showMapPinSheet(j);
+        return;
+      }
+      bindPreviewActions(el);
+      bindPreviewHoverBridge(el);
+      if (window.L && L.DomEvent) {
+        L.DomEvent.disableClickPropagation(el);
+        L.DomEvent.disableScrollPropagation(el);
+      }
+    });
+    map.on('click', (e) => {
+      const t = e.originalEvent && e.originalEvent.target;
+      if (t && t.closest && t.closest('.leaflet-popup, .map-job-popup, #map-pin-sheet, .map-popup-details-btn, .mp-close')) return;
+      previewSticky = false;
+      hoverPreviewJobId = null;
+      cancelHideHoverPreview();
+      if (mapPinSheet && !mapPinSheet.hidden) hideMapPinSheet();
+      map.closePopup();
     });
   }
 
@@ -8494,6 +8953,49 @@ window.addEventListener('beforeunload', () => {
   navigator.geolocation.clearWatch(userLocationWatchId);
 });
 
+function canUseMapHoverPreview() {
+  return !isMobileMapLayout();
+}
+
+function cancelHideHoverPreview() {
+  if (!hideHoverPreviewTimer) return;
+  clearTimeout(hideHoverPreviewTimer);
+  hideHoverPreviewTimer = null;
+}
+
+function scheduleHideHoverPreview() {
+  if (previewSticky) return;
+  cancelHideHoverPreview();
+  hideHoverPreviewTimer = setTimeout(() => {
+    hideHoverPreviewTimer = null;
+    if (previewSticky) return;
+    hoverPreviewJobId = null;
+    map?.closePopup();
+  }, 500);
+}
+
+function showHoverJobPreview(job, marker) {
+  if (!job || !canUseMapHoverPreview()) return;
+  cancelHideHoverPreview();
+  if (hoverPreviewJobId === job.id && marker && typeof marker.isPopupOpen === 'function' && marker.isPopupOpen()) return;
+  if (job.id !== activeJobId) previewSticky = false;
+  hoverPreviewJobId = job.id;
+  if (marker && typeof marker.getElement === 'function') {
+    lastPreviewTrigger = marker.getElement() || lastPreviewTrigger;
+  }
+  presentJobPreview(job);
+}
+
+function bindPreviewHoverBridge(el) {
+  if (!el || el.dataset.hoverBridge === '1') return;
+  el.dataset.hoverBridge = '1';
+  el.addEventListener('mouseenter', () => {
+    cancelHideHoverPreview();
+    previewSticky = true;
+  });
+  el.addEventListener('mouseleave', scheduleHideHoverPreview);
+}
+
 function renderPins() {
   if (!map || !markerClusterLayer) return;
   const nearestId = resolveNearestForDisplay();
@@ -8522,25 +9024,21 @@ function renderPins() {
       popupAnchor: [0, -22]
     });
 
-    const safeAddress = escapeHtml(job.areaText);
-    const tooltipHtml = `<span class="map-tip-addr">${safeAddress}</span><span class="map-tip-price">+€${job.valueIncrease.toLocaleString()} est. uplift</span>`;
     const popupHtml = buildMapPopupHtml(job);
 
     const marker = L.marker([job.lat, job.lng], { icon });
-    marker.bindPopup(popupHtml, { autoClose: true, closeButton: true, autoPan: false, className: 'map-job-popup' });
-    marker.bindTooltip(tooltipHtml, {
-      direction: 'top',
-      opacity: 1,
-      className: 'map-prop-tooltip',
-      sticky: true
-    });
+    if (!isMobileMapLayout()) {
+      marker.bindPopup(popupHtml, { autoClose: true, closeButton: false, autoPan: false, className: 'map-job-popup' });
+    }
     marker.on('click', () => {
       activeJobId = job.id;
+      previewSticky = true;
+      cancelHideHoverPreview();
+      lastPreviewTrigger = marker.getElement();
       closePropertySheetMobile();
       renderPins();
       requestAnimationFrame(() => {
-        const m = markers[job.id];
-        if (m) m.openPopup();
+        presentJobPreview(job);
         focusPropertySidebar(job.id);
         focusJobCard(job.id);
       });
@@ -8550,9 +9048,11 @@ function renderPins() {
       document.querySelectorAll(`.listing-card[data-job-id="${job.id}"]`).forEach(el => {
         if (!el.classList.contains('is-active')) el.classList.add('is-hovered');
       });
+      showHoverJobPreview(job, marker);
     });
     marker.on('mouseout', () => {
       document.querySelectorAll(`.listing-card[data-job-id="${job.id}"]`).forEach(el => el.classList.remove('is-hovered'));
+      scheduleHideHoverPreview();
     });
     if (isAnchor) map.addLayer(marker);
     else markerClusterLayer.addLayer(marker);
@@ -8584,27 +9084,368 @@ function focusJobCard(jobId) {
 const jobPanel    = document.getElementById('job-panel');
 const overlay     = document.getElementById('panel-overlay');
 const panelContent = document.getElementById('panel-content');
+const jobPanelFooter = document.getElementById('job-panel-footer');
+const mapPinSheet = document.getElementById('map-pin-sheet');
+const mapPinSheetInner = document.getElementById('map-pin-sheet-inner');
+let lastPanelTrigger = null;
+let lastPreviewTrigger = null;
+let restorePreviewOnClose = true;
+let panelFocusHandler = null;
+let galleryState = { items: [], index: 0 };
 
-function openPanel(job) {
-  activeJobId = job.id;
-  jobPanel.classList.toggle('is-warm-build', isWarmBuildJob(job));
-  panelContent.innerHTML = buildPanelHTML(job);
-  jobPanel.classList.add('open');
-  overlay.classList.add('active');
-
-  if (isWarmBuildJob(job)) initWarmBuildGallery(job);
-  else initPhotoCarousel(job);
-  renderJobStrip();
-  renderPropertiesSidebar();
+function isMobileMapLayout() {
+  return window.matchMedia('(max-width: 900px)').matches;
 }
 
-function closePanel() {
-  jobPanel.classList.remove('open', 'is-warm-build');
+function getPanelFocusable() {
+  if (!jobPanel) return [];
+  return Array.from(jobPanel.querySelectorAll('button, [href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])'))
+    .filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+}
+
+function trapPanelFocus(e) {
+  if (e.key !== 'Tab' || !jobPanel.classList.contains('open')) return;
+  const gallery = document.getElementById('dialog-job-photos');
+  if (gallery && gallery.open) return;
+  const nodes = getPanelFocusable();
+  if (!nodes.length) return;
+  const first = nodes[0];
+  const last = nodes[nodes.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+function setMapInert(inert) {
+  const mapScreen = document.getElementById('screen-map');
+  if (!mapScreen) return;
+  if (inert) mapScreen.setAttribute('inert', '');
+  else mapScreen.removeAttribute('inert');
+}
+
+function updateJobPanelKeyboardInset() {
+  if (!jobPanel || !window.visualViewport) return;
+  const kb = Math.max(0, window.innerHeight - visualViewport.height - visualViewport.offsetTop);
+  jobPanel.style.setProperty('--jp-kb', `${kb}px`);
+}
+
+function openJobFromPreviewCta(btn) {
+  if (previewCtaLock || !btn) return;
+  const jid = Number(btn.getAttribute('data-job-id'));
+  const job = portfolioJobs.find((x) => x.id === jid);
+  if (!job) return;
+  previewCtaLock = true;
+  previewSticky = true;
+  cancelHideHoverPreview();
+  lastPanelTrigger = btn;
+  restorePreviewOnClose = true;
+  hideMapPinSheet();
+  openPanel(job);
+  setTimeout(() => { previewCtaLock = false; }, 400);
+}
+
+function closeJobPreview() {
+  previewSticky = false;
+  hoverPreviewJobId = null;
+  cancelHideHoverPreview();
+  hideMapPinSheet({ restoreFocus: true });
+  map?.closePopup();
+}
+
+function bindPreviewCtaDelegate() {
+  if (previewCtaDelegateBound) return;
+  previewCtaDelegateBound = true;
+  document.addEventListener('pointerdown', (ev) => {
+    const closeBtn = ev.target.closest && ev.target.closest('.mp-close');
+    const cta = ev.target.closest && ev.target.closest('.map-popup-details-btn[data-job-id]');
+    if (!closeBtn && !cta) return;
+    previewSticky = !closeBtn;
+    cancelHideHoverPreview();
+  }, true);
+  document.addEventListener('click', (ev) => {
+    const closeBtn = ev.target.closest && ev.target.closest('.mp-close');
+    if (closeBtn) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      closeJobPreview();
+      return;
+    }
+    const btn = ev.target.closest && ev.target.closest('.map-popup-details-btn[data-job-id]');
+    if (!btn) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    openJobFromPreviewCta(btn);
+  }, true);
+}
+
+function bindPreviewActions(root) {
+  bindPreviewCtaDelegate();
+  if (!root) return;
+  root.querySelectorAll('.map-popup-details-btn[data-job-id]').forEach((btn) => {
+    if (btn.dataset.boundCta === '1') return;
+    btn.dataset.boundCta = '1';
+    const onCta = (ev) => {
+      if (ev.preventDefault) ev.preventDefault();
+      if (window.L && L.DomEvent) L.DomEvent.stop(ev);
+      else ev.stopPropagation();
+      openJobFromPreviewCta(btn);
+    };
+    if (window.L && L.DomEvent) L.DomEvent.on(btn, 'click', onCta);
+    else btn.addEventListener('click', onCta);
+  });
+  root.querySelectorAll('.mp-close').forEach((btn) => {
+    if (btn.dataset.boundClose === '1') return;
+    btn.dataset.boundClose = '1';
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      closeJobPreview();
+    });
+  });
+}
+
+function hideMapPinSheet(opts) {
+  if (!mapPinSheet) return;
+  const restoreFocus = !!(opts && opts.restoreFocus);
+  mapPinSheet.hidden = true;
+  if (mapPinSheetInner) mapPinSheetInner.innerHTML = '';
+  if (restoreFocus && lastPreviewTrigger && document.contains(lastPreviewTrigger) && lastPreviewTrigger.focus) {
+    lastPreviewTrigger.focus();
+  }
+}
+
+function showMapPinSheet(job) {
+  if (!mapPinSheet || !mapPinSheetInner) return;
+  mapPinSheetInner.innerHTML = buildMapPopupHtml(job);
+  mapPinSheet.setAttribute('aria-label', `${job.areaText || 'Project'} preview`);
+  if (!mapPinSheetInner.querySelector('.mp-close')) {
+    const closeSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+    mapPinSheetInner.insertAdjacentHTML('afterbegin', `<button type="button" class="mp-close mp-close--sheet" aria-label="Close project preview">${closeSvg}</button>`);
+  }
+  mapPinSheet.hidden = false;
+  bindPreviewActions(mapPinSheetInner);
+  mapPinSheet.querySelector('.mp-close')?.focus();
+}
+
+function presentJobPreview(job, opts) {
+  if (!job) return;
+  const focusCta = !!(opts && opts.focusCta);
+  hoverPreviewJobId = job.id;
+  if (opts && opts.sticky) previewSticky = true;
+  if (isMobileMapLayout()) {
+    map?.closePopup();
+    showMapPinSheet(job);
+  } else {
+    hideMapPinSheet();
+    markers[job.id]?.openPopup();
+  }
+  if (focusCta) {
+    requestAnimationFrame(() => {
+      document.querySelector(`.mp-cta[data-job-id="${job.id}"]`)?.focus();
+    });
+  }
+}
+
+function applyQuoteProjectContext(job) {
+  const ta = document.getElementById('quote-message');
+  if (!ta || !job) return;
+  const loc = job.areaText || 'a nearby project';
+  const note = `I viewed the completed project in ${loc} (reference ${job.id}). Please quote for my own home — I understand those results are specific to that property.`;
+  if (!ta.value.trim()) ta.value = note;
+}
+
+function requestQuoteForJob(job) {
+  applyQuoteProjectContext(job);
+  openQuoteEnquire();
+}
+
+function renderJobPanelFooter(job) {
+  if (!jobPanelFooter) return;
+  if (!job || isWarmBuildJob(job)) {
+    jobPanelFooter.hidden = true;
+    jobPanelFooter.innerHTML = '';
+    jobPanel.classList.remove('has-quote-footer');
+    return;
+  }
+  jobPanel.classList.add('has-quote-footer');
+  jobPanelFooter.hidden = false;
+  jobPanelFooter.innerHTML = `<button type="button" class="jp-quote-btn" id="jp-quote-btn" data-job-id="${job.id}">Request a quote for my home</button>`;
+  document.getElementById('jp-quote-btn')?.addEventListener('click', () => requestQuoteForJob(job));
+}
+
+function openJobPhotoGallery(items, index) {
+  const dlg = document.getElementById('dialog-job-photos');
+  const img = document.getElementById('dialog-job-photos-img');
+  const caption = document.getElementById('dialog-job-photos-caption');
+  const nav = document.getElementById('dialog-job-photos-nav');
+  if (!dlg || !img || !caption) return;
+  galleryState = { items: items || [], index: index || 0 };
+  function render() {
+    const item = galleryState.items[galleryState.index];
+    if (!item) return;
+    img.src = item.src;
+    img.alt = item.alt || '';
+    caption.textContent = item.label || '';
+    if (nav) nav.hidden = galleryState.items.length < 2;
+  }
+  render();
+  if (!dlg.open) dlg.showModal();
+  document.getElementById('dialog-job-photos-close')?.focus();
+  dlg.dataset.bound = dlg.dataset.bound || '';
+  if (dlg.dataset.bound === '1') {
+    dlg._renderGallery = render;
+    return;
+  }
+  dlg.dataset.bound = '1';
+  dlg._renderGallery = render;
+  document.getElementById('dialog-job-photos-close')?.addEventListener('click', () => dlg.close());
+  document.getElementById('dialog-job-photos-prev')?.addEventListener('click', () => {
+    if (!galleryState.items.length) return;
+    galleryState.index = (galleryState.index - 1 + galleryState.items.length) % galleryState.items.length;
+    dlg._renderGallery();
+  });
+  document.getElementById('dialog-job-photos-next')?.addEventListener('click', () => {
+    if (!galleryState.items.length) return;
+    galleryState.index = (galleryState.index + 1) % galleryState.items.length;
+    dlg._renderGallery();
+  });
+  dlg.addEventListener('close', () => {
+    const idx = galleryState.index;
+    const photo = jobPanel.querySelector(`.jp-photo[data-gallery-index="${idx}"]`)
+      || jobPanel.querySelector('.jp-photo');
+    photo?.focus();
+  });
+}
+
+function bindJobPanelPhotos(job) {
+  const items = jobGalleryItems(job);
+  panelContent.querySelectorAll('.jp-photo[data-gallery-index]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      openJobPhotoGallery(items, Number(btn.dataset.galleryIndex) || 0);
+    });
+  });
+}
+
+function armOverlayClickShield() {
+  panelOpenedAt = Date.now();
+  if (overlayClickShield) document.removeEventListener('click', overlayClickShield, true);
+  overlayClickShield = (e) => {
+    if (Date.now() - panelOpenedAt > 500) {
+      document.removeEventListener('click', overlayClickShield, true);
+      overlayClickShield = null;
+      return;
+    }
+    if (!overlay || !overlay.classList.contains('active')) return;
+    if (e.target !== overlay) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  };
+  document.addEventListener('click', overlayClickShield, true);
+}
+
+function openPanel(job) {
+  armOverlayClickShield();
+  activeJobId = job.id;
+  const warm = isWarmBuildJob(job);
+  jobPanel.classList.toggle('is-warm-build', warm);
+  panelContent.innerHTML = buildPanelHTML(job);
+  renderJobPanelFooter(job);
+  jobPanel.classList.add('open');
+  overlay.classList.add('active');
+  jobPanel.setAttribute('aria-hidden', 'false');
+  hideMapPinSheet();
+  map?.closePopup();
+  setMapInert(true);
+  updateJobPanelKeyboardInset();
+
+  if (warm) initWarmBuildGallery(job);
+  else bindJobPanelPhotos(job);
+  renderJobStrip();
+  renderPropertiesSidebar();
+
+  if (panelFocusHandler) jobPanel.removeEventListener('keydown', panelFocusHandler);
+  panelFocusHandler = trapPanelFocus;
+  jobPanel.addEventListener('keydown', panelFocusHandler);
+  (document.getElementById('panel-close-btn') || getPanelFocusable()[0])?.focus();
+}
+
+function closePanel(opts) {
+  const jobId = activeJobId;
+  const shouldRestore = restorePreviewOnClose;
+  const skipFocusRestore = !!(opts && opts.skipFocusRestore);
+  jobPanel.classList.remove('open', 'is-warm-build', 'has-quote-footer');
   overlay.classList.remove('active');
+  jobPanel.setAttribute('aria-hidden', 'true');
+  if (jobPanelFooter) {
+    jobPanelFooter.hidden = true;
+    jobPanelFooter.innerHTML = '';
+  }
+  setMapInert(false);
+  if (panelFocusHandler) {
+    jobPanel.removeEventListener('keydown', panelFocusHandler);
+    panelFocusHandler = null;
+  }
+  const gallery = document.getElementById('dialog-job-photos');
+  if (gallery && gallery.open) gallery.close();
+  const trigger = lastPanelTrigger;
+  lastPanelTrigger = null;
+  restorePreviewOnClose = true;
+  const job = portfolioJobs.find((j) => j.id === jobId);
+  if (shouldRestore && job && !isWarmBuildJob(job)) {
+    presentJobPreview(job, { focusCta: true, sticky: true });
+    return;
+  }
+  if (skipFocusRestore) return;
+  requestAnimationFrame(() => {
+    if (trigger && document.contains(trigger) && trigger.focus) trigger.focus();
+    else document.querySelector(`.listing-card[data-job-id="${jobId}"]`)?.focus();
+  });
 }
 
 document.getElementById('panel-close-btn').addEventListener('click', closePanel);
-overlay.addEventListener('click', closePanel);
+overlay.addEventListener('click', (e) => {
+  if (Date.now() - panelOpenedAt < 500) {
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+  closePanel();
+});
+bindPreviewCtaDelegate();
+window.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const gallery = document.getElementById('dialog-job-photos');
+  if (gallery && gallery.open) {
+    gallery.close();
+    e.preventDefault();
+    return;
+  }
+  if (jobPanel.classList.contains('open')) {
+    closePanel();
+    e.preventDefault();
+    return;
+  }
+  if (mapPinSheet && !mapPinSheet.hidden) {
+    hideMapPinSheet({ restoreFocus: true });
+    map?.closePopup();
+    e.preventDefault();
+    return;
+  }
+  if (map && map._popup) {
+    previewSticky = false;
+    hoverPreviewJobId = null;
+    map.closePopup();
+    e.preventDefault();
+  }
+});
+if (window.visualViewport) {
+  visualViewport.addEventListener('resize', updateJobPanelKeyboardInset);
+  visualViewport.addEventListener('scroll', updateJobPanelKeyboardInset);
+}
 
 function panelBenefitIcons() {
   return {
@@ -8643,7 +9484,7 @@ function buildWarmBuildPanelHTML(job) {
   return `
     <div class="wb-job-card">
       <div class="wb-job-card-icon">${ic.house}</div>
-      <h2 class="wb-job-card-title">${title}</h2>
+      <h2 class="wb-job-card-title" id="job-panel-title">${title}</h2>
       <p class="wb-job-card-kicker">${kicker}</p>
       ${badge}
       <div class="wb-job-card-loc">${loc}</div>
@@ -8691,84 +9532,79 @@ function checkSvgWarmBuild() {
 
 function buildPanelHTML(job) {
   if (isWarmBuildJob(job)) return buildWarmBuildPanelHTML(job);
-  const ic = panelBenefitIcons();
-  const baHandleSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7 5 12l4 5M15 7l4 5-4 5"/></svg>`;
-  const arrowSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13"/><path d="m13 7 5 5-5 5"/></svg>`;
-  const checkSvg = `<svg class="job-badge-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8 3 3 7-7"/></svg>`;
-  const navLeftSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 3-5 5 5 5"/></svg>`;
-  const navRightSvg = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>`;
-  const berBeforeDisplay = escapeHtml(String(job.berBefore || '').trim().toUpperCase());
-  const berAfterDisplay = escapeHtml(String(job.berAfter || '').trim().toUpperCase());
-  const beforeSrc = sanitizeImageSrc(job.beforePhotos && job.beforePhotos[0], DEFAULT_BEFORE_PHOTO);
-  const afterSrc = sanitizeImageSrc(job.afterPhotos && job.afterPhotos[0], DEFAULT_AFTER_PHOTO);
-  const safeAddress = escapeHtml(job.areaText);
-  const safeType = escapeHtml(job.type);
-  const thirdBenefitCard = job.seaiGrant
-    ? `<div class="benefit-card grant">
-            ${ic.seai}
-            <div class="benefit-value">€${Number(job.seaiGrant).toLocaleString()}</div>
-            <div class="benefit-desc">SEAI grant</div>
-          </div>`
-    : `<div class="benefit-card warmth">
-            ${ic.temp}
-            <div class="benefit-value">+${job.warmthGain}°C</div>
-            <div class="benefit-desc">Warmer in winter</div>
-          </div>`;
-  const co2Desc = job.treesEquivalent
-    ? `CO₂ reduction per year<br>(${Number(job.treesEquivalent).toLocaleString()} trees equivalent)`
-    : 'CO₂ reduction per year';
+  const safeAddress = escapeHtml(job.areaText || 'This project');
+  const subtitle = escapeHtml(jobIdentitySubtitle(job));
+  const berBefore = String(job.berBefore || '').trim().toUpperCase();
+  const berAfter = String(job.berAfter || '').trim().toUpperCase();
+  const savings = formatEuroPerYear(job.annualSaving);
+  const scope = jobScopeCopy(job);
+  const grant = jobGrantCopy(job);
+  const gallery = jobGalleryItems(job);
+  const beforeItem = gallery.find((item) => item.label.toLowerCase().startsWith('before'));
+  const afterItem = gallery.find((item) => item.label.toLowerCase().startsWith('after')) || gallery[0];
+  const beforeIdx = beforeItem ? gallery.indexOf(beforeItem) : 0;
+  const afterIdx = afterItem ? gallery.indexOf(afterItem) : Math.min(1, gallery.length - 1);
+  const photosHtml = (beforeItem || afterItem)
+    ? `<div class="jp-photos">
+        ${beforeItem ? `<button type="button" class="jp-photo" data-gallery-index="${beforeIdx}" aria-label="Enlarge before photograph">
+          <img src="${beforeItem.src}" alt="${escapeHtml(beforeItem.alt)}" width="800" height="600" />
+          <span class="jp-photo-label">${escapeHtml(beforeItem.label)}</span>
+        </button>` : ''}
+        ${afterItem ? `<button type="button" class="jp-photo" data-gallery-index="${afterIdx}" aria-label="Enlarge after photograph">
+          <img src="${afterItem.src}" alt="${escapeHtml(afterItem.alt)}" width="800" height="600" />
+          <span class="jp-photo-label">${escapeHtml(afterItem.label)}</span>
+        </button>` : ''}
+      </div>`
+    : '';
+  const outcomes = [];
+  if (berBefore && berAfter) {
+    outcomes.push(`<p class="jp-outcome"><span class="jp-outcome-value">${escapeHtml(berBefore)} → ${escapeHtml(berAfter)}</span><span class="jp-outcome-label">BER rating</span></p>`);
+  }
+  if (savings) {
+    outcomes.push(`<p class="jp-outcome"><span class="jp-outcome-value">${escapeHtml(savings)}</span><span class="jp-outcome-label">Estimated annual energy savings</span></p>`);
+  }
+  const date = String(job.completedDate || '').trim();
+  const co2 = Number(job.co2Reduction);
+  const co2Html = Number.isFinite(co2) && co2 > 0
+    ? `<li class="jp-fact">
+        <span class="jp-fact-label">Estimated CO₂ reduction</span>
+        <span class="jp-fact-value">${co2} tonnes/year</span>
+      </li>`
+    : '';
+  const grantHtml = grant
+    ? `<li class="jp-fact">
+        <span class="jp-fact-label">${escapeHtml(grant.label)}</span>
+        <span class="jp-fact-value">${escapeHtml(grant.value)}</span>
+      </li>`
+    : '';
+  const facts = grantHtml || co2Html
+    ? `<div>
+        <h3 class="jp-section-title">More about this project</h3>
+        <ul class="jp-facts">${grantHtml}${co2Html}</ul>
+      </div>`
+    : '';
   return `
-    <div class="panel-ber-hero" aria-label="BER improvement for this project">
-      <div class="panel-ber-hero-grades">
-        <div class="panel-ber-hero-grade old">${berBeforeDisplay || '—'}</div>
-        <span class="panel-ber-hero-arrow" aria-hidden="true">${arrowSvg}</span>
-        <div class="panel-ber-hero-grade new">${berAfterDisplay || '—'}</div>
-      </div>
-      <div class="panel-ber-hero-caption">BER Improvement</div>
-    </div>
-    <div class="job-badge">${checkSvg} Completed ${escapeHtml(job.completedDate)}</div>
-    <div class="job-header">
-      <div class="job-info">
-        <div class="job-address">${safeAddress}</div>
-        <div class="job-subtitle">External Wall Insulation · ${safeType}</div>
-        <div class="benefits-grid">
-          <div class="benefit-card savings">
-            ${ic.euro}
-            <div class="benefit-value">+€${job.annualSaving.toLocaleString()}</div>
-            <div class="benefit-desc">Avg. Annual Energy Savings</div>
-          </div>
-          <div class="benefit-card value">
-            ${ic.chart}
-            <div class="benefit-value">+€${job.valueIncrease.toLocaleString()}</div>
-            <div class="benefit-desc">Increase in property value</div>
-          </div>
-          ${thirdBenefitCard}
-          <div class="benefit-card carbon">
-            ${ic.leaf}
-            <div class="benefit-value">-${job.co2Reduction}t</div>
-            <div class="benefit-desc">${co2Desc}</div>
-          </div>
+    <article class="jp-project">
+      <header class="jp-identity">
+        <h2 class="jp-title" id="job-panel-title">${safeAddress}</h2>
+        <p class="jp-subtitle">${subtitle}</p>
+      </header>
+      ${photosHtml}
+      ${outcomes.length ? `<div class="jp-outcomes">${outcomes.join('')}</div>` : ''}
+      <section>
+        <h3 class="jp-section-title">Scope of work</h3>
+        <p class="jp-copy">${escapeHtml(scope.installed)}</p>
+        ${scope.extrasLine ? `<p class="jp-copy">${escapeHtml(scope.extrasLine)}</p>` : ''}
+        ${date ? `<p class="jp-meta">Completed ${escapeHtml(date)}</p>` : ''}
+      </section>
+      ${facts}
+      <details class="jp-more">
+        <summary>How these estimates were calculated</summary>
+        <div class="jp-more-body">
+          <p>All estimates are approximate based on the BER Rating and size of the home.</p>
         </div>
-        <p class="benefits-disclaimer">All values are approximate based on each individual house.</p>
-      </div>
-      <div class="before-after-container" id="ba-container">
-        <span class="ba-rail-label before">Before</span>
-        <span class="ba-rail-label after">After</span>
-        <div class="ba-before">
-          <img id="ba-before-photo" src="${beforeSrc}" alt="Before retrofit home exterior" />
-        </div>
-        <div class="ba-after" id="ba-after">
-          <img id="ba-after-photo" src="${afterSrc}" alt="After retrofit home exterior" />
-        </div>
-        <div class="ba-divider" id="ba-divider"></div>
-        <div class="ba-handle" id="ba-handle" title="Drag to compare">${baHandleSvg}</div>
-        <div class="ba-photo-nav">
-          <button type="button" class="ba-photo-nav-btn" id="ba-photo-prev" aria-label="Previous project photos">${navLeftSvg}</button>
-          <span class="ba-photo-nav-dots" id="ba-photo-dots" aria-live="polite">●</span>
-          <button type="button" class="ba-photo-nav-btn" id="ba-photo-next" aria-label="Next project photos">${navRightSvg}</button>
-        </div>
-      </div>
-    </div>
+      </details>
+    </article>
   `;
 }
 
