@@ -4432,39 +4432,20 @@
       font-weight: 500;
       color: var(--jp-muted);
     }
-    .jp-facts {
-      list-style: none;
+    .jp-bullets {
       margin: 0;
-      padding: 0;
+      padding: 0 0 10px 1.2em;
+      list-style: disc;
       display: grid;
-      gap: 8px;
-    }
-    .jp-fact {
-      padding: 10px 0 0;
-      border-top: 1px solid var(--jp-line);
-    }
-    .jp-fact:first-child {
-      border-top: none;
-      padding-top: 0;
-    }
-    .jp-fact-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--jp-muted);
-      margin-bottom: 2px;
-    }
-    .jp-fact-value {
-      display: block;
-      font-size: 0.9375rem;
-      font-weight: 700;
+      gap: 6px;
+      border-bottom: 1px solid var(--jp-line);
       color: var(--jp-forest);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      line-height: 1.4;
     }
-    .jp-fact-note {
-      margin: 4px 0 0;
-      font-size: 0.8125rem;
-      line-height: 1.45;
-      color: var(--jp-muted);
+    .jp-bullets li::marker {
+      color: var(--jp-forest);
     }
     .jp-more {
       margin: 0;
@@ -7653,13 +7634,8 @@ function jobWorkDescription(job) {
   return area ? `External wall insulation · ${area}` : 'External wall insulation';
 }
 
-function jobIdentitySubtitle(job) {
-  const house = parseJobHouseTypeLabel(job && job.type);
-  const area = parseJobFloorAreaLabel(job && job.type);
-  const parts = ['External wall insulation'];
-  if (house) parts.push(house);
-  if (area) parts.push(`${area} recorded floor area`);
-  return parts.join(' · ');
+function jobIdentitySubtitle() {
+  return 'Click on photos to view detail';
 }
 
 function jobScopeCopy(job) {
@@ -9533,7 +9509,7 @@ function checkSvgWarmBuild() {
 function buildPanelHTML(job) {
   if (isWarmBuildJob(job)) return buildWarmBuildPanelHTML(job);
   const safeAddress = escapeHtml(job.areaText || 'This project');
-  const subtitle = escapeHtml(jobIdentitySubtitle(job));
+  const subtitle = escapeHtml(jobIdentitySubtitle());
   const berBefore = String(job.berBefore || '').trim().toUpperCase();
   const berAfter = String(job.berAfter || '').trim().toUpperCase();
   const savings = formatEuroPerYear(job.annualSaving);
@@ -9564,23 +9540,20 @@ function buildPanelHTML(job) {
     outcomes.push(`<p class="jp-outcome"><span class="jp-outcome-value">${escapeHtml(savings)}</span><span class="jp-outcome-label">Estimated annual energy savings</span></p>`);
   }
   const date = String(job.completedDate || '').trim();
+  const floorArea = parseJobFloorAreaLabel(job && job.type);
+  const scopeInstalled = floorArea
+    ? `${scope.installed} ${floorArea}`
+    : scope.installed;
   const co2 = Number(job.co2Reduction);
-  const co2Html = Number.isFinite(co2) && co2 > 0
-    ? `<li class="jp-fact">
-        <span class="jp-fact-label">Estimated CO₂ reduction</span>
-        <span class="jp-fact-value">${co2} tonnes/year</span>
-      </li>`
-    : '';
-  const grantHtml = grant
-    ? `<li class="jp-fact">
-        <span class="jp-fact-label">${escapeHtml(grant.label)}</span>
-        <span class="jp-fact-value">${escapeHtml(grant.value)}</span>
-      </li>`
-    : '';
-  const facts = grantHtml || co2Html
+  const bullets = [];
+  if (grant) bullets.push(`<li>SEAI GRANT ${escapeHtml(grant.value)}</li>`);
+  if (Number.isFinite(co2) && co2 > 0) {
+    bullets.push(`<li>${co2} Tonnes/year Estimated CO₂ Reduction</li>`);
+  }
+  const facts = bullets.length
     ? `<div>
         <h3 class="jp-section-title">More about this project</h3>
-        <ul class="jp-facts">${grantHtml}${co2Html}</ul>
+        <ul class="jp-bullets">${bullets.join('')}</ul>
       </div>`
     : '';
   return `
@@ -9591,13 +9564,13 @@ function buildPanelHTML(job) {
       </header>
       ${photosHtml}
       ${outcomes.length ? `<div class="jp-outcomes">${outcomes.join('')}</div>` : ''}
+      ${facts}
       <section>
         <h3 class="jp-section-title">Scope of work</h3>
-        <p class="jp-copy">${escapeHtml(scope.installed)}</p>
+        <p class="jp-copy">${escapeHtml(scopeInstalled)}</p>
         ${scope.extrasLine ? `<p class="jp-copy">${escapeHtml(scope.extrasLine)}</p>` : ''}
         ${date ? `<p class="jp-meta">Completed ${escapeHtml(date)}</p>` : ''}
       </section>
-      ${facts}
       <details class="jp-more">
         <summary>How these estimates were calculated</summary>
         <div class="jp-more-body">
