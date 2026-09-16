@@ -261,6 +261,10 @@
       height: 14px;
       display: block;
     }
+    .lp-trust-plus {
+      color: var(--lp-forest);
+      font-weight: 800;
+    }
     .lp-trust-dot {
       color: #8A958F;
     }
@@ -5667,18 +5671,18 @@
         <section class="lp-hero" aria-labelledby="lp-hero-title">
           <div class="lp-hero-copy">
             <h1 id="lp-hero-title">Could your home<br>be warmer for less?</h1>
-            <p class="lp-lede">See nearby insulation projects and discover their estimated heating savings.</p>
+            <p class="lp-lede">See nearby insulated homes and discover the benefits.</p>
             <button type="button" class="lp-cta js-open-map">
               Explore nearby projects
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
             </button>
-            <p class="lp-trust" aria-label="Rated 4.76 out of 5 on Google. 40 or more Dublin projects.">
+            <p class="lp-trust" aria-label="Rated 4.76 out of 5 on Google. 400 or more completed projects.">
               <span class="lp-trust-stars" aria-hidden="true">
                 <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
               </span>
               <span>4.76 on Google</span>
               <span class="lp-trust-dot" aria-hidden="true">·</span>
-              <span>40+ Dublin projects</span>
+              <span><span class="lp-trust-plus">+</span>400 Completed projects</span>
             </p>
           </div>
         </section>
@@ -7635,25 +7639,32 @@ function jobWorkDescription(job) {
 }
 
 function jobIdentitySubtitle() {
-  return 'Click on photos to view detail';
+  return 'Click on photos to view details';
 }
 
 function jobScopeCopy(job) {
   const specs = parseJobCardMobileSpecs(job && job.type);
-  const finish = specs.finishLabel && specs.finishLabel !== '—' ? specs.finishLabel : '';
-  const color = specs.colorName && specs.colorName !== '—' && specs.colorName !== finish ? specs.colorName : '';
+  const finishRaw = specs.finishLabel && specs.finishLabel !== '—' ? specs.finishLabel : '';
+  const finish = finishRaw.replace(/\s*\+\s*Drylining\b/gi, '').replace(/^Drylining$/i, '').trim();
+  const color = specs.colorName && specs.colorName !== '—' && specs.colorName !== finish && specs.colorName !== finishRaw
+    ? specs.colorName
+    : '';
   const raw = String((job && job.type) || '');
+  const hasDrylining = /drylining/i.test(raw);
   const extras = [];
   if (/cavity\s*pumping/i.test(raw)) extras.push('cavity wall pumping');
-  if (/drylining/i.test(raw)) extras.push('internal drylining');
-  let installed = 'External wall insulation was installed on this home.';
+  let installed = 'External wall insulation was installed';
+  if (hasDrylining) installed += ' & Drylining';
+  installed += '.';
   if (finish && color) {
-    installed = `External wall insulation was installed, finished in ${finish} (${color}).`;
+    installed += ` Finished in ${finish} (${color}).`;
   } else if (finish) {
-    installed = `External wall insulation was installed, finished in ${finish}.`;
+    installed += ` Finished in ${finish}.`;
   } else if (color) {
-    installed = `External wall insulation was installed, finished in ${color}.`;
+    installed += ` Finished in ${color}.`;
   }
+  const floorArea = parseJobFloorAreaLabel(job && job.type);
+  if (floorArea) installed += ` Total size of job was ${floorArea}.`;
   const extrasLine = extras.length
     ? `Other recorded upgrades that may have contributed to the reported results: ${extras.join(', ')}.`
     : '';
@@ -9540,10 +9551,7 @@ function buildPanelHTML(job) {
     outcomes.push(`<p class="jp-outcome"><span class="jp-outcome-value">${escapeHtml(savings)}</span><span class="jp-outcome-label">Estimated annual energy savings</span></p>`);
   }
   const date = String(job.completedDate || '').trim();
-  const floorArea = parseJobFloorAreaLabel(job && job.type);
-  const scopeInstalled = floorArea
-    ? `${scope.installed} ${floorArea}`
-    : scope.installed;
+  const scopeInstalled = scope.installed;
   const co2 = Number(job.co2Reduction);
   const bullets = [];
   if (grant) bullets.push(`<li>SEAI GRANT ${escapeHtml(grant.value)}</li>`);
