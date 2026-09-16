@@ -9181,7 +9181,7 @@ function applyQuoteProjectContext(job) {
   const ta = document.getElementById('quote-message');
   if (!ta || !job) return;
   const loc = job.areaText || 'a nearby project';
-  const note = `I viewed the completed project in ${loc} (reference ${job.id}). Please quote for my own home — I understand those results are specific to that property.`;
+  const note = `I viewed the completed project in ${loc} (reference ${job.id}). I am requesting a quote for my own home — I understand those results are specific to that property.`;
   if (!ta.value.trim()) ta.value = note;
 }
 
