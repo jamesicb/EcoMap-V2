@@ -3734,6 +3734,35 @@
       }
     }
 
+    @media (max-width: 900px) {
+      #job-panel {
+        max-height: calc(100dvh - 12px);
+        max-height: calc(100svh - 12px);
+      }
+      #job-panel .panel-handle-row {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        min-height: 0;
+        padding: 0;
+        z-index: 3;
+      }
+      #job-panel .panel-scroll {
+        padding: 16px 16px 8px;
+      }
+      #job-panel .jp-title,
+      #job-panel .wb-job-card-title {
+        padding-right: 40px;
+      }
+      #job-panel .jp-project {
+        gap: 10px;
+        padding-bottom: 0;
+      }
+      #job-panel .jp-footer {
+        padding: 10px 16px 12px;
+      }
+    }
+
     .panel-handle-row {
       display: flex;
       align-items: center;
