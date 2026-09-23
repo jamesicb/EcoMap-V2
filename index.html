@@ -6062,6 +6062,28 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
+    id: 57,
+    lat: 53.3068316, lng: -6.3624251,
+    areaText: "Kingswood Heights, D24",
+    consent_to_display: true,
+    type: "70m² + 12m² of Brick Slips Semi-detached · White with 10% Red + Warm Blend with Dark Grey Dash + Brick Slips",
+    berBefore: "B2", berAfter: "A2",
+    annualSaving: 950, valueIncrease: 0, co2Reduction: 3, treesEquivalent: 208, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/8-forest-green-before.jpg"],
+    afterPhotos: ["./assets/job-photos/8-forest-green-after.jpg"]
+  },
+  {
+    id: 56,
+    lat: 53.3568272, lng: -6.2965649,
+    areaText: "Cabra, D07",
+    consent_to_display: true,
+    type: "105m² Semi-detached · White 10% Barleycorn + Agean - Medium Grey Dash + Brick Slips",
+    berBefore: "D1", berAfter: "B1",
+    annualSaving: 1500, valueIncrease: 0, co2Reduction: 3.2, treesEquivalent: 227, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/43-blackhorse-avenue-before.jpg"],
+    afterPhotos: ["./assets/job-photos/43-blackhorse-avenue-after.jpg"]
+  },
+  {
     id: 55,
     cardType: "warm-build",
     lat: 53.3498, lng: -6.2603,
@@ -6576,7 +6598,7 @@ const PINNED_JOB_CARD_IDS = [19, 31, 32];
 
 /** Remaining job card order after pinned cards (new jobs: append id here). */
 const DESKTOP_JOB_CARD_ORDER = [
-  55, 54, 53, 52, 51, 50, 49, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
+  57, 56, 55, 54, 53, 52, 51, 50, 49, 35, 33, 30, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 14, 34, 15, 17, 18
 ];
 
 // SUPABASE — customers
@@ -7478,8 +7500,12 @@ function parseJobBedrooms(job) {
 
 function parseJobTypeSpecs(typeStr) {
   const raw = String(typeStr || '').trim();
-  const areaMatch = raw.match(/(\d+(?:\.\d+)?)\s*m²/i);
-  const floorArea = areaMatch ? `${areaMatch[1]} m²` : '—';
+  const areaMatch = raw.match(/(\d+(?:\.\d+)?)\s*m²(?:\s*\+\s*(\d+(?:\.\d+)?)\s*m²(?:\s+of\s+brick\s*slips?)?)?/i);
+  let floorArea = '—';
+  if (areaMatch) {
+    floorArea = `${areaMatch[1]} m²`;
+    if (areaMatch[2]) floorArea += ` + ${areaMatch[2]} m² of Brick Slips`;
+  }
 
   let finish = '—';
   let sheen = '—';
@@ -9525,7 +9551,9 @@ function buildPanelHTML(job) {
   const bullets = [];
   if (grant) bullets.push(`<li>SEAI GRANT ${escapeHtml(grant.value)}</li>`);
   if (Number.isFinite(co2) && co2 > 0) {
-    bullets.push(`<li>${co2} Tonnes/year Estimated CO₂ Reduction</li>`);
+    const trees = Number(job.treesEquivalent);
+    const treesNote = Number.isFinite(trees) && trees > 0 ? ` (${Math.round(trees)} Trees equivalent)` : '';
+    bullets.push(`<li>${co2} Tonnes/year Estimated CO₂ Reduction${treesNote}</li>`);
   }
   const facts = bullets.length
     ? `<div>
