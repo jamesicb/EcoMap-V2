@@ -6060,6 +6060,12 @@
 // ─────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────
+// Estimated annual savings were standardised on 25 September 2026.
+// Formula: total m² × (€6.50 + €1.10 × BER bands jumped), rounded to the nearest €50.
+// BER order, worst to best: G, F, E2, E1, D2, D1, C3, C2, C1, B3, B2, B1, A3, A2, A1.
+// Total m² is the recorded wall area plus any recorded brick-slip area.
+// previousAnnualSaving keeps the figure from before this standardisation.
+// Excluded for now, and still on their original savings: Woodlawn, Hands Lane (Rush), 76 Beechfield Road (Walkinstown), and the Warm Build cabin.
 const portfolioJobsRaw = [
   {
     id: 60,
@@ -6068,7 +6074,7 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "130m² + 12m² of Brick Slips Semi-detached · White Acrylic + Brick Slips",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 2150, valueIncrease: 0, co2Reduction: 3.3, treesEquivalent: 233, seaiGrant: 6050,
+    previousAnnualSaving: 2150, annualSaving: 1400, valueIncrease: 0, co2Reduction: 3.3, treesEquivalent: 233, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/21-cill-eanna-before.jpg"],
     afterPhotos: ["./assets/job-photos/21-cill-eanna-after.jpg"]
   },
@@ -6079,7 +6085,7 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "84m² Mid-Terrace · 1002-Y50R Acrylic",
     berBefore: "B3", berAfter: "B1",
-    annualSaving: 650, valueIncrease: 0, co2Reduction: 1.0, treesEquivalent: 70, seaiGrant: 3550,
+    previousAnnualSaving: 650, annualSaving: 750, valueIncrease: 0, co2Reduction: 1.0, treesEquivalent: 70, seaiGrant: 3550,
     beforePhotos: ["./assets/job-photos/11-edenmore-avenue-before.jpg"],
     afterPhotos: ["./assets/job-photos/11-edenmore-avenue-after.jpg"]
   },
@@ -6090,7 +6096,7 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "148m² + 12m² of Brick Slips Semi-detached · 0603-R80B + Agean with Med Grey Acrylic + Brick Slips",
     berBefore: "A3", berAfter: "A1",
-    annualSaving: 1500, valueIncrease: 0, co2Reduction: 2.2, treesEquivalent: 156, seaiGrant: 6050,
+    previousAnnualSaving: 1500, annualSaving: 1400, valueIncrease: 0, co2Reduction: 2.2, treesEquivalent: 156, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/16-phoenix-gardens-before.jpg"],
     afterPhotos: ["./assets/job-photos/16-phoenix-gardens-after.jpg"]
   },
@@ -6101,7 +6107,7 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "70m² + 12m² of Brick Slips Semi-detached · White with 10% Red + Warm Blend with Dark Grey Dash + Brick Slips",
     berBefore: "B2", berAfter: "A2",
-    annualSaving: 950, valueIncrease: 0, co2Reduction: 3, treesEquivalent: 208, seaiGrant: 6050,
+    previousAnnualSaving: 950, annualSaving: 800, valueIncrease: 0, co2Reduction: 3, treesEquivalent: 208, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/8-forest-green-before.jpg"],
     afterPhotos: ["./assets/job-photos/8-forest-green-after.jpg"]
   },
@@ -6112,7 +6118,7 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "105m² Semi-detached · White 10% Barleycorn + Agean - Medium Grey Dash + Brick Slips",
     berBefore: "D1", berAfter: "B1",
-    annualSaving: 1500, valueIncrease: 0, co2Reduction: 3.2, treesEquivalent: 227, seaiGrant: 6050,
+    previousAnnualSaving: 1500, annualSaving: 1400, valueIncrease: 0, co2Reduction: 3.2, treesEquivalent: 227, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/43-blackhorse-avenue-before.jpg"],
     afterPhotos: ["./assets/job-photos/43-blackhorse-avenue-after.jpg"]
   },
@@ -6144,7 +6150,7 @@ const portfolioJobsRaw = [
     type: "108m² Semi-detached · Dash & Fern Stone",
     completedDate: "September 2025",
     berBefore: "C2", berAfter: "A3",
-    annualSaving: 1700, valueIncrease: 25900, co2Reduction: 2.3, treesEquivalent: 160, seaiGrant: 6050,
+    previousAnnualSaving: 1700, annualSaving: 1300, valueIncrease: 25900, co2Reduction: 2.3, treesEquivalent: 160, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/174-balally-drive-before.png"],
     afterPhotos: ["./assets/job-photos/174-balally-drive-after.png"]
   },
@@ -6156,7 +6162,7 @@ const portfolioJobsRaw = [
     type: "110m² End of Terrace · White Dash",
     completedDate: "August 2025",
     berBefore: "C2", berAfter: "B2",
-    annualSaving: 1200, valueIncrease: 23500, co2Reduction: 1.7, treesEquivalent: 120, seaiGrant: 6050,
+    previousAnnualSaving: 1200, annualSaving: 1100, valueIncrease: 23500, co2Reduction: 1.7, treesEquivalent: 120, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/30-dromand-road-before.png"],
     afterPhotos: ["./assets/job-photos/30-dromand-road-after.png"]
   },
@@ -6168,7 +6174,7 @@ const portfolioJobsRaw = [
     type: "174m² Detached · 2005-Y70R Acrylic",
     completedDate: "September 2025",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 1900, valueIncrease: 29000, co2Reduction: 6.1, treesEquivalent: 433, seaiGrant: 8050,
+    previousAnnualSaving: 1900, annualSaving: 1700, valueIncrease: 29000, co2Reduction: 6.1, treesEquivalent: 433, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/droeiln-tankerstown-clonalvy-before.png"],
     afterPhotos: ["./assets/job-photos/droeiln-tankerstown-clonalvy-after.png"]
   },
@@ -6180,7 +6186,7 @@ const portfolioJobsRaw = [
     type: "50m² Mid-Terrace · 1010-Y20R Acrylic",
     completedDate: "September 2025",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 500, valueIncrease: 13050, co2Reduction: 1.5, treesEquivalent: 106, seaiGrant: 3550,
+    previousAnnualSaving: 500, annualSaving: 500, valueIncrease: 13050, co2Reduction: 1.5, treesEquivalent: 106, seaiGrant: 3550,
     beforePhotos: ["./assets/job-photos/45-belmont-park-before.png"],
     afterPhotos: ["./assets/job-photos/45-belmont-park-after.png"]
   },
@@ -6192,7 +6198,7 @@ const portfolioJobsRaw = [
     type: "145m² Semi-detached · White Acrylic",
     completedDate: "October 2025",
     berBefore: "C2", berAfter: "B2",
-    annualSaving: 1350, valueIncrease: 27500, co2Reduction: 1.4, treesEquivalent: 94, seaiGrant: 6050,
+    previousAnnualSaving: 1350, annualSaving: 1400, valueIncrease: 27500, co2Reduction: 1.4, treesEquivalent: 94, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/17-marsham-court-before.png"],
     afterPhotos: ["./assets/job-photos/17-marsham-court-after.png"]
   },
@@ -6203,8 +6209,8 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "70m² Semi-detached · Acrylic + Dash (White w/ 10% Black) + Brick Slips",
     completedDate: "August 2025",
-    berBefore: "B3", berAfter: "B3",
-    annualSaving: 700, valueIncrease: 22200, co2Reduction: 0.9, treesEquivalent: 60, seaiGrant: 6050,
+    berBefore: "B3", berAfter: "B1",
+    previousAnnualSaving: 700, annualSaving: 600, valueIncrease: 22200, co2Reduction: 0.9, treesEquivalent: 60, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/41-greenwood-avenue-before.png"],
     afterPhotos: ["./assets/job-photos/41-greenwood-avenue-after.png"]
   },
@@ -6216,7 +6222,7 @@ const portfolioJobsRaw = [
     type: "117m² + Brickslips · 1002-Y50R Acrylic",
     completedDate: "April 2026",
     berBefore: "C2", berAfter: "B1",
-    annualSaving: 1250, valueIncrease: 21600, co2Reduction: 2.9, treesEquivalent: 201, seaiGrant: 6050,
+    previousAnnualSaving: 1250, annualSaving: 1300, valueIncrease: 21600, co2Reduction: 2.9, treesEquivalent: 201, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/15-greendale-avenue-before.png"],
     afterPhotos: ["./assets/job-photos/15-greendale-avenue-after.png"]
   },
@@ -6228,7 +6234,7 @@ const portfolioJobsRaw = [
     type: "140m² Semi-detached · White Dash + Brick Slips",
     completedDate: "March 2026",
     berBefore: "B3", berAfter: "A2",
-    annualSaving: 1800, valueIncrease: 27000, co2Reduction: 2.7, treesEquivalent: 189, seaiGrant: 7300,
+    previousAnnualSaving: 1800, annualSaving: 1550, valueIncrease: 27000, co2Reduction: 2.7, treesEquivalent: 189, seaiGrant: 7300,
     beforePhotos: ["./assets/job-photos/114-kincora-grove-before.png"],
     afterPhotos: ["./assets/job-photos/114-kincora-grove-after.png"]
   },
@@ -6240,7 +6246,7 @@ const portfolioJobsRaw = [
     type: "118m² Semi-detached · White - 5% Red & 5% Black Dash + Slip Bricks",
     completedDate: "November 2026",
     berBefore: "B3", berAfter: "A2",
-    annualSaving: 1650, valueIncrease: 27200, co2Reduction: 3, treesEquivalent: 209, seaiGrant: 6050,
+    previousAnnualSaving: 1650, annualSaving: 1300, valueIncrease: 27200, co2Reduction: 3, treesEquivalent: 209, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/103-st-assams-avenue-before.png"],
     afterPhotos: ["./assets/job-photos/103-st-assams-avenue-after.png"]
   },
@@ -6252,7 +6258,7 @@ const portfolioJobsRaw = [
     type: "113m² Semi-detached · White Acrylic",
     completedDate: "November 2026",
     berBefore: "B2", berAfter: "A2",
-    annualSaving: 1250, valueIncrease: 24300, co2Reduction: 2.3, treesEquivalent: 163, seaiGrant: 6050,
+    previousAnnualSaving: 1250, annualSaving: 1100, valueIncrease: 24300, co2Reduction: 2.3, treesEquivalent: 163, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/40-templeville-drive-before.png"],
     afterPhotos: ["./assets/job-photos/40-templeville-drive-after.png"]
   },
@@ -6264,7 +6270,7 @@ const portfolioJobsRaw = [
     type: "155m² Semi-detached · 0505-Y20R Acrylic",
     completedDate: "November 2026",
     berBefore: "C1", berAfter: "A3",
-    annualSaving: 1800, valueIncrease: 25900, co2Reduction: 3.1, treesEquivalent: 220, seaiGrant: 6050,
+    previousAnnualSaving: 1800, annualSaving: 1700, valueIncrease: 25900, co2Reduction: 3.1, treesEquivalent: 220, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/28-the-rise-before.png"],
     afterPhotos: ["./assets/job-photos/28-the-rise-after.png"]
   },
@@ -6276,7 +6282,7 @@ const portfolioJobsRaw = [
     type: "204m² Detached · Bright White Acrylic + Brick Slips",
     completedDate: "February 2026",
     berBefore: "C2", berAfter: "A3",
-    annualSaving: 3000, valueIncrease: 42950, co2Reduction: 4.6, treesEquivalent: 325, seaiGrant: 8000,
+    previousAnnualSaving: 3000, annualSaving: 2450, valueIncrease: 42950, co2Reduction: 4.6, treesEquivalent: 325, seaiGrant: 8000,
     beforePhotos: ["./assets/job-photos/76-stillorgan-wood-before.png"],
     afterPhotos: ["./assets/job-photos/76-stillorgan-wood-after.png"]
   },
@@ -6288,7 +6294,7 @@ const portfolioJobsRaw = [
     type: "105m² Detached · Matt White Acrylic + Drylining",
     completedDate: "November 2026",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 1100, valueIncrease: 31500, co2Reduction: 2.5, treesEquivalent: 174, seaiGrant: 8050,
+    previousAnnualSaving: 1100, annualSaving: 1050, valueIncrease: 31500, co2Reduction: 2.5, treesEquivalent: 174, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/42-pine-court-before.png"],
     afterPhotos: ["./assets/job-photos/42-pine-court-after.png"]
   },
@@ -6300,7 +6306,7 @@ const portfolioJobsRaw = [
     type: "147m² Detached · 1002-B Acrylic",
     completedDate: "October 2026",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 1550, valueIncrease: 26950, co2Reduction: 3.5, treesEquivalent: 245, seaiGrant: 8050,
+    previousAnnualSaving: 1550, annualSaving: 1450, valueIncrease: 26950, co2Reduction: 3.5, treesEquivalent: 245, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/lynders-farm-before.png"],
     afterPhotos: ["./assets/job-photos/lynders-farm-after.png"]
   },
@@ -6312,7 +6318,7 @@ const portfolioJobsRaw = [
     type: "69m² Mid-Terrace · 0505-Y30R Acrylic",
     completedDate: "October 2026",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 600, valueIncrease: 18000, co2Reduction: 1.5, treesEquivalent: 106, seaiGrant: 3550,
+    previousAnnualSaving: 600, annualSaving: 700, valueIncrease: 18000, co2Reduction: 1.5, treesEquivalent: 106, seaiGrant: 3550,
     beforePhotos: ["./assets/job-photos/127-killester-avenue-before.png"],
     afterPhotos: ["./assets/job-photos/127-killester-avenue-after.png"]
   },
@@ -6324,7 +6330,7 @@ const portfolioJobsRaw = [
     type: "100m² Semi-detached · 0505-Y20R Acrylic + Brick Slips",
     completedDate: "October 2026",
     berBefore: "B2", berAfter: "A3",
-    annualSaving: 650, valueIncrease: 21500, co2Reduction: 1.1, treesEquivalent: 76, seaiGrant: 6050,
+    previousAnnualSaving: 650, annualSaving: 850, valueIncrease: 21500, co2Reduction: 1.1, treesEquivalent: 76, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/11-phoenix-gardens-before.png"],
     afterPhotos: ["./assets/job-photos/11-phoenix-gardens-after.png"]
   },
@@ -6336,7 +6342,7 @@ const portfolioJobsRaw = [
     type: "127m² Semi-detached · 2010-Y40R Acrylic + Dash",
     completedDate: "June 2025",
     berBefore: "C2", berAfter: "B1",
-    annualSaving: 1600, valueIncrease: 24000, co2Reduction: 2.3, treesEquivalent: 159, seaiGrant: 6050,
+    previousAnnualSaving: 1600, annualSaving: 1400, valueIncrease: 24000, co2Reduction: 2.3, treesEquivalent: 159, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/14-orchard-lawns-before.png"],
     afterPhotos: ["./assets/job-photos/14-orchard-lawns-after.png"]
   },
@@ -6348,7 +6354,7 @@ const portfolioJobsRaw = [
     type: "111m² Semi-detached · 1000-N Acrylic + Stone",
     completedDate: "October 2025",
     berBefore: "B2", berAfter: "A2",
-    annualSaving: 1150, valueIncrease: 22300, co2Reduction: 1.6, treesEquivalent: 109, seaiGrant: 6050,
+    previousAnnualSaving: 1150, annualSaving: 1100, valueIncrease: 22300, co2Reduction: 1.6, treesEquivalent: 109, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/149-briarwood-avenue-before.png"],
     afterPhotos: ["./assets/job-photos/149-briarwood-avenue-after.png"]
   },
@@ -6360,7 +6366,7 @@ const portfolioJobsRaw = [
     type: "121m² Semi-detached · Matt White Acrylic",
     completedDate: "October 2025",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 1250, valueIncrease: 34050, co2Reduction: 1.6, treesEquivalent: 110, seaiGrant: 6050,
+    previousAnnualSaving: 1250, annualSaving: 1200, valueIncrease: 34050, co2Reduction: 1.6, treesEquivalent: 110, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/107-woodbine-park-before.png"],
     afterPhotos: ["./assets/job-photos/107-woodbine-park-after.png"]
   },
@@ -6372,7 +6378,7 @@ const portfolioJobsRaw = [
     type: "124m² Semi-detached · Cavity Pumping",
     completedDate: "October 2025",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 1150, valueIncrease: 30300, co2Reduction: 2, treesEquivalent: 142, seaiGrant: 7350,
+    previousAnnualSaving: 1150, annualSaving: 1200, valueIncrease: 30300, co2Reduction: 2, treesEquivalent: 142, seaiGrant: 7350,
     beforePhotos: ["./assets/job-photos/120-killarney-heights-before.png"],
     afterPhotos: ["./assets/job-photos/120-killarney-heights-after.png"]
   },
@@ -6384,7 +6390,7 @@ const portfolioJobsRaw = [
     type: "115m² Detached · 2010-G30Y Acrylic",
     completedDate: "July 2025",
     berBefore: "C2", berAfter: "B1",
-    annualSaving: 1400, valueIncrease: 22000, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 8050,
+    previousAnnualSaving: 1400, annualSaving: 1250, valueIncrease: 22000, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/34-shelton-park-before.png"],
     afterPhotos: ["./assets/job-photos/34-shelton-park-after.png"]
   },
@@ -6396,7 +6402,7 @@ const portfolioJobsRaw = [
     type: "130m² Semi-detached · 0505-Y20R Acrylic + Brick Slips",
     completedDate: "July 2025",
     berBefore: "B2", berAfter: "A3",
-    annualSaving: 1100, valueIncrease: 33700, co2Reduction: 1.6, treesEquivalent: 112, seaiGrant: 7350,
+    previousAnnualSaving: 1100, annualSaving: 1150, valueIncrease: 33700, co2Reduction: 1.6, treesEquivalent: 112, seaiGrant: 7350,
     beforePhotos: ["./assets/job-photos/5-dun-na-riogh-rise-before.png"],
     afterPhotos: ["./assets/job-photos/5-dun-na-riogh-rise-after.png"]
   },
@@ -6408,7 +6414,7 @@ const portfolioJobsRaw = [
     type: "147m² Detached · Matt White Acrylic + Brick Cavity Pumping",
     completedDate: "September 2025",
     berBefore: "B2", berAfter: "A3",
-    annualSaving: 1600, valueIncrease: 26600, co2Reduction: 3.3, treesEquivalent: 233, seaiGrant: 8050,
+    previousAnnualSaving: 1600, annualSaving: 1300, valueIncrease: 26600, co2Reduction: 3.3, treesEquivalent: 233, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/13-sarto-road-before.png"],
     afterPhotos: ["./assets/job-photos/13-sarto-road-after.png"]
   },
@@ -6432,7 +6438,7 @@ const portfolioJobsRaw = [
     type: "129m² Semi-detached · 0603-R80B Acrylic + Brick Slips",
     completedDate: "September 2025",
     berBefore: "C3", berAfter: "A3",
-    annualSaving: 2750, valueIncrease: 26400, co2Reduction: 4.9, treesEquivalent: 349, seaiGrant: 6050,
+    previousAnnualSaving: 2750, annualSaving: 1700, valueIncrease: 26400, co2Reduction: 4.9, treesEquivalent: 349, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/29-killiney-rd-before.png"],
     afterPhotos: ["./assets/job-photos/29-killiney-rd-after.png"]
   },
@@ -6444,7 +6450,7 @@ const portfolioJobsRaw = [
     type: "145m² Semi-detached · Bright White Acrylic",
     completedDate: "February 2026",
     berBefore: "C1", berAfter: "A3",
-    annualSaving: 1150, valueIncrease: 33300, co2Reduction: 4.2, treesEquivalent: 296, seaiGrant: 7350,
+    previousAnnualSaving: 1150, annualSaving: 1600, valueIncrease: 33300, co2Reduction: 4.2, treesEquivalent: 296, seaiGrant: 7350,
     beforePhotos: ["./assets/job-photos/1-dodder-park-road-before.png"],
     afterPhotos: ["./assets/job-photos/1-dodder-park-road-after.png"]
   },
@@ -6456,7 +6462,7 @@ const portfolioJobsRaw = [
     type: "118m² Semi-detached · 1000-N Acrylic + Stone",
     completedDate: "March 2026",
     berBefore: "C1", berAfter: "B1",
-    annualSaving: 700, valueIncrease: 25850, co2Reduction: 1.9, treesEquivalent: 132, seaiGrant: 6050,
+    previousAnnualSaving: 700, annualSaving: 1150, valueIncrease: 25850, co2Reduction: 1.9, treesEquivalent: 132, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/85-the-dale-before.png"],
     afterPhotos: ["./assets/job-photos/85-the-dale-after.png"]
   },
@@ -6468,7 +6474,7 @@ const portfolioJobsRaw = [
     type: "156m² Detached · 1000-N Acrylic",
     completedDate: "March 2026",
     berBefore: "C3", berAfter: "B1",
-    annualSaving: 900, valueIncrease: 33550, co2Reduction: 2.1, treesEquivalent: 147, seaiGrant: 8050,
+    previousAnnualSaving: 900, annualSaving: 1850, valueIncrease: 33550, co2Reduction: 2.1, treesEquivalent: 147, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/18-glandore-pk-lower-before.png"],
     afterPhotos: ["./assets/job-photos/18-glandore-pk-lower-after.png"]
   },
@@ -6480,7 +6486,7 @@ const portfolioJobsRaw = [
     type: "105m² Semi-detached · White with Ivory Receiver Dash",
     completedDate: "March 2026",
     berBefore: "C3", berAfter: "A2",
-    annualSaving: 1200, valueIncrease: 24450, co2Reduction: 4.4, treesEquivalent: 308, seaiGrant: 6050,
+    previousAnnualSaving: 1200, annualSaving: 1500, valueIncrease: 24450, co2Reduction: 4.4, treesEquivalent: 308, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/4-shelmartin-ave-before.png"],
     afterPhotos: ["./assets/job-photos/4-shelmartin-ave-after.png"]
   },
@@ -6492,7 +6498,7 @@ const portfolioJobsRaw = [
     type: "148m² Detached · 0907-Y30R Acrylic + Brick Slips",
     completedDate: "April 2026",
     berBefore: "B3", berAfter: "A2",
-    annualSaving: 800, valueIncrease: 36550, co2Reduction: 2.4, treesEquivalent: 170, seaiGrant: 8050,
+    previousAnnualSaving: 800, annualSaving: 1600, valueIncrease: 36550, co2Reduction: 2.4, treesEquivalent: 170, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/24-hazelwood-before.png"],
     afterPhotos: ["./assets/job-photos/24-hazelwood-after.png"]
   },
@@ -6503,8 +6509,8 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "150m² Semi-detached · White Dash - 10% Barley Corn + Brick Slips",
     completedDate: "March 2026",
-    berBefore: "F1", berAfter: "A3",
-    annualSaving: 3000, valueIncrease: 33850, co2Reduction: 7, treesEquivalent: 494, seaiGrant: 6050,
+    berBefore: "F", berAfter: "A3",
+    previousAnnualSaving: 3000, annualSaving: 2800, valueIncrease: 33850, co2Reduction: 7, treesEquivalent: 494, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/157-shantalla-road-before.png"],
     afterPhotos: ["./assets/job-photos/157-shantalla-road-after.png"]
   },
@@ -6516,7 +6522,7 @@ const portfolioJobsRaw = [
     type: "165m² · White Dash + Brick Slips",
     completedDate: "March 2026",
     berBefore: "D1", berAfter: "B1",
-    annualSaving: 2800, valueIncrease: 35300, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 6050,
+    previousAnnualSaving: 2800, annualSaving: 2150, valueIncrease: 35300, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/368-griffith-ave-before.png"],
     afterPhotos: ["./assets/job-photos/368-griffith-ave-after.png"]
   },
@@ -6528,7 +6534,7 @@ const portfolioJobsRaw = [
     type: "135m² · Dash White 10% Barley corn",
     completedDate: "March 2026",
     berBefore: "B1", berAfter: "A1",
-    annualSaving: 1100, valueIncrease: 30550, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 7500,
+    previousAnnualSaving: 1100, annualSaving: 1300, valueIncrease: 30550, co2Reduction: 2.5, treesEquivalent: 175, seaiGrant: 7500,
     beforePhotos: ["./assets/job-photos/43-ennafort-park-before.png"],
     afterPhotos: ["./assets/job-photos/43-ennafort-park-after.png"]
   },
@@ -6540,7 +6546,7 @@ const portfolioJobsRaw = [
     type: "122m² · Bright White Acrylic",
     completedDate: "April 2026",
     berBefore: "C3", berAfter: "A3",
-    annualSaving: 1500, valueIncrease: 25000, co2Reduction: 2.6, treesEquivalent: 180, seaiGrant: 6000,
+    previousAnnualSaving: 1500, annualSaving: 1600, valueIncrease: 25000, co2Reduction: 2.6, treesEquivalent: 180, seaiGrant: 6000,
     beforePhotos: ["./assets/job-photos/169-whitebeams-road-before.png"],
     afterPhotos: ["./assets/job-photos/169-whitebeams-road-after.png"]
   },
@@ -6557,17 +6563,6 @@ const portfolioJobsRaw = [
     afterPhotos: ["./assets/job-photos/woodlawn-hands-lane-after.png"]
   },
   {
-    id: 14,
-    lat: 53.3732, lng: -6.2048,
-    areaText: "Killester, Dublin 5",
-    consent_to_display: true,
-    type: "105m² End of Terrace · 1002-Y50R Acrylic",
-    completedDate: "June 2026",
-    annualSaving: 700, valueIncrease: 27000, co2Reduction: 1.4, treesEquivalent: 99, seaiGrant: 6050,
-    beforePhotos: ["./assets/job-photos/killester-park-before.png"],
-    afterPhotos: ["./assets/job-photos/killester-park-after.png"]
-  },
-  {
     id: 34,
     lat: 53.265575, lng: -6.209489,
     areaText: "The Gallops, D18",
@@ -6575,7 +6570,7 @@ const portfolioJobsRaw = [
     type: "215m² Detached · Matt White Acrylic",
     completedDate: "November 2026",
     berBefore: "B3", berAfter: "A3",
-    annualSaving: 1750, valueIncrease: 35000, co2Reduction: 2.5, treesEquivalent: 173, seaiGrant: 8050,
+    previousAnnualSaving: 1750, annualSaving: 2100, valueIncrease: 35000, co2Reduction: 2.5, treesEquivalent: 173, seaiGrant: 8050,
     beforePhotos: ["./assets/job-photos/21-glencarin-view-before.png"],
     afterPhotos: ["./assets/job-photos/21-glencarin-view-after.png"]
   },
@@ -6587,7 +6582,7 @@ const portfolioJobsRaw = [
     type: "110m² Semi-detached · 1002-Y50R Acrylic, Anatolia & Med grey brick slips",
     completedDate: "November 2025",
     berBefore: "C1", berAfter: "A3",
-    annualSaving: 1200, valueIncrease: 23750, co2Reduction: 3.5, treesEquivalent: 248, seaiGrant: 6050,
+    previousAnnualSaving: 1200, annualSaving: 1200, valueIncrease: 23750, co2Reduction: 3.5, treesEquivalent: 248, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/4-lakelands-close-before.png"],
     afterPhotos: ["./assets/job-photos/4-lakelands-close-after.png"]
   },
@@ -6598,7 +6593,7 @@ const portfolioJobsRaw = [
     consent_to_display: true,
     type: "120m² · Dash White 10% Black + Brick Slips + Cavity Pumping",
     berBefore: "C3", berAfter: "B1",
-    annualSaving: 1550, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
+    previousAnnualSaving: 1550, annualSaving: 1450, valueIncrease: 26050, co2Reduction: 4.2, treesEquivalent: 292, seaiGrant: 6050,
     beforePhotos: ["./assets/job-photos/69-woodbine-park-before.png"],
     afterPhotos: ["./assets/job-photos/69-woodbine-park-after.png"]
   },
@@ -6610,7 +6605,7 @@ const portfolioJobsRaw = [
     type: "214m² · Matt White Acrylic",
     completedDate: "December 2025",
     berBefore: "B3", berAfter: "A2",
-    annualSaving: 2200, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
+    previousAnnualSaving: 2200, annualSaving: 2350, valueIncrease: 40400, co2Reduction: 3.3, treesEquivalent: 230, seaiGrant: 9550,
     beforePhotos: ["./assets/job-photos/64-south-park-before.png"],
     afterPhotos: ["./assets/job-photos/64-south-park-after.png"]
   }
