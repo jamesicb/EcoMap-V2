@@ -6062,6 +6062,28 @@
 // ─────────────────────────────────────────────
 const portfolioJobsRaw = [
   {
+    id: 59,
+    lat: 53.3883063, lng: -6.1837230,
+    areaText: "Edenmore, Dublin 5",
+    consent_to_display: true,
+    type: "84m² Mid-Terrace · 1002-Y50R Acrylic",
+    berBefore: "B3", berAfter: "B1",
+    annualSaving: 650, valueIncrease: 0, co2Reduction: 1.0, treesEquivalent: 70, seaiGrant: 3550,
+    beforePhotos: ["./assets/job-photos/11-edenmore-avenue-before.jpg"],
+    afterPhotos: ["./assets/job-photos/11-edenmore-avenue-after.jpg"]
+  },
+  {
+    id: 58,
+    lat: 53.3780096, lng: -6.3520145,
+    areaText: "Castleknock, D15",
+    consent_to_display: true,
+    type: "148m² + 12m² of Brick Slips Semi-detached · 0603-R80B + Agean with Med Grey Acrylic + Brick Slips",
+    berBefore: "A3", berAfter: "A1",
+    annualSaving: 1500, valueIncrease: 0, co2Reduction: 2.2, treesEquivalent: 156, seaiGrant: 6050,
+    beforePhotos: ["./assets/job-photos/16-phoenix-gardens-before.jpg"],
+    afterPhotos: ["./assets/job-photos/16-phoenix-gardens-after.jpg"]
+  },
+  {
     id: 57,
     lat: 53.3068316, lng: -6.3624251,
     areaText: "Kingswood Heights, D24",
@@ -7588,6 +7610,10 @@ function parseJobCardMobileSpecs(typeStr) {
           } else {
           colorName = color.split(/\s*\+\s*/).map(part =>
             part.trim().split(/\s+/).filter(Boolean).map(word => {
+              const ncs = word.match(/^(\d{4})-([A-Za-z]\d{2}[A-Za-z])$/);
+              if (ncs) return `${ncs[1]}-${ncs[2].toUpperCase()}`;
+              const ncsShort = word.match(/^(\d{4})-([A-Za-z])$/);
+              if (ncsShort) return `${ncsShort[1]}-${ncsShort[2].toUpperCase()}`;
               const lower = word.toLowerCase();
               if (lower === 'matt') return 'Matt';
               return lower.charAt(0).toUpperCase() + lower.slice(1);
