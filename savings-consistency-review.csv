@@ -1,0 +1,47 @@
+﻿Address,BER,Bands,Total m2,CO2 t/yr,Savings EUR,EUR per m2,EUR per t CO2,Flag,Likely wrong figure
+"157 Shantalla Road, Whitehall",F1 → A3,11,150,7,3000,20.00,429,"BER before is F1, which is not on the A1-G scale. Counted as F for the band jump. | Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is 87% versus the average (€20/m2 against €11/m2) | Savings per tonne of CO2 is -35% versus the average (€429/t against €654/t)",BER
+"76 Stillorgan Wood, Stillorgan",C2 → A3,5,204,4.6,3000,14.71,652,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is 38% versus the average (€15/m2 against €11/m2)",m2
+"368 Griffith Avenue, Drumcondra",D1 → B1,6,165,2.5,2800,16.97,1120,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is 59% versus the average (€17/m2 against €11/m2) | Savings per tonne of CO2 is 71% versus the average (€1,120/t against €654/t)",Savings
+"29 Killiney Road, Dalkey",C3 → A3,6,129,4.9,2750,21.32,561,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is 100% versus the average (€21/m2 against €11/m2)",m2
+"64 South Park, Deansgrange",B3 → A2,4,214,3.3,2200,10.28,667,,
+"21 Cill Eanna, Raheny",B3 → A3,3,142,3.3,2150,15.14,652,Savings per m2 is 42% versus the average (€15/m2 against €11/m2),Savings
+"Droeiln, Tankerstown, Clonalvy",B3 → A3,3,174,6.1,1900,10.92,311,Savings per tonne of CO2 is -52% versus the average (€311/t against €654/t),CO2
+"114 Kincora Grove, Clontarf",B3 → A2,4,140,2.7,1800,12.86,667,"Brick slip area is not recorded, so the m2 total is wall area only",m2
+"28 The Rise, Mount Merrion",C1 → A3,4,155,3.1,1800,11.61,581,"Bigger job and bigger BER jump than 21 Cill Eanna but lower savings (€1,800 versus €2,150)",Savings
+"21 Glencarin View, The Gallops",B3 → A3,3,215,2.5,1750,8.14,700,,
+"174 Balally Drive, Dundrum",C2 → A3,5,108,2.3,1700,15.74,739,Savings per m2 is 47% versus the average (€16/m2 against €11/m2),
+"103 St Assam's Avenue, Raheny",B3 → A2,4,118,3,1650,13.98,550,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is 31% versus the average (€14/m2 against €11/m2)",m2
+"13 Sarto Road, Baldoyle",B2 → A3,2,147,3.3,1600,10.88,485,Savings per tonne of CO2 is -26% versus the average (€485/t against €654/t),CO2
+"14 Orchard Lawns, Ballyfermot",C2 → B1,4,127,2.3,1600,12.60,696,,
+"69 Woodbine Park, Raheny",C3 → B1,5,120,4.2,1550,12.92,369,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per tonne of CO2 is -44% versus the average (€369/t against €654/t) | Bigger job and bigger BER jump than 103 St Assam's Avenue but lower savings (€1,550 versus €1,650)",CO2
+"Lynders Farm, Donabate",B3 → A3,3,147,3.5,1550,10.54,443,Savings per tonne of CO2 is -32% versus the average (€443/t against €654/t),CO2
+"16 Phoenix Gardens, Castleknock",A3 → A1,2,160,2.2,1500,9.38,682,,
+"169 Whitebeams Road, Sandyford",C3 → A3,6,122,2.6,1500,12.30,577,"Bigger job and bigger BER jump than 174 Balally Drive but lower savings (€1,500 versus €1,700)",Savings
+"43 Blackhorse Avenue, Cabra",D1 → B1,6,105,3.2,1500,14.29,469,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is 34% versus the average (€14/m2 against €11/m2) | Savings per tonne of CO2 is -28% versus the average (€469/t against €654/t)",CO2
+"34 Shelton Park, Kimmage",C2 → B1,4,115,2.5,1400,12.17,560,,
+"17 Marsham Court, Stillorgan",C2 → B2,3,145,1.4,1350,9.31,964,Savings per tonne of CO2 is 47% versus the average (€964/t against €654/t),CO2
+"107 Woodbine Park, Raheny",B3 → A3,3,121,1.6,1250,10.33,781,,
+"15 Greendale Avenue, Raheny",C2 → B1,4,117,2.9,1250,10.68,431,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per tonne of CO2 is -34% versus the average (€431/t against €654/t)",CO2
+"40 Templeville Drive, Templeogue",B2 → A2,3,113,2.3,1250,11.06,543,,
+"30 Dromand Road, Drimnagh",C2 → B2,3,110,1.7,1200,10.91,706,,
+"4 Lakelands Close, Stillorgan",C1 → A3,4,110,3.5,1200,10.91,343,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per tonne of CO2 is -48% versus the average (€343/t against €654/t)",CO2
+"4 Shelmartin Avenue, Marino",C3 → A2,7,105,4.4,1200,11.43,273,Savings per tonne of CO2 is -58% versus the average (€273/t against €654/t),CO2
+"1 Dodder Park Road, Rathfarnham",C1 → A3,4,145,4.2,1150,7.93,274,"Savings per tonne of CO2 is -58% versus the average (€274/t against €654/t) | Bigger job and bigger BER jump than 21 Cill Eanna but lower savings (€1,150 versus €2,150)",CO2
+"120 Killarney Heights, Bray",B3 → A3,3,124,2,1150,9.27,575,,
+"149 Briarwood Avenue, D15",B2 → A2,3,111,1.6,1150,10.36,719,,
+"42 Pine Court, Blackrock",B3 → A3,3,105,2.5,1100,10.48,440,Savings per tonne of CO2 is -33% versus the average (€440/t against €654/t),CO2
+"43 Ennafort Park, Raheny",B1 → A1,3,135,2.5,1100,8.15,440,Savings per tonne of CO2 is -33% versus the average (€440/t against €654/t),CO2
+"5 Dun na Riogh Rise, Naas",B2 → A3,2,130,1.6,1100,8.46,688,"Brick slip area is not recorded, so the m2 total is wall area only",m2
+"8 Forest Green, Kingswood Heights",B2 → A2,3,82,3,950,11.59,317,Savings per tonne of CO2 is -52% versus the average (€317/t against €654/t),CO2
+"18 Glandore Park Lower, Mount Town",C3 → B1,5,156,2.1,900,5.77,429,"Savings per m2 is -46% versus the average (€6/m2 against €11/m2) | Savings per tonne of CO2 is -35% versus the average (€429/t against €654/t) | Bigger job and bigger BER jump than 21 Cill Eanna but lower savings (€900 versus €2,150)",Savings
+"24 Hazelwood, Shankill",B3 → A2,4,148,2.4,800,5.41,333,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is -49% versus the average (€5/m2 against €11/m2) | Savings per tonne of CO2 is -49% versus the average (€333/t against €654/t) | Bigger job and bigger BER jump than 21 Cill Eanna but lower savings (€800 versus €2,150)",Savings
+"41 Greenwood Avenue, Donaghmede",B3 → B3,0,70,0.9,700,10.00,778,"BER after is not better than before | Brick slip area is not recorded, so the m2 total is wall area only",BER
+"85 The Dale, Tallaght",C1 → B1,3,118,1.9,700,5.93,368,Savings per m2 is -44% versus the average (€6/m2 against €11/m2) | Savings per tonne of CO2 is -44% versus the average (€368/t against €654/t),Savings
+"Killester Park, Killester",,,105,1.4,700,6.67,500,BER rating is missing | Savings per m2 is -38% versus the average (€7/m2 against €11/m2) | Savings per tonne of CO2 is -24% versus the average (€500/t against €654/t),BER
+"11 Edenmore Avenue, Edenmore",B3 → B1,2,84,1,650,7.74,650,Bigger job and bigger BER jump than 41 Greenwood Avenue but lower savings (€650 versus €700),Savings
+"11 Phoenix Gardens, Castleknock",B2 → A3,2,100,1.1,650,6.50,591,"Brick slip area is not recorded, so the m2 total is wall area only | Savings per m2 is -39% versus the average (€7/m2 against €11/m2) | Bigger job and bigger BER jump than 41 Greenwood Avenue but lower savings (€650 versus €700)",m2
+"127 Killester Avenue, Killester",B3 → A3,3,69,1.5,600,8.70,400,Savings per tonne of CO2 is -39% versus the average (€400/t against €654/t),CO2
+"45 Belmont Park, Raheny",B3 → A3,3,50,1.5,500,10.00,333,Savings per tonne of CO2 is -49% versus the average (€333/t against €654/t),CO2
+"Woodlawn, Hands Lane, Rush",A3 → A2,1,168,0.1,500,2.98,5000,"Savings per m2 is -72% versus the average (€3/m2 against €11/m2) | Savings per tonne of CO2 is 664% versus the average (€5,000/t against €654/t) | Bigger job and bigger BER jump than 41 Greenwood Avenue but lower savings (€500 versus €700)",CO2
+"76 Beechfield Road, Walkinstown",A3 → A2,1,120,0.6,400,3.33,667,Savings per m2 is -69% versus the average (€3/m2 against €11/m2) | Bigger job and bigger BER jump than 41 Greenwood Avenue but lower savings (€400 versus €700),Savings
+"Warm Build cabin, Dublin",,,,,0,,,"BER, m2, savings and CO2 are blank or zero. This is a cabin, not an insulation BER job.",Not comparable
