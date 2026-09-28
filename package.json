@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "serve . -l 5173",
+    "dev:https": "serve . -l 5174 --ssl-cert \"%LOCALAPPDATA%\\EcoMap-dev-certs\\localhost.pfx\" --ssl-pass \"%LOCALAPPDATA%\\EcoMap-dev-certs\\pass.txt\"",
     "dev:edge": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$p = Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty OwningProcess; if ($p) { Stop-Process -Id $p -Force }; Start-Process msedge 'http://localhost:5173'; serve . -l 5173\"",
     "test": "node --test tests/privacy-utils.test.mjs"
   },
