@@ -248,6 +248,9 @@
     .lp-cta:active {
       background: var(--lp-forest-hover);
     }
+    .lp-cta--below {
+      display: none;
+    }
     .lp-locate {
       margin: 0 0 16px;
       padding: 14px 16px;
@@ -574,6 +577,12 @@
         border-radius: 8px;
         font-size: 0.8125rem;
       }
+      .lp-cta--hero {
+        display: none;
+      }
+      .lp-cta--below {
+        display: inline-flex;
+      }
       .lp-cta {
         min-height: 44px;
         padding: 10px 16px;
@@ -607,7 +616,7 @@
       .lp-job-photo {
         aspect-ratio: auto;
         width: 100%;
-        height: min(11rem, 18.5svh);
+        height: min(11rem, 17svh);
         border-radius: 10px;
       }
       .lp-job-photo img {
@@ -5717,7 +5726,7 @@
               <p class="lp-locate-copy" id="lp-locate-copy">Share your location to see the highest estimated saving in your part of Dublin. Your location stays on this device.</p>
               <button type="button" class="lp-locate-btn" id="lp-locate-btn">Share my location</button>
             </div>
-            <button type="button" class="lp-cta js-open-map">
+            <button type="button" class="lp-cta lp-cta--hero js-open-map">
               Explore nearby projects
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
             </button>
@@ -5777,6 +5786,10 @@
             </div>
           </article>
         </section>
+        <button type="button" class="lp-cta lp-cta--below js-open-map">
+          Explore nearby projects
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </button>
       </div>
     </main>
   </div>
