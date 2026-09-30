@@ -625,13 +625,15 @@
         margin: 0 0 10px;
       }
       .lp-job-photo {
-        aspect-ratio: auto;
+        aspect-ratio: 3 / 4;
         width: 100%;
-        height: min(11rem, 10.2svh);
+        height: auto;
         border-radius: 10px;
       }
-      .lp-job-photo img {
-        object-fit: cover;
+      .lp-job-photo img,
+      .lp-job-photo:last-child img {
+        object-fit: contain;
+        object-position: center;
       }
       .lp-job-label {
         left: 6px;
@@ -682,7 +684,8 @@
 
     @media (max-width: 767px) and (max-height: 540px) {
       .lp-job-photo {
-        height: min(6.5rem, 30svh);
+        aspect-ratio: 3 / 4;
+        height: auto;
       }
     }
 
