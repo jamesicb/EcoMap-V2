@@ -531,9 +531,6 @@
     @media (max-width: 767px) {
       #screen-splash {
         --lp-header-gap: clamp(0.5rem, 1.2svh, 0.85rem);
-        --lp-main-top: clamp(0.75rem, 2svh, 1.25rem);
-        --lp-main-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
-        --lp-hero-gap: clamp(1rem, 2.6svh, 1.5rem);
         --lp-job-pad: 0.75rem;
       }
       .lp-bar {
@@ -546,29 +543,45 @@
       }
       .lp-main {
         flex: 1 1 auto;
-        padding: var(--lp-main-top) 0 var(--lp-main-bottom);
+        padding: 8px 0 max(4px, env(safe-area-inset-bottom, 0px));
       }
       .lp-hero-grid {
-        gap: var(--lp-hero-gap);
+        gap: 10px;
       }
       .lp-hero h1 {
         font-size: clamp(1.625rem, 6.2vw, 1.875rem);
         line-height: 1.05;
-        margin: 0 0 8px;
+        margin: 0 0 6px;
       }
       .lp-lede {
-        margin: 0 0 14px;
+        margin: 0 0 8px;
         font-size: 0.9375rem;
-        line-height: 1.4;
+        line-height: 1.35;
+      }
+      .lp-locate {
+        margin: 0 0 2px;
+        padding: 4px 8px;
+        border-radius: 10px;
+      }
+      .lp-locate-copy {
+        margin: 0 0 3px;
+        font-size: 0.75rem;
+        line-height: 1.25;
+      }
+      .lp-locate-btn {
+        min-height: 36px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.8125rem;
       }
       .lp-cta {
-        min-height: 48px;
-        padding: 12px 18px;
-        font-size: 1rem;
+        min-height: 44px;
+        padding: 10px 16px;
+        font-size: 0.9375rem;
       }
       .lp-trust {
-        margin: 10px 0 0;
-        font-size: 0.8125rem;
+        margin: 6px 0 0;
+        font-size: 0.75rem;
         font-weight: 500;
         gap: 4px 6px;
       }
@@ -594,7 +607,7 @@
       .lp-job-photo {
         aspect-ratio: auto;
         width: 100%;
-        height: min(11.5rem, 20svh);
+        height: min(11rem, 18.5svh);
         border-radius: 10px;
       }
       .lp-job-photo img {
@@ -636,7 +649,7 @@
       }
       .lp-job-link,
       .lp-job-more summary {
-        min-height: 44px;
+        min-height: 36px;
         font-size: 0.8125rem;
         white-space: normal;
       }
