@@ -248,8 +248,7 @@
     .lp-cta:active {
       background: var(--lp-forest-hover);
     }
-    .lp-cta--below,
-    .lp-trust--below {
+    .lp-cta--below {
       display: none;
     }
     .lp-locate {
@@ -326,6 +325,9 @@
     }
     .lp-trust-dot {
       color: #8A958F;
+    }
+    .lp-trust.lp-trust--below {
+      display: none;
     }
 
     .lp-proof {
@@ -562,19 +564,19 @@
       }
       .lp-locate {
         margin: 0 0 2px;
-        padding: 4px 8px;
+        padding: 5px 10px;
         border-radius: 10px;
       }
       .lp-locate-copy {
-        margin: 0 0 3px;
-        font-size: 0.75rem;
+        margin: 0 0 4px;
+        font-size: 0.9375rem;
         line-height: 1.25;
       }
       .lp-locate-btn {
-        min-height: 36px;
-        padding: 4px 10px;
+        min-height: 45px;
+        padding: 5px 12px;
         border-radius: 8px;
-        font-size: 0.8125rem;
+        font-size: 1.015625rem;
       }
       .lp-cta--hero {
         display: none;
@@ -585,8 +587,9 @@
       .lp-trust--hero {
         display: none;
       }
-      .lp-trust--below {
+      .lp-trust.lp-trust--below {
         display: flex;
+        margin: 0 0 8px;
       }
       .lp-cta {
         min-height: 44px;
@@ -599,15 +602,12 @@
         font-weight: 500;
         gap: 4px 6px;
       }
-      .lp-trust--below {
-        margin: 0;
-      }
       .lp-trust-stars svg {
         width: 13px;
         height: 13px;
       }
       .lp-proof {
-        margin-top: calc(18px + 10svh);
+        margin-top: 10svh;
       }
       .lp-job {
         --lp-job-pair-gap: 6px;
@@ -5753,6 +5753,14 @@
         </section>
 
         <section class="lp-proof" aria-labelledby="lp-hero-job-title">
+          <p class="lp-trust lp-trust--below" aria-label="Rated 4.76 out of 5 on Google. 400 or more completed projects.">
+            <span class="lp-trust-stars" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+            </span>
+            <span>4.76 on Google</span>
+            <span class="lp-trust-dot" aria-hidden="true">·</span>
+            <span><span class="lp-trust-plus">+</span>400 Completed projects</span>
+          </p>
           <article class="lp-job">
             <h2 class="lp-job-title" id="lp-hero-job-title">External wall insulation</h2>
             <p class="lp-job-place" id="lp-job-place">Dundrum · Semi-detached</p>
@@ -5801,14 +5809,6 @@
           Explore nearby projects
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
         </button>
-        <p class="lp-trust lp-trust--below" aria-label="Rated 4.76 out of 5 on Google. 400 or more completed projects.">
-          <span class="lp-trust-stars" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
-          </span>
-          <span>4.76 on Google</span>
-          <span class="lp-trust-dot" aria-hidden="true">·</span>
-          <span><span class="lp-trust-plus">+</span>400 Completed projects</span>
-        </p>
       </div>
     </main>
   </div>
