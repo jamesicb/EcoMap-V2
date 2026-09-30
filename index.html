@@ -248,7 +248,8 @@
     .lp-cta:active {
       background: var(--lp-forest-hover);
     }
-    .lp-cta--below {
+    .lp-cta--below,
+    .lp-trust--below {
       display: none;
     }
     .lp-locate {
@@ -581,6 +582,12 @@
       .lp-cta--below {
         display: inline-flex;
       }
+      .lp-trust--hero {
+        display: none;
+      }
+      .lp-trust--below {
+        display: flex;
+      }
       .lp-cta {
         min-height: 44px;
         padding: 10px 16px;
@@ -591,6 +598,9 @@
         font-size: 0.75rem;
         font-weight: 500;
         gap: 4px 6px;
+      }
+      .lp-trust--below {
+        margin: 0;
       }
       .lp-trust-stars svg {
         width: 13px;
@@ -5728,7 +5738,7 @@
               Explore nearby projects
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
             </button>
-            <p class="lp-trust" aria-label="Rated 4.76 out of 5 on Google. 400 or more completed projects.">
+            <p class="lp-trust lp-trust--hero" aria-label="Rated 4.76 out of 5 on Google. 400 or more completed projects.">
               <span class="lp-trust-stars" aria-hidden="true">
                 <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
               </span>
@@ -5788,6 +5798,14 @@
           Explore nearby projects
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
         </button>
+        <p class="lp-trust lp-trust--below" aria-label="Rated 4.76 out of 5 on Google. 400 or more completed projects.">
+          <span class="lp-trust-stars" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.2 9.85 5l4.15.6-3 2.93.71 4.13L8 10.9l-3.71 1.95.71-4.13-3-2.93 4.15-.6L8 1.2z"/></svg>
+          </span>
+          <span>4.76 on Google</span>
+          <span class="lp-trust-dot" aria-hidden="true">·</span>
+          <span><span class="lp-trust-plus">+</span>400 Completed projects</span>
+        </p>
       </div>
     </main>
   </div>
