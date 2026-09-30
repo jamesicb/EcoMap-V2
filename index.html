@@ -531,13 +531,23 @@
     }
 
     /*
-      Mobile: quieter hierarchy and bounded photos.
-      Do not grow photos or the card to fill leftover viewport height.
+      Mobile: fit the landing page in one screen.
+      Photos use the space left between the rating line and the project figures.
     */
     @media (max-width: 767px) {
       #screen-splash {
         --lp-header-gap: clamp(0.5rem, 1.2svh, 0.85rem);
         --lp-job-pad: 0.75rem;
+        overflow: hidden;
+      }
+      .lp {
+        height: 100%;
+        min-height: 0;
+      }
+      .lp-main {
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
       .lp-bar {
         flex: 0 0 auto;
@@ -552,7 +562,13 @@
         padding: 8px 0 max(4px, env(safe-area-inset-bottom, 0px));
       }
       .lp-hero-grid {
-        gap: 10px;
+        flex: 1 1 auto;
+        min-height: 0;
+        gap: 8px;
+      }
+      .lp-hero,
+      .lp-cta--below {
+        flex: 0 0 auto;
       }
       .lp-hero h1 {
         font-size: clamp(1.625rem, 6.2vw, 1.875rem);
@@ -607,11 +623,19 @@
         height: 13px;
       }
       .lp-proof {
-        margin-top: 10svh;
+        margin-top: 0;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
       .lp-job {
         --lp-job-pair-gap: 6px;
         padding: var(--lp-job-pad);
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
       .lp-job-title {
         margin: 0 0 2px;
@@ -622,12 +646,15 @@
         font-size: 0.8125rem;
       }
       .lp-job-photos {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
+        flex: 1 1 auto;
+        min-height: 0;
       }
       .lp-job-photo {
-        aspect-ratio: 3 / 4;
+        aspect-ratio: auto;
         width: 100%;
-        height: auto;
+        height: 100%;
+        min-height: 0;
         border-radius: 10px;
       }
       .lp-job-photo img,
@@ -684,8 +711,8 @@
 
     @media (max-width: 767px) and (max-height: 540px) {
       .lp-job-photo {
-        aspect-ratio: 3 / 4;
-        height: auto;
+        aspect-ratio: auto;
+        height: 100%;
       }
     }
 
