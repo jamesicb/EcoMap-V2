@@ -251,53 +251,6 @@
     .lp-cta--below {
       display: none;
     }
-    .lp-locate {
-      margin: 0 0 16px;
-      padding: 14px 16px;
-      background: var(--lp-sage);
-      border: 1px solid var(--lp-line);
-      border-radius: 12px;
-    }
-    .lp-locate-copy {
-      margin: 0 0 12px;
-      font-size: 0.9375rem;
-      font-weight: 500;
-      line-height: 1.45;
-      color: var(--lp-body);
-    }
-    .lp-locate-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 10px 16px;
-      width: 100%;
-      border: 1.5px solid var(--lp-forest);
-      border-radius: 12px;
-      background: transparent;
-      color: var(--lp-forest);
-      font-family: inherit;
-      font-size: 0.9375rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .lp-locate-btn:hover {
-      background: var(--lp-card);
-    }
-    .lp-locate-btn:focus {
-      outline: none;
-    }
-    .lp-locate-btn:focus-visible {
-      outline: 2px solid var(--lp-focus);
-      outline-offset: 3px;
-    }
-    .lp-locate-btn:disabled {
-      opacity: 0.7;
-      cursor: progress;
-    }
     .lp-trust {
       display: flex;
       flex-wrap: wrap;
@@ -577,22 +530,6 @@
       .lp-lede {
         display: none;
       }
-      .lp-locate {
-        margin: 0 0 2px;
-        padding: 5px 10px;
-        border-radius: 10px;
-      }
-      .lp-locate-copy {
-        margin: 0 0 4px;
-        font-size: 0.9375rem;
-        line-height: 1.25;
-      }
-      .lp-locate-btn {
-        min-height: 45px;
-        padding: 5px 12px;
-        border-radius: 8px;
-        font-size: 1.015625rem;
-      }
       .lp-cta--hero {
         display: none;
       }
@@ -748,10 +685,6 @@
         width: auto;
         min-width: 17.5rem;
         padding: 14px 28px;
-      }
-      .lp-locate-btn {
-        width: auto;
-        min-width: 12.5rem;
       }
       .lp-proof {
         width: 100%;
@@ -5757,10 +5690,6 @@
           <div class="lp-hero-copy">
             <h1 id="lp-hero-title">Could your home<br>be warmer for less?</h1>
             <p class="lp-lede">See nearby insulated homes and discover the benefits.</p>
-            <div class="lp-locate" id="lp-locate">
-              <p class="lp-locate-copy" id="lp-locate-copy">Share your location to see the highest estimated savings on a house near YOU!</p>
-              <button type="button" class="lp-locate-btn" id="lp-locate-btn">Share my location</button>
-            </div>
             <button type="button" class="lp-cta lp-cta--hero js-open-map">
               Explore nearby projects
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
@@ -6174,7 +6103,7 @@
     <h3 id="dialog-privacy-title" class="text-base font-semibold text-[var(--text-dark)] mb-3">Privacy notice</h3>
     <div class="text-sm text-[var(--text-muted)] flex flex-col gap-3 leading-relaxed">
       <p><strong class="text-[var(--text-dark)]">Who we are.</strong> Absolute Acrylics (Warmliving Ireland Ltd) is the data controller for enquiries submitted through this site.</p>
-      <p><strong class="text-[var(--text-dark)]">What we collect.</strong> Quote form: name, email, phone, and optional message. Landing-page location notice and map “locate me” (only if you tap the button): your device location stays on your device and is not sent to our servers. On the landing page it is used only to name your part of Dublin and the highest estimated saving there. When Google Analytics is configured, we also send anonymous events for landing-page views, exploring nearby projects, and completed quote enquiries. We do not send your name, email, phone, location, or message to analytics.</p>
+      <p><strong class="text-[var(--text-dark)]">What we collect.</strong> Quote form: name, email, phone, and optional message. Map “locate me” (only if you tap the button): your device location stays on your device and is not sent to our servers. When Google Analytics is configured, we also send anonymous events for landing-page views, exploring nearby projects, and completed quote enquiries. We do not send your name, email, phone, location, or message to analytics.</p>
       <p><strong class="text-[var(--text-dark)]">Why we use it.</strong> To respond to your enquiry and provide a quotation (legitimate interest / pre-contract steps). Anonymous usage events are used only to understand how many visitors explore nearby projects and complete an enquiry.</p>
       <p><strong class="text-[var(--text-dark)]">How long we keep it.</strong> Enquiry records are kept only as long as needed to handle your request and our business records, then deleted or anonymised.</p>
       <p><strong class="text-[var(--text-dark)]">Your rights.</strong> You may request access, correction, or erasure of your personal data, or object to processing, by contacting info@absoluteacrylics.ie. You may lodge a complaint with the Irish Data Protection Commission.</p>
@@ -7619,147 +7548,6 @@ document.querySelectorAll('[data-open-job]').forEach(btn => {
   });
 });
 
-function fillLandingJobCard(job) {
-  const area = job.areaText || 'Dublin';
-  const house = parseJobHouseTypeLabel(job.type);
-  const place = document.getElementById('lp-job-place');
-  if (place) place.textContent = house ? `${area} · ${house}` : area;
-
-  const before = document.getElementById('lp-job-before');
-  const after = document.getElementById('lp-job-after');
-  const beforeSrc = job.beforePhotos && job.beforePhotos[0];
-  const afterSrc = job.afterPhotos && job.afterPhotos[0];
-  if (before && beforeSrc) {
-    before.src = beforeSrc;
-    before.alt = `Home exterior in ${area} before external wall insulation`;
-  }
-  if (after && afterSrc) {
-    after.src = afterSrc;
-    after.alt = `Finished external wall insulation in ${area}`;
-  }
-
-  const berEl = document.getElementById('lp-job-ber');
-  if (berEl) {
-    const beforeBer = String(job.berBefore || '').trim().toUpperCase();
-    const afterBer = String(job.berAfter || '').trim().toUpperCase();
-    berEl.textContent = beforeBer && afterBer ? `${beforeBer} → ${afterBer}` : '';
-  }
-  const savingEl = document.getElementById('lp-job-saving');
-  if (savingEl) savingEl.textContent = formatEuroPerYear(job.annualSaving);
-  const grantEl = document.getElementById('lp-job-grant');
-  if (grantEl) grantEl.textContent = formatEuroAmount(job.seaiGrant);
-
-  const valueOutcome = document.getElementById('lp-job-value-outcome');
-  const valueEl = document.getElementById('lp-job-value');
-  const increase = Number(job.valueIncrease);
-  if (valueOutcome) {
-    const hasIncrease = Number.isFinite(increase) && increase > 0;
-    valueOutcome.hidden = !hasIncrease;
-    if (valueEl) valueEl.textContent = hasIncrease ? formatEuroAmount(increase) : '';
-  }
-
-  const co2El = document.getElementById('lp-job-co2');
-  if (co2El) {
-    const tonnes = Number(job.co2Reduction);
-    co2El.textContent = Number.isFinite(tonnes) && tonnes > 0
-      ? `Estimated CO₂ reduction: ${tonnes} tonnes/year.`
-      : '';
-  }
-
-  const openBtn = document.querySelector('#screen-splash [data-open-job]');
-  if (openBtn) openBtn.setAttribute('data-open-job', String(job.id));
-  document.querySelector('.lp-proof')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function applyLandingQuarterResult(lat, lng) {
-  const copy = document.getElementById('lp-locate-copy');
-  const btn = document.getElementById('lp-locate-btn');
-  if (!copy || !btn) return;
-  btn.disabled = false;
-  if (!isInsideDublin(lat, lng)) {
-    copy.textContent = 'You are outside the Dublin projects on this map. You can still browse every project.';
-    return;
-  }
-  const result = pickHighestSavingJobInQuarter(lat, lng);
-  if (!result.job) {
-    copy.textContent = `${result.quarter} Dublin has no completed saving to show yet. You can still browse every project.`;
-    return;
-  }
-  fillLandingJobCard(result.job);
-  const saving = formatEuroPerYear(result.job.annualSaving);
-  const area = result.job.areaText || 'this area';
-  copy.textContent = `${result.quarter} Dublin. The highest estimated saving there is ${saving} in ${area}.`;
-  btn.dataset.jobId = String(result.job.id);
-  btn.textContent = 'View this project';
-  btn.hidden = false;
-}
-
-function requestLandingLocation(onSuccess, onError) {
-  if (!navigator.geolocation) {
-    onError({ code: 0 });
-    return;
-  }
-  if (!window.isSecureContext) {
-    onError({ code: 1, insecure: true });
-    return;
-  }
-  const coarse = { enableHighAccuracy: false, timeout: 20000, maximumAge: 300000 };
-  navigator.geolocation.getCurrentPosition(onSuccess, (err) => {
-    if (err && err.code === 1) {
-      onError(err);
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(onSuccess, onError, {
-      enableHighAccuracy: true,
-      timeout: 20000,
-      maximumAge: 0
-    });
-  }, coarse);
-}
-
-function initLandingQuarterNotice() {
-  const copy = document.getElementById('lp-locate-copy');
-  const btn = document.getElementById('lp-locate-btn');
-  if (!copy || !btn || btn.dataset.bound) return;
-  btn.dataset.bound = '1';
-  if (!navigator.geolocation) {
-    copy.textContent = 'Location is not available on this device. You can still browse every project.';
-    btn.hidden = true;
-    return;
-  }
-  btn.addEventListener('click', () => {
-    if (btn.dataset.jobId) {
-      showMapScreen({ jobId: btn.dataset.jobId });
-      return;
-    }
-    btn.disabled = true;
-    copy.textContent = 'Checking your part of Dublin…';
-    requestLandingLocation(
-      (pos) => applyLandingQuarterResult(pos.coords.latitude, pos.coords.longitude),
-      (err) => {
-        btn.disabled = false;
-        btn.hidden = false;
-        if (err && err.insecure) {
-          var host = location.hostname;
-          if (location.protocol === 'http:' && host && host !== 'localhost' && host !== '127.0.0.1' && host !== '[::1]') {
-            location.replace('https://' + host + ':5174' + location.pathname + location.search + location.hash);
-            return;
-          }
-          copy.textContent = 'Location needs the secure local page. Open https://localhost:5174 and try again.';
-          return;
-        }
-        if (err && err.code === 1) {
-          copy.textContent = 'Allow location when the browser asks, then press Share my location again.';
-          return;
-        }
-        copy.textContent = 'We couldn’t read your location. Press Share my location to try again.';
-      }
-    );
-  });
-}
-
-initLandingQuarterNotice();
-
 // ─────────────────────────────────────────────
 // MAP INIT
 // ─────────────────────────────────────────────
@@ -8715,46 +8503,6 @@ function getBerBadgeClass(berValue) {
   if (grade.startsWith('C')) return 'ber-mid';
   if (grade.startsWith('D')) return 'ber-warn';
   return 'ber-poor';
-}
-
-const DUBLIN_CENTRE_LAT = 53.3478;
-const DUBLIN_CENTRE_LNG = -6.260;
-const DUBLIN_BOUNDS = { minLat: 53.18, maxLat: 53.63, minLng: -6.55, maxLng: -6.05 };
-
-function dublinQuarterName(lat, lng) {
-  const north = lat >= DUBLIN_CENTRE_LAT;
-  const east = lng >= DUBLIN_CENTRE_LNG;
-  if (north && east) return 'North East';
-  if (north) return 'North West';
-  if (east) return 'South East';
-  return 'South West';
-}
-
-function isInsideDublin(lat, lng) {
-  return lat >= DUBLIN_BOUNDS.minLat && lat <= DUBLIN_BOUNDS.maxLat
-    && lng >= DUBLIN_BOUNDS.minLng && lng <= DUBLIN_BOUNDS.maxLng;
-}
-
-function pickHighestSavingJobInQuarter(userLat, userLng) {
-  const quarter = dublinQuarterName(userLat, userLng);
-  let best = null;
-  let bestSaving = -Infinity;
-  let bestDist = Infinity;
-  portfolioJobsRaw.forEach((raw) => {
-    if (!raw || raw.consent_to_display === false) return;
-    if (isWarmBuildJob(raw)) return;
-    const saving = Number(raw.annualSaving);
-    if (!Number.isFinite(saving) || saving <= 0) return;
-    if (dublinQuarterName(raw.lat, raw.lng) !== quarter) return;
-    const pub = portfolioJobs.find((job) => job.id === raw.id) || raw;
-    const dist = Math.hypot(Number(pub.lat) - userLat, Number(pub.lng) - userLng);
-    if (saving > bestSaving || (saving === bestSaving && dist < bestDist)) {
-      best = pub;
-      bestSaving = saving;
-      bestDist = dist;
-    }
-  });
-  return { quarter, job: best };
 }
 
 function findNearestJobIdInList(lat, lng, list) {
